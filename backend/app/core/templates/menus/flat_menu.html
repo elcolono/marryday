@@ -1,0 +1,15 @@
+{% load menu_tags %}
+
+<div class="ftco-footer-widget mb-4 ml-md-5">
+    <h2 class="ftco-heading-2">{{ menu_heading }}</h2>
+    <ul class="list-unstyled">
+        {% for item in menu_items %}
+        <li class="{{ item.active_class }}">
+            <a class="py-2 d-block" href="{{ item.href }}">{{ item.text }}</a>
+            {% if item.has_children_in_menu %}
+            {% sub_menu item %}
+            {% endif %}
+        </li>
+        {% endfor %}
+    </ul>
+</div>

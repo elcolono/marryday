@@ -1,0 +1,41 @@
+{% load wagtailimages_tags %}
+{% image self.image original as img %}
+
+{% if self.layout == 'centered' %}
+<section class="ftco-section ftco-degree-bg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 ftco-animate">
+                <p>
+                    <img src="{{ img.url }}" alt="{{ img.alt }}" class="img-fluid">
+                </p>
+                <div class="heading-section mb-5 mt-5 mt-lg-0">
+                    {{ self.content }}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+{% if self.layout == 'two_columns_with_image' %}
+<section class="ftco-section ftco-faqs">
+    <div class="container">
+        <div class="row justify-content-center mb-5">
+            <div class="col-md-8 text-center heading-section ftco-animate">
+                <h2 class="mb-3">{{ self.heading }}</h2>
+            </div>
+        </div>
+        <div class="row d-flex align-items-center">
+            <div class="col-lg-6 ftco-animate">
+                <img src="{{ img.url }}" alt="{{ img.alt }}" class="img-fluid">
+            </div>
+            <div class="col-lg-6 pl-lg-5 ftco-animate">
+                <div class="heading-section mb-5 mt-5 mt-lg-0">
+                    {{ self.content }}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}

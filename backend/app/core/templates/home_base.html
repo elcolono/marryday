@@ -1,0 +1,160 @@
+{% load static compress wagtailuserbar wagtailmetadata_tags menu_tags %}
+
+<!DOCTYPE html>
+<html class="no-js" lang="de">
+
+<head>
+    <meta charset="utf-8" />
+
+    {% if self %}
+    {% meta_tags %}
+    {% endif %}
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link href="https://fonts.googleapis.com/css?family=Work+Sans:300,400,500,600,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    {# Global stylesheets #}
+    {% compress css %}
+    <link rel="stylesheet" href="{% static 'css/animate.css' %}">
+
+    <link rel="stylesheet" href="{% static 'css/owl.carousel.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/owl.theme.default.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/magnific-popup.css' %}">
+
+    <link rel="stylesheet" href="{% static 'css/flaticon.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    {% block extra_css %}
+    {# Override this in templates to add extra stylesheets #}
+    {% endblock %}
+    {% endcompress %}
+
+
+</head>
+
+<body class="{% block body_class %}{% endblock %}">
+    {% wagtailuserbar %}
+
+    <!--================ Start Header Area =================-->
+    <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
+        <div class="container">
+            <a class="navbar-brand" href="/">MOWO Spaces</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav"
+                aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="oi oi-menu"></span> Menu
+            </button>
+
+            <div class="collapse navbar-collapse" id="ftco-nav">
+                {% main_menu max_levels=3 template="menus/custom_main_menu.html" sub_menu_template="menus/custom_sub_menu.html" %}
+            </div>
+        </div>
+    </nav>
+    <!--================ End Header Area =================-->
+
+
+    <!-- Main content -->
+    {% block content %} {% endblock %}
+    <!--/ Maincontent -->
+
+
+    <!--================ Start Newsletter Area =================-->
+    <!--================ End Newsletter Area =================-->
+
+
+    <!--================Footer Area =================-->
+    <footer class="ftco-footer ftco-bg-dark ftco-section">
+        <div class="container">
+            <div class="row mb-5">
+                <div class="col-md">
+                    <div class="ftco-footer-widget mb-4">
+                        <h2 class="ftco-heading-2">MOWO Spaces</h2>
+                        <p>{{ settings.theme.ThemeSettings.about_short_description}}</p>
+                        <ul class="ftco-footer-social list-unstyled mb-0">
+                            <li class="ftco-animate"><a href="#"><span class="fa fa-twitter"></span></a></li>
+                            <li class="ftco-animate"><a href="#"><span class="fa fa-facebook"></span></a></li>
+                            <li class="ftco-animate"><a href="#"><span class="fa fa-instagram"></span></a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md">
+                    {% flat_menu 'useful_links' max_levels=1 show_menu_heading=True fall_back_to_default_site_menus=True %}
+                </div>
+                <div class="col-md">
+                    {% flat_menu 'legal_links' max_levels=1 show_menu_heading=True fall_back_to_default_site_menus=True %}
+
+                    <!-- <div class="ftco-footer-widget mb-4">
+                        <h2 class="ftco-heading-2">Navigational</h2>
+                        <ul class="list-unstyled">
+                            <li><a href="#" class="py-2 d-block">Join Us</a></li>
+                            <li><a href="#" class="py-2 d-block">Blog</a></li>
+                            <li><a href="#" class="py-2 d-block">Privacy &amp; Policy</a></li>
+                            <li><a href="#" class="py-2 d-block">Terms &amp; Condition</a></li>
+                        </ul>
+                    </div> -->
+                </div>
+                <div class="col-md">
+                    <div class="ftco-footer-widget mb-4">
+                        <h2 class="ftco-heading-2">Office</h2>
+                        <div class="block-23 mb-3">
+                            <ul>
+                                <li><span class="mr-3 fa fa-map-marker"></span><span
+                                        class="text">{{ settings.theme.ThemeSettings.about_address }}</span></li>
+                                <li><a href="tel:{{ settings.theme.ThemeSettings.about_phone }}"><span
+                                            class="mr-3 fa fa-phone"></span><span
+                                            class="text">{{ settings.theme.ThemeSettings.about_phone }}</span></a></li>
+                                <li><a href="mail:{{ settings.theme.ThemeSettings.about_email }}"><span
+                                            class="mr-3 fa fa-envelope"></span><span
+                                            class="text">{{ settings.theme.ThemeSettings.about_email }}</span></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 text-center">
+
+                    <p>
+                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                        Copyright &copy;
+                        <script>document.write(new Date().getFullYear());</script> All rights reserved | This template
+                        is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com"
+                            target="_blank">MOWO Spaces</a>
+                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+    <!-- loader -->
+    <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px">
+            <circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee" />
+            <circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10"
+                stroke="#F96D00" /></svg></div>
+
+
+
+    <!--================End Footer Area =================-->
+
+    {# Global javascript #}
+    {% compress js  %}
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/jquery-migrate-3.0.1.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
+    <script src="{% static 'js/jquery.stellar.min.js' %}"></script>
+    <script src="{% static 'js/owl.carousel.min.js' %}"></script>
+    <script src="{% static 'js/jquery.animateNumber.min.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+    {% block extra_js %}
+    {# Override this in templates to add extra javascript #}
+    {% endblock %}
+    {% endcompress %}
+
+
+</body>
+
+</html>

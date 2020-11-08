@@ -1,0 +1,66 @@
+{% load wagtailimages_tags %}
+
+<section class="ftco-section bg-light">
+  <div class="container">
+
+    <div class="row justify-content-center mb-5 pb-3">
+      <div class="col-md-7 text-center heading-section ftco-animate">
+        {% if self.heading %}
+        <h2>{{ self.heading }}</h2>
+        {% endif %}
+        {% if self.description %}
+        <p>{{ self.description }}</p>
+        {% endif %}
+      </div>
+    </div>
+    <div class="row">
+      {% for project in self.projects %}
+      {% image project.image original as img %}
+      <div class="col-md-4 ftco-animate">
+        <div class="portfolio-entry">
+          <a href="{{ project.link }}" target="_blank" class="block-20" style="background-image: url({{ img.url }});">
+          </a>
+          <div class="text d-flex py-4">
+            <div class="desc">
+              <h3 class="heading"><a href="{{ project.link }}" target="_blank">{{ project.title }}</a></h3>
+              <p>{{ project.description }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+      <!-- <div class="col-md-4 ftco-animate">
+          <div class="blog-entry" data-aos-delay="100">
+            <a href="blog-single.html" class="block-20" style="background-image: url('images/image_2.jpg');">
+            </a>
+            <div class="text d-flex py-4">
+              <div class="meta mb-3">
+                <div><a href="#">May 17, 2020</a></div>
+                <div><a href="#">Admin</a></div>
+                <div><a href="#" class="meta-chat"><span class="icon-chat"></span> 3</a></div>
+              </div>
+              <div class="desc pl-3">
+                  <h3 class="heading"><a href="#">Everthing You Need to Know About Cloud Template</a></h3>
+                </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 ftco-animate">
+          <div class="blog-entry" data-aos-delay="200">
+            <a href="blog-single.html" class="block-20" style="background-image: url('images/image_3.jpg');">
+            </a>
+            <div class="text d-flex py-4">
+              <div class="meta mb-3">
+                <div><a href="#">May 17, 2020</a></div>
+                <div><a href="#">Admin</a></div>
+                <div><a href="#" class="meta-chat"><span class="icon-chat"></span> 3</a></div>
+              </div>
+              <div class="desc pl-3">
+                  <h3 class="heading"><a href="#">Everthing You Need to Know About Cloud Template</a></h3>
+                </div>
+            </div>
+          </div>
+        </div> -->
+    </div>
+  </div>
+</section>

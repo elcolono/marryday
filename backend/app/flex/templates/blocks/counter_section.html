@@ -1,0 +1,25 @@
+<section class="ftco-section ftco-counter img" id="section-counter">
+    <div class="container pb-md-5">
+        <div class="row justify-content-center mb-5">
+            <div class="col-md-8 text-center heading-section heading-section-white ftco-animate">
+                <h2 class="mb-3">{{ self.heading }}</h2>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+                <div class="row">
+                    {% for counter in self.counters %}
+                    <div class="col-md-3 d-flex justify-content-center counter-wrap ftco-animate">
+                        <div class="block-18 text-center">
+                            <div class="text">
+                                <strong class="number" data-number="{{ counter.count }}">0</strong>
+                                <span>{{ counter.heading }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

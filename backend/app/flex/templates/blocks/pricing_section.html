@@ -1,0 +1,112 @@
+<section class="ftco-section bg-light {{ self.custom_classes }}">
+    <div class="container">
+        {% if self.heading %}
+        <div class="row justify-content-center mb-5 pb-3">
+            <div class="col-md-7 text-center heading-section ftco-animate">
+                <h2 class="mb-4">Our Best Pricing</h2>
+            </div>
+        </div>
+        {% endif %}
+        <div class="row d-flex align-items-center">
+            {% for pricing in self.pricings %}
+            <div class="col-sm ftco-animate">
+                <div class="block-7">
+                    <div class="text-center">
+                        <h2 class="heading">{{ pricing.heading }}</h2>
+
+                        <!-- Price -->
+                        <span class="price"><sup>€</sup> <span class="number">{{ pricing.price }}<small
+                                    class="per">/{% if pricing.type == "monthly" %}Monat{% else %}Einmalig{% endif %}</small></span>
+                            <ul class="pricing-text mb-4">
+                                {% for feature in pricing.features %}
+                                <li><strong>{% if feature.available %}<svg class="check-icon" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>{% else %}<svg class="check-icon" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>{% endif %}  {{ feature.description }}</strong></li>
+                                {% endfor %}
+                            </ul>
+                            <a href="#" class="btn btn-tertiary d-block px-3 py-3 mb-4">Details</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <div class="col-lg-3 col-md-6 ftco-animate">
+                <div class="block-7">
+                    <div class="text-center">
+                        <h2 class="heading">Advance pricing</h2>
+                        <span class="price"><sup>$</sup> <span class="number">19<small
+                                    class="per">/mo</small></span></span>
+                        <span class="excerpt d-block">All features are included</span>
+                        <h3 class="heading-2 mb-3">Enjoy All The Features</h3>
+
+                        <ul class="pricing-text mb-4">
+                            <li><strong>450 GB</strong> Bandwidth</li>
+                            <li><strong>400 GB</strong> Storage</li>
+                            <li><strong>$2.00 / GB</strong> Overages</li>
+                            <li>All features</li>
+                        </ul>
+                        <a href="#" class="btn btn-tertiary d-block px-3 py-3 mb-4">Choose pricing</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 ftco-animate">
+                <div class="block-7">
+                    <div class="text-center">
+                        <h2 class="heading">Expert pricing</h2>
+                        <span class="price"><sup>$</sup> <span class="number">49<small
+                                    class="per">/mo</small></span></span>
+                        <span class="excerpt d-block">All features are included</span>
+                        <h3 class="heading-2 mb-3">Enjoy All The Features</h3>
+
+                        <ul class="pricing-text mb-4">
+                            <li><strong>250 GB</strong> Bandwidth</li>
+                            <li><strong>200 GB</strong> Storage</li>
+                            <li><strong>$5.00 / GB</strong> Overages</li>
+                            <li>All features</li>
+                        </ul>
+                        <a href="#" class="btn btn-tertiary d-block px-3 py-3 mb-4">Choose pricing</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 ftco-animate">
+                <div class="block-7">
+                    <div class="text-center">
+                        <h2 class="heading">Pro pricing</h2>
+                        <span class="price"><sup>$</sup> <span class="number">99<small
+                                    class="per">/mo</small></span></span>
+                        <span class="excerpt d-block">All features are included</span>
+                        <h3 class="heading-2 mb-3">Enjoy All The Features</h3>
+
+                        <ul class="pricing-text mb-4">
+                            <li><strong>450 GB</strong> Bandwidth</li>
+                            <li><strong>400 GB</strong> Storage</li>
+                            <li><strong>$20.00 / GB</strong> Overages</li>
+                            <li>All features</li>
+                        </ul>
+                        <a href="#" class="btn btn-tertiary d-block px-3 py-3 mb-4">Choose pricing</a>
+                    </div>
+                </div>
+            </div> -->

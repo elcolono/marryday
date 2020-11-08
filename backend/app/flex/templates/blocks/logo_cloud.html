@@ -1,0 +1,14 @@
+{% load wagtailimages_tags %}
+
+<section class="ftco-section ftco-partner">
+    <div class="container">
+        <div class="row">
+            {% for logo in self.logos %}
+            {% image logo.image original as img %}
+            <div class="col-6 col-sm-3 py-4 ftco-animate">
+                <a href="#" class="partner"><img src="{{ img.url }}" alt="{{ img.alt }}" class="img-fluid" alt="Colorlib Template"></a>
+            </div>  
+            {% endfor %}
+        </div>
+    </div>
+</section>

@@ -1,0 +1,42 @@
+{% if self.layout == 'option-1' %}
+<section class="ftco-section fto-cta light">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="row">
+                    <div class="col-md-8 heading-section">
+                        <h2>{{ self.heading }}</h2>
+                        <p>{{ self.description }}</p>
+                    </div>
+                    <div class="col-md-4 d-flex align-items-center justify-content-center">
+                        <a href="{{ self.button_link }}" target="_blank"
+                            class="btn btn-tertiary px-4 py-3">{{ self.button }}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+{% if self.layout == 'option-2' %}
+<section class="ftco-section ftco-no-pt ftco-no-pb bg-light">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="intro">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <h3>{{ self.heading }}</h3>
+                            <p>{{ self.description }}</p>
+                        </div>
+                        <div class="col-md-4 d-flex align-items-center justify-content-center">
+                            <a href="{{ self.button_link }}" class="btn btn-tertiary px-4 py-3">{{ self.button }}</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}

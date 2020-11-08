@@ -1,0 +1,21 @@
+{% load static %}
+
+<div class="hero-wrap js-fullheight">
+    <div class="overlay"></div>
+    <div class="container px-0">
+        <div class="row d-md-flex no-gutters slider-text align-items-center js-fullheight justify-content-start">
+            <div class="col-lg-6 d-flex align-items-center ftco-animate">
+                <div class="text mt-5">
+                    <span class="subheading">{{self.subheading}}</span>
+                    <h1 class="mb-3">{{self.heading}}</h1>
+                    <p>{{self.description}}</p>
+                    <p><a href="{{ self.button_link }}" target="_blank" class="btn btn-secondary px-4 py-3">{{self.button}}</a></p>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <img class="img-fluid" src="{% static 'images/undraw_co-working_825n.svg' %}" alt="">
+            </div>
+
+        </div>
+    </div>
+</div>
