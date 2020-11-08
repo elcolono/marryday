@@ -8,7 +8,7 @@ WORKDIR /usr/src/app
 RUN apk update && apk upgrade && apk add git
 
 ADD . /usr/src/app/
-# RUN npm install
+RUN yarn install
 
 # Build app
 RUN yarn build
