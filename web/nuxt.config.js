@@ -14,7 +14,26 @@ export default {
 
   // Global CSS (https://go.nuxtjs.dev/config-css)
   css: [
+    '@/assets/css/animate.css',
+    '@/assets/css/owl.carousel.min.css',
+    '@/assets/css/owl.theme.default.min.css',
+    '@/assets/css/magnific-popup.css',
+    '@/assets/css/flaticon.css',
+    '@/assets/css/style.css',
   ],
+
+  // Global Scripts
+  script: [
+    { src: 'js/jquery.min.js', body: true },
+    { src: 'js/jquery-migrate-3.0.1.min.js', body: true },
+    { src: 'js/bootstrap.min.js', body: true },
+    { src: 'js/jquery.waypoints.min.js', body: true },
+    { src: 'js/jquery.stellar.min.js', body: true },
+    { src: 'js/owl.carousel.min.js', body: true },
+    { src: 'js/jquery.animateNumber.min.js', body: true },
+    { src: 'js/main.js', body: true },
+  ],
+
 
   // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
   plugins: [

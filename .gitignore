@@ -21,10 +21,9 @@ data/certbot/
 *.sqlite3
 __pycache__/
 # app/tickets/settings/prod.py
-app/debug.log
-app/media
-app/static
-docker/prod/nginx/letsencrypt
+debug.log
+media
+backend/app/core/static
 python.conf
 
 # .env files
