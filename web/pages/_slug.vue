@@ -1,11 +1,15 @@
 <template>
   <div>
-    <!-- <p>{{ JSON.stringify(content) }}</p> -->
-    <div :key="index" v-for="(section, index) in data.content">
-      {{ section.type }}
-      <HeroSection v-if="section.type == 'hero_section_block'" :data="section.value" />
+    <TheHeader :data="mainMenus" />
+    <!-- <p>{{ JSON.stringify(data) }}</p> -->
+    <div :key="index" v-for="(section, index) in page.content">
+      <!-- {{ section.type }} -->
+      <PageHeadingSection v-if="section.type == 'page_heading_section_block'" :title="page.title" :self="section.value" />
+      <HeroSection v-if="section.type == 'hero_section_block'" :self="section.value" />
       <ServiceSection v-if="section.type == 'service_section_block'" :self="section.value" />
+      <PricingSection v-if="section.type == 'pricing_section_block'" :self="section.value" />
     </div>
+    <TheFooter :data="flatMenus" />
   </div>
 </template>
 
@@ -31,14 +35,20 @@ export default {
     const slug = params.slug;
 
     try {
-      const data = await $axios.$get(
-        `http://127.0.0.1:8000/api/v2/pages/${slug}/`
+      const page = await $axios.$get(
+        `http://127.0.0.1:8000/api/v2/pages/find/?html_path=${slug}`
       );
+      const mainMenus = await $axios.$get(
+        `http://127.0.0.1:8000/api/v1/main-menus`
+      );
+      const flatMenus = await $axios.$get(
+        `http://127.0.0.1:8000/api/v1/flat-menus`
+      );
+      return { page, mainMenus, flatMenus };
 
-      return { data };
     } catch (e) {
       return error({
-        message: "This post does not exist" + e,
+        message: "Error during request" + e,
         statusCode: 404,
       });
     }

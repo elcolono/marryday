@@ -7,15 +7,14 @@
       >
         <div class="col-lg-6 d-flex align-items-center ftco-animate">
           <div class="text mt-5">
-            <span class="subheading">{{data.subheading}}</span>
-            <h1 class="mb-3">{{data.heading}}</h1>
-            <p>{{data.description}}</p>
-            <p><a :href="data.button_link" target="_blank" class="btn btn-secondary px-4 py-3">{{data.button}}</a></p>
+            <span class="subheading">{{self.subheading}}</span>
+            <h1 class="mb-3">{{self.heading}}</h1>
+            <p>{{self.description}}</p>
+            <p><a :href="data.button_link" target="_blank" class="btn btn-secondary px-4 py-3">{{self.button}}</a></p>
           </div>
         </div>
         <div class="col-lg-6">
           <!-- <img class="img-fluid" src="{% static 'images/undraw_co-working_825n.svg' %}" alt=""> -->
-          {{JSON.stringify(data)}}
         </div>
       </div>
     </div>
@@ -23,7 +22,6 @@
 </template>
 <script>
 export default {
-  // name: "Test",
-  props: ["data"]
+  props: ["self"]
 };
 </script>
