@@ -1,60 +1,58 @@
-# docker-nginx-django-nuxt-template
-This repository provides a template for deploying a Django backend served by Nginx/Gunicorn on port 8000, and a NuxtJS/Vuetify front end served by Node on port 80
+# MoWo Main Application
 
-Prerequisites
----
-1. Docker: https://docs.docker.com/install/#supported-platforms
-2. docker-compose: https://docs.docker.com/compose/install/
-3. An AWS account
+This repository provides an application for deploying a Django backend served by Nginx/Gunicorn on port 8000, and a NuxtJS/Vuetify front end served by Node on port 80.
 
-Instructions
----
-In an empty directory:
-1. Create docker machine (replace ``MY_AWS_ACCESS_KEY``, ``MY_SECRET_KEY`` and ``machine_name`` as appropriate)
-```
-docker-machine create -d amazonec2 --amazonec2-access-key MY_AWS_ACCESS_KEY --amazonec2-secret-key MY_SECRET_KEY machine_name
-```
 
-2. Setup the environment
-```
-docker-machine env machine_name
-```
+### Prerequisites (For Development)
 
-3. Clone this repository (or your own fork) and cd into it
-```
-git clone https://github.com/chris104957/docker-nginx-django-nuxt-template.git && cd docker-nginx-django-nuxt-template
-```
+* Docker
 
-4. Build and deploy image
+	* Windows: Docker Desktop 2.0+ on Windows 10 Pro/Enterprise. Windows 10 Home (2004+) requires Docker Desktop 2.2+ and the WSL2 back-end. (Docker Toolbox is not supported.)
+
+	* macOS: Docker Desktop 2.0+.
+
+	* Linux: Docker CE/EE 18.06+ and Docker Compose 1.21+. (The Ubuntu snap package is not supported.)
+
+* Visual Studio Code Extension: `Remote - Containers`
+
+
+### Development Setup
+
+Then run this application in the `DEV Container`!
+
+You also need to set the environment variables. You can find an example in the
+
+`env.example` file.
+
+
+
+In the DEV Container start the django appliction with `python manage.py runserver`S
+
+
+1. Start the django appliction with `python manage.py runserver`S
+
+2. Start the vue/nuxt appliction with `yarn dev`S
+
+
+
+For TypeScript users. 
+
+See : https://typescript.nuxtjs.org/cookbook/components/
+
+
+### Deployment Setup on any linux machine (Hetzner, AWS, etc.)
+
+Build and deploy image
 ```
 docker-compose build
 docker-compose up -d
 ```
 
-5. Go to the AWS console and look in your EC2 **running instances** for the machine, open port 80, then go to the public IP to see if it worked
 
 
 
 
 
 
-🎉  Successfully created project mowo-client
-
-  To get started:
-
-        cd mowo-client
-        yarn dev
-
-  To build & start for production:
-
-        cd mowo-client
-        yarn build
-        yarn start
-
-
-  For TypeScript users. 
-
-  See : https://typescript.nuxtjs.org/cookbook/components/
-Done in 757.28s.
 
 
