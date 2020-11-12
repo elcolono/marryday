@@ -1,5 +1,4 @@
 <template>
- <!--================Footer Area =================-->
     <footer class="ftco-footer ftco-bg-dark ftco-section">
         <div class="container">
             <div class="row mb-5">
@@ -15,17 +14,16 @@
                     </div>
                 </div>
                 <div class="col-md">
-                    <!-- {% flat_menu 'useful_links' max_levels=1 show_menu_heading=True fall_back_to_default_site_menus=True %} -->
+                    <FlatMenuWidget :key="index" v-for="(menu, index) in data" v-show="menu.handle == 'useful_links'" :menu="menu" />
                 </div>
                 <div class="col-md">
-                    <!-- {% flat_menu 'legal_links' max_levels=1 show_menu_heading=True fall_back_to_default_site_menus=True %} -->
-
+                    <FlatMenuWidget :key="index" v-for="(menu, index) in data" v-show="menu.handle == 'legal_links'" :menu="menu" />
                 </div>
                 <div class="col-md">
                     <div class="ftco-footer-widget mb-4">
                         <h2 class="ftco-heading-2">Office</h2>
                         <div class="block-23 mb-3">
-                            {{JSON.stringify(data)}}
+                            <!-- {{JSON.stringify(data)}} -->
                             <ul>
                                 <!-- <li><span class="mr-3 fa fa-map-marker"></span><span
                                         class="text">{{ settings.theme.ThemeSettings.about_address }}</span></li>
@@ -55,8 +53,6 @@
             </div>
         </div>
     </footer>
-        <!--================End Footer Area =================-->
-
 </template>
 <script>
 export default {
