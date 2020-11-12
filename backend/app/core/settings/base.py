@@ -12,14 +12,18 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+from dotenv import load_dotenv, find_dotenv
 
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE_DIR = os.path.dirname(PROJECT_DIR)
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
+# Load env file and set env variables
+ENV_FILE = find_dotenv()
+if ENV_FILE:
+    load_dotenv(ENV_FILE)
 
 # Application definition
 
@@ -53,7 +57,6 @@ INSTALLED_APPS = [
     'wagtail.contrib.settings',
     'wagtailmetadata',
     'django.contrib.sitemaps',
-    'crispy_forms',
     'rest_framework',
 
     'django.contrib.admin',
@@ -100,17 +103,27 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'core.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
+# Set env variables
+POSTGRES_DB_NAME = os.environ.get('POSTGRES_DB_NAME')
+POSTGRES_DB_USER = os.environ.get('POSTGRES_DB_USER')
+POSTGRES_DB_PASSWORD = os.environ.get('POSTGRES_DB_PASSWORD')
+POSTGRES_DB_HOST = os.environ.get('POSTGRES_DB_HOST')
+POSTGRES_DB_PORT = os.environ.get('POSTGRES_DB_PORT')
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db/db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': POSTGRES_DB_NAME,
+        'USER': POSTGRES_DB_USER,
+        'PASSWORD': POSTGRES_DB_PASSWORD,
+        # "db" in production && "localhost" when dev without docker postgres
+        'HOST': POSTGRES_DB_HOST,
+        'PORT': POSTGRES_DB_PORT,
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
