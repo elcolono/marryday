@@ -1,6 +1,6 @@
 """ Urls """
 from django.urls import path
-from api import views
+from rest import views
 
 urlpatterns = [
     # Settings

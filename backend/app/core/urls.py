@@ -20,7 +20,7 @@ urlpatterns = [
 
     url(r'^search/$', search_views.search, name='search'),
 
-    # url(r'^api/v1/', include('api.urls')),
+    url(r'^api/', include('rest.urls')),
     url(r'^api/v2/', api_router.urls),
 ]
 

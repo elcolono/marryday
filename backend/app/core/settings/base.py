@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'form',
     'streams',
     'theme',
+    'rest',
 
     'wagtail.contrib.forms',
     'wagtail.contrib.redirects',

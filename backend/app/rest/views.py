@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 
 from wagtailmenus.models import MainMenu, FlatMenu
-from api import serializers
+from rest import serializers
 from home.models import SubPage
 
 # Menu Views
