@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     'wagtailmetadata',
     'django.contrib.sitemaps',
     'rest_framework',
+    'corsheaders',
 
     'django.contrib.admin',
     'django.contrib.auth',
@@ -69,6 +70,9 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    # Cors
+    'corsheaders.middleware.CorsMiddleware',
+
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -193,3 +197,15 @@ BASE_URL = 'http://example.com'
 
 # Crispy Settings
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+
+# Cors Configuration
+# CORS_ORIGIN_ALLOW_ALL = True
+
+# CORS_ORIGIN_WHITELIST = (
+#     'http://172.22.0.2:3000/',
+# )
+# CORS_ALLOWED_ORIGINS = [
+#     '*'
+# ]
+

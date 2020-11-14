@@ -3,7 +3,11 @@ from .base import *
 DEBUG = False
 SECRET_KEY = 't-zl$)!^dhh$kiz8-)!rr02t8uhn4%v6nl*f*y62p9xmxy94dh'
 
-ALLOWED_HOSTS = ['*']
+# Hosts/domain names that are valid for this site; required if DEBUG is False
+# See https://docs.djangoproject.com/en/1.9/ref/settings/#allowed-hosts
+ALLOWED_HOSTS = [
+    'backend'
+]
 
 # EMAIL SETTINGS
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -17,11 +21,21 @@ EMAIL_HOST_PASSWORD = '!Andi_89'
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format' : "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
+            'datefmt' : "%d/%b/%Y %H:%M:%S"
+        },
+        'simple': {
+            'format': '%(levelname)s %(message)s'
+        },
+    },
     'handlers': {
         'file': {
-            'level': 'ERROR',
+            'level': 'DEBUG',
             'class': 'logging.FileHandler',
             'filename': os.path.join(BASE_DIR, 'debug.log'),
+            'formatter': 'verbose'
         },
     },
     'loggers': {
@@ -48,7 +62,6 @@ COMPRESS_JS_FILTERS = [
     'compressor.filters.jsmin.JSMinFilter',
 ]
 COMPRESS_STORAGE = 'compressor.storage.GzipCompressorFileStorage' 
-
 
 
 try:

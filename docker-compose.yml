@@ -7,6 +7,8 @@ services:
   backend:
     build: ./backend
     environment:
+      DJANGO_SETTINGS_MODULE: core.settings.production
+      PYTHONUNBUFFERED: 1
       POSTGRES_DB_NAME: postgres
       POSTGRES_DB_USER: postgres
       POSTGRES_DB_PASSWORD: postgres
