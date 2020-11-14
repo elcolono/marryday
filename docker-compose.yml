@@ -15,7 +15,7 @@ services:
       POSTGRES_DB_HOST: db
       POSTGRES_DB_PORT: 5432
     volumes:
-      - .:/backend
+      # - .:/backend
       - /statics/backend/static_files:/app/static
       - /statics/backend/media_files:/app/media
     expose:
@@ -40,7 +40,7 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - ./backend:/backend
+      # - ./backend:/backend
       - /statics/backend/static_files:/statics/backend/static_files/
       - /statics/backend/media_files:/statics/backend/media_files/
       - ./nginx:/etc/nginx/conf.d

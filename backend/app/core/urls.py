@@ -38,9 +38,9 @@ urlpatterns = urlpatterns + [
     # Wagtail's page serving mechanism. This should be the last pattern in
     # the list:
     url(r'^404', notfound_page),
-    url(r'^sitemap\.xml$', sitemap),
-    url(r'^robots\.txt$', robots_txt, name='robots'),
-    url(r"", include(wagtail_urls)),
+    # url(r'^sitemap\.xml$', sitemap),
+    # url(r'^robots\.txt$', robots_txt, name='robots'),
+    # url(r"", include(wagtail_urls)),
 
     # Alternatively, if you want Wagtail pages to be served from a subpath
     # of your site, rather than the site root:
