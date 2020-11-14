@@ -8,6 +8,7 @@
       <HeroSection v-if="section.type == 'hero_section_block'" :self="section.value" />
       <ServiceSection v-if="section.type == 'service_section_block'" :self="section.value" />
       <PricingSection v-if="section.type == 'pricing_section_block'" :self="section.value" />
+      {{ JSON.stringify(section) }}
     </div>
     <TheFooter :data="flatMenus" />
   </div>
@@ -36,13 +37,13 @@ export default {
 
     try {
       const page = await $axios.$get(
-        `http://127.0.0.1:8000/api/v2/pages/find/?html_path=${slug}`
+        `${process.env.baseUrl}/api/v2/pages/find/?html_path=${slug}`
       );
       const mainMenus = await $axios.$get(
-        `http://127.0.0.1:8000/api/v1/main-menus`
+        `${process.env.baseUrl}/api/main-menus`
       );
       const flatMenus = await $axios.$get(
-        `http://127.0.0.1:8000/api/v1/flat-menus`
+        `${process.env.baseUrl}/api/flat-menus`
       );
       return { page, mainMenus, flatMenus };
 

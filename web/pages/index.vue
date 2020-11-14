@@ -1,75 +1,59 @@
 <template>
-  <div class="container">
-    <div>
-      <Logo />
-      <h1 class="title">
-        web
-      </h1>
-      <div class="links">
-        <a
-          href="https://nuxtjs.org/"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="button--green"
-        >
-          Documentation
-        </a>
-        <a
-          href="https://github.com/nuxt/nuxt.js"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="button--grey"
-        >
-          GitHub
-        </a>
-      </div>
+  <div>
+    <TheHeader :data="mainMenus" />
+    <!-- <p>{{ JSON.stringify(page) }}</p> -->
+    <div :key="index" v-for="(section, index) in page.items[0].content">
+      <!-- {{ section.type }} -->
+      <PageHeadingSection v-if="section.type == 'page_heading_section_block'" :title="page.title" :self="section.value" />
+      <HeroSection v-if="section.type == 'hero_section_block'" :self="section.value" />
+      <ServiceSection v-if="section.type == 'service_section_block'" :self="section.value" />
+      <PricingSection v-if="section.type == 'pricing_section_block'" :self="section.value" />
+      {{ JSON.stringify(section) }}
     </div>
+    <TheFooter :data="flatMenus" />
   </div>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-
-export default Vue.extend({})
+<script>
+export default {
+  setComponentName() {
+    this.dynamic = () => import(`@/components/${this.componentName}.vue`);
+  },
+  head: {
+    script: [
+      { src: "js/jquery.min.js", body: true },
+      { src: "js/jquery-migrate-3.0.1.min.js", body: true },
+      { src: "js/bootstrap.min.js", body: true },
+      { src: "js/jquery.waypoints.min.js", body: true },
+      { src: "js/jquery.stellar.min.js", body: true },
+      { src: "js/owl.carousel.min.js", body: true },
+      { src: "js/jquery.animateNumber.min.js", body: true },
+      { src: "js/main.js", body: true },
+    ],
+  },
+  layout: "base",
+  async asyncData({ params, $axios, error }) {
+    ///api/v2/pages/?type=home.Subpage&fields=seo_text,content`
+    try {
+      const page = await $axios.$get(
+        `${process.env.baseUrl}/api/v2/pages/?type=home.HomePage&fields=seo_text,content`
+      );
+      console.log(page);
+      const mainMenus = await $axios.$get(
+        `${process.env.baseUrl}/api/main-menus`
+      );
+      const flatMenus = await $axios.$get(
+        `${process.env.baseUrl}/api/flat-menus`
+      );
+      return { page, mainMenus, flatMenus };
+    } catch (e) {
+      return error({
+        message: "Error during request" + e,
+        statusCode: 404,
+      });
+    }
+  },
+};
 </script>
-
-<style>
-.container {
-  margin: 0 auto;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
-
-.title {
-  font-family:
-    'Quicksand',
-    'Source Sans Pro',
-    -apple-system,
-    BlinkMacSystemFont,
-    'Segoe UI',
-    Roboto,
-    'Helvetica Neue',
-    Arial,
-    sans-serif;
-  display: block;
-  font-weight: 300;
-  font-size: 100px;
-  color: #35495e;
-  letter-spacing: 1px;
-}
-
-.subtitle {
-  font-weight: 300;
-  font-size: 42px;
-  color: #526488;
-  word-spacing: 5px;
-  padding-bottom: 15px;
-}
-
-.links {
-  padding-top: 15px;
-}
+<style scoped>
 </style>
