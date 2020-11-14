@@ -38,7 +38,6 @@ export default {
       const page = await $axios.$get(
         `${process.env.baseUrl}/api/v2/pages/?type=home.HomePage&fields=seo_text,content`
       );
-      console.log(page);
       const mainMenus = await $axios.$get(
         `${process.env.baseUrl}/api/main-menus`
       );

@@ -16,6 +16,8 @@ services:
       POSTGRES_DB_PORT: 5432
     volumes:
       - .:/backend
+      - /statics/backend/static_files:/app/static
+      - /statics/backend/media_files:/app/media
     expose:
       - "8000"
     restart: always
@@ -39,6 +41,8 @@ services:
       - "8000:8000"
     volumes:
       - ./backend:/backend
+      - /statics/backend/static_files:/statics/backend/static_files/
+      - /statics/backend/media_files:/statics/backend/media_files/
       - ./nginx:/etc/nginx/conf.d
     depends_on:
       - backend
