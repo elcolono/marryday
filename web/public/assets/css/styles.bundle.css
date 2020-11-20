@@ -95,7 +95,7 @@ a {
 a:hover, a:focus, a:active {
   text-decoration: none;
   outline: none;
-  color: #eb354e;
+  color: #f48300;
 }
 
 img {
@@ -1063,7 +1063,7 @@ figure {
 }
 
 .blog-card a:hover {
-  color: #eb354e;
+  color: #f48300;
 }
 
 .blog-card .blog-title {
@@ -1137,7 +1137,7 @@ figure {
 
 .owl-carousel button.owl-dot.active span {
   width: 2rem;
-  background-color: #eb354e;
+  background-color: #f48300;
 }
 
 .owl-carousel.owl-nav {
@@ -1149,7 +1149,7 @@ figure {
   position: absolute;
   top: 70%;
   display: block;
-  color: #eb354e;
+  color: #f48300;
   line-height: 1;
 }
 
@@ -1211,27 +1211,27 @@ figure {
 }
 
 .ps__thumb-y {
-  background-color: #eb354e;
+  background-color: #f48300;
 }
 
 .ps__rail-y:hover > .ps__thumb-y, .ps__rail-y:focus > .ps__thumb-y {
-  background-color: #eb354e;
+  background-color: #f48300;
 }
 
 .ps__rail-y.ps--clicking .ps__thumb-y {
-  background-color: #eb354e;
+  background-color: #f48300;
 }
 
 .ps__thumb-x {
-  background-color: #eb354e;
+  background-color: #f48300;
 }
 
 .ps__rail-x:hover > .ps__thumb-x, .ps__rail-x:focus > .ps__thumb-x {
-  background-color: #eb354e;
+  background-color: #f48300;
 }
 
 .ps__rail-x.ps--clicking .ps__thumb-x {
-  background-color: #eb354e;
+  background-color: #f48300;
 }
 
 .ps--active-x > .ps__rail-x,
@@ -1266,14 +1266,14 @@ figure {
 }
 
 .line-tabs.nav-tabs .nav-link.active {
-  color: #eb354e;
-  border-bottom-color: #eb354e;
+  color: #f48300;
+  border-bottom-color: #f48300;
 }
 
 .link {
   position: relative;
   display: inline-block;
-  color: #eb354e;
+  color: #f48300;
   font-size: 0.75rem;
   font-weight: 600;
 }
@@ -1283,7 +1283,7 @@ figure {
   display: block;
   position: absolute;
   bottom: -1px;
-  background-color: #eb354e;
+  background-color: #f48300;
   height: 1px;
 }
 
@@ -1338,7 +1338,7 @@ figure {
 }
 
 .checkbox input:checked + label:before, .radio input:checked + label:before {
-  border-color: #eb354e;
+  border-color: #f48300;
 }
 
 .checkbox input:disabled + label, .radio input:disabled + label {
@@ -1362,7 +1362,7 @@ figure {
 }
 
 .checkbox input:checked + label:before {
-  background-color: #eb354e;
+  background-color: #f48300;
 }
 
 .checkbox input:checked + label:after {
@@ -1380,13 +1380,13 @@ figure {
   width: 0.5rem;
   height: 0.5rem;
   border-radius: 50%;
-  background-color: #eb354e;
+  background-color: #f48300;
   transform: scale(0);
   transition: all .3s;
 }
 
 .radio input:checked + label:before {
-  border-color: #eb354e;
+  border-color: #f48300;
 }
 
 .radio input:checked + label:after {
@@ -1514,7 +1514,7 @@ figure {
 }
 
 .noUi-connect {
-  background-color: #eb354e;
+  background-color: #f48300;
 }
 
 .noUi-pips-horizontal-range {
@@ -1608,7 +1608,7 @@ figure {
 
 .bootstrap-datetimepicker-widget table td.day.active, .bootstrap-datetimepicker-widget table td.hour.active, .bootstrap-datetimepicker-widget table td.minute.active, .bootstrap-datetimepicker-widget table td.second.active {
   text-shadow: none;
-  background-color: #eb354e;
+  background-color: #f48300;
   box-shadow: 0.25rem 0.5rem 1rem 0px rgba(0, 0, 0, 0.1);
 }
 
@@ -1621,7 +1621,7 @@ figure {
   width: 0.5rem;
   height: 0.5rem;
   border-radius: 0.5rem;
-  background-color: #eb354e;
+  background-color: #f48300;
   box-shadow: none;
   border: none;
   bottom: 1px;
@@ -1699,7 +1699,7 @@ figure {
 
 .bootstrap-datetimepicker-widget .picker-switch td {
   background-color: #f6f5f5;
-  color: #eb354e;
+  color: #f48300;
 }
 
 .bootstrap-datetimepicker-widget .picker-switch td a {
@@ -1711,7 +1711,7 @@ figure {
 }
 
 .bootstrap-datetimepicker-widget .picker-switch td a:hover {
-  background-color: #eb354e;
+  background-color: #f48300;
   color: #fff;
 }
 
@@ -1751,7 +1751,7 @@ figure {
 }
 
 .dropzone .dz-preview .dz-progress .dz-upload {
-  background: linear-gradient(to bottom, #f06377, #eb354e);
+  background: linear-gradient(to bottom, #f06377, #f48300);
 }
 
 .switch {
@@ -1781,7 +1781,7 @@ figure {
   height: 2rem;
   margin-bottom: 0;
   border-radius: 1rem;
-  background-color: #eb354e;
+  background-color: #f48300;
   cursor: pointer;
   position: relative;
 }
@@ -1816,7 +1816,7 @@ figure {
 #loading #loader {
   width: 2.675rem;
   height: 2.675rem;
-  border: 0.325rem solid #eb354e;
+  border: 0.325rem solid #f48300;
   -webkit-animation: loader-rotate 2s infinite ease;
           animation: loader-rotate 2s infinite ease;
 }
@@ -1826,7 +1826,7 @@ figure {
   display: block;
   vertical-align: top;
   width: 100%;
-  background-color: #eb354e;
+  background-color: #f48300;
   -webkit-animation: loader-height 2s infinite ease-in;
           animation: loader-height 2s infinite ease-in;
 }
@@ -1858,7 +1858,7 @@ figure {
 }
 
 #header.plain-header.scrolled .navbar-nav > li > a:not(.btn):hover, #header.colored-header .navbar-nav > li > a:not(.btn):hover {
-  color: #eb354e;
+  color: #f48300;
 }
 
 #header.plain-header.scrolled #hamburger span:before, #header.colored-header #hamburger span:before, #header.plain-header.scrolled #hamburger span:after, #header.colored-header #hamburger span:after {
@@ -1905,6 +1905,7 @@ figure {
 
 #header .navbar-brand .default {
   display: none;
+  height: 50px;
 }
 
 #header.plain-header {
@@ -1929,7 +1930,7 @@ figure {
 }
 
 #header.plain-header .navbar-nav > li > a:not(.btn):hover {
-  color: #eb354e;
+  color: #f48300;
 }
 
 #header.plain-header #hamburger span:before, #header.plain-header #hamburger span:after {
@@ -2053,7 +2054,7 @@ figure {
 }
 
 .navbar-nav .nav-item.nav-has-sub .nav-link:hover:after {
-  border-color: #eb354e;
+  border-color: #f48300;
 }
 
 .navbar-nav .nav-item.nav-has-sub:hover .nav-sub-menu {
@@ -2159,7 +2160,7 @@ figure {
 }
 
 .inner-banner-content.banner-content-white .breadcrumb-item a:hover {
-  color: #eb354e;
+  color: #f48300;
 }
 
 .hero-vector {
@@ -2244,7 +2245,7 @@ figure {
     color: #1C191A;
   }
   .inner-banner-content.banner-content-white .breadcrumb-item a:hover {
-    color: #eb354e;
+    color: #f48300;
   }
   .app-banner {
     padding-bottom: 6rem;
@@ -2295,7 +2296,7 @@ figure {
   position: absolute;
   top: 1.25rem;
   left: 0;
-  background-color: #eb354e;
+  background-color: #f48300;
 }
 
 .section .section-title.animated:before {
@@ -2365,7 +2366,7 @@ figure {
   flex-direction: column;
   right: -16.5rem;
   width: 16rem;
-  background-color: #eb354e;
+  background-color: #f48300;
   z-index: 1039;
   box-shadow: 0 1px 0.75rem 0.125rem rgba(0, 0, 0, 0.1);
   padding-bottom: 2rem;
@@ -2489,7 +2490,7 @@ figure {
 
 .blockquote {
   padding: 1.5rem 2rem;
-  border-left: 0.25rem solid #eb354e;
+  border-left: 0.25rem solid #f48300;
   background-color: #f6f5f5;
 }
 
@@ -2786,7 +2787,7 @@ figure {
   text-align: center;
   display: table-cell;
   vertical-align: middle;
-  color: #eb354e;
+  color: #f48300;
 }
 
 .icon-sm {
@@ -2851,7 +2852,7 @@ figure {
   left: 3px;
   display: table;
   transition: 0.4s all ease;
-  color: #eb354e;
+  color: #f48300;
 }
 
 .map-marker .marker-container .marker-icon [class^="ion-"],
@@ -2888,7 +2889,7 @@ figure {
 }
 
 .map-marker.open-infobox .marker-container .marker-circle {
-  fill: #eb354e;
+  fill: #f48300;
 }
 
 .map-marker.hover-infobox .marker-container {
@@ -2923,7 +2924,7 @@ figure {
 
 .zoom-controls .zoom:hover {
   color: #fff;
-  background-color: #eb354e;
+  background-color: #f48300;
 }
 
 .zoom-controls .zoom + .zoom {
@@ -3011,7 +3012,7 @@ figure {
   font-weight: 600 !important;
   font-family: "Open Sans", sans-serif !important;
   color: #fff !important;
-  background-color: #eb354e;
+  background-color: #f48300;
   border-radius: 50%;
 }
 
@@ -3021,7 +3022,7 @@ figure {
   position: absolute;
   width: 100%;
   height: 100%;
-  background-color: #eb354e;
+  background-color: #f48300;
   border-radius: 50%;
   z-index: -1;
   -webkit-animation: cluster 1.5s infinite ease-in-out;
@@ -3088,7 +3089,7 @@ figure {
 }
 
 .price-card.price-card-colored {
-  background-color: #eb354e;
+  background-color: #f48300;
   color: #fff;
 }
 
@@ -3098,7 +3099,7 @@ figure {
 
 .price-card.price-card-colored .btn {
   background-color: #fff;
-  color: #eb354e;
+  color: #f48300;
 }
 
 .price-card.price-card-colored .btn:hover {
@@ -3268,7 +3269,7 @@ figure {
   font-size: 1.5rem;
   line-height: 1;
   text-align: center;
-  color: #eb354e;
+  color: #f48300;
 }
 
 @media (min-width: 576px) {
@@ -3363,7 +3364,7 @@ figure {
 }
 
 .listing-header .listing-options .listing-options-item .active {
-  color: #eb354e;
+  color: #f48300;
 }
 
 .listing-card {
@@ -3453,7 +3454,7 @@ figure {
 }
 
 .listing-content-head .listing-rating {
-  background-color: #eb354e;
+  background-color: #f48300;
   color: #fff;
   text-align: center;
   width: 3rem;
@@ -3560,12 +3561,12 @@ figure {
   left: 0;
   width: 0;
   height: 0.125rem;
-  background-color: #eb354e;
+  background-color: #f48300;
   transition: 0.4s all ease;
 }
 
 .listing-quick-link .listing-link.active {
-  color: #eb354e;
+  color: #f48300;
 }
 
 .listing-quick-link .listing-link.active:after {
@@ -3611,7 +3612,7 @@ figure {
   width: 0.5rem;
   height: 0.5rem;
   border-radius: 0.125rem;
-  background-color: #eb354e;
+  background-color: #f48300;
   transform: rotate(45deg);
 }
 
@@ -3776,7 +3777,7 @@ figure {
 }
 
 .dashboard--sidebar .dashboard--sidebar__link.active {
-  color: #eb354e;
+  color: #f48300;
   background-color: #fdeff1;
 }
 

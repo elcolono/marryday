@@ -3,7 +3,9 @@ export default function Header() {
         <header id="header" className="colored-header fixed-top">
             <nav className="navbar navbar-expand-sm">
                 <div className="container">
-                    <a className="navbar-brand" href="index.html">Logo</a>
+                    <a className="navbar-brand" href="index.html">
+                        <img src="assets/images/logos/mowo-spaces-logo.png" className="compact default dark" alt="Listigo" />
+                    </a>
                     <ul className="navbar-nav ml-auto">
                         <li className="nav-item"><a href="javascript:void(0);" data-toggle="modal" data-target="#sign_in">Login</a></li>
                         <li className="nav-item">
