@@ -1,30 +1,89 @@
-import Container from './container'
-import { EXAMPLE_PATH } from '../lib/constants'
-
 export default function Footer() {
   return (
-    <footer className="bg-accent-1 border-t border-accent-2">
-      <Container>
-        <div className="py-28 flex flex-col lg:flex-row items-center">
-          <h3 className="text-4xl lg:text-5xl font-bold tracking-tighter leading-tight text-center lg:text-left mb-10 lg:mb-0 lg:pr-4 lg:w-1/2">
-            Statically Generated with Next.js.
-          </h3>
-          <div className="flex flex-col lg:flex-row justify-center items-center lg:pl-4 lg:w-1/2">
-            <a
-              href="https://nextjs.org/docs/basic-features/pages"
-              className="mx-3 bg-black hover:bg-white hover:text-black border border-black text-white font-bold py-3 px-12 lg:px-8 duration-200 transition-colors mb-6 lg:mb-0"
-            >
-              Read Documentation
-            </a>
-            <a
-              href={`https://github.com/vercel/next.js/tree/canary/examples/${EXAMPLE_PATH}`}
-              className="mx-3 font-bold hover:underline"
-            >
-              View on GitHub
-            </a>
+    <>
+      <section class="section">
+        <div class="app-banner">
+          <div class="container">
+            <div class="row">
+              <div class="col-lg-5">
+                <h2>Our app available on</h2>
+                <p>We are on mobile now get this app and enjoy amazing user experience. Download the app and
+                                go to travel new places in the world.</p>
+                <div class="btn-inline">
+                  <button type="button" class="btn btn-dark btn-icon">
+                    <i class="ion-logo-apple"></i>
+                    <span>Add Store</span>
+                  </button>
+                  <button type="button" class="btn btn-dark btn-icon">
+                    <i class="ion-logo-android"></i>
+                    <span>Google Play</span>
+                  </button>
+                </div>
+              </div>
+              <div class="col-lg-7">
+                <img src="assets/images/backgrounds/app-hero.png" class="app-hero mt-5 mt-lg-0" alt="" />
+              </div>
+            </div>
           </div>
         </div>
-      </Container>
-    </footer>
+      </section>
+
+      <footer id="footer">
+        <div class="container">
+          <div class="row list-bunch">
+            <div class="col-xl-4 col-lg-5 list-bunch-item">
+              <a href="index.html" class="d-inline-block mb-3">
+                <img src="assets/images/logos/logo_dark.svg" alt="" />
+              </a>
+              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. At dignissimos enim.</p>
+              <div class="form-control-icon form-control-icon_right">
+                <input type="text" placeholder="Email please" class="form-control" />
+                <button type="button" class="form-control-icon_wrapper">
+                  <span><i class="ion-md-arrow-forward"></i></span>
+                </button>
+              </div>
+            </div>
+            <div class="col-1 d-xl-block d-none"></div>
+            <div class="col-lg-2 col-sm-4 list-bunch-item">
+              <h6 class="mb-3">Company</h6>
+              <ul class="links">
+                <li><a href="#">About</a></li>
+                <li><a href="#">Contact</a></li>
+                <li><a href="#">Team</a></li>
+                <li><a href="#">Privacy Policy</a></li>
+                <li><a href="#">Terms & Use</a></li>
+              </ul>
+            </div>
+            <div class="col-lg-2 col-sm-4 list-bunch-item">
+              <h6 class="mb-3">Quick links</h6>
+              <ul class="links">
+                <li><a href="#">FAQs</a></li>
+                <li><a href="#">Pricing</a></li>
+                <li><a href="#">Wallet</a></li>
+                <li><a href="#">Profile</a></li>
+              </ul>
+            </div>
+            <div class="col-lg-3 col-sm-4 list-bunch-item">
+              <h6 class="mb-1">Contact via email</h6>
+              <a class="d-inline-block mb-3" href="mailto:listigo@example.com">listigo@example.com</a>
+              <h6 class="mb-1">Support 24x7</h6>
+              <a class="d-inline-block mb-3" href="tel:1800000123">1800 000 1234</a>
+              {/* Begin | Social [[ Find at scss/frameworks/theme/social.scss ] */}
+              <ul class="social">
+                <li><a href="#"><i class="ion-logo-facebook"></i></a></li>
+                <li><a href="#"><i class="ion-logo-twitter"></i></a></li>
+                <li><a href="#"><i class="ion-logo-linkedin"></i></a></li>
+                <li><a href="#"><i class="ion-logo-instagram"></i></a></li>
+                <li><a href="#"><i class="ion-logo-vimeo"></i></a></li>
+              </ul>
+              {/* End | Social */}
+            </div>
+          </div>
+          <div class="last-footer text-muted">
+            &copy; 2020 Kri8thm. All rights reserved.
+                </div>
+        </div>
+      </footer>
+    </>
   )
 }
