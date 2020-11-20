@@ -48,6 +48,8 @@ docker-compose build
 docker-compose up -d
 ```
 
+Change wagtail site settings host to 'backend' and port to 8000
+
 
 
 

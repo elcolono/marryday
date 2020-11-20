@@ -1,21 +1,15 @@
 {
   "name": "web",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "nuxt-ts",
-    "build": "nuxt-ts build",
-    "start": "nuxt-ts start",
-    "generate": "nuxt-ts generate"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
   },
   "dependencies": {
-    "@nuxt/typescript-runtime": "^2.0.0",
-    "@nuxtjs/axios": "^5.12.2",
-    "core-js": "^3.6.5",
-    "nuxt": "^2.14.6"
-  },
-  "devDependencies": {
-    "@nuxt/types": "^2.14.6",
-    "@nuxt/typescript-build": "^2.0.3"
+    "next": "10.0.2",
+    "react": "17.0.1",
+    "react-dom": "17.0.1"
   }
 }
