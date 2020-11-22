@@ -212,9 +212,28 @@ class FeatureSectionBlock(blocks.StructBlock):
         template = 'blocks/feature_section.html'
         label = 'Feature Section'
 
+
+# Team Section Block
+class TeamSectionBlock(blocks.StructBlock):
+    """ Team Section Block """
+    heading = blocks.CharBlock(required=True, max_length=100, label="Title")
+    members = blocks.ListBlock(
+        blocks.StructBlock([
+            ("name", blocks.CharBlock(required=True, max_length=100)),
+            ("position", blocks.CharBlock(required=True, max_length=100)),
+            ("image", APIImageChooserBlock(
+                required=False,
+                label='Portrait Image',
+            )),
+        ])
+    )
+
+    class Meta:
+        """ meta data """
+        label = 'Team Section'
+
+
 # Counter Section Block
-
-
 class CounterSectionBlock(blocks.StructBlock):
     """ Counter Section Block """
     heading = blocks.CharBlock(required=True, max_length=100, label="Title")

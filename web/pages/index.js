@@ -28,10 +28,10 @@ export default function Home({ preview, allContent, mainMenus, flatMenus }) {
           if (section.type == 'counter_section_block') return <CounterSection key={i} data={section.value} />
           if (section.type == 'cta_section_block') return <CTASection key={i} data={section.value} />
           if (section.type == 'service_section_block') return <ServiceSection key={i} data={section.value} />
-          if (section.type == 'team_section_block') return <TeamSection key={i} />
+          if (section.type == 'team_section_block') return <TeamSection key={i} data={section.value} />
         })}
         {/* {JSON.stringify(allContent.items[0].content)} */}
-        {JSON.stringify(mainMenus[0].menu_items)}
+        {/* {JSON.stringify(mainMenus[0].menu_items)} */}
         {/* {JSON.stringify(flatMenus)} */}
       </Layout>
     </>

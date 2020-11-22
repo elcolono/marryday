@@ -6,7 +6,7 @@ from wagtail.core.fields import StreamField, RichTextField
 from wagtail.api import APIField
 
 from .blocks import (PageHeadingSectionBlock, HeroSectionBlock, LogoCloudBlock, ServiceSectionBlock,
-                     FeatureSectionBlock, CounterSectionBlock, CTASection, PricingSectionBlock, ContentSectionBlock, TestimonialSectionBlock, PortfolioSectionBlock)
+                     FeatureSectionBlock, CounterSectionBlock, TeamSectionBlock, CTASection, PricingSectionBlock, ContentSectionBlock, TestimonialSectionBlock, PortfolioSectionBlock)
 
 
 # Create your models here.
@@ -26,6 +26,7 @@ class FlexPage(Page):
             ('service_section_block', ServiceSectionBlock()),
             ('feature_section_block', FeatureSectionBlock()),
             ('counter_section_block', CounterSectionBlock()),
+            ('team_section_block', TeamSectionBlock()),
             ('cta_section_block', CTASection()),
             ('pricing_section_block', PricingSectionBlock()),
             ('content_section_block', ContentSectionBlock()),
