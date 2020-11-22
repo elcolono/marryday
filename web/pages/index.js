@@ -14,7 +14,7 @@ import HeadingSection from '../components/heading-section'
 export default function Home({ preview, allContent, mainMenus, flatMenus }) {
   return (
     <>
-      <Layout preview={preview}>
+      <Layout preview={preview} mainMenus={mainMenus}>
         <Head>
           <title>Next.js Blog Example with {CMS_NAME}</title>
           {/* <!-- Seo Meta --> */}
@@ -27,13 +27,12 @@ export default function Home({ preview, allContent, mainMenus, flatMenus }) {
           if (section.type == 'content_section_block') return <ContentSection key={i} data={section.value} />
           if (section.type == 'counter_section_block') return <CounterSection key={i} data={section.value} />
           if (section.type == 'cta_section_block') return <CTASection key={i} data={section.value} />
-          if (section.type == 'service_section_block') return <ServiceSection key={i} data={section.value}  />
+          if (section.type == 'service_section_block') return <ServiceSection key={i} data={section.value} />
           if (section.type == 'team_section_block') return <TeamSection key={i} />
         })}
-
-        {/* {JSON.stringify(allContent.items[0].content)}
-          {JSON.stringify(mainMenus)}
-          {JSON.stringify(flatMenus)} */}
+        {/* {JSON.stringify(allContent.items[0].content)} */}
+        {JSON.stringify(mainMenus[0].menu_items)}
+        {/* {JSON.stringify(flatMenus)} */}
       </Layout>
     </>
   )

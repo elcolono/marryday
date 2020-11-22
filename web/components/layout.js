@@ -4,16 +4,16 @@ import Meta from './meta'
 import Sidebar from './sidebar'
 import ScrollTop from './scroll-top'
 
-export default function Layout({ preview, children }) {
+export default function Layout({ preview, mainMenus, children }) {
   return (
     <>
       <Meta />
       <div id="wrapper">
-        <Header />
+        <Header mainMenus={mainMenus} />
         {children}
         <Footer />
         <ScrollTop />
-        <Sidebar />
+        <Sidebar mainMenus={mainMenus} />
       </div>
     </>
   )
