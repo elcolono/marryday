@@ -1,5 +1,7 @@
-const API_URL = process.env.BASE_URL || 'http://127.0.0.1:8000'
+// const API_URL = process.env.BASE_URL || 'http://127.0.0.1:8000'
 // const API_TOKEN = process.env.DATOCMS_API_TOKEN
+
+import { API_URL } from './constants'
 
 export async function fetchAPI(url, { method } = {}) {
     const res = await fetch(API_URL + url, {

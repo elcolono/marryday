@@ -8,8 +8,8 @@ export default function HeadingSection({ data }) {
                         <div className="container container-half">
                             <div className="row">
                                 <div className="col-md-10">
-                                    <h1 className="intro-section-title">About us</h1>
-                                    <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto.</p>
+                                    <h1 className="intro-section-title">{data.heading}</h1>
+                                    <p>{data.description}</p>
                                     <nav aria-label="breadcrumb">
                                         <ol className="breadcrumb">
                                             <li className="breadcrumb-item"><a href="index.html">Home</a></li>

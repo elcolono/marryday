@@ -5,8 +5,8 @@ export default function Meta() {
   return (
     <Head>
       {/* <!-- Meta Tag --> */}
-      <meta charset="utf-8" />
-      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+      <meta charSet="utf-8" />
+      <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
       <meta name="viewport" content="width=device-width, initial-scale=1" />
 
       {/* <!-- Favicon --> */}

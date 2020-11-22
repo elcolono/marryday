@@ -2,6 +2,31 @@
 from wagtail.core import blocks
 from wagtail.images.blocks import ImageChooserBlock
 
+from wagtail.images.models import Image as WagtailImage
+from rest_framework import serializers
+
+
+class WagtailImageSerializer(serializers.ModelSerializer):
+    url = serializers.SerializerMethodField()
+
+    class Meta:
+        model = WagtailImage
+        fields = ['title', 'url']
+
+    def get_url(self, obj):
+        # return obj.get_rendition('fill-300x186|jpegquality-60').url
+        return obj.get_rendition('fill-960x720').url
+
+# blocks.py
+
+
+class APIImageChooserBlock(ImageChooserBlock):
+    def get_api_representation(self, value, context=None):
+        if value:
+            return WagtailImageSerializer(context=context).to_representation(value)
+        else:
+            return ''
+
 
 # Heading Section
 class PageHeadingSectionBlock(blocks.StructBlock):
@@ -11,6 +36,12 @@ class PageHeadingSectionBlock(blocks.StructBlock):
         max_length=80,
         label='Heading',
         default='Super Awesome Section',
+    )
+    description = blocks.TextBlock(
+        required=False,
+        max_length=400,
+        label='Description',
+        default='The thing we do is better than any other similar thing and this hero panel will convince you of that, just by having a glorious background image.',
     )
 
     class Meta:
@@ -40,7 +71,9 @@ class ContentSectionBlock(blocks.StructBlock):
         label='Content',
         default='The thing we do is better than any other similar thing and this hero panel will convince you of that, just by having a glorious background image.',
     )
-    image = ImageChooserBlock(required=False)
+    image = APIImageChooserBlock(
+        required=False
+    )
 
     class Meta:
         """ Meta data """
@@ -79,7 +112,7 @@ class HeroSectionBlock(blocks.StructBlock):
         required=False,
         label='Button link'
     )
-    image = ImageChooserBlock(
+    image = APIImageChooserBlock(
         required=False,
         label='Image',
     )
@@ -149,7 +182,7 @@ class ServiceSectionBlock(blocks.StructBlock):
     heading = blocks.CharBlock(required=True, max_length=100, label="Title")
     services = blocks.ListBlock(
         blocks.StructBlock([
-            ("logo", blocks.RawHTMLBlock(required=True)),
+            ("icon", blocks.CharBlock(required=True)),
             ("heading", blocks.CharBlock(required=True, max_length=100)),
             ("description", blocks.TextBlock(required=True, max_length=300)),
         ])
@@ -185,10 +218,17 @@ class FeatureSectionBlock(blocks.StructBlock):
 class CounterSectionBlock(blocks.StructBlock):
     """ Counter Section Block """
     heading = blocks.CharBlock(required=True, max_length=100, label="Title")
+    description = blocks.RichTextBlock(
+        required=False,
+        max_length=400,
+        label='Description',
+        default='The thing we do is better than any other similar thing and this hero panel will convince you of that, just by having a glorious background image.',
+    )
     counters = blocks.ListBlock(
         blocks.StructBlock([
             ("heading", blocks.TextBlock(required=True, max_length=300)),
-            ("count", blocks.IntegerBlock(required=True, max_value=1000000, )),
+            ("count", blocks.IntegerBlock(required=True, max_value=1000000)),
+            ("unit", blocks.CharBlock(required=True, max_length=30)),
         ])
     )
 
@@ -203,17 +243,20 @@ class CTASection(blocks.StructBlock):
     """ CTA Section Block """
     layout = blocks.ChoiceBlock(
         choices=(
-            ('option-1', 'Option 1'),
-            ('option-2', 'Option 2'),
+            ('video-1', 'Video CTA'),
         ),
         required=True,
-        default='option-1',
+        default='video-1',
     )
+    image = APIImageChooserBlock(
+        required=False,
+        label='Background Image',
+    )
+
     heading = blocks.CharBlock(
         required=False,
         max_length=80,
         label='Heading',
-        default='Super Awesome Product',
     )
     description = blocks.TextBlock(
         required=False,

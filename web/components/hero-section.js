@@ -1,3 +1,5 @@
+import { API_URL } from '../lib/constants'
+
 export default function HerSection({ data }) {
     return (
         <section id="intro_section">
@@ -8,14 +10,9 @@ export default function HerSection({ data }) {
                         <div className="container container-half">
                             <div className="row">
                                 <div className="col-md-10">
-                                    <h1 className="intro-section-title">About us</h1>
-                                    <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto.</p>
-                                    <nav aria-label="breadcrumb">
-                                        <ol className="breadcrumb">
-                                            <li className="breadcrumb-item"><a href="index.html">Home</a></li>
-                                            <li className="breadcrumb-item active" aria-current="page">About</li>
-                                        </ol>
-                                    </nav>
+                                    <h1 className="intro-section-title">{data.heading}</h1>
+                                    <p>{data.description}</p>
+                                    <a href={data.button_link} className="btn btn-pill btn-danger btn-icon">{data.button}</a>
                                 </div>
                             </div>
                         </div>
@@ -23,7 +20,7 @@ export default function HerSection({ data }) {
                     {/* <!-- End | Inner Banner Content --> */}
                 </div>
                 {/* <!-- Inner Banner [[ Find at scss/frameworks/base/banner.scss ]] --> */}
-                <div className="col-lg-6 banner inner-banner overlay-banner-ipad hero-about"></div>
+                <div style={data.image ? { backgroundImage: `url(${API_URL + data.image.url})` } : null} className="col-lg-6 banner inner-banner overlay-banner-ipad hero-about"></div>
             </div>
         </section>
     )
