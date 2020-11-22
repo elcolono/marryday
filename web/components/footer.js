@@ -80,7 +80,7 @@ export default function Footer() {
             </div>
           </div>
           <div className="last-footer text-muted">
-            &copy; 2020 Kri8thm. All rights reserved.
+            &copy; 2020 MOWO Spaces. All rights reserved.
                 </div>
         </div>
       </footer>

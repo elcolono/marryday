@@ -3,7 +3,7 @@ export default function Header({ mainMenus }) {
         <header id="header" className="colored-header fixed-top">
             <nav className="navbar navbar-expand-sm">
                 <div className="container">
-                    <a className="navbar-brand" href="index.html">
+                    <a className="navbar-brand" href="/">
                         <img src="assets/images/logos/mowo-spaces-logo.png" className="compact default dark" alt="Listigo" />
                     </a>
 
