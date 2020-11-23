@@ -1,3 +1,4 @@
+import json
 from django.conf import settings
 
 from rest_framework.views import APIView
@@ -39,8 +40,9 @@ class MailchimpAudienceAPIVIEWSet(APIView):
             # print("response: {}".format(response))
         except ApiClientError as error:
             # print("An exception occurred: {}".format(error.text))
-            return Response("An exception occurred: {}".format(error.text))
-        return Response("Was successful")
+            json_error = json.loads(error.text)
+            return Response({'error': json_error})
+        return Response("Was successful", content_type='JSON')
 
 
 # Menu Views
