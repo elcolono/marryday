@@ -1,7 +1,7 @@
 export default function Footer() {
   return (
     <>
-      <section className="section">
+      {/* <section className="section">
         <div className="app-banner">
           <div className="container">
             <div className="row">
@@ -26,7 +26,7 @@ export default function Footer() {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
 
       <footer id="footer">
         <div className="container">
