@@ -9,7 +9,6 @@ import CTASection from '../components/cta-section'
 import ServiceSection from '../components/service-section'
 import TeamSection from '../components/team-section'
 import HeadingSection from '../components/heading-section'
-import HTMLSection from '../components/html-section'
 
 export default function Home({ preview, allContent, mainMenus, flatMenus }) {
     return (
