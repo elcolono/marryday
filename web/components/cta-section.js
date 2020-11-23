@@ -1,10 +1,10 @@
-import { API_IMAGE_URL } from '../lib/constants'
+import { API_SERVER_URL } from '../lib/constants'
 
 export default function CTASection({ data }) {
     return (
         <section className="section">
             <div className="promo">
-                <div className="banner banner-scroll banner-overlay" data-parallax="scroll" data-image-src={data.image && API_IMAGE_URL + data.image.url}></div>
+                <div className="banner banner-scroll banner-overlay" data-parallax="scroll" data-image-src={data.image && API_SERVER_URL + data.image.url}></div>
                 <div className="container">
                     <div className="row">
                         <div className="col-xl-8 col-lg-10 text-center mx-auto">

@@ -1,4 +1,4 @@
-import { API_IMAGE_URL } from '../lib/constants'
+import { API_SERVER_URL } from '../lib/constants'
 import { Formik } from 'formik'
 import { fetchAPI } from '../lib/api';
 
@@ -99,7 +99,7 @@ export default function ComingSoonSection({ data }) {
             {/* <!-- End | Banner Content --> */}
 
             {/* <!-- Inner Banner [[ Find at scss/frameworks/base/banner.scss ]] --> */}
-            <div style={data.image ? { backgroundImage: `url(${API_IMAGE_URL + data.image.url})` } : null} className="col-lg-6 banner inner-banner banner-ipad hero-coming"></div>
+            <div style={data.image ? { backgroundImage: `url(${API_SERVER_URL + data.image.url})` } : null} className="col-lg-6 banner inner-banner banner-ipad hero-coming"></div>
 
         </div>
     )
