@@ -1,6 +1,6 @@
 import Layout from '../components/layout'
 import Head from 'next/head'
-import { fetchAPI } from '../lib/api'
+import { fetchAPIwithSSR } from '../lib/api'
 import { CMS_NAME } from '../lib/constants'
 import HeroSection from '../components/hero-section'
 import ContentSection from '../components/content-section'
@@ -9,6 +9,7 @@ import CTASection from '../components/cta-section'
 import ServiceSection from '../components/service-section'
 import TeamSection from '../components/team-section'
 import HeadingSection from '../components/heading-section'
+import HTMLSection from '../components/html-section'
 
 export default function Home({ preview, allContent, mainMenus, flatMenus }) {
     return (
@@ -28,6 +29,7 @@ export default function Home({ preview, allContent, mainMenus, flatMenus }) {
                     if (section.type == 'cta_section_block') return <CTASection key={i} data={section.value} />
                     if (section.type == 'service_section_block') return <ServiceSection key={i} data={section.value} />
                     if (section.type == 'team_section_block') return <TeamSection key={i} data={section.value} />
+                    if (section.type == 'html_section_block') return <HTMLSection key={i} data={section.value} />
                 })}
 
             </Layout>
@@ -40,9 +42,9 @@ export default function Home({ preview, allContent, mainMenus, flatMenus }) {
 
 // If you export an async function called getStaticProps from a page, Next.js will pre-render this page at build time using the props returned by getStaticProps.
 export async function getServerSideProps({ params, preview = false }) {
-    const allContent = (await fetchAPI(`/api/v2/pages/find/?html_path=${params.slug}`, { method: 'GET' })) ?? []
-    const mainMenus = (await fetchAPI('/api/main-menus', { method: 'GET' })) ?? []
-    const flatMenus = (await fetchAPI('/api/flat-menus', { method: 'GET' })) ?? []
+    const allContent = (await fetchAPIwithSSR(`/api/v2/pages/find/?html_path=${params.slug}`, { method: 'GET' })) ?? []
+    const mainMenus = (await fetchAPIwithSSR('/api/main-menus', { method: 'GET' })) ?? []
+    const flatMenus = (await fetchAPIwithSSR('/api/flat-menus', { method: 'GET' })) ?? []
     return {
         props: { preview, allContent, mainMenus, flatMenus },
     }

@@ -8,8 +8,6 @@ export default class MyDocument extends Document {
         <body>
           <Main />
           <NextScript />
-          <script src="assets/js/vendors.bundle.js"></script>
-          <script src="assets/js/scripts.bundle.js"></script>
         </body>
       </Html>
     )

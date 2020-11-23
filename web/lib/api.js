@@ -3,7 +3,27 @@
 
 import { API_URL } from './constants'
 
-export async function fetchAPI(url, { method } = {}) {
+export async function fetchAPI(url, { method, body } = {}) {
+    const res = await fetch(API_URL + url, {
+        method: method,
+        headers: {
+            'Content-Type': 'application/json',
+            // Authorization: `Bearer ${API_TOKEN}`,
+        },
+        body: JSON.stringify({
+            ...body,
+        }),
+    })
+    const json = await res.json()
+
+    if (json.errors) {
+        console.error(json.errors)
+        throw new Error('Failed to fetch API')
+    }
+    return json
+}
+
+export async function fetchAPIwithSSR(url, { method } = {}) {
     const res = await fetch(API_URL + url, {
         method: method,
         headers: {
