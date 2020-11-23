@@ -11,7 +11,7 @@ import TeamSection from '../components/team-section'
 import HeadingSection from '../components/heading-section'
 import ComingSoonSection from '../components/coming-soon-section'
 
-export default function Home({ preview, allContent, mainMenus, flatMenus }) {
+export default function Index({ preview, allContent, mainMenus, flatMenus }) {
   return (
     <>
       <Layout preview={preview} mainMenus={mainMenus}>
