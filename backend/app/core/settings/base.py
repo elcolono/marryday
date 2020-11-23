@@ -200,7 +200,7 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 
 # Cors Configuration
-# CORS_ORIGIN_ALLOW_ALL = True
+CORS_ORIGIN_ALLOW_ALL = True
 
 # CORS_ORIGIN_WHITELIST = (
 #     'http://172.22.0.2:3000/',
