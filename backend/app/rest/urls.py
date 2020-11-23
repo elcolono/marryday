@@ -6,6 +6,7 @@ urlpatterns = [
     # Settings
     path("main-menus", views.MainMenuAPIViewSet.as_view()),
     path("flat-menus", views.FlatMenuAPIViewSet.as_view()),
+    path("mailchimp-audience", views.MailchimpAudienceAPIVIEWSet.as_view()),
 
     # path("subpage", views.SubpageAPIViewSet.as_view(), name="subpage"),
 ]

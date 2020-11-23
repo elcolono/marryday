@@ -209,3 +209,11 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 #     '*'
 # ]
 
+
+# Mailchimp
+# https://mailchimp.com/developer/guides/marketing-api-quick-start/
+
+# Set env variables
+MAILCHIMP_API_KEY = os.environ.get('MAILCHIMP_API_KEY')
+MAILCHIMP_DATA_CENTER = os.environ.get('MAILCHIMP_DATA_CENTER')
+MAILCHIMP_EMAIL_LIST_ID = os.environ.get('MAILCHIMP_EMAIL_LIST_ID')

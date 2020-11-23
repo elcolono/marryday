@@ -233,6 +233,26 @@ class TeamSectionBlock(blocks.StructBlock):
         label = 'Team Section'
 
 
+# Coming Soon Section Block
+class ComingSoonSectionBlock(blocks.StructBlock):
+    """ Coming Soon Section Block """
+    heading = blocks.CharBlock(required=True, max_length=100, label="Title")
+    description = blocks.RichTextBlock(
+        required=False,
+        max_length=400,
+        label='Description',
+        default='The thing we do is better than any other similar thing and this hero panel will convince you of that, just by having a glorious background image.',
+    )
+    image = APIImageChooserBlock(
+        required=False,
+        label='Image',
+    )
+
+    class Meta:
+        """ meta data """
+        label = 'Coming Soon Section'
+
+
 # Counter Section Block
 class CounterSectionBlock(blocks.StructBlock):
     """ Counter Section Block """
@@ -333,6 +353,20 @@ class PricingSectionBlock(blocks.StructBlock):
         """ meta data """
         template = 'blocks/pricing_section.html'
         label = 'Pricing Section'
+
+
+# Pricing Section
+class HTMLSectionBlock(blocks.StructBlock):
+    """ Pricing Section Block """
+    html = blocks.RawHTMLBlock(
+        required=False,
+        max_length=10000,
+        label="HTML Code",
+    )
+
+    class Meta:
+        """ meta data """
+        label = 'HTML Section'
 
 
 # Blog Section
