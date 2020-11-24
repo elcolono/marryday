@@ -16,7 +16,7 @@ export default function Index({ preview, allContent, mainMenus, flatMenus }) {
     <>
       <Layout preview={preview} mainMenus={mainMenus}>
         <Head>
-          <title>Next.js Blog Example with {CMS_NAME}</title>
+          <title>{allContent.title} {CMS_NAME}</title>
           {/* <!-- Seo Meta --> */}
           <meta name="description" content="Listigo | Directory Bootstrap 4 Template" />
           <meta name="keywords" content="listing dashboard, directory panel, listing, responsive directory, directory template, themeforest, listing template, css3, html5" />

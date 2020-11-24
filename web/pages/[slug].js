@@ -16,7 +16,8 @@ export default function SubPage({ preview, allContent, mainMenus, flatMenus }) {
     <>
       <Layout preview={preview} mainMenus={mainMenus}>
         <Head>
-          <title>Next.js Blog Example with {CMS_NAME}</title>
+          <title>{allContent.title} | {CMS_NAME}</title>
+
           {/* <!-- Seo Meta --> */}
           <meta name="description" content="Listigo | Directory Bootstrap 4 Template" />
           <meta name="keywords" content="listing dashboard, directory panel, listing, responsive directory, directory template, themeforest, listing template, css3, html5" />
@@ -43,10 +44,10 @@ export default function SubPage({ preview, allContent, mainMenus, flatMenus }) {
 
 // If you export an async function called getStaticProps from a page, Next.js will pre-render this page at build time using the props returned by getStaticProps.
 export async function getServerSideProps({ params, preview = false }) {
-    const allContent = (await fetchAPIwithSSR(`/api/v2/pages/find/?html_path=${params.slug}`, { method: 'GET' })) ?? []
-    const mainMenus = (await fetchAPIwithSSR('/api/main-menus', { method: 'GET' })) ?? []
-    const flatMenus = (await fetchAPIwithSSR('/api/flat-menus', { method: 'GET' })) ?? []
-    return {
-        props: { preview, allContent, mainMenus, flatMenus },
-    }
+  const allContent = (await fetchAPIwithSSR(`/api/v2/pages/find/?html_path=${params.slug}`, { method: 'GET' })) ?? []
+  const mainMenus = (await fetchAPIwithSSR('/api/main-menus', { method: 'GET' })) ?? []
+  const flatMenus = (await fetchAPIwithSSR('/api/flat-menus', { method: 'GET' })) ?? []
+  return {
+    props: { preview, allContent, mainMenus, flatMenus },
+  }
 }
