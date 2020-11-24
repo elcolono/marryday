@@ -17,7 +17,7 @@ export default function ComingSoonSection({ data }) {
 
                                 <Formik
                                     initialValues={{ email: '' }}
-                                    validate={values => {
+                                    validate={(values) => {
                                         const errors = {};
                                         if (!values.email) {
                                             errors.email = 'Bitte ausfüllen';
@@ -29,14 +29,15 @@ export default function ComingSoonSection({ data }) {
                                         return errors;
                                     }}
                                     onSubmit={(values, { setSubmitting, setStatus }) => {
+                                        setStatus(false)
                                         setTimeout(() => {
                                             fetchAPI('/api/mailchimp-audience', { method: 'POST', body: { 'email': values.email } }).then((response) => {
                                                 // alert(JSON.stringify(response, null, 2));
                                                 console.log(response);
                                                 if (response.error) {
-                                                    setStatus({ error: response.error.title })
+                                                    setStatus(response.error.title)
                                                 } else {
-                                                    setStatus({ success: "Erfolgreich hinzugefügt" })
+                                                    setStatus("Erfolgreich angemeldet")
                                                 }
                                                 setSubmitting(false);
                                             })
@@ -65,31 +66,29 @@ export default function ComingSoonSection({ data }) {
                                                         onBlur={handleBlur}
                                                         value={values.email}
                                                     />
-
                                                     <button type="submit" disabled={isSubmitting} className="form-control-icon_wrapper">
-                                                        <span><i className="ion-md-arrow-forward"></i></span>
+                                                        {isSubmitting && (<div className="spinner-border spinner-border-sm"></div>) || (<span><i className="ion-md-arrow-forward"></i></span>)}
                                                     </button>
-
-                                                    {status && status.error && (
-                                                        <div class="btn-inline mt-4">
-                                                            <a href="#" class="btn btn-danger btn-only-icon btn-pill">
-                                                                <i class="ion-ios-close"></i>
+                                                    {/* {status && status.error && (
+                                                        <div className="btn-inline mt-4">
+                                                            <a href="#" className="btn btn-danger btn-only-icon btn-pill">
+                                                                <i className="ion-ios-close"></i>
                                                             </a>
                                                             {status.error}
                                                         </div>
                                                     )}
                                                     {status && status.success && (
-                                                        <div class="btn-inline mt-4">
-                                                            <a class="btn btn-success btn-only-icon btn-pill">
-                                                                <i class="ion-ios-checkmark"></i>
+                                                        <div className="btn-inline mt-4">
+                                                            <a className="btn btn-success btn-only-icon btn-pill">
+                                                                <i className="ion-ios-checkmark"></i>
                                                             </a>
                                                             {status.success}
                                                         </div>
-                                                    )}
+                                                    )} */}
 
                                                     <div className="text-danger mt-2">{errors.email && touched.email && errors.email}</div>
+                                                    <div className="text-danger mt-2">{status && status}</div>
                                                 </div>
-
                                             </form>
                                         )}
                                 </Formik>
