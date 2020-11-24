@@ -1,4 +1,9 @@
 export default function Header({ mainMenus }) {
+
+    const handleMenuIconClicked = () => {
+        javascript: void (0);
+    }
+
     return (
         <header id="header" className="colored-header fixed-top">
             <nav className="navbar navbar-expand-sm">
@@ -8,11 +13,11 @@ export default function Header({ mainMenus }) {
                     </a>
 
                     {/* <!-- Begin | Navigation [[ Find at scss/frameworks/base/navbar-nav.scss ]] --> */}
-                    <nav class="ml-5" id="nav">
-                        <ul class="navbar-nav">
-                            {mainMenus[0].menu_items && mainMenus[0].menu_items.map((menuItem) => (
-                                <li class="nav-item">
-                                    <a href={menuItem.link_page.slug} class="nav-link">{menuItem.link_text}</a>
+                    <nav className="ml-5" id="nav">
+                        <ul className="navbar-nav">
+                            {mainMenus[0].menu_items && mainMenus[0].menu_items.map((menuItem, i) => (
+                                <li key={i} className="nav-item">
+                                    <a href={menuItem.link_page.slug} className="nav-link">{menuItem.link_text}</a>
                                 </li>
                             ))}
 
@@ -29,7 +34,7 @@ export default function Header({ mainMenus }) {
                             </a>
                         </li>
                     </ul>
-                    <a href="javascript:void(0);" id="hamburger" class="d-xl-none"><span></span></a>
+                    <a onClick={handleMenuIconClicked} id="hamburger" className="d-xl-none"><span></span></a>
                 </div>
             </nav>
         </header>
