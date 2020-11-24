@@ -7,6 +7,10 @@ from rest_framework import serializers
 
 
 class WagtailImageSerializer(serializers.ModelSerializer):
+    def __init__(self, width, *args, **kwargs):
+        self.width = width
+        super().__init__()
+
     url = serializers.SerializerMethodField()
 
     class Meta:
@@ -15,15 +19,20 @@ class WagtailImageSerializer(serializers.ModelSerializer):
 
     def get_url(self, obj):
         # return obj.get_rendition('fill-300x186|jpegquality-60').url
-        return obj.get_rendition('fill-960x720').url
+        # return obj.get_rendition('fill-960x720').url
+        return obj.get_rendition(self.width).url
 
-# blocks.py
+        # blocks.py
 
 
 class APIImageChooserBlock(ImageChooserBlock):
+    def __init__(self, width, *args, **kwargs):
+        self.width = width
+        super().__init__()
+
     def get_api_representation(self, value, context=None):
         if value:
-            return WagtailImageSerializer(context=context).to_representation(value)
+            return WagtailImageSerializer(context=context, width=self.width).to_representation(value)
         else:
             return ''
 
@@ -46,6 +55,7 @@ class PageHeadingSectionBlock(blocks.StructBlock):
     image = APIImageChooserBlock(
         required=False,
         label='Image',
+        width='fill-960x720',
     )
 
     class Meta:
@@ -75,13 +85,8 @@ class ContentSectionBlock(blocks.StructBlock):
         label='Content',
         default='The thing we do is better than any other similar thing and this hero panel will convince you of that, just by having a glorious background image.',
     )
-    image = APIImageChooserBlock(
-        required=False
-    )
-
     class Meta:
         """ Meta data """
-        template = 'blocks/content_section.html'
         label = 'Content Section'
 
 
@@ -119,6 +124,7 @@ class HeroSectionBlock(blocks.StructBlock):
     image = APIImageChooserBlock(
         required=False,
         label='Image',
+        width='fill-960x720'
     )
 
     class Meta:
@@ -197,6 +203,7 @@ class ServiceSectionBlock(blocks.StructBlock):
             ('image', APIImageChooserBlock(
                 required=False,
                 label='Image',
+                width='fill-320x320',
             )),
             ("heading", blocks.CharBlock(required=True, max_length=100)),
             ("description", blocks.TextBlock(required=True, max_length=300)),
@@ -239,6 +246,7 @@ class TeamSectionBlock(blocks.StructBlock):
             ("image", APIImageChooserBlock(
                 required=False,
                 label='Portrait Image',
+                width='fill-290x320',
             )),
         ])
     )
@@ -261,6 +269,7 @@ class ComingSoonSectionBlock(blocks.StructBlock):
     image = APIImageChooserBlock(
         required=False,
         label='Image',
+        width='fill-960x720',
     )
 
     class Meta:
@@ -305,6 +314,7 @@ class CTASection(blocks.StructBlock):
     image = APIImageChooserBlock(
         required=False,
         label='Background Image',
+        width='fill-1920x720',
     )
 
     heading = blocks.CharBlock(
@@ -344,7 +354,8 @@ class PricingSectionBlock(blocks.StructBlock):
     )
     image = APIImageChooserBlock(
         required=False,
-        label='Background Image',
+        label='Image',
+        width='fill-290x320',
     )
     pricings = blocks.ListBlock(
         blocks.StructBlock([
