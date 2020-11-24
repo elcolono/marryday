@@ -64,6 +64,27 @@ class PageHeadingSectionBlock(blocks.StructBlock):
         label = 'Page Heading Section'
 
 
+# Contact Section
+class ContactSectionBlock(blocks.StructBlock):
+    """ Section Base Block - Ued by each section """
+    heading = blocks.CharBlock(
+        required=False,
+        max_length=80,
+        label='Heading',
+        default='Super Awesome Section',
+    )
+    contacts = blocks.ListBlock(
+        blocks.StructBlock([
+            ("icon", blocks.CharBlock(required=False)),
+            ("heading", blocks.CharBlock(required=True, max_length=100)),
+            ("data", blocks.TextBlock(required=True, max_length=300)),
+        ])
+    )
+    class Meta:
+        """ Meta data """
+        label = 'Contact Section'
+
+
 # Content Seciton Block
 class ContentSectionBlock(blocks.StructBlock):
     """ Section Base Block - Ued by each section """
@@ -85,6 +106,7 @@ class ContentSectionBlock(blocks.StructBlock):
         label='Content',
         default='The thing we do is better than any other similar thing and this hero panel will convince you of that, just by having a glorious background image.',
     )
+
     class Meta:
         """ Meta data """
         label = 'Content Section'

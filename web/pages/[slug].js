@@ -10,6 +10,7 @@ import ServiceSection from '../components/service-section'
 import TeamSection from '../components/team-section'
 import HeadingSection from '../components/heading-section'
 import PricingSection from '../components/pricing-section'
+import ContactSection from '../components/contact-section'
 
 export default function SubPage({ preview, allContent, mainMenus, flatMenus }) {
   return (
@@ -31,6 +32,7 @@ export default function SubPage({ preview, allContent, mainMenus, flatMenus }) {
           if (section.type == 'service_section_block') return <ServiceSection key={i} data={section.value} />
           if (section.type == 'team_section_block') return <TeamSection key={i} data={section.value} />
           if (section.type == 'pricing_section_block') return <PricingSection key={i} data={section.value} />
+          if (section.type == 'contact_section_block') return <ContactSection key={i} data={section.value} />
         })}
         {/* {JSON.stringify(allContent.items[0].content)} */}
         {/* {JSON.stringify(mainMenus[0].menu_items)} */}

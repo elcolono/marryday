@@ -2142,24 +2142,24 @@ figure {
   z-index: 2;
 }
 
-.inner-banner-content.banner-content-white {
+.banner-content-white {
   color: #fff;
 }
 
-.inner-banner-content.banner-content-white .intro-section-title {
+.banner-content-white .intro-section-title {
   color: #fff;
 }
 
-.inner-banner-content.banner-content-white .breadcrumb-item.active,
-.inner-banner-content.banner-content-white .breadcrumb-item + .breadcrumb-item:before {
+.banner-content-white .breadcrumb-item.active,
+.banner-content-white .breadcrumb-item + .breadcrumb-item:before {
   color: #cfcdcd;
 }
 
-.inner-banner-content.banner-content-white .breadcrumb-item a {
+.banner-content-white .breadcrumb-item a {
   color: #fff;
 }
 
-.inner-banner-content.banner-content-white .breadcrumb-item a:hover {
+.banner-content-white .breadcrumb-item a:hover {
   color: #f48300;
 }
 
@@ -2231,20 +2231,20 @@ figure {
   .inner-banner-content {
     background-color: #f6f5f5;
   }
-  .inner-banner-content.banner-content-white {
+  .banner-content-white {
     color: #1C191A;
   }
-  .inner-banner-content.banner-content-white .intro-section-title {
+  .banner-content-white .intro-section-title {
     color: #1C191A;
   }
-  .inner-banner-content.banner-content-white .breadcrumb-item.active,
-  .inner-banner-content.banner-content-white .breadcrumb-item + .breadcrumb-item:before {
+  .banner-content-white .breadcrumb-item.active,
+  .banner-content-white .breadcrumb-item + .breadcrumb-item:before {
     color: #949393;
   }
-  .inner-banner-content.banner-content-white .breadcrumb-item a {
+  .banner-content-white .breadcrumb-item a {
     color: #1C191A;
   }
-  .inner-banner-content.banner-content-white .breadcrumb-item a:hover {
+  .banner-content-white .breadcrumb-item a:hover {
     color: #f48300;
   }
   .app-banner {
