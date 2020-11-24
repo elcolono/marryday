@@ -26,7 +26,6 @@ export default function PricingSection({ data }) {
                                         <span className="price"><span>€{pricing.price}</span>/{pricing.type == 'hourly' ? "Stunde" : "Tag"}</span>
                                     </div>
                                     <div className="price-text mb-4" dangerouslySetInnerHTML={{ __html: pricing.description }}>
-
                                     </div>
                                     {/* <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium</p>
                                     <ul className="price-text">
@@ -38,50 +37,6 @@ export default function PricingSection({ data }) {
                                     <a href="/contact" className="btn btn-danger">Get in Touch</a>
                                 </div>
                             ))}
-                            {/* <div className="col-md-4 price-card">
-                                <div className="price-card-header">
-                                    <h4 className="mb-3">Basic</h4>
-                                    <span className="price"><span>$30.00</span>/m</span>
-                                </div>
-                                <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium</p>
-                                <ul className="price-text">
-                                    <li>Neque porro quisquam est qui dolorem</li>
-                                    <li>Ut enim ad minima veniam</li>
-                                    <li>Quis autem vel eum iure</li>
-                                    <li>Et harum quidem rerum facilis est et expedita distinctio.</li>
-                                </ul>
-                                <a href="#" className="btn btn-danger">Register</a>
-                            </div>
-
-                            <div className="col-md-4 price-card price-card-colored">
-                                <div className="price-card-header">
-                                    <h4 className="mb-3">Premium</h4>
-                                    <span className="price"><span>$50.00</span>/m</span>
-                                </div>
-                                <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium</p>
-                                <ul className="price-text">
-                                    <li>Neque porro quisquam est qui dolorem</li>
-                                    <li>Ut enim ad minima veniam</li>
-                                    <li>Quis autem vel eum iure</li>
-                                    <li>Et harum quidem rerum facilis est et expedita distinctio.</li>
-                                </ul>
-                                <a href="#" className="btn">Register</a>
-                            </div>
-
-                            <div className="col-md-4 price-card">
-                                <div className="price-card-header">
-                                    <h4 className="mb-3">Unlimited</h4>
-                                    <span className="price"><span>$100.00</span>/m</span>
-                                </div>
-                                <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium</p>
-                                <ul className="price-text">
-                                    <li>Neque porro quisquam est qui dolorem</li>
-                                    <li>Ut enim ad minima veniam</li>
-                                    <li>Quis autem vel eum iure</li>
-                                    <li>Et harum quidem rerum facilis est et expedita distinctio.</li>
-                                </ul>
-                                <a href="#" className="btn btn-danger">Register</a>
-                            </div> */}
                         </div>
                     </div>
                 </div>

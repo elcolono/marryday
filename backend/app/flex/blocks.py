@@ -184,9 +184,20 @@ class LogoCloudBlock(blocks.StructBlock):
 class ServiceSectionBlock(blocks.StructBlock):
     """ Service Section Block """
     heading = blocks.CharBlock(required=True, max_length=100, label="Title")
+    layout = blocks.ChoiceBlock(
+        choices=(
+            ('service_with_icon', 'Services with Icons'),
+            ('service_with_image', 'Services with Images'),
+        ),
+        default='services_with_icon'
+    )
     services = blocks.ListBlock(
         blocks.StructBlock([
-            ("icon", blocks.CharBlock(required=True)),
+            ("icon", blocks.CharBlock(required=False)),
+            ('image', APIImageChooserBlock(
+                required=False,
+                label='Image',
+            )),
             ("heading", blocks.CharBlock(required=True, max_length=100)),
             ("description", blocks.TextBlock(required=True, max_length=300)),
         ])
