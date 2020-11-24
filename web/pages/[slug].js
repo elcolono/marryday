@@ -9,6 +9,7 @@ import CTASection from '../components/cta-section'
 import ServiceSection from '../components/service-section'
 import TeamSection from '../components/team-section'
 import HeadingSection from '../components/heading-section'
+import PricingSection from '../components/pricing-section'
 
 export default function SubPage({ preview, allContent, mainMenus, flatMenus }) {
   return (
@@ -21,13 +22,14 @@ export default function SubPage({ preview, allContent, mainMenus, flatMenus }) {
           <meta name="keywords" content="listing dashboard, directory panel, listing, responsive directory, directory template, themeforest, listing template, css3, html5" />
         </Head>
         {allContent.content.map((section, i) => {
-          if (section.type == 'page_heading_section_block') return <HeadingSection key={i} data={section.value} />
+          if (section.type == 'page_heading_section_block') return <HeadingSection key={i} title={allContent.title} data={section.value} />
           if (section.type == 'hero_section_block') return <HeroSection key={i} data={section.value} />
           if (section.type == 'content_section_block') return <ContentSection key={i} data={section.value} />
           if (section.type == 'counter_section_block') return <CounterSection key={i} data={section.value} />
           if (section.type == 'cta_section_block') return <CTASection key={i} data={section.value} />
           if (section.type == 'service_section_block') return <ServiceSection key={i} data={section.value} />
           if (section.type == 'team_section_block') return <TeamSection key={i} data={section.value} />
+          if (section.type == 'pricing_section_block') return <PricingSection key={i} data={section.value} />
         })}
         {/* {JSON.stringify(allContent.items[0].content)} */}
         {/* {JSON.stringify(mainMenus[0].menu_items)} */}

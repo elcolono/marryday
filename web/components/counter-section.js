@@ -9,9 +9,7 @@ export default function CounterSection({ data }) {
                                 <h2 className="section-title">{data.heading}</h2>
                             </div>
                             <div className="col-lg-1"></div>
-                            <div className="col-xl-7 col-lg-6">
-                                <div dangerouslySetInnerHTML={{ __html: data.description }}></div>
-                            </div>
+                            <div className="col-xl-7 col-lg-6" dangerouslySetInnerHTML={{ __html: data.description }}></div>
                         </div>
                         <div className="row mt-5 pt-5 list-bunch" id="counter">
                             {data.counters && data.counters.map((counter, i) => (

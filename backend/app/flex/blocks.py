@@ -43,6 +43,10 @@ class PageHeadingSectionBlock(blocks.StructBlock):
         label='Description',
         default='The thing we do is better than any other similar thing and this hero panel will convince you of that, just by having a glorious background image.',
     )
+    image = APIImageChooserBlock(
+        required=False,
+        label='Image',
+    )
 
     class Meta:
         """ Meta data """
@@ -320,38 +324,37 @@ class CTASection(blocks.StructBlock):
 # Pricing Section
 class PricingSectionBlock(blocks.StructBlock):
     """ Pricing Section Block """
-    custom_classes = blocks.CharBlock(
-        required=False, max_length=100, label="Classes")
     heading = blocks.CharBlock(required=False, max_length=100, label="Heading")
+    description = blocks.RichTextBlock(
+        required=False,
+        max_length=400,
+        label='Description',
+        default='The thing we do is better than any other similar thing and this hero panel will convince you of that, just by having a glorious background image.',
+    )
+    image = APIImageChooserBlock(
+        required=False,
+        label='Background Image',
+    )
     pricings = blocks.ListBlock(
         blocks.StructBlock([
             ("heading", blocks.CharBlock(required=True, max_length=100)),
             ("price", blocks.CharBlock(required=True, max_length=100)),
             ("type", blocks.ChoiceBlock(required=True, choices=(
+                ('hourly', 'Hourly'),
                 ('monthly', 'Monthly'),
                 ('unique', 'Unique')
             ))),
-            ("features", blocks.ListBlock(
-                blocks.StructBlock([
-                    ("description", blocks.CharBlock(
-                        required=True, max_length=100)),
-                    ("available", blocks.BooleanBlock(required=False)),
-                ])),
-             ),
-            # ("plan_price", blocks.CharBlock(required=True, max_length=100)),
-            # ("plan_features", blocks.ListBlock(
-            #     blocks.StructBlock([
-            #         ("description", blocks.CharBlock(
-            #             required=True, max_length=100)),
-            #         ("available", blocks.BooleanBlock(required=False)),
-            #     ])),
-            #  ),
+            ("description", blocks.RichTextBlock(
+                required=False,
+                max_length=400,
+                label='Description',
+                default='The thing we do is better than any other similar thing and this hero panel will convince you of that, just by having a glorious background image.',
+            )),
         ])
     )
 
     class Meta:
         """ meta data """
-        template = 'blocks/pricing_section.html'
         label = 'Pricing Section'
 
 

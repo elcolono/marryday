@@ -3077,7 +3077,7 @@ figure {
   line-height: 1;
 }
 
-.price-card .price-text {
+.price-card .price-text ul {
   list-style: none;
   margin: 0 0 1.5rem;
   padding: 0;

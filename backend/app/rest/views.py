@@ -1,4 +1,3 @@
-import json
 from django.conf import settings
 
 from rest_framework.views import APIView
@@ -11,6 +10,8 @@ from home.models import SubPage
 
 import mailchimp_marketing as MailchimpMarketing
 from mailchimp_marketing.api_client import ApiClientError
+
+import json
 
 
 # Mailchimp Views
@@ -37,12 +38,12 @@ class MailchimpAudienceAPIVIEWSet(APIView):
         }
         try:
             response = mailchimp.lists.add_list_member(list_id, member_info)
-            # print("response: {}".format(response))
+            print("response: {}".format(response))
         except ApiClientError as error:
             # print("An exception occurred: {}".format(error.text))
             json_error = json.loads(error.text)
             return Response({'error': json_error})
-        return Response("Was successful", content_type='JSON')
+        return Response("Was successful")
 
 
 # Menu Views
