@@ -1,4 +1,4 @@
-export default function Footer() {
+export default function Footer({ flatMenus, themeSettings }) {
   return (
     <>
       {/* <section className="section">
@@ -35,7 +35,7 @@ export default function Footer() {
               <a href="index.html" className="d-inline-block mb-3">
                 <img className="w-25" src="assets/images/logos/mowo-spaces-logo.png" alt="" />
               </a>
-              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. At dignissimos enim.</p>
+              <p>{themeSettings.about_short_description}</p>
               <div className="form-control-icon form-control-icon_right">
                 <input type="text" placeholder="Email please" className="form-control" />
                 <button type="button" className="form-control-icon_wrapper">
@@ -45,36 +45,48 @@ export default function Footer() {
             </div>
             <div className="col-1 d-xl-block d-none"></div>
             <div className="col-lg-2 col-sm-4 list-bunch-item">
-              <h6 className="mb-3">Company</h6>
+              <h6 className="mb-3">MOWO Spaces</h6>
               <ul className="links">
-                <li><a href="#">About</a></li>
-                <li><a href="#">Contact</a></li>
-                <li><a href="#">Team</a></li>
-                <li><a href="#">Privacy Policy</a></li>
-                <li><a href="#">Terms & Use</a></li>
+                {flatMenus && flatMenus.map((menu) => {
+                  return menu.handle == "legal_links" && menu.menu_items.map((menuItem, i) => (
+                    <li key={i}><a href={menuItem.link_page.slug}>{menuItem.link_text}</a></li>
+                  )
+                  )
+                })}
               </ul>
             </div>
             <div className="col-lg-2 col-sm-4 list-bunch-item">
-              <h6 className="mb-3">Quick links</h6>
+              <h6 className="mb-3">Quick-Links</h6>
               <ul className="links">
-                <li><a href="#">FAQs</a></li>
-                <li><a href="#">Pricing</a></li>
-                <li><a href="#">Wallet</a></li>
-                <li><a href="#">Profile</a></li>
+                {flatMenus && flatMenus.map((menu) => {
+                  return menu.handle == "useful_links" && menu.menu_items.map((menuItem, i) => (
+                    <li key={i}><a href={menuItem.link_page.slug}>{menuItem.link_text}</a></li>
+                  )
+                  )
+                })}
               </ul>
             </div>
             <div className="col-lg-3 col-sm-4 list-bunch-item">
-              <h6 className="mb-1">Contact via email</h6>
-              <a className="d-inline-block mb-3" href="mailto:listigo@example.com">listigo@example.com</a>
-              <h6 className="mb-1">Support 24x7</h6>
-              <a className="d-inline-block mb-3" href="tel:1800000123">1800 000 1234</a>
+              {themeSettings.about_email && (
+                <>
+                  <h6 className="mb-1">Kontakt via Email</h6>
+                  <a className="d-inline-block mb-3" href={`mailto:${themeSettings.about_email}`}>{themeSettings.about_email}</a>
+                </>
+              )}
+              {themeSettings.about_phone && (
+                <>
+                  <h6 className="mb-1">Support 24x7</h6>
+                  <a className="d-inline-block mb-3" href={`tel:${themeSettings.about_phone}`}>{themeSettings.about_phone}</a>
+                </>
+              )}
+
               {/* Begin | Social [[ Find at scss/frameworks/theme/social.scss ] */}
               <ul className="social">
-                <li><a href="#"><i className="ion-logo-facebook"></i></a></li>
-                <li><a href="#"><i className="ion-logo-twitter"></i></a></li>
-                <li><a href="#"><i className="ion-logo-linkedin"></i></a></li>
-                <li><a href="#"><i className="ion-logo-instagram"></i></a></li>
-                <li><a href="#"><i className="ion-logo-vimeo"></i></a></li>
+                {themeSettings.facebook_link && (<li><a href={themeSettings.facebook_link} target="_blank"><i className="ion-logo-facebook"></i></a></li>)}
+                {themeSettings.twitter_link && (<li><a href={themeSettings.twitter_link} target="_blank"><i className="ion-logo-twitter"></i></a></li>)}
+                {themeSettings.linkedin_link && (<li><a href={themeSettings.linkedin_link} target="_blank"><i className="ion-logo-linkedin"></i></a></li>)}
+                {themeSettings.instagram_link && (<li><a href={themeSettings.instagram_link} target="_blank"><i className="ion-logo-instagram"></i></a></li>)}
+                {themeSettings.vimeo_link && (<li><a href={themeSettings.vimeo_link} target="_blank"><i className="ion-logo-vimeo"></i></a></li>)}
               </ul>
               {/* End | Social */}
             </div>

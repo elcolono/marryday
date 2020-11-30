@@ -15,7 +15,7 @@ class ThemeSettings(BaseSetting):
     about_short_description = models.TextField(
         blank=True,
         null=True,
-        max_length=500,
+        max_length=5000,
         verbose_name='About short description',
     )
     about_address = models.CharField(
@@ -53,14 +53,69 @@ class ThemeSettings(BaseSetting):
         related_name='+',
         verbose_name=('Favicon'),
     )
+    # Header CTA
+    header_cta_text = models.CharField(
+        null=True,
+        blank=True,
+        max_length=500,
+        # verbose_name='About phone',
+    )
+    header_cta_link = models.URLField(
+        null=True,
+        blank=True,
+        # verbose_name='About phone',
+    )
+    header_cta_icon = models.CharField(
+        null=True,
+        blank=True,
+        max_length=500,
+        # verbose_name='About phone',
+    )
+
+    # Social links
+    facebook_link = models.URLField(
+        null=True,
+        blank=True,
+    )
+    twitter_link = models.URLField(
+        null=True,
+        blank=True,
+    )
+    linkedin_link = models.URLField(
+        null=True,
+        blank=True,
+    )
+    instagram_link = models.URLField(
+        null=True,
+        blank=True,
+    )
+    vimeo_link = models.URLField(
+        null=True,
+        blank=True,
+    )
 
     panels = [
         ImageChooserPanel('logo'),
         ImageChooserPanel('favicon'),
-        FieldPanel('about_short_description'),
-        FieldPanel('about_address'),
-        FieldPanel('about_phone'),
-        FieldPanel('about_email'),
+        MultiFieldPanel(children=(
+            FieldPanel('header_cta_text'),
+            FieldPanel('header_cta_icon'),
+            FieldPanel('header_cta_link'),
+        ), heading="Header CTA"),
+        MultiFieldPanel(children=(
+            FieldPanel('about_short_description'),
+            FieldPanel('about_address'),
+            FieldPanel('about_phone'),
+            FieldPanel('about_email'),
+        ), heading="Contact Details"),
+        MultiFieldPanel(children=(
+            FieldPanel('facebook_link'),
+            FieldPanel('twitter_link'),
+            FieldPanel('linkedin_link'),
+            FieldPanel('instagram_link'),
+            FieldPanel('vimeo_link')
+        ), heading="Social Media Links")
+
     ]
 
     class Meta:

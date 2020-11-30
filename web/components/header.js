@@ -1,4 +1,4 @@
-export default function Header({ mainMenus }) {
+export default function Header({ mainMenus, themeSettings }) {
 
     const handleMenuIconClicked = () => {
         javascript: void (0);
@@ -27,12 +27,15 @@ export default function Header({ mainMenus }) {
 
                     <ul className="navbar-nav ml-auto">
                         {/* <li className="nav-item"><a href="javascript:void(0);" data-toggle="modal" data-target="#sign_in">Login</a></li> */}
-                        <li className="nav-item">
-                            <a href="add-listing.html" className="btn btn-pill btn-danger btn-icon">
-                                <i className="ion-md-mail"></i>
-                                <span>Get in Touch</span>
-                            </a>
-                        </li>
+                        {themeSettings.header_cta_text && (
+                            <li className="nav-item">
+                                <a href={themeSettings.header_cta_link} className="btn btn-pill btn-danger btn-icon">
+                                    <i className={themeSettings.header_cta_icon}></i>
+                                    <span>{themeSettings.header_cta_text}</span>
+                                </a>
+                            </li>
+                        )}
+
                     </ul>
                     <a onClick={handleMenuIconClicked} id="hamburger" className="d-xl-none"><span></span></a>
                 </div>

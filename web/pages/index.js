@@ -10,11 +10,12 @@ import ServiceSection from '../components/service-section'
 import TeamSection from '../components/team-section'
 import HeadingSection from '../components/heading-section'
 import ComingSoonSection from '../components/coming-soon-section'
+import FAQSection from '../components/faq-section'
 
-export default function Index({ preview, allContent, mainMenus, flatMenus }) {
+export default function Index({ preview, allContent, mainMenus, flatMenus, themeSettings }) {
   return (
     <>
-      <Layout preview={preview} mainMenus={mainMenus}>
+      <Layout preview={preview} mainMenus={mainMenus} flatMenus={flatMenus} themeSettings={themeSettings}>
         <Head>
           <title>{allContent.title} {CMS_NAME}</title>
           {/* <!-- Seo Meta --> */}
@@ -30,7 +31,7 @@ export default function Index({ preview, allContent, mainMenus, flatMenus }) {
           if (section.type == 'service_section_block') return <ServiceSection key={i} data={section.value} />
           if (section.type == 'team_section_block') return <TeamSection key={i} data={section.value} />
           if (section.type == 'comingsoon_section_block') return <ComingSoonSection key={i} data={section.value} />
-
+          if (section.type == 'faq_section_block') return <FAQSection key={i} data={section.value} />
         })}
         {/* {JSON.stringify(allContent.items[0].content)} */}
         {/* {JSON.stringify(mainMenus[0].menu_items)} */}
@@ -49,7 +50,8 @@ export async function getServerSideProps({ preview = false }) {
   const allContent = (await fetchAPIwithSSR('/api/v2/pages/?type=home.HomePage&fields=seo_text,content', { method: 'GET' })) ?? []
   const mainMenus = (await fetchAPIwithSSR('/api/main-menus', { method: 'GET' })) ?? []
   const flatMenus = (await fetchAPIwithSSR('/api/flat-menus', { method: 'GET' })) ?? []
+  const themeSettings = (await fetchAPIwithSSR('/api/theme-settings', { method: 'GET' })) ?? []
   return {
-    props: { preview, allContent, mainMenus, flatMenus },
+    props: { preview, allContent, mainMenus, flatMenus, themeSettings },
   }
 }

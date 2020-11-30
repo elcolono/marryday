@@ -7,6 +7,7 @@ from rest_framework import status
 from wagtailmenus.models import MainMenu, FlatMenu
 from rest import serializers
 from home.models import SubPage
+from theme.models import ThemeSettings
 
 import mailchimp_marketing as MailchimpMarketing
 from mailchimp_marketing.api_client import ApiClientError
@@ -46,7 +47,7 @@ class MailchimpAudienceAPIVIEWSet(APIView):
         return Response("Was successful")
 
 
-# Menu Views
+# Main menu views
 class MainMenuAPIViewSet(APIView):
     """ COMMENTS """
 
@@ -60,6 +61,7 @@ class MainMenuAPIViewSet(APIView):
         return Response(serializer.data)
 
 
+# Flat menu views
 class FlatMenuAPIViewSet(APIView):
     """ COMMENTS """
 
@@ -71,6 +73,21 @@ class FlatMenuAPIViewSet(APIView):
             return Response("Flat Menues do not exist", status=status.HTTP_400_BAD_REQUEST)
         serializer = serializers.FlatMenuSerializer(flat_menus, many=True)
         return Response(serializer.data)
+
+
+# Theme settings view
+class ThemeSettingsAPIViewSet(APIView):
+    """ COMMENTS """
+
+    def get(self, request):
+        """ GET theme settings"""
+        try:
+            theme_settings = ThemeSettings.objects.first()
+        except ThemeSettings.DoesNotExist:
+            return Response("Theme settings do not exist", status=status.HTTP_400_BAD_REQUEST)
+        serializer = serializers.ThemeSettingsSerializer(theme_settings)
+        return Response(serializer.data)
+
 
 # Subpage Views
 # class SubpageAPIViewSet(APIView):

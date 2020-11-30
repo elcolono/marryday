@@ -3,6 +3,7 @@ Serializers
 """
 from rest_framework import serializers
 from home.models import SubPage
+from theme.models import ThemeSettings
 from wagtailmenus.models import FlatMenu, FlatMenuItem, MainMenu, MainMenuItem
 
 
@@ -45,4 +46,12 @@ class FlatMenuSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = FlatMenu
+        fields = '__all__'
+
+
+
+class ThemeSettingsSerializer(serializers.ModelSerializer):
+    """ COMMENTS """
+    class Meta:
+        model = ThemeSettings
         fields = '__all__'

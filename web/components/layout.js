@@ -5,14 +5,14 @@ import Sidebar from './sidebar'
 import ScrollTop from './scroll-top'
 import CookieConsent from "react-cookie-consent";
 
-export default function Layout({ preview, mainMenus, children }) {
+export default function Layout({ preview, mainMenus, flatMenus, themeSettings, children }) {
   return (
     <>
       <Meta />
       <div id="wrapper">
-        <Header mainMenus={mainMenus} />
+        <Header mainMenus={mainMenus} themeSettings={themeSettings} />
         {children}
-        <Footer />
+        <Footer flatMenus={flatMenus} themeSettings={themeSettings} />
         <CookieConsent>This website uses cookies to enhance the user experience.</CookieConsent>
         <ScrollTop />
         <Sidebar mainMenus={mainMenus} />

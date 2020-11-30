@@ -13,10 +13,10 @@ import PricingSection from '../components/pricing-section'
 import ContactSection from '../components/contact-section'
 import FAQSection from '../components/faq-section'
 
-export default function SubPage({ preview, allContent, mainMenus, flatMenus }) {
+export default function SubPage({ preview, allContent, mainMenus, flatMenus, themeSettings }) {
   return (
     <>
-      <Layout preview={preview} mainMenus={mainMenus}>
+      <Layout preview={preview} mainMenus={mainMenus} flatMenus={flatMenus} themeSettings={themeSettings}>
         <Head>
           <title>{allContent.title} | {CMS_NAME}</title>
 
@@ -51,7 +51,8 @@ export async function getServerSideProps({ params, preview = false }) {
   const allContent = (await fetchAPIwithSSR(`/api/v2/pages/find/?html_path=${params.slug}`, { method: 'GET' })) ?? []
   const mainMenus = (await fetchAPIwithSSR('/api/main-menus', { method: 'GET' })) ?? []
   const flatMenus = (await fetchAPIwithSSR('/api/flat-menus', { method: 'GET' })) ?? []
+  const themeSettings = (await fetchAPIwithSSR('/api/theme-settings', { method: 'GET' })) ?? []
   return {
-    props: { preview, allContent, mainMenus, flatMenus },
+    props: { preview, allContent, mainMenus, flatMenus, themeSettings },
   }
 }
