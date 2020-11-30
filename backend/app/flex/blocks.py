@@ -64,6 +64,21 @@ class PageHeadingSectionBlock(blocks.StructBlock):
         label = 'Page Heading Section'
 
 
+# FAQ Section
+class FAQSectionBlock(blocks.StructBlock):
+    """ FAQ Block - Ued by each section """
+    faqs = blocks.ListBlock(
+        blocks.StructBlock([
+            ("heading", blocks.CharBlock(required=True, max_length=1000)),
+            ("content", blocks.TextBlock(required=True, max_length=5000)),
+        ])
+    )
+
+    class Meta:
+        """ Meta data """
+        label = 'FAQ Section'
+
+
 # Contact Section
 class ContactSectionBlock(blocks.StructBlock):
     """ Section Base Block - Ued by each section """
@@ -80,6 +95,7 @@ class ContactSectionBlock(blocks.StructBlock):
             ("data", blocks.TextBlock(required=True, max_length=300)),
         ])
     )
+
     class Meta:
         """ Meta data """
         label = 'Contact Section'
