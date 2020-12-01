@@ -4,7 +4,7 @@
 import { API_URL, API_SERVER_URL } from './constants'
 
 export async function fetchAPI(url, { method, body } = {}) {
-    const res = await fetch(API_SERVER_URL + url, {
+    const res = await fetch(process.env.CLIENT_API_URL + url, {
         method: method,
         headers: {
             'Content-Type': 'application/json',

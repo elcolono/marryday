@@ -51,11 +51,11 @@ services:
       - backend
 
   web:
-    build: ./web
-    environment:
-      BASE_URL: "${BASE_URL}"
-      BASE_SERVER_URL: "${BASE_SERVER_URL}"
-      # args:
-      #   BASE_URL: http://127.0.0.1:8000
+    build:
+      context: ./web
+      dockerfile: Dockerfile
+      args:
+        BASE_URL: "${BASE_URL}" # Pass argument during build - in the dockerfile this argument is set to env variables
+        BASE_SERVER_URL: "${BASE_SERVER_URL}" # Pass argument during build - in the dockerfile this argument is set to env variables
     ports:
       - "80:3000"
