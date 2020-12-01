@@ -9,6 +9,28 @@ ALLOWED_HOSTS = [
     'backend'
 ]
 
+# Database
+# https://docs.djangoproject.com/en/3.0/ref/settings/#databases
+
+# Set env variables
+POSTGRES_DB_NAME = os.environ.get('POSTGRES_DB_NAME')
+POSTGRES_DB_USER = os.environ.get('POSTGRES_DB_USER')
+POSTGRES_DB_PASSWORD = os.environ.get('POSTGRES_DB_PASSWORD')
+POSTGRES_DB_HOST = os.environ.get('POSTGRES_DB_HOST')
+POSTGRES_DB_PORT = os.environ.get('POSTGRES_DB_PORT')
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': POSTGRES_DB_NAME,
+        'USER': POSTGRES_DB_USER,
+        'PASSWORD': POSTGRES_DB_PASSWORD,
+        # "db" in production && "localhost" when dev without docker postgres
+        'HOST': POSTGRES_DB_HOST,
+        'PORT': POSTGRES_DB_PORT,
+    }
+}
+
 # EMAIL SETTINGS
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
