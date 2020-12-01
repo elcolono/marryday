@@ -38,8 +38,6 @@ export default function Index({ preview, allContent, mainMenus, flatMenus, theme
         {/* {JSON.stringify(flatMenus)} */}
         <script src="assets/js/vendors.bundle.js"></script>
         <script src="assets/js/scripts.bundle.js"></script>
-        <script src="assets/js/custom/countdown.js"></script>
-
       </Layout>
     </>
   )

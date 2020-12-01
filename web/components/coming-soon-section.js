@@ -1,16 +1,47 @@
 import { API_SERVER_URL } from '../lib/constants'
 import { Formik } from 'formik'
 import { fetchAPI } from '../lib/api';
+import Countdown from 'react-countdown';
 
 export default function ComingSoonSection({ data }) {
 
+    // Random component
+    const Completionist = () => <span>You are good to go!</span>;
+
+    // Renderer callback with condition
+    const renderer = ({ days, hours, minutes, seconds, completed }) => {
+        if (completed) {
+            // Render a completed state
+            return <Completionist />;
+        } else {
+            // Render a countdown
+            return (
+                <div id="countdown">
+                    <div class="timer-wrapper">
+                        <div class="timer-data">{days}</div>
+                        <span class="timer-text">Tage</span>
+                    </div>
+                    <div class="timer-wrapper">
+                        <div class="timer-data">{hours}</div>
+                        <span class="timer-text">Stunden</span>
+                    </div>
+                    <div class="timer-wrapper">
+                        <div class="timer-data">{minutes}</div>
+                        <span class="timer-text">Minuten</span>
+                    </div>
+                    <div class="timer-wrapper">
+                        <div class="timer-data">{seconds}</div>
+                        <span class="timer-text">Sekunden</span>
+                    </div>
+                </div>
+            );
+        }
+    };
+
     return (
-
-
         <section id="intro_section">
             <div className="row no-gutters coming-soon">
                 <div className="col-lg-6">
-                    {/* <!-- Begin | Inner Banner Content [[ Find at scss/frameworks/base/banner.scss ]] --> */}
                     <div className="banner-content banner-content-white">
                         <div className="container container-half">
                             <div className="row">
@@ -72,37 +103,21 @@ export default function ComingSoonSection({ data }) {
                                                         <button type="submit" disabled={isSubmitting} className="form-control-icon_wrapper">
                                                             {isSubmitting && (<div className="spinner-border spinner-border-sm"></div>) || (<span><i className="ion-md-arrow-forward"></i></span>)}
                                                         </button>
-                                                        {/* {status && status.error && (
-                                                        <div className="btn-inline mt-4">
-                                                            <a href="#" className="btn btn-danger btn-only-icon btn-pill">
-                                                                <i className="ion-ios-close"></i>
-                                                            </a>
-                                                            {status.error}
-                                                        </div>
-                                                    )}
-                                                    {status && status.success && (
-                                                        <div className="btn-inline mt-4">
-                                                            <a className="btn btn-success btn-only-icon btn-pill">
-                                                                <i className="ion-ios-checkmark"></i>
-                                                            </a>
-                                                            {status.success}
-                                                        </div>
-                                                    )} */}
-
                                                         <div className="text-danger mt-2">{errors.email && touched.email && errors.email}</div>
                                                         <div className="text-danger mt-2">{status && status}</div>
                                                     </div>
                                                 </form>
                                             )}
                                     </Formik>
-                                    <div id="countdown"></div>
+                                    <Countdown
+                                        date={new Date(data.timer)}
+                                        renderer={renderer}
+                                    />
                                 </div>
                             </div>
                         </div>
                     </div>
-                    {/* <!-- End | Inner Banner Content --> */}
                 </div>
-                {/* <!-- Inner Banner [[ Find at scss/frameworks/base/banner.scss ]] --> */}
                 <div style={data.image ? { backgroundImage: `url(${API_SERVER_URL + data.image.url})` } : null} className="col-lg-6 banner inner-banner overlay-banner-ipad hero-about"></div>
             </div>
         </section>

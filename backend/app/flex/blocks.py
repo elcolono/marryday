@@ -309,6 +309,7 @@ class ComingSoonSectionBlock(blocks.StructBlock):
         label='Image',
         width='fill-960x720',
     )
+    timer = blocks.DateTimeBlock(required=True)
 
     class Meta:
         """ meta data """
