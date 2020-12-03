@@ -2137,7 +2137,7 @@ figure {
 .banner-content,
 .blog-banner-content {
   position: relative;
-  padding-top: 14rem;
+  padding-top: 12rem;
   padding-bottom: 8rem;
   z-index: 2;
 }
@@ -2215,7 +2215,7 @@ figure {
 @media (min-width: 992px) {
   .inner-banner,
   .inner-banner-content {
-    min-height: 45rem;
+    min-height: 40rem;
   }
   .banner-ipad, .overlay-banner-ipad,
   .overlay-banner-ipad {

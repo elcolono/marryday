@@ -10,12 +10,14 @@ export default function ContactSection({ data, title }) {
                     </div>
                     <div className="row list-bunch text-center">
                         {data.contacts && data.contacts.map((contact, i) => (
-                            <div className="col list-bunch-item">
+                            <div key={i} className="col list-bunch-item">
                                 <div className="icon m-auto">
-                                    {contact.icon && (<i className={`ion-md-${contact.icon}`}></i>)}
+                                    {contact.type == "email" && <i className="ion-md-mail"></i>}
+                                    {contact.type == "phone" && <i className="ion-md-call"></i>}
                                 </div>
                                 <h4 className="mt-2 mb-2">{contact.heading}</h4>
-                                <a href={contact.data}>{contact.data}</a>
+                                {contact.type == "email" && <a href={`mailto:${contact.data}`}>{contact.data}</a>}
+                                {contact.type == "phone" && <a href={`tel:${contact.data}`}>{contact.data}</a>}
                             </div>
                         ))}
                     </div>

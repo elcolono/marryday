@@ -90,7 +90,10 @@ class ContactSectionBlock(blocks.StructBlock):
     )
     contacts = blocks.ListBlock(
         blocks.StructBlock([
-            ("icon", blocks.CharBlock(required=False)),
+            ("type", blocks.ChoiceBlock(required=True, choices=(
+                ('email', 'Email'),
+                ('phone', 'Phone'),
+            ))),
             ("heading", blocks.CharBlock(required=True, max_length=100)),
             ("data", blocks.TextBlock(required=True, max_length=300)),
         ])
