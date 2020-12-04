@@ -28,7 +28,10 @@ if ENV_FILE:
 # Application definition
 
 INSTALLED_APPS = [
+    # Local Apps (Your project's apps)
     'home',
+    'accounts',
+    'profiles',
     'search',
     'blog',
     'flex',
@@ -37,6 +40,7 @@ INSTALLED_APPS = [
     'theme',
     'rest',
 
+    # Wagtail Apps
     'wagtail.contrib.forms',
     'wagtail.contrib.redirects',
     'wagtail.embeds',
@@ -50,6 +54,7 @@ INSTALLED_APPS = [
     'wagtail.core',
     'wagtail.api.v2',
 
+    # Third-Party Apps
     'modelcluster',
     'taggit',
     'compressor',
@@ -60,13 +65,20 @@ INSTALLED_APPS = [
     'django.contrib.sitemaps',
     'rest_framework',
     'corsheaders',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'rest_auth',
+    'rest_auth.registration',
 
+    # Django Apps
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
 ]
 
 MIDDLEWARE = [
@@ -195,3 +207,44 @@ CORS_ORIGIN_ALLOW_ALL = True
 MAILCHIMP_API_KEY = os.environ.get('MAILCHIMP_API_KEY')
 MAILCHIMP_DATA_CENTER = os.environ.get('MAILCHIMP_DATA_CENTER')
 MAILCHIMP_EMAIL_LIST_ID = os.environ.get('MAILCHIMP_EMAIL_LIST_ID')
+
+
+# Auth user
+AUTH_USER_MODEL = 'accounts.User'
+
+# Configure django-rest-framework
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        # 'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+    )
+}
+
+
+# Configure django-allauth
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+ACCOUNT_CONFIRM_EMAIL_ON_GET = True
+ACCOUNT_EMAIL_CONFIRMATION_ANONYMOUS_REDIRECT_URL = '/?verification=1'
+ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = '/?verification=1'
+
+SITE_ID = 1
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# instruct rest_auth to use custom UserSerializer
+REST_AUTH_SERIALIZERS = {
+    'USER_DETAILS_SERIALIZER': 'accounts.api.serializers.common.UserSerializer',
+    'TOKEN_SERIALIZER': 'accounts.api.serializers.common.TokenSerializer',
+    # 'LOGIN_SERIALIZER': 'accounts.api.serializers.common.LoginSerializer',
+}
+
+REST_AUTH_REGISTER_SERIALIZERS = {
+    'REGISTER_SERIALIZER': 'accounts.api.serializers.common.RegisterSerializer',
+}
+
+# REST_USE_JWT = True
