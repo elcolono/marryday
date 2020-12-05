@@ -1,3 +1,6 @@
+"""
+https://krakensystems.co/blog/2020/custom-users-using-django-rest-framework
+"""
 from django.contrib.auth.base_user import BaseUserManager
 from django.utils.translation import ugettext_lazy as _
 
