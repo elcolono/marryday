@@ -1,3 +1,5 @@
+from allauth.account.views import confirm_email
+
 from django.conf import settings
 from django.conf.urls import include, url
 from django.contrib import admin
@@ -12,12 +14,18 @@ from search import views as search_views
 from wagtail.contrib.sitemaps.views import sitemap
 from .api import api_router
 
+
 urlpatterns = [
     url(r'^django-admin/', admin.site.urls),
 
     url(r'^admin/', include(wagtailadmin_urls)),
-    url(r'^documents/', include(wagtaildocs_urls)),
 
+    url(r'^api/v1/rest-auth/', include('rest_auth.urls')),
+    url(r'^api/v1/rest-auth/registration/', include('rest_auth.registration.urls')),
+    url(r'^api/v1/account/', include('allauth.urls')),
+    url(r'^api/v1/accounts-rest/registration/account-confirm-email/(?P<key>.+)/$', confirm_email, name='account_confirm_email'),
+
+    url(r'^documents/', include(wagtaildocs_urls)),
     url(r'^search/$', search_views.search, name='search'),
 
     url(r'^api/', include('rest.urls')),
