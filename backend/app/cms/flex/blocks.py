@@ -318,6 +318,24 @@ class ComingSoonSectionBlock(blocks.StructBlock):
         """ meta data """
         label = 'Coming Soon Section'
 
+# Login Section Block
+class LoginSectionBlock(blocks.StructBlock):
+    """ Login Section Block """
+    heading = blocks.CharBlock(required=True, max_length=100, label="Title")
+    description = blocks.RichTextBlock(
+        required=False,
+        max_length=400,
+        label='Description',
+        default='The thing we do is better than any other similar thing and this hero panel will convince you of that, just by having a glorious background image.',
+    )
+    image = APIImageChooserBlock(
+        required=False,
+        label='Image',
+        width='fill-960x720',
+    )
+    class Meta:
+        """ meta data """
+        label = 'Login Section'
 
 # Counter Section Block
 class CounterSectionBlock(blocks.StructBlock):
