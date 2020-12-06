@@ -29,14 +29,23 @@ if ENV_FILE:
 
 INSTALLED_APPS = [
     # Local Apps (Your project's apps)
-    'home',
     'accounts',
     'profiles',
     'search',
-    'blog',
-    'flex',
-    'theme',
-    'rest',
+    'cms.home',
+    'cms.flex',
+    'cms.theme',
+    'cms.rest',
+    'cms.blog',
+
+    # Django Apps
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'django.contrib.sites',
 
     # Wagtail Apps
     # 'wagtail.contrib.forms',
@@ -67,27 +76,10 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'rest_auth',
-    'django.contrib.sites',
     'allauth',
     'allauth.account',
     'rest_auth.registration',
 
-    # 'rest_framework',
-    # 'rest_framework.authtoken',
-    # 'allauth',
-    # 'allauth.account',
-    # 'allauth.socialaccount',
-    # 'rest_auth',
-    # 'rest_auth.registration',
-
-    # Django Apps
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    # 'django.contrib.sites',
 ]
 
 MIDDLEWARE = [

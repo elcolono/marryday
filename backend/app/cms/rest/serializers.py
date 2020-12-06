@@ -2,8 +2,8 @@
 Serializers
 """
 from rest_framework import serializers
-from home.models import SubPage
-from theme.models import ThemeSettings
+from cms.home.models import SubPage
+from cms.theme.models import ThemeSettings
 from wagtailmenus.models import FlatMenu, FlatMenuItem, MainMenu, MainMenuItem
 
 

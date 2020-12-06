@@ -1,6 +1,6 @@
 """ Urls """
 from django.urls import path
-from rest import views
+from cms.rest import views
 
 urlpatterns = [
     # Settings

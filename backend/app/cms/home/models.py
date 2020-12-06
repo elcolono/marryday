@@ -1,7 +1,7 @@
 
 from wagtailmetadata.models import MetadataPageMixin
 
-from flex.models import FlexPage
+from cms.flex.models import FlexPage
 
 
 class HomePage(MetadataPageMixin, FlexPage):

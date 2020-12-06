@@ -5,9 +5,9 @@ from rest_framework.response import Response
 from rest_framework import status
 
 from wagtailmenus.models import MainMenu, FlatMenu
-from rest import serializers
-from home.models import SubPage
-from theme.models import ThemeSettings
+from cms.rest import serializers
+from cms.home.models import SubPage
+from cms.theme.models import ThemeSettings
 
 import mailchimp_marketing as MailchimpMarketing
 from mailchimp_marketing.api_client import ApiClientError
