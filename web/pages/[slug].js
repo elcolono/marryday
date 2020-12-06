@@ -12,6 +12,7 @@ import HeadingSection from '../components/heading-section'
 import PricingSection from '../components/pricing-section'
 import ContactSection from '../components/contact-section'
 import FAQSection from '../components/faq-section'
+import LoginSection from '../components/login-section'
 
 export default function SubPage({ preview, allContent, mainMenus, flatMenus, themeSettings }) {
   return (
@@ -35,6 +36,7 @@ export default function SubPage({ preview, allContent, mainMenus, flatMenus, the
           if (section.type == 'pricing_section_block') return <PricingSection key={i} data={section.value} />
           if (section.type == 'contact_section_block') return <ContactSection key={i} data={section.value} />
           if (section.type == 'faq_section_block') return <FAQSection key={i} data={section.value} />
+          if (section.type == 'login_section_block') return <LoginSection key={i} data={section.value} />
         })}
         {/* {JSON.stringify(allContent.items[0].content)} */}
         {/* {JSON.stringify(mainMenus[0].menu_items)} */}
