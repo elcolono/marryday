@@ -35,18 +35,16 @@ INSTALLED_APPS = [
     'search',
     'blog',
     'flex',
-    'form',
-    'streams',
     'theme',
     'rest',
 
     # Wagtail Apps
-    'wagtail.contrib.forms',
+    # 'wagtail.contrib.forms',
     'wagtail.contrib.redirects',
-    'wagtail.embeds',
+    # 'wagtail.embeds',
     'wagtail.sites',
     'wagtail.users',
-    'wagtail.snippets',
+    # 'wagtail.snippets',
     'wagtail.documents',
     'wagtail.images',
     'wagtail.search',
@@ -63,13 +61,24 @@ INSTALLED_APPS = [
     'wagtail.contrib.settings',
     'wagtailmetadata',
     'django.contrib.sitemaps',
-    'rest_framework',
     'corsheaders',
+
+    # Auth
+    'rest_framework',
+    'rest_framework.authtoken',
+    'rest_auth',
+    'django.contrib.sites',
     'allauth',
     'allauth.account',
-    'allauth.socialaccount',
-    'rest_auth',
     'rest_auth.registration',
+
+    # 'rest_framework',
+    # 'rest_framework.authtoken',
+    # 'allauth',
+    # 'allauth.account',
+    # 'allauth.socialaccount',
+    # 'rest_auth',
+    # 'rest_auth.registration',
 
     # Django Apps
     'django.contrib.admin',
@@ -78,7 +87,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.sites',
+    # 'django.contrib.sites',
 ]
 
 MIDDLEWARE = [
