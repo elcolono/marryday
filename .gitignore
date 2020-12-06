@@ -22,7 +22,7 @@ data/certbot/
 __pycache__/
 # app/tickets/settings/prod.py
 debug.log
-media
+backend/app/media
 backend/app/core/static
 python.conf
 
