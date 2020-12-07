@@ -1,3 +1,7 @@
+import Link from 'next/link'
+import Router from 'next/router';
+import { isAuth, signout } from '../actions/auth'
+
 export default function Header({ mainMenus, themeSettings }) {
 
     const handleMenuIconClicked = () => {
@@ -8,16 +12,20 @@ export default function Header({ mainMenus, themeSettings }) {
         <header id="header" className="colored-header fixed-top">
             <nav className="navbar navbar-expand-sm">
                 <div className="container">
-                    <a className="navbar-brand" href="/">
-                        <img src="assets/images/logos/mowo-spaces-logo.png" className="compact default dark" alt="Listigo" />
-                    </a>
+                    <Link href="/">
+                        <a className="navbar-brand">
+                            <img src="assets/images/logos/mowo-spaces-logo.png" className="compact default dark" alt="Listigo" />
+                        </a>
+                    </Link>
 
                     {/* <!-- Begin | Navigation [[ Find at scss/frameworks/base/navbar-nav.scss ]] --> */}
                     <nav className="ml-5" id="nav">
                         <ul className="navbar-nav">
                             {mainMenus[0].menu_items && mainMenus[0].menu_items.map((menuItem, i) => (
                                 <li key={i} className="nav-item">
-                                    <a href={menuItem.link_page.slug} className="nav-link">{menuItem.link_text}</a>
+                                    <Link href={menuItem.link_page.slug}>
+                                        <a className="nav-link">{menuItem.link_text}</a>
+                                    </Link>
                                 </li>
                             ))}
 
@@ -27,6 +35,41 @@ export default function Header({ mainMenus, themeSettings }) {
 
                     <ul className="navbar-nav ml-auto">
                         {/* <li className="nav-item"><a href="javascript:void(0);" data-toggle="modal" data-target="#sign_in">Login</a></li> */}
+
+                        {isAuth() && (
+                            <>
+                                <Link href="/dashboard">
+                                    <a>
+                                        <li class="nav-item">
+                                            <div class="media align-items-center">
+                                                <div class="avatar avatar-sm">
+                                                    <img src="assets/images/user/32/user-1.jpg" class="retina" alt="" />
+                                                </div>
+                                                <div class="media-body pl-2 avatar-name d-none d-md-block">{isAuth().first_name} {isAuth().last_name}</div>
+                                            </div>
+                                        </li>
+                                    </a>
+                                </Link>
+                                <div className="dropdown">
+                                    <a className="icon-sm" href="javascript:void(0);" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i className="ion-md-more"></i>
+                                    </a>
+                                    <div className="dropdown-menu dropdown-menu-right">
+                                        <Link href="signin">
+                                            <a onClick={() => signout(() => Router.push('/signin'))} className="dropdown-item">Logout</a>
+                                        </Link>
+                                    </div>
+                                </div>
+                            </>
+
+
+                        ) || (
+                                <li className="nav-item">
+                                    <Link href="/signin">
+                                        <a className="nav-link">Login</a>
+                                    </Link>
+                                </li>
+                            )}
                         {themeSettings.header_cta_text && (
                             <li className="nav-item">
                                 <a href={themeSettings.header_cta_link} className="btn btn-pill btn-danger btn-icon">

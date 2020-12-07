@@ -1,11 +1,10 @@
 import { API_SERVER_URL } from '../lib/constants'
 import { Formik } from 'formik'
 import * as Yup from 'yup'
-import { useUser } from '../utils/useUser.js';
+import { signin, authenticate } from '../actions/auth'
+import Router from 'next/router'
 
 export default function LoginSection({ data }) {
-
-    const { login } = useUser();
 
     return (
         <section id="intro_section">
@@ -31,11 +30,12 @@ export default function LoginSection({ data }) {
                                         onSubmit={(values, { setSubmitting, setStatus }) => {
                                             setStatus(false)
                                             setTimeout(() => {
-                                                login(values.email, values.password).then((response) => {
-                                                    if (response.error) {
+                                                signin(values.email, values.password).then((response) => {
+                                                    if (response.status == 400) {
                                                         setStatus("Fehler bei Anmeldung")
                                                     } else {
                                                         setStatus("Erfolgreich angemeldet")
+                                                        authenticate(response.data, () => Router.push('/dashboard'))
                                                     }
                                                     setSubmitting(false);
                                                 })
@@ -65,7 +65,7 @@ export default function LoginSection({ data }) {
                                                             onBlur={handleBlur}
                                                             value={values.email}
                                                         />
-                                                        <div className="text-danger mt-2">{errors.email && touched.email && errors.email}</div>
+                                                        <div className="text-danger position-absolute">{errors.email && touched.email && errors.email}</div>
                                                     </div>
                                                     <div className="form-group">
                                                         <label htmlFor="password" className="form-control-label">Passwort</label>
@@ -89,7 +89,7 @@ export default function LoginSection({ data }) {
                                                             </button>
                                                         </div>
 
-                                                        <div className="text-danger mt-2">{errors.password && touched.password && errors.password}</div>
+                                                        <div className="text-danger position-absolute">{errors.password && touched.password && errors.password}</div>
                                                     </div>
                                                     <div className="form-group d-flex align-items-center justify-content-between">
                                                         <div className="checkbox">
@@ -98,7 +98,7 @@ export default function LoginSection({ data }) {
                                                         </div>
                                                         <a href="#" className="link" data-dismiss="modal" data-toggle="modal" data-target="#forgot">Forgot Password?</a>
                                                     </div>
-                                                    <button type="submit" className="btn btn-danger btn-block">Sign in</button>
+                                                    <button disabled={isSubmitting && true} type="submit" className="btn btn-danger btn-block">Sign in {isSubmitting && (<div className="spinner-border spinner-border-sm"></div>)}</button>
                                                     <div className="text-danger mt-2">{status && status}</div>
                                                 </form>
                                             )}

@@ -5,7 +5,7 @@ import Sidebar from './sidebar'
 import ScrollTop from './scroll-top'
 import CookieConsent from "react-cookie-consent";
 
-export default function Layout({ preview, mainMenus, flatMenus, themeSettings, children }) {
+export default function Layout({ mainMenus, flatMenus, themeSettings, children }) {
   return (
     <>
       <Meta />
