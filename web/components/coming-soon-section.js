@@ -66,8 +66,6 @@ export default function ComingSoonSection({ data }) {
                                             setStatus(false)
                                             setTimeout(() => {
                                                 fetchAPI('/api/mailchimp-audience', { method: 'POST', body: { 'email': values.email } }).then((response) => {
-                                                    // alert(JSON.stringify(response, null, 2));
-                                                    console.log(response);
                                                     if (response.error) {
                                                         setStatus(response.error.title)
                                                     } else {
