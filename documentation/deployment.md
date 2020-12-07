@@ -12,6 +12,14 @@ This repository provides an application for deploying a Django backend served by
 
 ### Production (For hHetzner)
 
+* Create Postres DB
+    * DB name
+    * DB password
+
 * Wagail Site settings: 
     * hostname: backend
     * port: 8000
+
+* "Cannot read property 'menu_items' of undefined"
+    * Add main menu
+    * Add flat menu
