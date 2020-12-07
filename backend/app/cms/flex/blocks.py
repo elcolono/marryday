@@ -337,6 +337,20 @@ class LoginSectionBlock(blocks.StructBlock):
         """ meta data """
         label = 'Login Section'
 
+# Booking Section Block
+class BookingSectionBlock(blocks.StructBlock):
+    """ Booking Section Block """
+    heading = blocks.CharBlock(required=True, max_length=100, label="Title")
+    description = blocks.RichTextBlock(
+        required=False,
+        max_length=400,
+        label='Description',
+        default='The thing we do is better than any other similar thing and this hero panel will convince you of that, just by having a glorious background image.',
+    )
+    class Meta:
+        """ meta data """
+        label = 'Booking Section'
+
 # Counter Section Block
 class CounterSectionBlock(blocks.StructBlock):
     """ Counter Section Block """
