@@ -13,7 +13,7 @@ ALLOWED_HOSTS = ['*']
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
 # Set env variables
-POSTGRES_DB_NAME = 'postgres'
+POSTGRES_DB_NAME = 'mowo_db_2'
 POSTGRES_DB_USER = 'postgres'
 POSTGRES_DB_PASSWORD = 'postgres'
 POSTGRES_DB_HOST = 'db'
