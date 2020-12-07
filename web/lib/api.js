@@ -4,7 +4,7 @@ import Axios from 'axios';
 import { API_URL, API_SERVER_URL } from './constants'
 
 export const api = Axios.create({
-    baseURL: process.env.CLIENT_API_URL,
+    baseURL: `${process.env.CLIENT_API_URL}/api/v1`,
     headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
