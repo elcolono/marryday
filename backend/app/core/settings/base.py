@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     'accounts',
     'profiles',
     'search',
+    'cowork',
     'cms.home',
     'cms.flex',
     'cms.theme',
