@@ -1,10 +1,11 @@
 import { API_SERVER_URL } from '../lib/constants'
-import { Formik, Field, Form, useFormikContext } from 'formik'
+import { Formik, Field } from 'formik'
 import * as Yup from 'yup'
 import { useEffect, useState } from 'react'
 import { api } from '../lib/api'
 import Moment from 'moment';
-import { extendMoment } from 'moment-range';
+import { extendMoment } from 'moment-range'
+import { Form } from 'react-bootstrap'
 
 export default function BookingSection({ data }) {
 
@@ -27,45 +28,50 @@ export default function BookingSection({ data }) {
 
     }, [])
 
-    const customHandleChange = (value, name, values, setValues) => {
+    function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    const customHandleChange = async (value, name, values, setValues) => {
         // Check target value wheter to conditionally make new request
         values[name] = value
         setValues(values)
         if (values.fm_location) {
-            api.get(`/cowork/rentobjects?location=${values.fm_location.id}&type=${values.fm_objectType}&date=${values.fm_date}`).then((response) => {
-                if (response.status == 200) {
-                    setRentObjects(response.data);
-                } else {
-                    console.log(response)
-                }
-            })
+            try {
+                clearTimeout()
+                // name == "fm_duration" && await sleep(2000);
+                const response = await api.get(`/cowork/rentobjects?location=${values.fm_location.id}&type=${values.fm_objectType}&start=${values.fm_date}T${values.fm_startTime}Z&duration=${values.fm_duration}`)
+                setRentObjects(response.data);
+            } catch (error) {
+                console.log(error)
+            }
         }
     }
 
-    const customTimeChange = (value, name, values, setValues) => {
-        values[name] = value
-        setValues(values)
-        if (values.fm_startTime && values.fm_endTime) {
-            // Create selected time range
-            const start = moment(`${values.fm_date} ${values.fm_startTime}`);
-            const end = moment(`${values.fm_date} ${values.fm_endTime}`);
-            const range = moment.range(start, end);
+    // const customTimeChange = (value, name, values, setValues) => {
+    //     values[name] = value
+    //     setValues(values)
+    //     if (values.fm_startTime && values.fm_endTime) {
+    //         // Create selected time range
+    //         const start = moment(`${values.fm_date} ${values.fm_startTime}`);
+    //         const end = moment(`${values.fm_date} ${values.fm_endTime}`);
+    //         const range = moment.range(start, end);
 
-            // Iterate bookings and check overlapping time ranges
-            const availRentObjects = rentObjects && rentObjects.filter((rentObject) => {
-                return rentObject.bookings.every(booking => {
-                    const start = moment(booking.start);
-                    const end = moment(booking.end);
-                    const book_range = moment.range(start, end);
-                    // console.log(book_range.overlaps(range))
-                    if (range.overlaps(book_range)) { return false }
-                    return true
-                })
-            })
-            console.log(availRentObjects)
-            setAvailRentObjects(availRentObjects)
-        }
-    }
+    //         // Iterate bookings and check overlapping time ranges
+    //         const availRentObjects = rentObjects && rentObjects.filter((rentObject) => {
+    //             return rentObject.bookings.every(booking => {
+    //                 const start = moment(booking.start);
+    //                 const end = moment(booking.end);
+    //                 const book_range = moment.range(start, end);
+    //                 console.log(book_range.overlaps(range))
+    //                 if (range.overlaps(book_range)) { return false }
+    //                 return true
+    //             })
+    //         })
+    //         console.log(availRentObjects)
+    //         setRentObjects(availRentObjects)
+    //     }
+    // }
 
     return (
         <section id="intro_section">
@@ -75,8 +81,8 @@ export default function BookingSection({ data }) {
                     fm_objectType: 'desktop',
                     fm_date: '2020-12-09',
                     fm_rentObject: '',
-                    fm_startTime: '',
-                    fm_endTime: '',
+                    fm_startTime: `${new Date().getHours()}:${new Date().getMinutes()}`,
+                    fm_duration: 60,
                 }}
                 onSubmit={(values, { setSubmitting, setStatus }) => {
                     setStatus(false)
@@ -86,7 +92,7 @@ export default function BookingSection({ data }) {
             >
                 {({
                     values,
-                    handleBlur,
+                    handleChange,
                     handleSubmit,
                     isSubmitting,
                     status,
@@ -123,7 +129,7 @@ export default function BookingSection({ data }) {
                                                     placeholder="Datum"
                                                     type="date"
                                                     onChange={(e) => customHandleChange(e.target.value, "fm_date", values, setValues)}
-                                                    onBlur={handleBlur}
+                                                    // onBlur={handleBlur}
                                                     value={values.fm_date}
                                                 />
                                             </div>
@@ -133,23 +139,27 @@ export default function BookingSection({ data }) {
                                                     className="form-control"
                                                     placeholder="Datum"
                                                     type="time"
-                                                    onChange={(e) => customTimeChange(e.target.value, "fm_startTime", values, setValues)}
-                                                    onBlur={handleBlur}
+                                                    onChange={(e) => customHandleChange(e.target.value, "fm_startTime", values, setValues)}
+                                                    // onBlur={handleBlur}
                                                     value={values.fm_startTime}
                                                 />
-                                                <input
-                                                    className="form-control"
-                                                    placeholder="Datum"
-                                                    type="time"
-                                                    onChange={(e) => customTimeChange(e.target.value, "fm_endTime", values, setValues)}
-                                                    onBlur={handleBlur}
-                                                    value={values.fm_endTime}
-                                                />
                                             </div>
+                                            <Form.Group controlId="formDuration">
+                                                <Form.Label>Dauer</Form.Label>
+                                                <Form.Control
+                                                    min={15}
+                                                    max={300}
+                                                    step={15}
+                                                    type="range"
+                                                    name="fm_duration"
+                                                    value={values.fm_duration}
+                                                    onChange={(e) => customHandleChange(e.target.value, "fm_duration", values, setValues)}
+                                                />
+                                            </Form.Group>
 
                                             {/* Rent Objects */}
                                             <div className="form-group">
-                                                {availRentObjects && availRentObjects.map((rentObject, i) => (
+                                                {rentObjects && rentObjects.map((rentObject, i) => (
                                                     <div key={i}>
                                                         <label>
                                                             <Field type="radio" name="fm_rentObject" value={`${rentObject.id}`} />
