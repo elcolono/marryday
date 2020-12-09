@@ -3,11 +3,16 @@ import { Formik, Field, Form, useFormikContext } from 'formik'
 import * as Yup from 'yup'
 import { useEffect, useState } from 'react'
 import { api } from '../lib/api'
+import Moment from 'moment';
+import { extendMoment } from 'moment-range';
 
 export default function BookingSection({ data }) {
 
     const [locations, setLocation] = useState([])
     const [rentObjects, setRentObjects] = useState([])
+    const [availRentObjects, setAvailRentObjects] = useState([])
+
+    const moment = extendMoment(Moment);
 
     useEffect(() => {
         if (locations.length == 0) {
@@ -34,6 +39,31 @@ export default function BookingSection({ data }) {
                     console.log(response)
                 }
             })
+        }
+    }
+
+    const customTimeChange = (value, name, values, setValues) => {
+        values[name] = value
+        setValues(values)
+        if (values.fm_startTime && values.fm_endTime) {
+            // Create selected time range
+            const start = moment(`${values.fm_date} ${values.fm_startTime}`);
+            const end = moment(`${values.fm_date} ${values.fm_endTime}`);
+            const range = moment.range(start, end);
+
+            // Iterate bookings and check overlapping time ranges
+            const availRentObjects = rentObjects && rentObjects.filter((rentObject) => {
+                return rentObject.bookings.every(booking => {
+                    const start = moment(booking.start);
+                    const end = moment(booking.end);
+                    const book_range = moment.range(start, end);
+                    // console.log(book_range.overlaps(range))
+                    if (range.overlaps(book_range)) { return false }
+                    return true
+                })
+            })
+            console.log(availRentObjects)
+            setAvailRentObjects(availRentObjects)
         }
     }
 
@@ -72,15 +102,15 @@ export default function BookingSection({ data }) {
                                         {/* <div dangerouslySetInnerHTML={{ __html: data.description }}></div> */}
                                         <Form onSubmit={handleSubmit} className="pt-3">
                                             <div className="form-group">
-                                                <div class="radio">
+                                                <div className="radio">
                                                     <Field onChange={() => customHandleChange("desktop", "fm_objectType", values, setValues)} value="desktop" name="fm_objectType" type="radio" id="radio1" />
                                                     <label htmlFor="radio1">Dektop</label>
                                                 </div>
-                                                <div class="radio">
+                                                <div className="radio">
                                                     <Field onChange={() => customHandleChange("phone", "fm_objectType", values, setValues)} value="phone" name="fm_objectType" type="radio" id="radio2" />
                                                     <label htmlFor="radio2">Phone</label>
                                                 </div>
-                                                <div class="radio">
+                                                <div className="radio">
                                                     <Field onChange={() => customHandleChange("meeting", "fm_objectType", values, setValues)} value="meeting" name="fm_objectType" type="radio" id="radio3" />
                                                     <label htmlFor="radio3">Meeting</label>
                                                 </div>
@@ -103,7 +133,7 @@ export default function BookingSection({ data }) {
                                                     className="form-control"
                                                     placeholder="Datum"
                                                     type="time"
-                                                    onChange={(e) => customHandleChange(e.target.value, "fm_startTime", values, setValues)}
+                                                    onChange={(e) => customTimeChange(e.target.value, "fm_startTime", values, setValues)}
                                                     onBlur={handleBlur}
                                                     value={values.fm_startTime}
                                                 />
@@ -111,7 +141,7 @@ export default function BookingSection({ data }) {
                                                     className="form-control"
                                                     placeholder="Datum"
                                                     type="time"
-                                                    onChange={(e) => customHandleChange(e.target.value, "fm_endTime", values, setValues)}
+                                                    onChange={(e) => customTimeChange(e.target.value, "fm_endTime", values, setValues)}
                                                     onBlur={handleBlur}
                                                     value={values.fm_endTime}
                                                 />
@@ -119,7 +149,7 @@ export default function BookingSection({ data }) {
 
                                             {/* Rent Objects */}
                                             <div className="form-group">
-                                                {rentObjects && rentObjects.map((rentObject, i) => (
+                                                {availRentObjects && availRentObjects.map((rentObject, i) => (
                                                     <div key={i}>
                                                         <label>
                                                             <Field type="radio" name="fm_rentObject" value={`${rentObject.id}`} />
@@ -130,6 +160,7 @@ export default function BookingSection({ data }) {
                                             </div>
 
                                             {/* {JSON.stringify(rentObjects)} */}
+                                            {/* {JSON.stringify(availRentObjects)} */}
 
                                             {/* BOOKING BUTTON */}
                                             <button type="submit" className="btn btn-danger btn-block">Buchen</button>
@@ -142,7 +173,9 @@ export default function BookingSection({ data }) {
                             <div className="col-lg-6 mt-5">
                                 <ul className="mt-5">
                                     {locations && locations.map((location, i) =>
-                                        <li key={i} onClick={(e) => customHandleChange(location, "fm_location", values, setValues)}>{location.title}</li>
+                                        <li key={i} onClick={(e) => customHandleChange(location, "fm_location", values, setValues)}>
+                                            {location.title} ({location.address}, {location.postcode}, {location.city})
+                                        </li>
                                     )}
                                 </ul>
                             </div>

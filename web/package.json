@@ -11,6 +11,8 @@
     "axios": "^0.21.0",
     "formik": "^2.2.5",
     "js-cookie": "^2.2.1",
+    "moment": "^2.29.1",
+    "moment-range": "^4.0.2",
     "next": "10.0.2",
     "react": "17.0.1",
     "react-cookie-consent": "^6.1.0",
