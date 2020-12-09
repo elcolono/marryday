@@ -9,81 +9,82 @@ export default function BookingSection({ data }) {
     const [locations, setLocation] = useState([])
     const [activeLocation, setActiveLocation] = useState(null)
     const [rentObjects, setRentObjects] = useState([])
-    const [objectType, setObjectType] = useState(null)
-
 
     useEffect(() => {
-        api.get('/cowork/locations/').then((response) => {
-            if (response.status == 200) {
-                setLocation(response.data);
-            } else {
-                console.log(response)
-            }
-        })
+        if (locations.length == 0) {
+            api.get('/cowork/locations/').then((response) => {
+                if (response.status == 200) {
+                    setLocation(response.data);
+                } else {
+                    console.log(response)
+                }
+            })
+        }
+
     }, [])
 
-
-    const AutoReload = () => {
-        const { values } = useFormikContext();
-        console.log("Autoreload")
-        if (values.objectType !== objectType && activeLocation) {
-            api.get(`/cowork/rentobjects?location=${activeLocation}&type=${values.objectType}`).then((response) => {
+    const customHandleChange = (value, name, values, setValues) => {
+        // Check target value wheter to conditionally make new request
+        values[name] = value
+        setValues(values)
+        if (values.fm_location) {
+            api.get(`/cowork/rentobjects?location=${values.fm_location.id}&type=${values.fm_objectType}`).then((response) => {
                 if (response.status == 200) {
                     setRentObjects(response.data);
                 } else {
                     console.log(response)
                 }
             })
-            setObjectType(values.objectType)
         }
-        return null
     }
 
     return (
         <section id="intro_section">
-            <div className="row no-gutters coming-soon">
-                <div className="col-lg-6">
-                    <div className="banner-content banner-content-white">
-                        <div className="container container-half">
-                            <div className="row">
-                                <div className="col-md-10">
-                                    <h1 className="intro-section-title">{data.heading} {activeLocation}</h1>
-                                    {/* <div dangerouslySetInnerHTML={{ __html: data.description }}></div> */}
-                                    <Formik
-                                        initialValues={{
-                                            objectType: 'desktop',
-                                            date: '',
-                                        }}
-                                        onSubmit={(values, { setSubmitting, setStatus }) => {
-                                            setStatus(false)
-                                            setTimeout(() => {
-
-                                            }, 400);
-                                        }}
-                                    >
-                                        {({
-                                            values,
-                                            errors,
-                                            touched,
-                                            handleChange,
-                                            handleBlur,
-                                            handleSubmit,
-                                            isSubmitting,
-                                            status,
-                                            /* and other goodies */
-                                        }) => (
+            <Formik
+                initialValues={{
+                    fm_location: '',
+                    fm_objectType: 'desktop',
+                    fm_date: '',
+                    fm_rentObject: '',
+                }}
+                onSubmit={(values, { setSubmitting, setStatus }) => {
+                    setStatus(false)
+                    setTimeout(() => {
+                    }, 400);
+                }}
+            >
+                {({
+                    values,
+                    errors,
+                    touched,
+                    handleBlur,
+                    handleSubmit,
+                    isSubmitting,
+                    status,
+                    setValues,
+                    /* and other goodies */
+                }) => (
+                        <div className="row no-gutters coming-soon">
+                            <div className="col-lg-6">
+                                <div className="banner-content banner-content-white">
+                                    <div className="container container-half">
+                                        <div className="row">
+                                            <div className="col-md-10">
+                                                <h1 className="intro-section-title">{activeLocation && activeLocation.title}</h1>
+                                                {/* <h1 className="intro-section-title">{data.heading}</h1> */}
+                                                {/* <div dangerouslySetInnerHTML={{ __html: data.description }}></div> */}
                                                 <Form onSubmit={handleSubmit} className="pt-3">
                                                     <div className="form-group">
                                                         <div class="radio">
-                                                            <Field type="radio" name="objectType" value="desktop" id="radio1" />
+                                                            <Field onChange={(e) => customHandleChange("desktop", "fm_objectType", values, setValues)} value="desktop" name="fm_objectType" type="radio" id="radio1" />
                                                             <label htmlFor="radio1">Dektop</label>
                                                         </div>
                                                         <div class="radio">
-                                                            <Field type="radio" name="objectType" value="phone" id="radio2" />
+                                                            <Field onChange={(e) => customHandleChange("phone", "fm_objectType", values, setValues)} value="phone" name="fm_objectType" type="radio" id="radio2" />
                                                             <label htmlFor="radio2">Phone</label>
                                                         </div>
                                                         <div class="radio">
-                                                            <Field type="radio" name="objectType" value="meeting" id="radio3" />
+                                                            <Field onChange={(e) => customHandleChange("meeting", "fm_objectType", values, setValues)} value="meeting" name="fm_objectType" type="radio" id="radio3" />
                                                             <label htmlFor="radio3">Meeting</label>
                                                         </div>
                                                     </div>
@@ -94,8 +95,7 @@ export default function BookingSection({ data }) {
                                                             className="form-control"
                                                             placeholder="Datum"
                                                             type="date"
-                                                            name="date"
-                                                            onChange={handleChange}
+                                                            onChange={(e) => customHandleChange(e.target.value, "fm_date", values, setValues)}
                                                             onBlur={handleBlur}
                                                             value={values.date}
                                                         />
@@ -103,7 +103,14 @@ export default function BookingSection({ data }) {
                                                     </div>
 
                                                     {/* Rent Objects */}
-                                                    <AutoReload />
+                                                    <div className="form-group">
+                                                        {rentObjects && rentObjects.map((rentObject, i) => (
+                                                            <label key={i}>
+                                                                <Field type="radio" name="fm_rentObject" value={`${rentObject.id}`} />{rentObject.title}
+                                                            </label>
+                                                        ))}
+                                                    </div>
+
                                                     {JSON.stringify(rentObjects)}
 
 
@@ -112,21 +119,21 @@ export default function BookingSection({ data }) {
                                                     <div className="text-danger mt-2">{status && status}</div>
                                                     {JSON.stringify(values)}
                                                 </Form>
-                                            )}
-                                    </Formik>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
+                            <div className="col-lg-6 mt-5">
+                                <ul className="mt-5">
+                                    {locations && locations.map((location, i) =>
+                                        <li key={i} onClick={(e) => customHandleChange(location, "fm_location", values, setValues)}>{location.title}</li>
+                                    )}
+                                </ul>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <div className="col-lg-6 mt-5">
-                    <ul className="mt-5">
-                        {locations && locations.map((location, i) =>
-                            <li key={i} onClick={() => setActiveLocation(location.id)}>{location.title}</li>
-                        )}
-                    </ul>
-                </div>
-            </div>
+                    )}
+            </Formik>
         </section>
     )
 }
