@@ -4,6 +4,7 @@ import * as Yup from 'yup'
 import { useEffect, useState } from 'react'
 import { api } from '../lib/api'
 import { Form } from 'react-bootstrap'
+import dynamic from "next/dynamic";
 
 export default function BookingSection({ data }) {
 
@@ -26,6 +27,10 @@ export default function BookingSection({ data }) {
     function sleep(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
+
+    const MapWithNoSSR = dynamic(() => import("./map"), {
+        ssr: false
+    });
 
     const customHandleChange = async (value, name, values, setValues) => {
         // Check target value wheter to conditionally make new request
@@ -153,7 +158,7 @@ export default function BookingSection({ data }) {
                                             {/* {JSON.stringify(availRentObjects)} */}
 
                                             {/* BOOKING BUTTON */}
-                                            <button disabled={isSubmitting && true}  type="submit" className="btn btn-danger btn-block">Buchen {isSubmitting && (<div className="spinner-border spinner-border-sm"></div>)}</button>
+                                            <button disabled={isSubmitting && true} type="submit" className="btn btn-danger btn-block">Buchen {isSubmitting && (<div className="spinner-border spinner-border-sm"></div>)}</button>
                                             <div className="text-danger mt-2">{status && status}</div>
                                             {JSON.stringify(values)}
                                         </Form>
@@ -161,6 +166,9 @@ export default function BookingSection({ data }) {
                                 </div>
                             </div>
                             <div className="col-lg-6 mt-5">
+                                <div id="map">
+                                    <MapWithNoSSR />
+                                </div>
                                 <ul className="mt-5">
                                     {locations && locations.map((location, i) =>
                                         <li key={i} onClick={(e) => customHandleChange(location, "fm_location", values, setValues)}>
@@ -175,31 +183,3 @@ export default function BookingSection({ data }) {
         </section>
     )
 }
-
-
-
-
-    // const customTimeChange = (value, name, values, setValues) => {
-    //     values[name] = value
-    //     setValues(values)
-    //     if (values.fm_startTime && values.fm_endTime) {
-    //         // Create selected time range
-    //         const start = moment(`${values.fm_date} ${values.fm_startTime}`);
-    //         const end = moment(`${values.fm_date} ${values.fm_endTime}`);
-    //         const range = moment.range(start, end);
-
-    //         // Iterate bookings and check overlapping time ranges
-    //         const availRentObjects = rentObjects && rentObjects.filter((rentObject) => {
-    //             return rentObject.bookings.every(booking => {
-    //                 const start = moment(booking.start);
-    //                 const end = moment(booking.end);
-    //                 const book_range = moment.range(start, end);
-    //                 console.log(book_range.overlaps(range))
-    //                 if (range.overlaps(book_range)) { return false }
-    //                 return true
-    //             })
-    //         })
-    //         console.log(availRentObjects)
-    //         setRentObjects(availRentObjects)
-    //     }
-    // }
