@@ -30,6 +30,8 @@ class RentObject(models.Model):
 
 
 class Booking(models.Model):
+    user = models.ForeignKey(
+        'accounts.User', related_name="bookings", on_delete=models.PROTECT, null=True)
     rent_object = models.ForeignKey(
         RentObject, related_name="bookings", on_delete=models.PROTECT)
     start = models.DateTimeField()

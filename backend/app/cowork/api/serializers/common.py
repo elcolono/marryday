@@ -13,7 +13,7 @@ class LocationSerializer(serializers.ModelSerializer):
 class BookingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Booking
-        fields = ('start', 'end',)
+        fields = ('user', 'rent_object', 'start', 'end',)
 
 
 # RentObjects
@@ -22,4 +22,4 @@ class RentObjectSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = RentObject
-        fields = ('title', 'type', 'location', 'bookings',)
+        fields = ('id', 'title', 'type', 'location', 'bookings',)
