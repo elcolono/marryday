@@ -3,17 +3,12 @@ import { Formik, Field } from 'formik'
 import * as Yup from 'yup'
 import { useEffect, useState } from 'react'
 import { api } from '../lib/api'
-import Moment from 'moment';
-import { extendMoment } from 'moment-range'
 import { Form } from 'react-bootstrap'
 
 export default function BookingSection({ data }) {
 
     const [locations, setLocation] = useState([])
     const [rentObjects, setRentObjects] = useState([])
-    const [availRentObjects, setAvailRentObjects] = useState([])
-
-    const moment = extendMoment(Moment);
 
     useEffect(() => {
         if (locations.length == 0) {
@@ -48,31 +43,6 @@ export default function BookingSection({ data }) {
         }
     }
 
-    // const customTimeChange = (value, name, values, setValues) => {
-    //     values[name] = value
-    //     setValues(values)
-    //     if (values.fm_startTime && values.fm_endTime) {
-    //         // Create selected time range
-    //         const start = moment(`${values.fm_date} ${values.fm_startTime}`);
-    //         const end = moment(`${values.fm_date} ${values.fm_endTime}`);
-    //         const range = moment.range(start, end);
-
-    //         // Iterate bookings and check overlapping time ranges
-    //         const availRentObjects = rentObjects && rentObjects.filter((rentObject) => {
-    //             return rentObject.bookings.every(booking => {
-    //                 const start = moment(booking.start);
-    //                 const end = moment(booking.end);
-    //                 const book_range = moment.range(start, end);
-    //                 console.log(book_range.overlaps(range))
-    //                 if (range.overlaps(book_range)) { return false }
-    //                 return true
-    //             })
-    //         })
-    //         console.log(availRentObjects)
-    //         setRentObjects(availRentObjects)
-    //     }
-    // }
-
     return (
         <section id="intro_section">
             <Formik
@@ -84,10 +54,20 @@ export default function BookingSection({ data }) {
                     fm_startTime: `${new Date().getHours()}:${new Date().getMinutes()}`,
                     fm_duration: 60,
                 }}
-                onSubmit={(values, { setSubmitting, setStatus }) => {
+                onSubmit={async (values, { setSubmitting, setStatus }) => {
                     setStatus(false)
-                    setTimeout(() => {
-                    }, 400);
+                    setSubmitting(true)
+                    const data = {
+                        "rent_object": values.fm_rentObject,
+                        "start": `${values.fm_date}T${values.fm_startTime}Z`,
+                        "duration": values.fm_duration
+                    }
+                    try {
+                        const response = await api.post('/cowork/bookings/', data)
+                        setSubmitting(false)
+                    } catch (error) {
+                        console.log(error)
+                    }
                 }}
             >
                 {({
@@ -173,7 +153,7 @@ export default function BookingSection({ data }) {
                                             {/* {JSON.stringify(availRentObjects)} */}
 
                                             {/* BOOKING BUTTON */}
-                                            <button type="submit" className="btn btn-danger btn-block">Buchen</button>
+                                            <button disabled={isSubmitting && true}  type="submit" className="btn btn-danger btn-block">Buchen {isSubmitting && (<div className="spinner-border spinner-border-sm"></div>)}</button>
                                             <div className="text-danger mt-2">{status && status}</div>
                                             {JSON.stringify(values)}
                                         </Form>
@@ -195,3 +175,31 @@ export default function BookingSection({ data }) {
         </section>
     )
 }
+
+
+
+
+    // const customTimeChange = (value, name, values, setValues) => {
+    //     values[name] = value
+    //     setValues(values)
+    //     if (values.fm_startTime && values.fm_endTime) {
+    //         // Create selected time range
+    //         const start = moment(`${values.fm_date} ${values.fm_startTime}`);
+    //         const end = moment(`${values.fm_date} ${values.fm_endTime}`);
+    //         const range = moment.range(start, end);
+
+    //         // Iterate bookings and check overlapping time ranges
+    //         const availRentObjects = rentObjects && rentObjects.filter((rentObject) => {
+    //             return rentObject.bookings.every(booking => {
+    //                 const start = moment(booking.start);
+    //                 const end = moment(booking.end);
+    //                 const book_range = moment.range(start, end);
+    //                 console.log(book_range.overlaps(range))
+    //                 if (range.overlaps(book_range)) { return false }
+    //                 return true
+    //             })
+    //         })
+    //         console.log(availRentObjects)
+    //         setRentObjects(availRentObjects)
+    //     }
+    // }
