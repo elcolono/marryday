@@ -14,6 +14,8 @@ class Location(models.Model):
     address = models.CharField(max_length=150)
     postcode = models.CharField(max_length=50)
     city = models.CharField(max_length=150)
+    lat = models.DecimalField(decimal_places=4, max_digits=10, null=True)
+    lng = models.DecimalField(decimal_places=4, max_digits=10, null=True)
 
     def __str__(self):
         return self.title

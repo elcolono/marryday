@@ -9,7 +9,7 @@ class RentObjectInline(admin.TabularInline):
 
 class LocationAdmin(admin.ModelAdmin):
     search_fields = ('title', 'address', 'postcode', 'city')
-    list_display = ('title', 'address', 'postcode', 'city')
+    list_display = ('title', 'address', 'postcode', 'city', 'lat', 'lng',)
     list_filter = ('title', 'address', 'postcode', 'city')
     inlines = [RentObjectInline]
 

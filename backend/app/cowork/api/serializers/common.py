@@ -6,7 +6,7 @@ from ...models import RentObject, Booking, Location
 class LocationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Location
-        fields = ('id', 'title', 'address', 'postcode', 'city',)
+        fields = ('id', 'title', 'address', 'postcode', 'city', 'lat', 'lng',)
 
 
 # Bookings
