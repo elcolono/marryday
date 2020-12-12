@@ -58,6 +58,9 @@ export default function Header({ mainMenus, themeSettings }) {
                                         <Link href="signin">
                                             <a onClick={() => signout(() => Router.push('/signin'))} className="dropdown-item">Logout</a>
                                         </Link>
+                                        <Link href="booking">
+                                            <a className="dropdown-item">Buchen</a>
+                                        </Link>
                                     </div>
                                 </div>
                             </>
