@@ -8,11 +8,11 @@ import dynamic from "next/dynamic";
 
 export default function BookingSection({ data }) {
 
-    const [locations, setLocation] = useState([])
+    const [locations, setLocation] = useState(false)
     const [rentObjects, setRentObjects] = useState([])
 
     useEffect(() => {
-        if (locations.length == 0) {
+        if (!locations) {
             api.get('/cowork/locations/').then((response) => {
                 if (response.status == 200) {
                     setLocation(response.data);
@@ -167,7 +167,7 @@ export default function BookingSection({ data }) {
                             </div>
                             <div className="col-lg-6 mt-5">
                                 <div id="map">
-                                    <MapWithNoSSR />
+                                    <MapWithNoSSR locations={locations} />
                                 </div>
                                 <ul className="mt-5">
                                     {locations && locations.map((location, i) =>
