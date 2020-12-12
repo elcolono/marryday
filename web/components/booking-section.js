@@ -15,7 +15,6 @@ export default function BookingSection({ data }) {
     const [rentObjects, setRentObjects] = useState(false)
     const [rentObject, setRentObject] = useState(false)
 
-
     const [isLoading, setIsLoading] = useState(false)
 
     useEffect(() => {
@@ -41,18 +40,20 @@ export default function BookingSection({ data }) {
         }
     }, [location, objectType, date, startTime, duration])
 
-    async function handleSubmit() {
+    async function handleSubmit(e) {
+        e.preventDefault();
         setIsLoading(true)
         const data = {
-            "rent_object": values.fm_rentObject,
-            "start": `${values.fm_date}T${values.fm_startTime}Z`,
-            "duration": values.fm_duration
+            "rent_object": rentObject,
+            "start": `${date}T${startTime}Z`,
+            "duration": duration
         }
         try {
-            const response = await api.post('/cowork/bookings/', data)
+            await api.post('/cowork/bookings/', data)
             setIsLoading(false)
         } catch (error) {
             console.log(error)
+            setIsLoading(false)
         }
     }
 
@@ -120,7 +121,7 @@ export default function BookingSection({ data }) {
                                     {rentObjects && rentObjects.map((el, i) => (
                                         <FormGroup key={i} check>
                                             <Label check>
-                                                <Input value={`${rentObject.id}`} onChange={() => setRentObject(el.id)} checked={rentObject === `${el.id}`} type="radio" />{' '}
+                                                <Input value={`${rentObject}`} onChange={() => setRentObject(String(el.id))} checked={rentObject === `${el.id}`} type="radio" />{' '}
                                                 {el.title} ({el.bookings.map(booking => (`${booking.start} - ${booking.end}`))})
                                             </Label>
                                         </FormGroup>
@@ -134,9 +135,9 @@ export default function BookingSection({ data }) {
                     </div>
                 </div>
                 <div className="col-lg-6 mt-5">
-                    <div id="map">
+                    {/* <div id="map">
                         <MapWithNoSSR locations={locations} />
-                    </div>
+                    </div> */}
                     <ul className="mt-5">
                         {locations && locations.map((location, i) =>
                             <li key={i} onClick={() => setLocation(location)}>
