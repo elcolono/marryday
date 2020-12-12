@@ -2,13 +2,24 @@
 // const API_TOKEN = process.env.DATOCMS_API_TOKEN
 import Axios from 'axios';
 import { API_URL, API_SERVER_URL } from './constants'
+import Cookies from 'js-cookie'
+
+const setAuthHeader = (req) => {
+    const token = req ? req.getCookieFromReq(req, 'token') : Cookies.getJSON('token');
+    console.log(token)
+    if (token) {
+        return {
+            'authorization': `Token ${token}`,
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+        };
+    }
+    return undefined
+}
 
 export const api = Axios.create({
     baseURL: `${process.env.CLIENT_API_URL}/api/v1`,
-    headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-    }
+    headers: setAuthHeader()
 })
 
 export async function fetchAPI(url, { method, body } = {}) {
@@ -16,7 +27,7 @@ export async function fetchAPI(url, { method, body } = {}) {
         method: method,
         headers: {
             'Content-Type': 'application/json',
-            // Authorization: `Bearer ${API_TOKEN}`,
+            // Authorization: `Bearer ${ API_TOKEN }`,
         },
         body: JSON.stringify({
             ...body,
@@ -36,7 +47,7 @@ export async function fetchAPIwithSSR(url, { method } = {}) {
         method: method,
         headers: {
             'Content-Type': 'application/json',
-            // Authorization: `Bearer ${API_TOKEN}`,
+            // Authorization: `Bearer ${ API_TOKEN }`,
         },
         // body: JSON.stringify({
         //     query,
