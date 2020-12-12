@@ -82,19 +82,19 @@ export default function BookingSection({ data }) {
                                     <legend>Object Type</legend>
                                     <FormGroup check>
                                         <Label check>
-                                            <Input value={"desktop"} onChange={() => handleValueChange('desktop', 'objectType')} checked={objectType === 'desktop'} type="radio" />{' '}
+                                            <Input onChange={() => handleValueChange('desktop', 'objectType')} checked={objectType === 'desktop'} type="radio" />{' '}
                                             Desktop
                                         </Label>
                                     </FormGroup>
                                     <FormGroup check>
                                         <Label check>
-                                            <Input value={"phone"} onChange={() => handleValueChange('phone', 'objectType')} checked={objectType === 'phone'} type="radio" />{' '}
+                                            <Input onChange={() => handleValueChange('phone', 'objectType')} checked={objectType === 'phone'} type="radio" />{' '}
                                             Phone
                                         </Label>
                                     </FormGroup>
                                     <FormGroup check disabled>
                                         <Label check>
-                                            <Input value={"meeting"} onChange={() => handleValueChange('meeting', 'objectType')} checked={objectType === 'meeting'} type="radio" />{' '}
+                                            <Input onChange={() => handleValueChange('meeting', 'objectType')} checked={objectType === 'meeting'} type="radio" />{' '}
                                             Meeting
                                         </Label>
                                     </FormGroup>
@@ -121,7 +121,7 @@ export default function BookingSection({ data }) {
                                     {rentObjects && rentObjects.map((el, i) => (
                                         <FormGroup key={i} check>
                                             <Label check>
-                                                <Input value={`${rentObject}`} onChange={() => setRentObject(String(el.id))} checked={rentObject === `${el.id}`} type="radio" />{' '}
+                                                <Input onChange={() => setRentObject(String(el.id))} checked={rentObject === `${el.id}`} type="radio" />{' '}
                                                 {el.title} ({el.bookings.map(booking => (`${booking.start} - ${booking.end}`))})
                                             </Label>
                                         </FormGroup>
@@ -135,9 +135,9 @@ export default function BookingSection({ data }) {
                     </div>
                 </div>
                 <div className="col-lg-6 mt-5">
-                    {/* <div id="map">
+                    <div id="map">
                         <MapWithNoSSR locations={locations} />
-                    </div> */}
+                    </div>
                     <ul className="mt-5">
                         {locations && locations.map((location, i) =>
                             <li key={i} onClick={() => setLocation(location)}>
