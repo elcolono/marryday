@@ -57,11 +57,9 @@ export const signin = (email, password) => {
 export const signout = next => {
     removeCookie('token');
     removeLocalStorage('user');
-    next();
-
-    return api.post('/rest-auth/logout/')
+    api.post('/rest-auth/logout/')
         .then(response => {
-            console.log(response);
+            next();
         })
         .catch(e => console.log(err));
 };
