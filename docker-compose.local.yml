@@ -1,0 +1,67 @@
+version: '3'
+
+volumes:
+  pgdata:
+
+services:
+  backend:
+    build: ./backend
+    environment:
+      DJANGO_SETTINGS_MODULE: "core.settings.production"    # Directly defined in docker-compose because we must no need it in env and so in dev environment
+      PYTHONUNBUFFERED: 1
+      POSTGRES_DB_NAME: "${POSTGRES_DB_NAME}"
+      POSTGRES_DB_USER: "${POSTGRES_DB_USER}"
+      POSTGRES_DB_PASSWORD: "${POSTGRES_DB_PASSWORD}"
+      POSTGRES_DB_HOST: "${POSTGRES_DB_HOST}"
+      POSTGRES_DB_PORT: "${POSTGRES_DB_PORT}"
+      MAILCHIMP_API_KEY: "${MAILCHIMP_API_KEY}"
+      MAILCHIMP_DATA_CENTER: "${MAILCHIMP_DATA_CENTER}"
+      MAILCHIMP_EMAIL_LIST_ID: "${MAILCHIMP_EMAIL_LIST_ID}"
+    volumes:
+      - /statics/backend/static_files:/app/static
+      - /statics/backend/media_files:/app/media
+    expose:
+      - "8000"
+    restart: always
+    depends_on:
+      - db
+
+  db:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: "${POSTGRES_DB_USER}"
+      POSTGRES_PASSWORD: "${POSTGRES_DB_PASSWORD}"
+    # expose:
+    #   - "5432"
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  web:
+    build:
+      context: ./web
+      dockerfile: Dockerfile
+      args:
+        BASE_URL: "${BASE_URL}" # Pass argument during build - in the dockerfile this argument is set to env variables
+        BASE_SERVER_URL: "${BASE_SERVER_URL}" # Pass argument during build - in the dockerfile this argument is set to env variables
+    # ports:
+    #   - "3000:3000"
+    expose:
+      - "3000"
+    depends_on:
+      - backend
+
+  nginx:
+    build:
+      context: ./nginx/docker/local
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+      - "8000:8000"
+      - "3000:3000"
+    volumes:
+      - /statics/backend/static_files:/statics/backend/static_files/
+      - /statics/backend/media_files:/statics/backend/media_files/
+    depends_on:
+      - web
