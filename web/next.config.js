@@ -3,6 +3,6 @@
 // NO SECRETS OR API KEYS HERE
 module.exports = {
     env: {
-        CLIENT_API_URL: process.env.BASE_SERVER_URL || 'http://127.0.0.1:8000',
+        CLIENT_API_URL: process.env.BASE_SERVER_URL,
     },
 }

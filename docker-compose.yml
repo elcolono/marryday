@@ -9,16 +9,15 @@ services:
     environment:
       DJANGO_SETTINGS_MODULE: "core.settings.production"    # Directly defined in docker-compose because we must no need it in env and so in dev environment
       PYTHONUNBUFFERED: 1
-      POSTGRES_DB_NAME: "${POSTGRES_DB_NAME}"
-      POSTGRES_DB_USER: "${POSTGRES_DB_USER}"
+      POSTGRES_DB_NAME: "mowo_main_1"
+      POSTGRES_DB_USER: "postgres"
       POSTGRES_DB_PASSWORD: "${POSTGRES_DB_PASSWORD}"
-      POSTGRES_DB_HOST: "${POSTGRES_DB_HOST}"
-      POSTGRES_DB_PORT: "${POSTGRES_DB_PORT}"
+      POSTGRES_DB_HOST: "db"
+      POSTGRES_DB_PORT: "5432"
       MAILCHIMP_API_KEY: "${MAILCHIMP_API_KEY}"
-      MAILCHIMP_DATA_CENTER: "${MAILCHIMP_DATA_CENTER}"
-      MAILCHIMP_EMAIL_LIST_ID: "${MAILCHIMP_EMAIL_LIST_ID}"
+      MAILCHIMP_EMAIL_LIST_ID: "d224e7b68b"
+      MAILCHIMP_DATA_CENTER: "us7"
     volumes:
-      # - .:/backend
       - /statics/backend/static_files:/app/static
       - /statics/backend/media_files:/app/media
     expose:
@@ -30,38 +29,40 @@ services:
   db:
     image: postgres:latest
     environment:
-      POSTGRES_USER: "${POSTGRES_DB_USER}"
+      POSTGRES_USER: "posgtres"
       POSTGRES_PASSWORD: "${POSTGRES_DB_PASSWORD}"
-    # expose:
-    #   - "5432"
     ports:
       - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
 
+  web:
+    environment:
+      # Set an env in container for constants.js
+      BASE_SERVER_URL: "https://mowo.space"
+    build:
+      context: ./web
+      dockerfile: Dockerfile
+      args:
+        # Set as env during image building for next.config.js
+        BASE_URL: "http://backend:8000" # Pass argument during build - in the dockerfile this argument is set to env variables BUT NOT SET LATER AS CONTAINER ENV
+        BASE_SERVER_URL: "https://mowo.space" # Pass argument during build - in the dockerfile this argument is set to env variables
+    expose:
+      - "3000"
+    depends_on:
+      - backend
+
   nginx:
-    image: nginx:latest
+    build:
+      context: ./nginx/docker/prod
+      dockerfile: Dockerfile
     container_name: ng01
     ports:
       # - "8000:8000"
       - "80:80"
       - "443:443"
     volumes:
-      # - ./backend:/backend
       - /statics/backend/static_files:/statics/backend/static_files/
       - /statics/backend/media_files:/statics/backend/media_files/
-      - ./nginx:/etc/nginx/conf.d
     depends_on:
-      - backend
-
-  web:
-    build:
-      context: ./web
-      dockerfile: Dockerfile
-      args:
-        BASE_URL: "${BASE_URL}" # Pass argument during build - in the dockerfile this argument is set to env variables
-        BASE_SERVER_URL: "${BASE_SERVER_URL}" # Pass argument during build - in the dockerfile this argument is set to env variables
-    # ports:
-    #   - "80:3000"
-    expose:
-      - "3000"
+      - web
