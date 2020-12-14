@@ -1,4 +1,3 @@
-import { API_SERVER_URL } from '../lib/constants'
 import { Formik } from 'formik'
 import * as Yup from 'yup'
 import { signin, authenticate } from '../actions/auth'
@@ -108,7 +107,7 @@ export default function LoginSection({ data }) {
                         </div>
                     </div>
                 </div>
-                <div style={data.image ? { backgroundImage: `url(${API_SERVER_URL + data.image.url})` } : null} className="col-lg-6 banner inner-banner overlay-banner-ipad hero-about"></div>
+                <div style={data.image ? { backgroundImage: `url(${process.env.CLIENT_API_URL + data.image.url})` } : null} className="col-lg-6 banner inner-banner overlay-banner-ipad hero-about"></div>
             </div>
         </section>
     )

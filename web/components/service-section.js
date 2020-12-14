@@ -1,5 +1,3 @@
-import { API_SERVER_URL } from '../lib/constants'
-
 export default function ServiceSection({ data }) {
     return (
         <section className="section">
@@ -15,7 +13,7 @@ export default function ServiceSection({ data }) {
                         <div key={i} className="col-lg-4 list-bunch-item">
                             <span className="icon">
                                 {data.layout == "service_with_icon" && (<i className={`ion-md-${service.icon}`}></i>)}
-                                {data.layout == "service_with_image" && (<img src={API_SERVER_URL + service.image.url} alt=""></img>)}
+                                {data.layout == "service_with_image" && (<img src={process.env.CLIENT_API_URL + service.image.url} alt=""></img>)}
                             </span>
                             <h4 className="mt-3 mb-2">{service.heading}</h4>
                             <p>{service.description}</p>

@@ -1,4 +1,3 @@
-import { API_SERVER_URL } from '../lib/constants'
 import { Formik } from 'formik'
 import { fetchAPI } from '../lib/api';
 import Countdown from 'react-countdown';
@@ -116,7 +115,7 @@ export default function ComingSoonSection({ data }) {
                         </div>
                     </div>
                 </div>
-                <div style={data.image ? { backgroundImage: `url(${API_SERVER_URL + data.image.url})` } : null} className="col-lg-6 banner inner-banner overlay-banner-ipad hero-about"></div>
+                <div style={data.image ? { backgroundImage: `url(${process.env.CLIENT_API_URL + data.image.url})` } : null} className="col-lg-6 banner inner-banner overlay-banner-ipad hero-about"></div>
             </div>
         </section>
     )

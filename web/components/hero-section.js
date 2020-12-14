@@ -1,5 +1,3 @@
-import { API_SERVER_URL } from '../lib/constants'
-
 export default function HerSection({ data }) {
     return (
         <section id="intro_section">
@@ -20,7 +18,7 @@ export default function HerSection({ data }) {
                     {/* <!-- End | Inner Banner Content --> */}
                 </div>
                 {/* <!-- Inner Banner [[ Find at scss/frameworks/base/banner.scss ]] --> */}
-                <div style={data.image ? { backgroundImage: `url(${API_SERVER_URL + data.image.url})` } : null} className="col-lg-6 banner inner-banner overlay-banner-ipad hero-about"></div>
+                <div style={data.image ? { backgroundImage: `url(${process.env.CLIENT_API_URL + data.image.url})` } : null} className="col-lg-6 banner inner-banner overlay-banner-ipad hero-about"></div>
             </div>
         </section>
     )

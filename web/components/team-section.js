@@ -1,5 +1,3 @@
-import { API_SERVER_URL } from '../lib/constants'
-
 export default function TeamSection({ data }) {
     return (
         <section className="section">
@@ -12,7 +10,7 @@ export default function TeamSection({ data }) {
                 <div className="row list-bunch">
                     {data.members && data.members.map((member) => (
                         <div className="col-lg-3 col-sm-6 list-bunch-item">
-                            <img src={API_SERVER_URL + member.image.url} alt="" />
+                            <img src={process.env.CLIENT_API_URL + member.image.url} alt="" />
                             <h4 className="mb-1 mt-3">{member.name}</h4>
                             <p>{member.position}</p>
                         </div>

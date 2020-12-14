@@ -1,5 +1,3 @@
-import { API_SERVER_URL } from '../lib/constants'
-
 export default function PricingSection({ data }) {
     return (
         <section className="section">
@@ -13,7 +11,7 @@ export default function PricingSection({ data }) {
                     <div className="col-lg-3 pb-4">
                         {/* <h4 className="mb-3">Free Plan</h4> */}
                         <div className="mb-4" dangerouslySetInnerHTML={{ __html: data.description }}></div>
-                        <img src={API_SERVER_URL + data.image.url} alt=""></img>
+                        <img src={process.env.CLIENT_API_URL + data.image.url} alt=""></img>
                         {/* <a href="#" className="btn btn-danger">Register</a> */}
                     </div>
                     <div className="col-lg-9">

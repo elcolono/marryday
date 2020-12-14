@@ -1,5 +1,3 @@
-import { API_SERVER_URL } from '../lib/constants'
-
 export default function HeadingSection({ data, title }) {
     return (
         <section id="intro_section">
