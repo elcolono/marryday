@@ -15,6 +15,18 @@
             ],
             "django": true,
             "justMyCode": false
+        },
+        {
+            "type": "node",
+            "request": "attach",
+            "name": "Node: NextJS",
+            "sourceMapPathOverrides": {
+                "webpack:///./*": "${workspaceRoot}/web/*",
+            },
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "port": 9229
         }
     ]
 }
