@@ -3,7 +3,7 @@ version: '3'
 services:
 
   backend:
-    env_file: .env.dev
+    env_file: .env.testing
     environment:
       DJANGO_SETTINGS_MODULE: "core.settings.production"
       PYTHONUNBUFFERED: 1
@@ -17,7 +17,7 @@ services:
       MAILCHIMP_DATA_CENTER: "us7"
 
   db:
-    env_file: .env.dev
+    env_file: .env.testing
     environment:
       POSTGRES_USER: "posgtres"
       POSTGRES_PASSWORD: "${POSTGRES_DB_PASSWORD}"
@@ -25,19 +25,18 @@ services:
   web:
     environment:
       # Set an env in container
-      BASE_SERVER_URL: "https://dev.mowo.space"
+      BASE_SERVER_URL: "https://testing.mowo.space"
     build:
       context: ./web
       dockerfile: Dockerfile
       args:
         # Set as env during image building
         BASE_URL: "http://backend:8000"
-        BASE_SERVER_URL: "https://dev.mowo.space"
+        BASE_SERVER_URL: "https://testing.mowo.space"
 
   nginx:
-    build:
-      context: ./nginx/docker/local
-      dockerfile: Dockerfile
     ports:
       - "80:80"
       - "443:443"
+    volumes:
+      - ./nginx/testing:/etc/nginx/conf.d

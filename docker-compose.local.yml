@@ -35,9 +35,8 @@ services:
         BASE_SERVER_URL: "http://127.0.0.1"
 
   nginx:
-    build:
-      context: ./nginx/docker/local
-      dockerfile: Dockerfile
     ports:
       - "80:80"
       - "8000:8000"
+    volumes:
+      - ./nginx/local:/etc/nginx/conf.d

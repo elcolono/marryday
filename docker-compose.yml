@@ -2,6 +2,8 @@ version: '3'
 
 volumes:
   pgdata:
+  letsencrypt:
+
 
 services:
   backend:
@@ -53,9 +55,7 @@ services:
       - backend
 
   nginx:
-    build:
-      context: ./nginx/docker/prod
-      dockerfile: Dockerfile
+    image: nginx:latest
     container_name: ng01
     ports:
       # - "8000:8000"
@@ -64,5 +64,7 @@ services:
     volumes:
       - /statics/backend/static_files:/statics/backend/static_files/
       - /statics/backend/media_files:/statics/backend/media_files/
+      - letsencrypt:/etc/letsencrypt
+      - ./nginx:/etc/nginx/conf.d
     depends_on:
       - web
