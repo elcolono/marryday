@@ -25,14 +25,14 @@ services:
   web:
     environment:
       # Set an env in container
-      BASE_SERVER_URL: "http://127.0.0.1:8000"
+      BASE_SERVER_URL: "http://127.0.0.1"
     build:
       context: ./web
       dockerfile: Dockerfile
       args:
         # Set as env during image building
         BASE_URL: "http://backend:8000"
-        BASE_SERVER_URL: "http://127.0.0.1:8000"
+        BASE_SERVER_URL: "http://127.0.0.1"
 
   nginx:
     build:
