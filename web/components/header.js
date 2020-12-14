@@ -1,8 +1,8 @@
 import Link from 'next/link'
 import Router from 'next/router';
-import { isAuth, signout } from '../actions/auth'
+import { clientAuth, signout } from '../actions/auth'
 
-export default function Header({ mainMenus, themeSettings }) {
+export default function Header({ user, mainMenus, themeSettings }) {
 
     const handleMenuIconClicked = () => {
         javascript: void (0);
@@ -28,15 +28,18 @@ export default function Header({ mainMenus, themeSettings }) {
                                     </Link>
                                 </li>
                             ))}
-
+                            <li className="nav-item">
+                                <Link href="/booking">
+                                    <a className="nav-link">Booking</a>
+                                </Link>
+                            </li>
                         </ul>
                     </nav>
                     {/* <!-- End | Navigation --> */}
 
                     <ul className="navbar-nav ml-auto">
                         {/* <li className="nav-item"><a href="javascript:void(0);" data-toggle="modal" data-target="#sign_in">Login</a></li> */}
-
-                        {isAuth() && (
+                        {user.id && (
                             <>
                                 <Link href="/dashboard">
                                     <a>
@@ -45,14 +48,14 @@ export default function Header({ mainMenus, themeSettings }) {
                                                 <div class="avatar avatar-sm">
                                                     <img src="assets/images/user/32/user-1.jpg" class="retina" alt="" />
                                                 </div>
-                                                <div class="media-body pl-2 avatar-name d-none d-md-block">{isAuth().first_name} {isAuth().last_name}</div>
+                                                <div class="media-body pl-2 avatar-name d-none d-md-block">{user.first_name} {user.last_name}</div>
                                             </div>
                                         </li>
                                     </a>
                                 </Link>
                                 <div className="dropdown">
                                     <a className="icon-sm" href="javascript:void(0);" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i className="ion-md-more"></i>
+                                        <i className="ion-md-arrow-dropdown"></i>
                                     </a>
                                     <div className="dropdown-menu dropdown-menu-right">
                                         <Link href="signin">
@@ -64,24 +67,23 @@ export default function Header({ mainMenus, themeSettings }) {
                                     </div>
                                 </div>
                             </>
-
-
                         ) || (
-                                <li className="nav-item">
-                                    <Link href="/signin">
-                                        <a className="nav-link">Login</a>
-                                    </Link>
-                                </li>
+                                <>
+                                    <li className="nav-item">
+                                        <Link href="/signin">
+                                            <a className="nav-link">Login</a>
+                                        </Link>
+                                    </li>
+                                    {themeSettings.header_cta_text && (
+                                        <li className="nav-item">
+                                            <a href={themeSettings.header_cta_link} className="btn btn-pill btn-danger btn-icon">
+                                                <i className={themeSettings.header_cta_icon}></i>
+                                                <span>{themeSettings.header_cta_text}</span>
+                                            </a>
+                                        </li>
+                                    )}
+                                </>
                             )}
-                        {themeSettings.header_cta_text && (
-                            <li className="nav-item">
-                                <a href={themeSettings.header_cta_link} className="btn btn-pill btn-danger btn-icon">
-                                    <i className={themeSettings.header_cta_icon}></i>
-                                    <span>{themeSettings.header_cta_text}</span>
-                                </a>
-                            </li>
-                        )}
-
                     </ul>
                     <a onClick={handleMenuIconClicked} id="hamburger" className="d-xl-none"><span></span></a>
                 </div>

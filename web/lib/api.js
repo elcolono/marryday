@@ -3,10 +3,10 @@
 import Axios from 'axios';
 import { API_URL } from './constants'
 import Cookies from 'js-cookie'
+import { getCookieFromReq } from '../helpers/utils'
 
 const setAuthHeader = (req) => {
-    const token = req ? req.getCookieFromReq(req, 'token') : Cookies.getJSON('token');
-    console.log(token)
+    const token = req ? getCookieFromReq(req, 'token') : Cookies.getJSON('token');
     if (token) {
         return {
             'authorization': `Token ${token}`,
@@ -22,16 +22,15 @@ export const api = Axios.create({
     headers: setAuthHeader()
 })
 
-export async function fetchAPI(url, { method, body } = {}) {
-    const res = await fetch(process.env.CLIENT_API_URL + url, {
+
+export async function fetchAPIwithSSR(url, { method, req } = {}) {
+    const res = await fetch(API_URL + url, {
         method: method,
-        headers: {
-            'Content-Type': 'application/json',
-            // Authorization: `Bearer ${ API_TOKEN }`,
-        },
-        body: JSON.stringify({
-            ...body,
-        }),
+        headers: setAuthHeader(req)
+        // body: JSON.stringify({
+        //     query,
+        //     variables,
+        // }),
     })
     const json = await res.json()
 
@@ -42,17 +41,24 @@ export async function fetchAPI(url, { method, body } = {}) {
     return json
 }
 
-export async function fetchAPIwithSSR(url, { method } = {}) {
-    const res = await fetch(API_URL + url, {
+
+
+
+
+
+
+
+
+export async function fetchAPI(url, { method, body } = {}) {
+    const res = await fetch(process.env.CLIENT_API_URL + url, {
         method: method,
         headers: {
             'Content-Type': 'application/json',
             // Authorization: `Bearer ${ API_TOKEN }`,
         },
-        // body: JSON.stringify({
-        //     query,
-        //     variables,
-        // }),
+        body: JSON.stringify({
+            ...body,
+        }),
     })
     const json = await res.json()
 

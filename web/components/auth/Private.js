@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react'
 
 import Router from 'next/router';
-import { isAuth } from '../../actions/auth';
+import { clientAuth } from '../../actions/auth';
 
 const Private = ({ children }) => {
     useEffect(() => {
-        if (!isAuth()) {
+        if (!clientAuth()) {
             Router.push(`/signin`);
         }
     }, [])

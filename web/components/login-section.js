@@ -30,11 +30,11 @@ export default function LoginSection({ data }) {
                                             setStatus(false)
                                             setTimeout(() => {
                                                 signin(values.email, values.password).then((response) => {
-                                                    if (response.status == 400) {
-                                                        setStatus("Fehler bei Anmeldung")
-                                                    } else {
+                                                    if (response.status == 200 && response.data.key) {
                                                         setStatus("Erfolgreich angemeldet")
-                                                        authenticate(response.data, () => Router.push('/dashboard'))
+                                                        authenticate(response.data, () => Router.push('/booking'))
+                                                    } else {
+                                                        setStatus("Fehler bei Anmeldung")
                                                     }
                                                     setSubmitting(false);
                                                 })

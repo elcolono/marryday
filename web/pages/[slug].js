@@ -14,10 +14,10 @@ import ContactSection from '../components/contact-section'
 import FAQSection from '../components/faq-section'
 import LoginSection from '../components/login-section'
 
-export default function SubPage({ preview, allContent, mainMenus, flatMenus, themeSettings }) {
+export default function SubPage({ user, allContent, mainMenus, flatMenus, themeSettings }) {
   return (
     <>
-      <Layout preview={preview} mainMenus={mainMenus} flatMenus={flatMenus} themeSettings={themeSettings}>
+      <Layout user={user} mainMenus={mainMenus} flatMenus={flatMenus} themeSettings={themeSettings}>
         <Head>
           <title>{allContent.title} | {CMS_NAME}</title>
 
@@ -49,12 +49,13 @@ export default function SubPage({ preview, allContent, mainMenus, flatMenus, the
 }
 
 // If you export an async function called getStaticProps from a page, Next.js will pre-render this page at build time using the props returned by getStaticProps.
-export async function getServerSideProps({ params, preview = false }) {
+export async function getServerSideProps({ params, req }) {
+  const user = (await fetchAPIwithSSR('/api/v1/rest-auth/user/', { req: req })) ?? null
   const allContent = (await fetchAPIwithSSR(`/api/v2/pages/find/?html_path=${params.slug}`, { method: 'GET' })) ?? []
   const mainMenus = (await fetchAPIwithSSR('/api/main-menus', { method: 'GET' })) ?? []
   const flatMenus = (await fetchAPIwithSSR('/api/flat-menus', { method: 'GET' })) ?? []
   const themeSettings = (await fetchAPIwithSSR('/api/theme-settings', { method: 'GET' })) ?? []
   return {
-    props: { preview, allContent, mainMenus, flatMenus, themeSettings },
+    props: { user, allContent, mainMenus, flatMenus, themeSettings },
   }
 }
