@@ -342,8 +342,7 @@ export default function Index({ user, mainMenus, flatMenus, themeSettings }) {
 }
 
 // If you export an async function called getStaticProps from a page, Next.js will pre-render this page at build time using the props returned by getStaticProps.
-export async function getServerSideProps(ctx) {
-    const { req } = ctx;
+export async function getServerSideProps({ req }) {
     const user = (await fetchAPIwithSSR('/api/v1/rest-auth/user/', { req: req })) ?? null
     const mainMenus = (await fetchAPIwithSSR('/api/main-menus', { method: 'GET' })) ?? []
     const flatMenus = (await fetchAPIwithSSR('/api/flat-menus', { method: 'GET' })) ?? []
