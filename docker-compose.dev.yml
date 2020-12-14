@@ -1,20 +1,43 @@
 version: '3'
 
 services:
+
+  backend:
+    env_file: .env.dev
+    environment:
+      DJANGO_SETTINGS_MODULE: "core.settings.production"
+      PYTHONUNBUFFERED: 1
+      POSTGRES_DB_NAME: "mowo_main_1"
+      POSTGRES_DB_USER: "postgres"
+      POSTGRES_DB_PASSWORD: "${POSTGRES_DB_PASSWORD}"
+      POSTGRES_DB_HOST: "db"
+      POSTGRES_DB_PORT: "5432"
+      MAILCHIMP_API_KEY: "${MAILCHIMP_API_KEY}"
+      MAILCHIMP_EMAIL_LIST_ID: "d224e7b68b"
+      MAILCHIMP_DATA_CENTER: "us7"
+
+  db:
+    env_file: .env.dev
+    environment:
+      POSTGRES_USER: "posgtres"
+      POSTGRES_PASSWORD: "${POSTGRES_DB_PASSWORD}"
       
   web:
     environment:
-      # Set an env in container for constants.js
+      # Set an env in container
       BASE_SERVER_URL: "https://dev.mowo.space"
     build:
       context: ./web
       dockerfile: Dockerfile
       args:
-        # Set as env during image building for next.config.js
+        # Set as env during image building
         BASE_URL: "http://backend:8000"
         BASE_SERVER_URL: "https://dev.mowo.space"
 
   nginx:
     build:
-      context: ./nginx/docker/dev
+      context: ./nginx/docker/local
       dockerfile: Dockerfile
+    ports:
+      - "80:80"
+      - "443:443"
