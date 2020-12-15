@@ -4,7 +4,6 @@ volumes:
   pgdata:
   letsencrypt:
 
-
 services:
   backend:
     build: ./backend
@@ -39,16 +38,14 @@ services:
       - pgdata:/var/lib/postgresql/data
 
   web:
-    environment:
-      # Set an env in container for constants.js
-      BASE_SERVER_URL: "https://mowo.space"
     build:
       context: ./web
       dockerfile: Dockerfile
       args:
         # Set as env during image building for next.config.js
-        BASE_URL: "http://backend:8000" # Pass argument during build - in the dockerfile this argument is set to env variables BUT NOT SET LATER AS CONTAINER ENV
-        BASE_SERVER_URL: "https://mowo.space" # Pass argument during build - in the dockerfile this argument is set to env variables
+        # Pass argument during build - in the dockerfile this argument is set to env variables BUT NOT SET LATER AS CONTAINER ENV
+        BASE_URL: "http://backend:8000" 
+        BASE_SERVER_URL: "http://127.0.0.1"
     expose:
       - "3000"
     depends_on:
@@ -58,13 +55,12 @@ services:
     image: nginx:latest
     container_name: ng01
     ports:
-      # - "8000:8000"
       - "80:80"
-      - "443:443"
+      - "8000:8000"
     volumes:
       - /statics/backend/static_files:/statics/backend/static_files/
       - /statics/backend/media_files:/statics/backend/media_files/
       - letsencrypt:/etc/letsencrypt
-      - ./nginx:/etc/nginx/conf.d
+      - ./nginx/local:/etc/nginx/conf.d
     depends_on:
       - web
