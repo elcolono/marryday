@@ -3,13 +3,13 @@ version: '3'
 services:
 
   backend:
-    env_file: .env.testing
+    env_file: .env.production
     environment:
       POSTGRES_DB_PASSWORD: "${POSTGRES_DB_PASSWORD}"
       MAILCHIMP_API_KEY: "${MAILCHIMP_API_KEY}"
 
   db:
-    env_file: .env.testing
+    env_file: .env.production
     environment:
       POSTGRES_PASSWORD: "${POSTGRES_DB_PASSWORD}"
       
