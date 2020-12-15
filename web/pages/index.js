@@ -11,7 +11,6 @@ import TeamSection from '../components/team-section'
 import HeadingSection from '../components/heading-section'
 import ComingSoonSection from '../components/coming-soon-section'
 import FAQSection from '../components/faq-section'
-import BookingSection from '../components/booking-section'
 
 export default function Index({ user, allContent, mainMenus, flatMenus, themeSettings }) {
   return (
@@ -33,7 +32,6 @@ export default function Index({ user, allContent, mainMenus, flatMenus, themeSet
           if (section.type == 'team_section_block') return <TeamSection key={i} data={section.value} />
           if (section.type == 'comingsoon_section_block') return <ComingSoonSection key={i} data={section.value} />
           if (section.type == 'faq_section_block') return <FAQSection key={i} data={section.value} />
-          if (section.type == 'booking_section_block') return <BookingSection key={i} data={section.value} />
         })}
         {/* {JSON.stringify(allContent.items[0].content)} */}
         {/* {JSON.stringify(mainMenus[0].menu_items)} */}
