@@ -28,11 +28,6 @@ export default function Header({ user, mainMenus, themeSettings }) {
                                     </Link>
                                 </li>
                             ))}
-                            <li className="nav-item">
-                                <Link href="/booking">
-                                    <a className="nav-link">Booking</a>
-                                </Link>
-                            </li>
                         </ul>
                     </nav>
                     {/* <!-- End | Navigation --> */}

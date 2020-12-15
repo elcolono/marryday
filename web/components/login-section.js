@@ -1,4 +1,4 @@
-import { Formik } from 'formik'
+import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
 import { signin, authenticate } from '../actions/auth'
 import Router from 'next/router'
@@ -52,7 +52,7 @@ export default function LoginSection({ data }) {
                                             status,
                                             /* and other goodies */
                                         }) => (
-                                                <form onSubmit={handleSubmit} className="pt-3">
+                                                <Form onSubmit={handleSubmit} className="pt-3">
                                                     <div className="form-group">
                                                         <label htmlFor="email" className="form-control-label">Email</label>
                                                         <input
@@ -97,9 +97,9 @@ export default function LoginSection({ data }) {
                                                         </div>
                                                         <a href="#" className="link" data-dismiss="modal" data-toggle="modal" data-target="#forgot">Forgot Password?</a>
                                                     </div>
-                                                    <button disabled={isSubmitting && true} type="submit" className="btn btn-danger btn-block">Sign in {isSubmitting && (<div className="spinner-border spinner-border-sm"></div>)}</button>
+                                                    <button disabled={isSubmitting && true} type="submit" className="btn btn-danger btn-block">Jetzt anmelden {isSubmitting && (<div className="spinner-border spinner-border-sm"></div>)}</button>
                                                     <div className="text-danger mt-2">{status && status}</div>
-                                                </form>
+                                                </Form>
                                             )}
                                     </Formik>
                                 </div>

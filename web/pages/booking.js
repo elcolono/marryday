@@ -91,7 +91,8 @@ export default function Booking({ user, mainMenus, flatMenus, themeSettings }) {
                                     <div className="row">
                                         <div className="col-md-10">
                                             <h1 className="intro-section-title">Ups.</h1>
-                                            <div> Bitte melden Sie sich an</div>
+                                            <div>Sie sind leider nicht angemeldet. Wenn Sie eine Buchung durchführen möchten melden Sie sich bitte an.</div>
+                                            <a href="/signin" class="mt-4 btn btn-pill btn-danger"><span>Jetzt anmelden</span></a>
                                         </div>
                                     </div>
                                 </div>

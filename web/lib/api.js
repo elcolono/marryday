@@ -6,7 +6,7 @@ import Cookies from 'js-cookie'
 import { getCookieFromReq } from '../helpers/utils'
 
 const setAuthHeader = (req) => {
-    const token = req ? getCookieFromReq(req, 'token') : Cookies.getJSON('token');
+    const token = req ? getCookieFromReq(req, 'token') : Cookies.get('token');
     if (token) {
         return {
             'authorization': `Token ${token}`,
