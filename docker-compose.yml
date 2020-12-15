@@ -56,7 +56,6 @@ services:
     container_name: ng01
     ports:
       - "80:80"
-      - "8000:8000"
     volumes:
       - /statics/backend/static_files:/statics/backend/static_files/
       - /statics/backend/media_files:/statics/backend/media_files/
