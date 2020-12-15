@@ -1,16 +1,12 @@
-export const getCookieFromReq = (req, cookieKey) => {
-    const cookie = req.headers && req.headers.cookie.split(';').find(c => c.trim().startsWith(`${cookieKey}=`));
+import Cookies from 'cookies'
 
+export const getCookieFromReq = (req) => {
+    // const cookie = req.headers && req.headers.cookie.split(';').find(c => c.trim().startsWith(`${cookieKey}=`));
+    // Create a cookies instance
+    const cookies = new Cookies(req)
+    // Get a cookie
+    const cookie = cookies.get('token')
     if (!cookie) { return undefined };
 
-    return cookie.split('=')[1];
-}
-
-
-export const shortenText = (text, maxLength = 124) => {
-    if (text && text.length > maxLength) {
-        return `${text.substring(0, maxLength)} ...`;
-    }
-
-    return text;
+    return cookie
 }
