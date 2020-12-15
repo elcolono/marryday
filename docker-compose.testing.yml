@@ -23,9 +23,6 @@ services:
       POSTGRES_PASSWORD: "${POSTGRES_DB_PASSWORD}"
       
   web:
-    environment:
-      # Set an env in container
-      BASE_SERVER_URL: "https://testing.mowo.space"
     build:
       context: ./web
       dockerfile: Dockerfile
