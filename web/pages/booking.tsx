@@ -6,6 +6,7 @@ import { Location, RentObject } from '../lib/interfaces'
 
 import dynamic from "next/dynamic";
 
+import CustomDatePicker from '../components/custom-datepicker'
 import { Form, FormGroup, Label, Input, Spinner, Button } from "reactstrap";
 
 import Layout from '../components/layout'
@@ -163,24 +164,9 @@ export default function Booking({ user, mainMenus, flatMenus, themeSettings }) {
                                                     </div>
                                                 </div>
 
-                                                {/* <FormGroup check>
-                                                    <Label check>
-                                                        <Input onChange={() => handleValueChange('desktop', 'objectType')} checked={objectType === 'desktop'} type="radio" />{' '}
-                                        Desktop
-                                    </Label>
-                                                </FormGroup>
-                                                <FormGroup check>
-                                                    <Label check>
-                                                        <Input onChange={() => handleValueChange('phone', 'objectType')} checked={objectType === 'phone'} type="radio" />{' '}
-                                        Phone
-                                    </Label>
-                                                </FormGroup>
-                                                <FormGroup check disabled>
-                                                    <Label check>
-                                                        <Input onChange={() => handleValueChange('meeting', 'objectType')} checked={objectType === 'meeting'} type="radio" />{' '}
-                                        Meeting
-                                    </Label>
-                                                </FormGroup> */}
+                                                <CustomDatePicker />
+
+
                                             </FormGroup>
 
                                             <FormGroup>

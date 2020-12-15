@@ -8,9 +8,13 @@
     "start": "next start"
   },
   "dependencies": {
+    "@date-io/date-fns": "1.x",
+    "@material-ui/core": "^4.11.2",
+    "@material-ui/pickers": "^3.2.10",
     "axios": "^0.21.0",
     "bootstrap": "^4.5.3",
     "cookies": "^0.8.0",
+    "date-fns": "^2.16.1",
     "fontfaceobserver": "^2.1.0",
     "formik": "^2.2.5",
     "js-cookie": "^2.2.1",
