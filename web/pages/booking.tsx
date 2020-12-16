@@ -6,7 +6,6 @@ import { Location, RentObject } from '../lib/interfaces'
 
 import dynamic from "next/dynamic";
 
-import CustomDatePicker from '../components/custom-datepicker'
 import { Form, FormGroup, Label, Input, Spinner, Button } from "reactstrap";
 
 import Layout from '../components/layout'
@@ -84,6 +83,11 @@ export default function Booking({ user, mainMenus, flatMenus, themeSettings }) {
         ssr: false
     });
 
+    const CustomDatePickerWithNoSSR = dynamic(() => import("../components/custom-datepicker"), {
+        ssr: false
+    });
+
+
     return (
         <Layout user={user} mainMenus={mainMenus} flatMenus={flatMenus} themeSettings={themeSettings}>
             <Head>
@@ -132,7 +136,7 @@ export default function Booking({ user, mainMenus, flatMenus, themeSettings }) {
                                         <h1 className="intro-section-title">{location && location.title}</h1>
                                         <Form onSubmit={handleSubmit} className="pt-3">
                                             <FormGroup tag="fieldset">
-                                                <legend>Object Type</legend>
+                                                {/* <legend>Object Type</legend> */}
 
                                                 <div className="row">
                                                     <div className="col-md-4" onClick={() => handleValueChange('desktop', 'objectType')} >
@@ -163,9 +167,7 @@ export default function Booking({ user, mainMenus, flatMenus, themeSettings }) {
                                                         </div>
                                                     </div>
                                                 </div>
-
-                                                <CustomDatePicker />
-
+                                                <CustomDatePickerWithNoSSR />
 
                                             </FormGroup>
 
