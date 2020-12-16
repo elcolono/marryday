@@ -9,7 +9,11 @@ export const signin = (email, password) => {
         .then(response => {
             return response;
         })
-        .catch(e => e.response);
+        .catch((e) => {
+            Cookies.remove('token');
+            localStorage.removeItem('user');
+            return e.response
+        });
 };
 
 export const signout = next => {
@@ -17,9 +21,10 @@ export const signout = next => {
     localStorage.removeItem('user');
     api.post('/rest-auth/logout/')
         .then(response => {
+            api.delete;
             next();
         })
-        .catch(e => console.log(err));
+        .catch(e => console.log(e.response));
 };
 
 // autheticate user by pass data to cookie and localstorage

@@ -3,7 +3,7 @@ import format from "date-fns/format";
 import isValid from "date-fns/isValid";
 import isSameDay from "date-fns/isSameDay";
 import endOfWeek from "date-fns/endOfWeek";
-import React, { PureComponent } from "react";
+import React, { useState } from "react";
 import startOfWeek from "date-fns/startOfWeek";
 import isWithinInterval from "date-fns/isWithinInterval";
 import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
@@ -13,16 +13,19 @@ import { makeJSDateObject } from '../helpers/utils';
 import { IconButton, withStyles } from "@material-ui/core";
 import DateFnsUtils from '@date-io/date-fns'; // choose your lib
 
-class CustomElements extends PureComponent {
-  state = {
-    selectedDate: new Date(),
+const CustomElements = ({ classes }) => {
+
+  const [selectedDate, setSelectedDate] = useState(new Date())
+  const [start, setStart] = useState(
+    startOfWeek(makeJSDateObject(selectedDate ? selectedDate : new Date()))
+  )
+
+  const handleWeekChange = selectedDate => {
+    setSelectedDate(selectedDate);
+    setStart(startOfWeek(selectedDate));
   };
 
-  handleWeekChange = date => {
-    this.setState({ selectedDate: startOfWeek(makeJSDateObject(date)) });
-  };
-
-  formatWeekSelectLabel = (date, invalidLabel) => {
+  const formatWeekSelectLabel = (date, invalidLabel) => {
     let dateClone = makeJSDateObject(date);
 
     return dateClone && isValid(dateClone)
@@ -30,8 +33,7 @@ class CustomElements extends PureComponent {
       : invalidLabel;
   };
 
-  renderWrappedWeekDay = (date, selectedDate, dayInCurrentMonth) => {
-    const { classes } = this.props;
+  const renderWrappedWeekDay = (date, selectedDate, dayInCurrentMonth) => {
     let dateClone = makeJSDateObject(date);
     let selectedDateClone = makeJSDateObject(selectedDate);
 
@@ -62,22 +64,40 @@ class CustomElements extends PureComponent {
     );
   };
 
-  render() {
-    const { selectedDate } = this.state;
+  const handleDayClick = (e) => {
+    const selectedDate = new Date(e.target.dataset.value)
+    setSelectedDate(selectedDate)
+    setStart(startOfWeek(selectedDate));
+  }
 
-    return (
+  const WeekDayGrid = () => {
+    var weekDay = start || startOfWeek(makeJSDateObject(new Date()));
+    let weekDays = [];
+    for (let i = 0; i < 7; i++) {
+      weekDays.push(
+        <div key={i} data-value={weekDay.toLocaleDateString()} onClick={handleDayClick}> {weekDay.toLocaleDateString()}</div>
+      )
+      weekDay.setDate(weekDay.getDate() + 1);
+    }
+    return <div>{weekDays}</div>;
+  }
+
+
+  return (
+    <>
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
         <DatePicker
           label="Week picker"
           value={selectedDate}
-          onChange={this.handleWeekChange}
-          renderDay={this.renderWrappedWeekDay}
-          labelFunc={this.formatWeekSelectLabel}
+          onChange={handleWeekChange}
+          renderDay={renderWrappedWeekDay}
+        // labelFunc={formatWeekSelectLabel}
         />
       </MuiPickersUtilsProvider>
+      <WeekDayGrid />
+    </>
+  );
 
-    );
-  }
 }
 
 const styles = createStyles(theme => ({

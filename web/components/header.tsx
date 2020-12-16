@@ -38,12 +38,12 @@ export default function Header({ user, mainMenus, themeSettings }) {
                             <>
                                 <Link href="/dashboard">
                                     <a>
-                                        <li class="nav-item">
-                                            <div class="media align-items-center">
-                                                <div class="avatar avatar-sm">
-                                                    <img src="assets/images/user/32/user-1.jpg" class="retina" alt="" />
+                                        <li className="nav-item">
+                                            <div className="media align-items-center">
+                                                <div className="avatar avatar-sm">
+                                                    <img src="assets/images/user/32/user-1.jpg" className="retina" alt="" />
                                                 </div>
-                                                <div class="media-body pl-2 avatar-name d-none d-md-block">{user.first_name} {user.last_name}</div>
+                                                <div className="media-body pl-2 avatar-name d-none d-md-block">{user.first_name} {user.last_name}</div>
                                             </div>
                                         </li>
                                     </a>

@@ -1,6 +1,7 @@
 import { Formik } from 'formik'
 import { fetchAPI } from '../lib/api';
 import Countdown from 'react-countdown';
+import * as Yup from 'yup'
 
 export default function ComingSoonSection({ data }) {
 
@@ -16,21 +17,21 @@ export default function ComingSoonSection({ data }) {
             // Render a countdown
             return (
                 <div id="countdown">
-                    <div class="timer-wrapper">
-                        <div class="timer-data">{days}</div>
-                        <span class="timer-text">Tage</span>
+                    <div className="timer-wrapper">
+                        <div className="timer-data">{days}</div>
+                        <span className="timer-text">Tage</span>
                     </div>
-                    <div class="timer-wrapper">
-                        <div class="timer-data">{hours}</div>
-                        <span class="timer-text">Stunden</span>
+                    <div className="timer-wrapper">
+                        <div className="timer-data">{hours}</div>
+                        <span className="timer-text">Stunden</span>
                     </div>
-                    <div class="timer-wrapper">
-                        <div class="timer-data">{minutes}</div>
-                        <span class="timer-text">Minuten</span>
+                    <div className="timer-wrapper">
+                        <div className="timer-data">{minutes}</div>
+                        <span className="timer-text">Minuten</span>
                     </div>
-                    <div class="timer-wrapper">
-                        <div class="timer-data">{seconds}</div>
-                        <span class="timer-text">Sekunden</span>
+                    <div className="timer-wrapper">
+                        <div className="timer-data">{seconds}</div>
+                        <span className="timer-text">Sekunden</span>
                     </div>
                 </div>
             );
@@ -50,17 +51,11 @@ export default function ComingSoonSection({ data }) {
 
                                     <Formik
                                         initialValues={{ email: '' }}
-                                        validate={(values) => {
-                                            const errors = {};
-                                            if (!values.email) {
-                                                errors.email = 'Bitte ausfüllen';
-                                            } else if (
-                                                !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
-                                            ) {
-                                                errors.email = 'Ungültige Email';
-                                            }
-                                            return errors;
-                                        }}
+                                        validationSchema={Yup.object({
+                                            email: Yup.string()
+                                                .email('Ungültige Email Adresse')
+                                                .required('Erforderlich'),
+                                        })}
                                         onSubmit={(values, { setSubmitting, setStatus }) => {
                                             setStatus(false)
                                             setTimeout(() => {
@@ -86,25 +81,25 @@ export default function ComingSoonSection({ data }) {
                                             status,
                                             /* and other goodies */
                                         }) => (
-                                                <form onSubmit={handleSubmit}>
-                                                    <div className="form-control-icon form-control-icon_right">
-                                                        <input
-                                                            className="form-control mt-3"
-                                                            placeholder="Email Adresse"
-                                                            type="email"
-                                                            name="email"
-                                                            onChange={handleChange}
-                                                            onBlur={handleBlur}
-                                                            value={values.email}
-                                                        />
-                                                        <button type="submit" disabled={isSubmitting} className="form-control-icon_wrapper">
-                                                            {isSubmitting && (<div className="spinner-border spinner-border-sm"></div>) || (<span><i className="ion-md-arrow-forward"></i></span>)}
-                                                        </button>
-                                                        <div className="text-danger mt-2">{errors.email && touched.email && errors.email}</div>
-                                                        <div className="text-danger mt-2">{status && status}</div>
-                                                    </div>
-                                                </form>
-                                            )}
+                                            <form onSubmit={handleSubmit}>
+                                                <div className="form-control-icon form-control-icon_right">
+                                                    <input
+                                                        className="form-control mt-3"
+                                                        placeholder="Email Adresse"
+                                                        type="email"
+                                                        name="email"
+                                                        onChange={handleChange}
+                                                        onBlur={handleBlur}
+                                                        value={values.email}
+                                                    />
+                                                    <button type="submit" disabled={isSubmitting} className="form-control-icon_wrapper">
+                                                        {isSubmitting && (<div className="spinner-border spinner-border-sm"></div>) || (<span><i className="ion-md-arrow-forward"></i></span>)}
+                                                    </button>
+                                                    <div className="text-danger mt-2">{errors.email && touched.email && errors.email}</div>
+                                                    <div className="text-danger mt-2">{status && status}</div>
+                                                </div>
+                                            </form>
+                                        )}
                                     </Formik>
                                     <Countdown
                                         date={new Date(data.timer)}
