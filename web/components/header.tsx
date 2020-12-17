@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import Router from 'next/router';
-import { clientAuth, signout } from '../actions/auth'
+import { signout } from '../actions/auth'
 
 export default function Header({ user, mainMenus, themeSettings }) {
 

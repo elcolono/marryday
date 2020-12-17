@@ -18,7 +18,7 @@ export default function Booking({ user, mainMenus, flatMenus, themeSettings }) {
     const [location, setLocation] = useState<Location>(undefined)
     const [objectType, setObjectType] = useState('desktop')
     const [startTime, setStartTime] = useState(`${new Date().getHours()}:${new Date().getMinutes()}`)
-    const [date, setDate] = useState('2020-12-09')
+    const [date, setDate] = useState(new Date())
     const [duration, setDuration] = useState(60)
     const [rentObjects, setRentObjects] = useState<Array<RentObject>>(undefined)
     const [rentObject, setRentObject] = useState("")
@@ -140,20 +140,20 @@ export default function Booking({ user, mainMenus, flatMenus, themeSettings }) {
 
                                                 <div className="row">
                                                     <div className="col-md-4" onClick={() => handleValueChange('desktop', 'objectType')} >
-                                                        <div className="card overflow-hidden dashboard--card bg-danger text-white border-0">
+                                                        <div className="card overflow-hidden dashboard--card">
                                                             <div className="dashboard--card__icon"><i className="ion-md-list"></i></div>
                                                             <div className="card-body">
-                                                                <h2 className="mb-0 text-white">Desktop</h2>
-                                                                <p>Total Listing</p>
+                                                                <h2 className="mb-0">Desktop</h2>
+                                                                <p>Service</p>
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div className="col-md-4" onClick={() => handleValueChange('phone', 'objectType')}>
-                                                        <div className="card overflow-hidden dashboard--card bg-warning border-0">
+                                                        <div className="card overflow-hidden dashboard--card">
                                                             <div className="dashboard--card__icon"><i className="ion-md-star"></i></div>
                                                             <div className="card-body">
                                                                 <h2 className="mb-0">Phone</h2>
-                                                                <p>Total Reviews</p>
+                                                                <p>Service</p>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -162,7 +162,7 @@ export default function Booking({ user, mainMenus, flatMenus, themeSettings }) {
                                                             <div className="dashboard--card__icon"><i className="ion-md-bookmark"></i></div>
                                                             <div className="card-body">
                                                                 <h2 className="mb-0">Meeting</h2>
-                                                                <p>Total Bookmarked</p>
+                                                                <p>Service</p>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -171,10 +171,10 @@ export default function Booking({ user, mainMenus, flatMenus, themeSettings }) {
 
                                             </FormGroup>
 
-                                            <FormGroup>
+                                            {/* <FormGroup>
                                                 <Label>Date</Label>
                                                 <Input value={date} onChange={(e) => handleValueChange(e.target.value, 'date')} type="date" />
-                                            </FormGroup>
+                                            </FormGroup> */}
 
                                             <FormGroup>
                                                 <Label>Time</Label>

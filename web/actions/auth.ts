@@ -19,9 +19,9 @@ export const signin = (email, password) => {
 export const signout = next => {
     Cookies.remove('token');
     localStorage.removeItem('user');
+    api.delete;
     api.post('/rest-auth/logout/')
         .then(response => {
-            api.delete;
             next();
         })
         .catch(e => console.log(e.response));

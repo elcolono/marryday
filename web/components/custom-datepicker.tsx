@@ -13,11 +13,14 @@ import { makeJSDateObject } from '../helpers/utils';
 import { IconButton, withStyles } from "@material-ui/core";
 import DateFnsUtils from '@date-io/date-fns'; // choose your lib
 
+
+// TODO: Datepicker gehört und Weekday GRId gehören getrennt
+
 const CustomElements = ({ classes }) => {
 
   const [selectedDate, setSelectedDate] = useState(new Date())
   const [start, setStart] = useState(
-    startOfWeek(makeJSDateObject(selectedDate ? selectedDate : new Date()))
+    startOfWeek(makeJSDateObject(selectedDate))
   )
 
   const handleWeekChange = selectedDate => {
@@ -75,11 +78,15 @@ const CustomElements = ({ classes }) => {
     let weekDays = [];
     for (let i = 0; i < 7; i++) {
       weekDays.push(
-        <div key={i} data-value={weekDay.toLocaleDateString()} onClick={handleDayClick}> {weekDay.toLocaleDateString()}</div>
+        <div className="col card py-2 m-1" key={i} data-value={weekDay.toLocaleDateString()} onClick={handleDayClick}>
+          {/* {weekDay.toLocaleDateString()} */}
+          {format(weekDay, 'd')}
+          {format(weekDay, 'iii')}
+        </div>
       )
       weekDay.setDate(weekDay.getDate() + 1);
     }
-    return <div>{weekDays}</div>;
+    return <div className="row">{weekDays}</div>;
   }
 
 
