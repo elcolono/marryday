@@ -1,9 +1,8 @@
 import clsx from "clsx";
 import format from "date-fns/format";
-import isValid from "date-fns/isValid";
 import isSameDay from "date-fns/isSameDay";
 import endOfWeek from "date-fns/endOfWeek";
-import React, { useState } from "react";
+import React from "react";
 import startOfWeek from "date-fns/startOfWeek";
 import isWithinInterval from "date-fns/isWithinInterval";
 import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
@@ -16,25 +15,15 @@ import DateFnsUtils from '@date-io/date-fns'; // choose your lib
 
 // TODO: Datepicker gehört und Weekday GRId gehören getrennt
 
-const CustomElements = ({ classes }) => {
+const CustomElements = ({ classes, selectedDate, handleWeekChange }) => {
 
-  const [selectedDate, setSelectedDate] = useState(new Date())
-  const [start, setStart] = useState(
-    startOfWeek(makeJSDateObject(selectedDate))
-  )
+  // const formatWeekSelectLabel = (date, invalidLabel) => {
+  //   let dateClone = makeJSDateObject(date);
 
-  const handleWeekChange = selectedDate => {
-    setSelectedDate(selectedDate);
-    setStart(startOfWeek(selectedDate));
-  };
-
-  const formatWeekSelectLabel = (date, invalidLabel) => {
-    let dateClone = makeJSDateObject(date);
-
-    return dateClone && isValid(dateClone)
-      ? `Week of ${format(startOfWeek(dateClone), "MMM do")}`
-      : invalidLabel;
-  };
+  //   return dateClone && isValid(dateClone)
+  //     ? `Week of ${format(startOfWeek(dateClone), "MMM do")}`
+  //     : invalidLabel;
+  // };
 
   const renderWrappedWeekDay = (date, selectedDate, dayInCurrentMonth) => {
     let dateClone = makeJSDateObject(date);
@@ -67,29 +56,6 @@ const CustomElements = ({ classes }) => {
     );
   };
 
-  const handleDayClick = (e) => {
-    const selectedDate = new Date(e.target.dataset.value)
-    setSelectedDate(selectedDate)
-    setStart(startOfWeek(selectedDate));
-  }
-
-  const WeekDayGrid = () => {
-    var weekDay = start || startOfWeek(makeJSDateObject(new Date()));
-    let weekDays = [];
-    for (let i = 0; i < 7; i++) {
-      weekDays.push(
-        <div className="col card py-2 m-1" key={i} data-value={weekDay.toLocaleDateString()} onClick={handleDayClick}>
-          {/* {weekDay.toLocaleDateString()} */}
-          {format(weekDay, 'd')}
-          {format(weekDay, 'iii')}
-        </div>
-      )
-      weekDay.setDate(weekDay.getDate() + 1);
-    }
-    return <div className="row">{weekDays}</div>;
-  }
-
-
   return (
     <>
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -101,7 +67,6 @@ const CustomElements = ({ classes }) => {
         // labelFunc={formatWeekSelectLabel}
         />
       </MuiPickersUtilsProvider>
-      <WeekDayGrid />
     </>
   );
 
