@@ -64,6 +64,7 @@ const CustomElements = ({ classes, selectedDate, handleWeekChange }) => {
           value={selectedDate}
           onChange={handleWeekChange}
           renderDay={renderWrappedWeekDay}
+          variant="inline"
         // labelFunc={formatWeekSelectLabel}
         />
       </MuiPickersUtilsProvider>
