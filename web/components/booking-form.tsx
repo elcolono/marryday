@@ -11,6 +11,7 @@ import startOfDay from "date-fns/startOfDay";
 import endOfDay from "date-fns/endOfDay";
 import format from "date-fns/format";
 import set from "date-fns/set";
+import isBefore from "date-fns/isBefore"
 import CustomDatepicker from './custom-datepicker';
 
 import TimeRangeSlider from './time-range';
@@ -22,13 +23,13 @@ export default function BookingForm() {
 
     const [objectType, setObjectType] = useState('phone')
 
-    const [selectedDate, setSelectedDate] = useState(new Date())
+    const [selectedDate, setSelectedDate] = useState(startOfDay(new Date()))
     const [week, setWeek] = useState<Array<Date>>(undefined)
 
     const [rentObjects, setRentObjects] = useState<Array<RentObject>>(undefined)
     const [rentObject, setRentObject] = useState<RentObject>(undefined)
 
-    const [selectedInterval, setSelectedInterval] = useState(false)
+    const [selectedInterval, setSelectedInterval] = useState(undefined)
 
     const [isLoading, setIsLoading] = useState(false)
 
@@ -51,22 +52,20 @@ export default function BookingForm() {
     }, [])
 
     useEffect(() => {
-
         const fetchRentObjects = async () => {
             if (location) {
                 try {
                     // const response = await api.get(`/cowork/rentobjects?location=${location.id}&type=${objectType}&start=${date}T${startTime}Z&duration=${duration}`)
-                    const response = await api.get(`/cowork/rentobjects?location=${location.id}&type=${objectType}&start=${selectedDate}`)
+                    const response = await api.get(`/cowork/rentobjects?location=${location.id}&type=${objectType}&date=${selectedDate.toISOString()}`)
                     const rentObjects = response.data as Array<RentObject>;
                     setRentObjects(rentObjects);
+                    setRentObject(rentObjects[0])
                 } catch (error) {
                     console.log(error)
                 }
             }
         }
-
         fetchRentObjects()
-
     }, [location, objectType, selectedDate])
 
     async function handleSubmit(e) {
@@ -103,15 +102,6 @@ export default function BookingForm() {
     const onChangeTimeInterval = ti => {
         setSelectedInterval(ti)
     }
-
-    const getTodayAtSpecificHour = (hour = 12) =>
-        set(new Date(), { hours: hour, minutes: 0, seconds: 0, milliseconds: 0 });
-
-
-    const timelineInterval = [
-        getTodayAtSpecificHour(7),
-        getTodayAtSpecificHour(24)
-    ];
 
     return (
 
@@ -165,12 +155,15 @@ export default function BookingForm() {
                                     </div>
                                 </div>
                             </div>
-                            <CustomDatepicker selectedDate={selectedDate} handleWeekChange={(selectedDate) => setSelectedDate(selectedDate)} />
+                            <CustomDatepicker selectedDate={selectedDate} handleWeekChange={(selectedDate) => setSelectedDate(startOfDay(selectedDate))} />
 
                             <div className="row">
                                 {week && week.map((el, i) => {
                                     return (
-                                        <div className={`col card py-2 m-1 ${selectedDate.toDateString() === el.toDateString() && 'border-primary'}`} key={i} onClick={() => setSelectedDate(el)}>
+                                        <div
+                                            className={`col card py-2 m-1 ${isBefore(el, startOfDay(new Date())) && 'disabled'} ${selectedDate.toDateString() === el.toDateString() && 'border-primary'}`}
+                                            key={i}
+                                            onClick={() => setSelectedDate(el)}>
                                             {/* {weekDay.toLocaleDateString()} */}
                                             <div>{format(el, 'd')}</div>
                                             <div>{format(el, 'iii')}</div>
@@ -181,12 +174,6 @@ export default function BookingForm() {
 
                         </FormGroup>
 
-                        {/* <FormGroup>
-                            <Label>Dauer</Label>
-                            <Input value={duration} onChange={(e) => handleValueChange(e.target.value, 'duration')} min={30} max={300} step={30} type="range" />
-                            <span>{duration}</span>
-                        </FormGroup> */}
-
                         {/* Rent Objects */}
                         <FormGroup className="mt-5" tag="fieldset">
                             <legend>Rent Objects</legend>
@@ -194,13 +181,15 @@ export default function BookingForm() {
                                 <FormGroup key={i} check>
                                     <Label check>
                                         <Input onChange={() => setRentObject(el)} checked={rentObject && rentObject.id === el.id} type="radio" />{' '}
-                                        {el.title} ({el.bookings.map(booking => (`${booking.start} - ${booking.end}`))})
-                                        </Label>
+                                        {el.title}
+                                        {/* ({el.bookings.map(booking => (`${booking.start} - ${booking.end}`))}) */}
+                                    </Label>
                                 </FormGroup>
                             ))}
                         </FormGroup>
                         {rentObject && (
                             <TimeRangeSlider
+                                selectedInterval={selectedInterval}
                                 timelineInterval={[startOfDay(selectedDate), endOfDay(selectedDate)]}
                                 disabledIntervals={rentObject.bookings}
                                 onChangeTimeInterval={onChangeTimeInterval} />
@@ -212,7 +201,21 @@ export default function BookingForm() {
                     </Form>
                 </div>
             </div>
+            <style jsx>{`
+                .disabled {
+                    pointer-events:none;
+                    opacity: 0.5;
+                };
+            `}</style>
         </section >
     )
 }
 
+
+
+
+                        {/* <FormGroup>
+                            <Label>Dauer</Label>
+                            <Input value={duration} onChange={(e) => handleValueChange(e.target.value, 'duration')} min={30} max={300} step={30} type="range" />
+                            <span>{duration}</span>
+                        </FormGroup> */}
