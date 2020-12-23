@@ -60,6 +60,7 @@ const CustomElements = ({ classes, selectedDate, handleWeekChange }) => {
     <>
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
         <DatePicker
+          disablePast
           label="Week picker"
           value={selectedDate}
           onChange={handleWeekChange}

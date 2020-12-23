@@ -189,6 +189,7 @@ export default function BookingForm() {
                         </FormGroup>
                         {rentObject && (
                             <TimeRangeSlider
+                                selectedDate={selectedDate}
                                 selectedInterval={selectedInterval}
                                 timelineInterval={[startOfDay(selectedDate), endOfDay(selectedDate)]}
                                 disabledIntervals={rentObject.bookings}
@@ -214,7 +215,7 @@ export default function BookingForm() {
 
 
 
-                        {/* <FormGroup>
+{/* <FormGroup>
                             <Label>Dauer</Label>
                             <Input value={duration} onChange={(e) => handleValueChange(e.target.value, 'duration')} min={30} max={300} step={30} type="range" />
                             <span>{duration}</span>
