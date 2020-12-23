@@ -2,29 +2,36 @@ import { useEffect, useState } from 'react'
 import { api } from '../lib/api'
 import { eachDayOfInterval } from "date-fns/esm";
 
-import { Location, RentObject } from '../lib/interfaces'
+import { Location, RentObject, Interval } from '../lib/interfaces'
 
 import { Form, FormGroup, Label, Input, Spinner, Button } from "reactstrap";
 import startOfWeek from "date-fns/startOfWeek";
 import endOfWeek from "date-fns/endOfWeek";
+import startOfDay from "date-fns/startOfDay";
+import endOfDay from "date-fns/endOfDay";
 import format from "date-fns/format";
+import set from "date-fns/set";
 import CustomDatepicker from './custom-datepicker';
+
+import TimeRangeSlider from './time-range';
 
 export default function BookingForm() {
 
     const [locations, setLocations] = useState<Array<Location>>(undefined)
     const [location, setLocation] = useState<Location>(undefined)
-    const [objectType, setObjectType] = useState('desktop')
-    const [startTime, setStartTime] = useState(`${new Date().getHours()}:${new Date().getMinutes()}`)
-    const [date, setDate] = useState(new Date())
-    const [duration, setDuration] = useState(60)
-    const [rentObjects, setRentObjects] = useState<Array<RentObject>>(undefined)
-    const [rentObject, setRentObject] = useState("")
 
-    const [isLoading, setIsLoading] = useState(false)
+    const [objectType, setObjectType] = useState('phone')
 
     const [selectedDate, setSelectedDate] = useState(new Date())
     const [week, setWeek] = useState<Array<Date>>(undefined)
+
+    const [rentObjects, setRentObjects] = useState<Array<RentObject>>(undefined)
+    const [rentObject, setRentObject] = useState<RentObject>(undefined)
+
+    const [selectedInterval, setSelectedInterval] = useState(false)
+
+    const [isLoading, setIsLoading] = useState(false)
+
 
     useEffect(() => {
         selectedDate && setWeekDays(selectedDate);
@@ -35,6 +42,7 @@ export default function BookingForm() {
             api.get('/cowork/locations/').then((response) => {
                 if (response.status == 200) {
                     setLocations(response.data);
+                    setLocation(response.data[0])
                 } else {
                     console.log(response)
                 }
@@ -47,8 +55,10 @@ export default function BookingForm() {
         const fetchRentObjects = async () => {
             if (location) {
                 try {
-                    const response = await api.get(`/cowork/rentobjects?location=${location.id}&type=${objectType}&start=${date}T${startTime}Z&duration=${duration}`)
-                    setRentObjects(response.data);
+                    // const response = await api.get(`/cowork/rentobjects?location=${location.id}&type=${objectType}&start=${date}T${startTime}Z&duration=${duration}`)
+                    const response = await api.get(`/cowork/rentobjects?location=${location.id}&type=${objectType}&start=${selectedDate}`)
+                    const rentObjects = response.data as Array<RentObject>;
+                    setRentObjects(rentObjects);
                 } catch (error) {
                     console.log(error)
                 }
@@ -57,31 +67,30 @@ export default function BookingForm() {
 
         fetchRentObjects()
 
-    }, [location, objectType, date, startTime, duration])
+    }, [location, objectType, selectedDate])
 
     async function handleSubmit(e) {
-        e.preventDefault();
-        setIsLoading(true)
-        const data = {
-            "rent_object": rentObject,
-            "start": `${date}T${startTime}Z`,
-            "duration": duration
-        }
-        try {
-            await api.post('/cowork/bookings/', data)
-            setIsLoading(false)
-        } catch (error) {
-            console.log(error)
-            setIsLoading(false)
-        }
+        console.log("Submit")
+        // e.preventDefault();
+        // setIsLoading(true)
+        // const data = {
+        //     "rent_object": rentObject,
+        //     "start": `${date}T${startTime}Z`,
+        //     "duration": duration
+        // }
+        // try {
+        //     await api.post('/cowork/bookings/', data)
+        //     setIsLoading(false)
+        // } catch (error) {
+        //     console.log(error)
+        //     setIsLoading(false)
+        // }
     }
 
     const handleValueChange = async (value, name) => {
         // Check target value wheter to conditionally make new request
         name == 'objectType' && setObjectType(value)
-        name == 'startTime' && setStartTime(value)
-        name == 'date' && setDate(value)
-        name == 'duration' && setDuration(value)
+        name == 'selectedDate' && setSelectedDate(value)
     }
 
     const setWeekDays = selectedDate => {
@@ -91,6 +100,19 @@ export default function BookingForm() {
         setWeek(result)
     }
 
+    const onChangeTimeInterval = ti => {
+        setSelectedInterval(ti)
+    }
+
+    const getTodayAtSpecificHour = (hour = 12) =>
+        set(new Date(), { hours: hour, minutes: 0, seconds: 0, milliseconds: 0 });
+
+
+    const timelineInterval = [
+        getTodayAtSpecificHour(7),
+        getTodayAtSpecificHour(24)
+    ];
+
     return (
 
         <section id="intro_section">
@@ -98,6 +120,20 @@ export default function BookingForm() {
                 <div className="col">
                     <h1 className="intro-section-title">{location && location.title}</h1>
                     <Form onSubmit={handleSubmit} className="pt-3">
+
+                        {/* Rent Objects */}
+                        <FormGroup tag="fieldset">
+                            <legend>Locations</legend>
+                            {locations && locations.map((el, i) => (
+                                <FormGroup key={i} check>
+                                    <Label check>
+                                        <Input onChange={() => setLocation(el)} checked={location && location.id === el.id} type="radio" />{el.title}
+                                    </Label>
+                                </FormGroup>
+                            ))}
+                        </FormGroup>
+
+                        {/* Rent Objects */}
                         <FormGroup tag="fieldset">
                             {/* <legend>Object Type</legend> */}
                             <div className="row">
@@ -146,32 +182,30 @@ export default function BookingForm() {
                         </FormGroup>
 
                         {/* <FormGroup>
-                                                <Label>Date</Label>
-                                                <Input value={date} onChange={(e) => handleValueChange(e.target.value, 'date')} type="date" />
-                                            </FormGroup> */}
-
-                        <FormGroup>
-                            <Label>Time</Label>
-                            <Input value={startTime} onChange={(e) => handleValueChange(e.target.value, 'time')} type="time" />
-                        </FormGroup>
-
-                        <FormGroup>
                             <Label>Dauer</Label>
-                            <Input value={duration} onChange={(e) => handleValueChange(e.target.value, 'duration')} min={15} max={300} step={15} type="range" />
-                        </FormGroup>
+                            <Input value={duration} onChange={(e) => handleValueChange(e.target.value, 'duration')} min={30} max={300} step={30} type="range" />
+                            <span>{duration}</span>
+                        </FormGroup> */}
 
                         {/* Rent Objects */}
-                        <FormGroup tag="fieldset">
+                        <FormGroup className="mt-5" tag="fieldset">
                             <legend>Rent Objects</legend>
                             {rentObjects && rentObjects.map((el, i) => (
                                 <FormGroup key={i} check>
                                     <Label check>
-                                        <Input onChange={() => setRentObject(String(el.id))} checked={rentObject === `${el.id}`} type="radio" />{' '}
+                                        <Input onChange={() => setRentObject(el)} checked={rentObject && rentObject.id === el.id} type="radio" />{' '}
                                         {el.title} ({el.bookings.map(booking => (`${booking.start} - ${booking.end}`))})
                                         </Label>
                                 </FormGroup>
                             ))}
                         </FormGroup>
+                        {rentObject && (
+                            <TimeRangeSlider
+                                timelineInterval={[startOfDay(selectedDate), endOfDay(selectedDate)]}
+                                disabledIntervals={rentObject.bookings}
+                                onChangeTimeInterval={onChangeTimeInterval} />
+                        )}
+
 
                         {/* BOOKING BUTTON */}
                         <Button disabled={isLoading && true} type="submit" className="btn btn-danger btn-block">Buchen {isLoading && (<Spinner />)}</Button>
