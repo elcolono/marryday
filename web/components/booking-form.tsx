@@ -10,7 +10,8 @@ import endOfWeek from "date-fns/endOfWeek";
 import startOfDay from "date-fns/startOfDay";
 import endOfDay from "date-fns/endOfDay";
 import format from "date-fns/format";
-import set from "date-fns/set";
+import addDays from "date-fns/addDays";
+import subDays from 'date-fns/subDays'
 import isBefore from "date-fns/isBefore"
 import CustomDatepicker from './custom-datepicker';
 
@@ -191,9 +192,12 @@ export default function BookingForm() {
                             <TimeRangeSlider
                                 selectedDate={selectedDate}
                                 selectedInterval={selectedInterval}
-                                timelineInterval={[startOfDay(selectedDate), endOfDay(selectedDate)]}
                                 disabledIntervals={rentObject.bookings}
-                                onChangeTimeInterval={onChangeTimeInterval} />
+                                onChangeTimeInterval={onChangeTimeInterval}
+                                increaseSelectedDay={() => setSelectedDate(addDays(selectedDate, 1))}
+                                decreaseSelectedDay={() => setSelectedDate(subDays(selectedDate, 1))}
+
+                            />
                         )}
 
 
