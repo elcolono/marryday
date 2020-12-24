@@ -8,7 +8,6 @@ import { Form, FormGroup, Label, Input, Spinner, Button } from "reactstrap";
 import startOfWeek from "date-fns/startOfWeek";
 import endOfWeek from "date-fns/endOfWeek";
 import startOfDay from "date-fns/startOfDay";
-import endOfDay from "date-fns/endOfDay";
 import format from "date-fns/format";
 import addDays from "date-fns/addDays";
 import subDays from 'date-fns/subDays'
@@ -32,6 +31,7 @@ export default function BookingForm() {
 
     const [selectedInterval, setSelectedInterval] = useState(undefined)
 
+    const [timeRangeError, setTimeRangeError] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
 
 
@@ -102,6 +102,10 @@ export default function BookingForm() {
 
     const onChangeTimeInterval = ti => {
         setSelectedInterval(ti)
+    }
+
+    const timeRangeErrorHandler = ({ error }) => {
+        setTimeRangeError(error)
     }
 
     return (
@@ -196,13 +200,14 @@ export default function BookingForm() {
                                 onChangeTimeInterval={onChangeTimeInterval}
                                 increaseSelectedDay={() => setSelectedDate(addDays(selectedDate, 1))}
                                 decreaseSelectedDay={() => setSelectedDate(subDays(selectedDate, 1))}
-
+                                errorHandler={timeRangeErrorHandler}
+                                error={timeRangeError}
                             />
                         )}
 
 
                         {/* BOOKING BUTTON */}
-                        <Button disabled={isLoading && true} type="submit" className="btn btn-danger btn-block">Buchen {isLoading && (<Spinner />)}</Button>
+                        <Button disabled={(isLoading || timeRangeError) && true} type="submit" className="btn btn-danger btn-block">Buchen {isLoading && (<Spinner />)}</Button>
                     </Form>
                 </div>
             </div>
