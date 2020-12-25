@@ -101,11 +101,13 @@ export default function BookingForm() {
     }
 
     const onChangeTimeInterval = ti => {
+        console.log("TimeInterval changed", ti)
         setSelectedInterval(ti)
     }
 
-    const timeRangeErrorHandler = ({ error }) => {
-        setTimeRangeError(error)
+    const timeRangeErrorHandler = (props) => {
+        // console.log("error", props)
+        // setTimeRangeError(error)
     }
 
     return (
@@ -185,7 +187,12 @@ export default function BookingForm() {
                             {rentObjects && rentObjects.map((el, i) => (
                                 <FormGroup key={i} check>
                                     <Label check>
-                                        <Input onChange={() => setRentObject(el)} checked={rentObject && rentObject.id === el.id} type="radio" />{' '}
+                                        <Input
+                                            onChange={() => setRentObject(el)}
+                                            checked={rentObject && rentObject.id === el.id}
+                                            type="radio"
+                                        />
+                                        {' '}
                                         {el.title}
                                         {/* ({el.bookings.map(booking => (`${booking.start} - ${booking.end}`))}) */}
                                     </Label>
@@ -197,7 +204,7 @@ export default function BookingForm() {
                                 selectedDate={selectedDate}
                                 selectedInterval={selectedInterval}
                                 disabledIntervals={rentObject.bookings}
-                                onChangeTimeInterval={onChangeTimeInterval}
+                                changeTimeInterval={onChangeTimeInterval}
                                 increaseSelectedDay={() => setSelectedDate(addDays(selectedDate, 1))}
                                 decreaseSelectedDay={() => setSelectedDate(subDays(selectedDate, 1))}
                                 errorHandler={timeRangeErrorHandler}
@@ -220,12 +227,3 @@ export default function BookingForm() {
         </section >
     )
 }
-
-
-
-
-{/* <FormGroup>
-                            <Label>Dauer</Label>
-                            <Input value={duration} onChange={(e) => handleValueChange(e.target.value, 'duration')} min={30} max={300} step={30} type="range" />
-                            <span>{duration}</span>
-                        </FormGroup> */}

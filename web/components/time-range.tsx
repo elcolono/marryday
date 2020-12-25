@@ -11,20 +11,42 @@ import TimeRange from 'react-timeline-range-slider'
 
 
 const now = new Date()
+const getInitInterval = () => {
+    // Get nearest minutes - nearest to 30 min
+    // But if takes lower halfhour than add 60 minutes to be before now
+    let selectedStart = roundToNearestMinutes(now, { nearestTo: 30 })
+    if (isBefore(selectedStart, now)) { selectedStart = addMinutes(selectedStart, 60) }
+    const selectedEnd = addMinutes(selectedStart, 120)
+    return [selectedStart, selectedEnd]
+}
 
 const TimeRangeSlider = ({
     selectedDate,
-    onChangeTimeInterval,
+    changeTimeInterval,
     disabledIntervals,
-    selectedInterval = [roundToNearestMinutes(now, { nearestTo: 30 }), addMinutes(roundToNearestMinutes(now, { nearestTo: 30 }), 120)],
+    selectedInterval = getInitInterval(),
     increaseSelectedDay,
     decreaseSelectedDay,
     errorHandler,
     error
 }) => {
 
-    // const [error, setError] = useState(false);
+    enum Actions {
+        InitChange,
+        // DicreasedTimeRangeWithoutValueChange,
+        // IncreasedTimeRangeWithoutValueChange,
+        // DicreasedTimeRangeWithValueChange,
+        // IncreasedTimeRangeWithValueChange,
+        StartInSubTimeRange,
+        EndInUpTimeRange,
+        StartInTimeRange,
+        EndInTimeRange
+    }
+
     const [timeRangeIndex, setTimeRangeIndex] = useState(0)
+    const [lastAction, setLastAction] = useState<Actions>(Actions.InitChange)
+    // this is the actual timeRange interval BUT not the selected oone
+    // const [timeInterval, setTimeInterval] = useState(undefined)
 
     useEffect(() => {
         // Check if current time is wihtin timerangeindex interval 
@@ -41,10 +63,6 @@ const TimeRangeSlider = ({
         }
     }, [])
 
-    // const errorHandler = ({ error }) => {
-    //     setError(error)
-    // };
-
     const getDisabledIntervals = () => {
         const intervals: Array<any> = disabledIntervals.map(iv => {
             return {
@@ -59,27 +77,58 @@ const TimeRangeSlider = ({
         return intervals;
     }
 
+    const updateLastAction = ({ timeRangeIndex, type }) => {
+        // setLastAction(Actions.ChangedTimerange)
+        const startWithin: boolean = isWithinInterval(selectedInterval[0], {
+            start: addHours(selectedDate, timeRangeIndex * 4),
+            end: addHours(selectedDate, (timeRangeIndex * 4) + 8)
+        })
+        const endWithin: boolean = isWithinInterval(selectedInterval[1], {
+            start: addHours(selectedDate, timeRangeIndex * 4),
+            end: addHours(selectedDate, (timeRangeIndex * 4) + 8)
+        })
+        // if (!startWithin || !endWithin) {
+        //     if (type == 'increase') setLastAction(Actions.IncreasedTimeRangeWithValueChange)
+        //     if (type == 'decrease') setLastAction(Actions.DicreasedTimeRangeWithValueChange)
+        // } else {
+        //     if (type == 'increase') setLastAction(Actions.IncreasedTimeRangeWithoutValueChange)
+        //     if (type == 'decrease') setLastAction(Actions.DicreasedTimeRangeWithoutValueChange)
+        // }
+        if ('increase' && !startWithin) setLastAction(Actions.StartInSubTimeRange)
+        if ('decrease' && !endWithin) setLastAction(Actions.EndInUpTimeRange)
+
+        if ('increase' && startWithin) setLastAction(Actions.StartInTimeRange)
+        if ('decrease' && endWithin) setLastAction(Actions.EndInTimeRange)
+    }
+
     const increaseTimeRangeIndex = () => {
+        let index = timeRangeIndex;
         if (timeRangeIndex < 5) {
-            setTimeRangeIndex(timeRangeIndex + 1)
-        } else if (timeRangeIndex >= 5) {
+            index++
+            setTimeRangeIndex(index)
+        } else if (index >= 5) {
             setTimeRangeIndex(0)
             increaseSelectedDay()
         }
+        updateLastAction({ timeRangeIndex: index, type: 'increase' })
     }
 
     const decreaseTimeRangeIndex = () => {
         // First check if TimeRange is selectable
         // If NOT stop this function
-        if (!checkTimeRangeSelectable(timeRangeIndex - 1)) {
+        let index = timeRangeIndex;
+        if (!checkTimeRangeSelectable(index - 1)) {
             return
         }
         if (timeRangeIndex > 0) {
-            setTimeRangeIndex(timeRangeIndex - 1)
+            index--
+            setTimeRangeIndex(index)
         } else if (timeRangeIndex <= 0) {
             setTimeRangeIndex(5)
             decreaseSelectedDay()
         }
+        updateLastAction({ timeRangeIndex: index, type: 'decrease' })
+
     }
 
     const checkTimeRangeSelectable = (timeRangeIndex) => {
@@ -96,14 +145,16 @@ const TimeRangeSlider = ({
         return false
     }
 
-    const getSelectedInterval = () => {
-        // Get nearest minutes - nearest to 30 min
-        // But if takes lower halfhour than add 60 minutes to be before now
-        let selectedStart = roundToNearestMinutes(now, { nearestTo: 30 })
-        if (isBefore(selectedStart, now)) { selectedStart = addMinutes(selectedStart, 60) }
-        const selectedEnd = addMinutes(selectedStart, 120)
-        return [selectedStart, selectedEnd]
+    const onChangeTimeInterval = (ti) => {
+        if(lastAction == Actions.StartInSubTimeRange) console.log("StartInSubTimeRange")
+        if(lastAction == Actions.EndInUpTimeRange) console.log("EndInUpTimeRange")
+        if(lastAction == Actions.StartInTimeRange) console.log("StartInTimeRange")
+        if(lastAction == Actions.EndInTimeRange) console.log("EndInTimeRange")
+        // Check interval 
+        // changeTimeInterval(ti)
+        // setLastAction(undefined)
     }
+
 
     return (
         <>
@@ -118,7 +169,7 @@ const TimeRangeSlider = ({
                 <TimeRange
                     error={error}
                     ticksNumber={36}
-                    selectedInterval={getSelectedInterval()}
+                    selectedInterval={selectedInterval}
                     timelineInterval={[addHours(selectedDate, timeRangeIndex * 4), addHours(selectedDate, (timeRangeIndex * 4) + 8)]}
                     onUpdateCallback={errorHandler}
                     onChangeCallback={onChangeTimeInterval}
