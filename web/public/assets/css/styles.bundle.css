@@ -3934,3 +3934,12 @@ figure {
     text-align: right;
   }
 }
+
+
+.react_time_range__time_range_container, .handle {
+  width: 1500px!important;
+}
+
+.react_time_range__time_range_container {
+  padding: 30px 0% 0!important;
+}

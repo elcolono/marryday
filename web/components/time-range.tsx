@@ -8,6 +8,8 @@ import isBefore from 'date-fns/isBefore'
 import isAfter from 'date-fns/isAfter'
 
 import TimeRange from 'react-timeline-range-slider'
+import Draggable from 'react-draggable';
+import { endOfDay, startOfDay } from 'date-fns'
 
 
 const now = new Date()
@@ -31,22 +33,17 @@ const TimeRangeSlider = ({
     error
 }) => {
 
-    enum Actions {
-        InitChange,
-        // DicreasedTimeRangeWithoutValueChange,
-        // IncreasedTimeRangeWithoutValueChange,
-        // DicreasedTimeRangeWithValueChange,
-        // IncreasedTimeRangeWithValueChange,
-        StartInSubTimeRange,
-        EndInUpTimeRange,
-        StartInTimeRange,
-        EndInTimeRange
-    }
-
     const [timeRangeIndex, setTimeRangeIndex] = useState(0)
-    const [lastAction, setLastAction] = useState<Actions>(Actions.InitChange)
-    // this is the actual timeRange interval BUT not the selected oone
-    // const [timeInterval, setTimeInterval] = useState(undefined)
+    const [deltaPosition, setDeltaPosition] = useState({
+        x: 0, y: 0
+    })
+
+    useEffect(() => {
+        setDeltaPosition({
+            x: (timeRangeIndex * 250) * -1,
+            y: 0,
+        });
+    }, [timeRangeIndex])
 
     useEffect(() => {
         // Check if current time is wihtin timerangeindex interval 
@@ -77,30 +74,6 @@ const TimeRangeSlider = ({
         return intervals;
     }
 
-    const updateLastAction = ({ timeRangeIndex, type }) => {
-        // setLastAction(Actions.ChangedTimerange)
-        const startWithin: boolean = isWithinInterval(selectedInterval[0], {
-            start: addHours(selectedDate, timeRangeIndex * 4),
-            end: addHours(selectedDate, (timeRangeIndex * 4) + 8)
-        })
-        const endWithin: boolean = isWithinInterval(selectedInterval[1], {
-            start: addHours(selectedDate, timeRangeIndex * 4),
-            end: addHours(selectedDate, (timeRangeIndex * 4) + 8)
-        })
-        // if (!startWithin || !endWithin) {
-        //     if (type == 'increase') setLastAction(Actions.IncreasedTimeRangeWithValueChange)
-        //     if (type == 'decrease') setLastAction(Actions.DicreasedTimeRangeWithValueChange)
-        // } else {
-        //     if (type == 'increase') setLastAction(Actions.IncreasedTimeRangeWithoutValueChange)
-        //     if (type == 'decrease') setLastAction(Actions.DicreasedTimeRangeWithoutValueChange)
-        // }
-        if ('increase' && !startWithin) setLastAction(Actions.StartInSubTimeRange)
-        if ('decrease' && !endWithin) setLastAction(Actions.EndInUpTimeRange)
-
-        if ('increase' && startWithin) setLastAction(Actions.StartInTimeRange)
-        if ('decrease' && endWithin) setLastAction(Actions.EndInTimeRange)
-    }
-
     const increaseTimeRangeIndex = () => {
         let index = timeRangeIndex;
         if (timeRangeIndex < 5) {
@@ -110,7 +83,6 @@ const TimeRangeSlider = ({
             setTimeRangeIndex(0)
             increaseSelectedDay()
         }
-        updateLastAction({ timeRangeIndex: index, type: 'increase' })
     }
 
     const decreaseTimeRangeIndex = () => {
@@ -127,8 +99,6 @@ const TimeRangeSlider = ({
             setTimeRangeIndex(5)
             decreaseSelectedDay()
         }
-        updateLastAction({ timeRangeIndex: index, type: 'decrease' })
-
     }
 
     const checkTimeRangeSelectable = (timeRangeIndex) => {
@@ -146,37 +116,63 @@ const TimeRangeSlider = ({
     }
 
     const onChangeTimeInterval = (ti) => {
-        if(lastAction == Actions.StartInSubTimeRange) console.log("StartInSubTimeRange")
-        if(lastAction == Actions.EndInUpTimeRange) console.log("EndInUpTimeRange")
-        if(lastAction == Actions.StartInTimeRange) console.log("StartInTimeRange")
-        if(lastAction == Actions.EndInTimeRange) console.log("EndInTimeRange")
         // Check interval 
         // changeTimeInterval(ti)
         // setLastAction(undefined)
     }
 
+    const handleDrag = (e, ui) => {
+        const { x, y } = deltaPosition;
+        setDeltaPosition({
+            x: x + ui.deltaX,
+            y: y + ui.deltaY,
+        });
+    };
 
     return (
         <>
+            <span onClick={decreaseTimeRangeIndex}>{"<"}</span>
             <span onClick={() => setTimeRangeIndex(0)} className={`p-2 m-1 border rounded-circle ${timeRangeIndex === 0 && 'border-primary'} ${!checkTimeRangeSelectable(0) && 'disabled'}`}>00:00</span>
             <span onClick={() => setTimeRangeIndex(1)} className={`p-2 m-1 border rounded-circle ${timeRangeIndex === 1 && 'border-primary'} ${!checkTimeRangeSelectable(1) && 'disabled'}`}>04:00</span>
             <span onClick={() => setTimeRangeIndex(2)} className={`p-2 m-1 border rounded-circle ${timeRangeIndex === 2 && 'border-primary'} ${!checkTimeRangeSelectable(2) && 'disabled'}`}>08:00</span>
             <span onClick={() => setTimeRangeIndex(3)} className={`p-2 m-1 border rounded-circle ${timeRangeIndex === 3 && 'border-primary'} ${!checkTimeRangeSelectable(3) && 'disabled'}`}>12:00</span>
             <span onClick={() => setTimeRangeIndex(4)} className={`p-2 m-1 border rounded-circle ${timeRangeIndex === 4 && 'border-primary'} ${!checkTimeRangeSelectable(4) && 'disabled'}`}>16:00</span>
             <span onClick={() => setTimeRangeIndex(5)} className={`p-2 m-1 border rounded-circle ${timeRangeIndex === 5 && 'border-primary'} ${!checkTimeRangeSelectable(5) && 'disabled'}`}>20:00</span>
+            <span onClick={increaseTimeRangeIndex}>{">"}</span>
+
             <div className="d-flex align-items-center">
-                <span onClick={decreaseTimeRangeIndex}>{"<"}</span>
-                <TimeRange
-                    error={error}
-                    ticksNumber={36}
-                    selectedInterval={selectedInterval}
-                    timelineInterval={[addHours(selectedDate, timeRangeIndex * 4), addHours(selectedDate, (timeRangeIndex * 4) + 8)]}
-                    onUpdateCallback={errorHandler}
-                    onChangeCallback={onChangeTimeInterval}
-                    disabledIntervals={getDisabledIntervals()}
-                />
-                <span onClick={increaseTimeRangeIndex}>{">"}</span>
+
+                <Draggable
+                    axis="x"
+                    handle=".handle"
+                    defaultPosition={{ x: 0, y: 0 }}
+                    // bounds={{ top: -100, left: -1000, right: 0, bottom: 100 }}
+                    position={deltaPosition}
+                    grid={[25, 25]}
+                    scale={1}
+                    // onStart={this.handleStart}
+                    onDrag={handleDrag}
+                // onStop={this.handleStop}
+                >
+                    <div>
+                        {/* <div className="handle">Drag from here</div> */}
+                        <TimeRange
+                            error={error}
+                            ticksNumber={36}
+                            selectedInterval={selectedInterval}
+                            // timelineInterval={[addHours(selectedDate, timeRangeIndex * 4), addHours(selectedDate, (timeRangeIndex * 4) + 8)]}
+                            timelineInterval={[startOfDay(selectedDate), endOfDay(selectedDate)]}
+                            onUpdateCallback={errorHandler}
+                            onChangeCallback={onChangeTimeInterval}
+                            disabledIntervals={getDisabledIntervals()}
+                        />
+                    </div>
+                </Draggable>
+
+
             </div>
+            <div>x: {deltaPosition.x.toFixed(0)}, y: {deltaPosition.y.toFixed(0)}</div>
+
             <style jsx>{`
                 .disabled {
                     pointer-events:none;
