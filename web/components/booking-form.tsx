@@ -70,21 +70,21 @@ export default function BookingForm() {
     }, [location, objectType, selectedDate])
 
     async function handleSubmit(e) {
-        console.log("Submit")
-        // e.preventDefault();
-        // setIsLoading(true)
-        // const data = {
-        //     "rent_object": rentObject,
-        //     "start": `${date}T${startTime}Z`,
-        //     "duration": duration
-        // }
-        // try {
-        //     await api.post('/cowork/bookings/', data)
-        //     setIsLoading(false)
-        // } catch (error) {
-        //     console.log(error)
-        //     setIsLoading(false)
-        // }
+        e.preventDefault();
+        setIsLoading(true)
+        const data = {
+            "rent_object": rentObject['id'],
+            "start": selectedInterval[0],
+            "end": selectedInterval[1],
+        }
+        console.log(data);
+        try {
+            await api.post('/cowork/bookings/', data)
+            setIsLoading(false)
+        } catch (error) {
+            console.log(error)
+            setIsLoading(false)
+        }
     }
 
     const handleValueChange = async (value, name) => {
@@ -105,16 +105,15 @@ export default function BookingForm() {
         setSelectedInterval(ti)
     }
 
-    const timeRangeErrorHandler = (props) => {
-        // console.log("error", props)
-        // setTimeRangeError(error)
+    const timeRangeErrorHandler = ({ error }) => {
+        setTimeRangeError(error)
     }
 
     return (
 
         <section id="intro_section">
             <div className="container mt-5 pt-5">
-                <div className="col">
+                <div className="col overflow-hidden">
                     <h1 className="intro-section-title">{location && location.title}</h1>
                     <Form onSubmit={handleSubmit} className="pt-3">
 

@@ -37,12 +37,45 @@ const TimeRangeSlider = ({
     const [deltaPosition, setDeltaPosition] = useState({
         x: 0, y: 0
     })
+    const [isLoading, setIsLoading] = useState(false)
 
     useEffect(() => {
-        setDeltaPosition({
-            x: (timeRangeIndex * 250) * -1,
-            y: 0,
-        });
+        setIsLoading(true)
+        if (deltaPosition.x > (timeRangeIndex * 250) * -1) {
+            var position = deltaPosition.x;
+            var id = setInterval(frame, 0.1);
+        } else {
+            var position = deltaPosition.x;
+            var id = setInterval(framemin, 0.1);
+        }
+
+        function frame() {
+            if (position == (timeRangeIndex * 250) * -1) {
+                setIsLoading(false)
+                clearInterval(id);
+
+            } else {
+                position = position - 5;
+                setDeltaPosition({
+                    x: position,
+                    y: 0,
+                });
+            }
+        }
+        function framemin() {
+            if (position == (timeRangeIndex * 250) * -1) {
+                setIsLoading(false)
+                clearInterval(id);
+
+            } else {
+                position = position + 5;
+                setDeltaPosition({
+                    x: position,
+                    y: 0,
+                });
+            }
+        }
+
     }, [timeRangeIndex])
 
     useEffect(() => {
@@ -117,7 +150,7 @@ const TimeRangeSlider = ({
 
     const onChangeTimeInterval = (ti) => {
         // Check interval 
-        // changeTimeInterval(ti)
+        changeTimeInterval(ti)
         // setLastAction(undefined)
     }
 
@@ -131,14 +164,14 @@ const TimeRangeSlider = ({
 
     return (
         <>
-            <span onClick={decreaseTimeRangeIndex}>{"<"}</span>
-            <span onClick={() => setTimeRangeIndex(0)} className={`p-2 m-1 border rounded-circle ${timeRangeIndex === 0 && 'border-primary'} ${!checkTimeRangeSelectable(0) && 'disabled'}`}>00:00</span>
+            <span className={`border p-2 ${isLoading && 'disabled'}`} onClick={decreaseTimeRangeIndex}>{"<"}</span>
+            {/* <span onClick={() => setTimeRangeIndex(0)} className={`p-2 m-1 border rounded-circle ${timeRangeIndex === 0 && 'border-primary'} ${!checkTimeRangeSelectable(0) && 'disabled'}`}>00:00</span>
             <span onClick={() => setTimeRangeIndex(1)} className={`p-2 m-1 border rounded-circle ${timeRangeIndex === 1 && 'border-primary'} ${!checkTimeRangeSelectable(1) && 'disabled'}`}>04:00</span>
             <span onClick={() => setTimeRangeIndex(2)} className={`p-2 m-1 border rounded-circle ${timeRangeIndex === 2 && 'border-primary'} ${!checkTimeRangeSelectable(2) && 'disabled'}`}>08:00</span>
             <span onClick={() => setTimeRangeIndex(3)} className={`p-2 m-1 border rounded-circle ${timeRangeIndex === 3 && 'border-primary'} ${!checkTimeRangeSelectable(3) && 'disabled'}`}>12:00</span>
             <span onClick={() => setTimeRangeIndex(4)} className={`p-2 m-1 border rounded-circle ${timeRangeIndex === 4 && 'border-primary'} ${!checkTimeRangeSelectable(4) && 'disabled'}`}>16:00</span>
-            <span onClick={() => setTimeRangeIndex(5)} className={`p-2 m-1 border rounded-circle ${timeRangeIndex === 5 && 'border-primary'} ${!checkTimeRangeSelectable(5) && 'disabled'}`}>20:00</span>
-            <span onClick={increaseTimeRangeIndex}>{">"}</span>
+            <span onClick={() => setTimeRangeIndex(5)} className={`p-2 m-1 border rounded-circle ${timeRangeIndex === 5 && 'border-primary'} ${!checkTimeRangeSelectable(5) && 'disabled'}`}>20:00</span> */}
+            <span className={`border p-2 ${isLoading && 'disabled'}`} onClick={increaseTimeRangeIndex}>{">"}</span>
 
             <div className="d-flex align-items-center">
 
@@ -155,7 +188,7 @@ const TimeRangeSlider = ({
                 // onStop={this.handleStop}
                 >
                     <div>
-                        {/* <div className="handle">Drag from here</div> */}
+                        <div className="handle">Drag from here</div>
                         <TimeRange
                             error={error}
                             ticksNumber={36}

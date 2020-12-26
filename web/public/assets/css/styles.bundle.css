@@ -3937,7 +3937,7 @@ figure {
 
 
 .react_time_range__time_range_container, .handle {
-  width: 1500px!important;
+  min-width: 1500px!important;
 }
 
 .react_time_range__time_range_container {
