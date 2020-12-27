@@ -7,9 +7,9 @@
 $themeColor: $swiperColor !default;
 $colors: ('white': #ffffff, 'black': #000000) !default;
 
-@import "../../../node_modules/swiper/swiper.scss";  
-@import "../../../node_modules/swiper/components/navigation/navigation.scss";  
-@import "../../../node_modules/swiper/components/pagination/pagination.scss";  
+@import "node_modules/swiper/swiper.scss";  
+@import "node_modules/swiper/components/navigation/navigation.scss";  
+@import "node_modules/swiper/components/pagination/pagination.scss";  
 
 
 .swiper-container-mx-negative {

@@ -1,17 +1,22 @@
-import React from 'react';
-import { ToastContainer } from 'react-toastify';
+import React from "react"
+import Layout from "../components/Layout"
+import objectFitImages from "object-fit-images"
 
-// Stylings
-// import 'bootstrap/dist/css/bootstrap.min.css';
-import '../styles/globals.css'
-// import 'react-toastify/dist/ReactToastify.css';
+import "@fortawesome/fontawesome-free/css/all.min.css"
 
+import "../scss/style.default.scss"
 
-export default function App({ Component, pageProps }) {
+const App = ({ Component, pageProps }) => {
+  React.useEffect(() => {
+    objectFitImages()
+  }, [])
+
   return (
-    <>
-      <ToastContainer />
+    <Layout {...pageProps}>
       <Component {...pageProps} />
-    </>
+    </Layout>
   )
 }
+
+// This default export is required in a new `pages/_app.js` file.
+export default App

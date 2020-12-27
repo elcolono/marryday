@@ -6,7 +6,7 @@ import { Location, RentObject } from '../lib/interfaces'
 
 import dynamic from "next/dynamic";
 
-import Layout from '../components/layout'
+import Layout from '../components/Layout'
 import Head from 'next/head'
 import { GetServerSideProps } from 'next';
 import BookingForm from '../components/booking-form';
