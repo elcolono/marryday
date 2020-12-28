@@ -95,19 +95,19 @@ const MapLeaflet = (props) => {
           const data = location
           return props.popupVenue ? (
             <Marker
-              key={data.id}
+              key={data.slug}
               position={[
                 data.lat,
                 data.lng,
               ]}
               onMouseOver={() => {
-                setHover(data.id)
+                setHover(data.slug)
               }}
               onMouseOut={() => {
                 setHover(false)
               }}
               icon={
-                hover === data.id || props.hoverCard === data.id
+                hover === data.slug || props.hoverCard === data.slug
                   ? highlightIcon
                   : icon
               }
@@ -154,7 +154,7 @@ const MapLeaflet = (props) => {
             </Marker>
           ) : (
               <Marker
-                key={data.id}
+                key={data.slug}
                 icon={icon}
                 opacity={0}
                 position={[
@@ -162,7 +162,7 @@ const MapLeaflet = (props) => {
                   data.lng,
                 ]}
                 onMouseOver={() => {
-                  setHover(data.id)
+                  setHover(data.slug)
                 }}
                 onMouseOut={() => {
                   setHover(false)
@@ -172,7 +172,7 @@ const MapLeaflet = (props) => {
                   permanent={true}
                   interactive={true}
                   direction="top"
-                  className={`map-custom-tooltip ${hover === data.id || props.hoverCard === data.id
+                  className={`map-custom-tooltip ${hover === data.slug || props.hoverCard === data.slug
                     ? "active"
                     : ""
                     }`}
@@ -199,6 +199,9 @@ const MapLeaflet = (props) => {
                             <a>{data.title}</a>
                           </Link>
                         </h6>
+                      )}
+                      {data.address && (
+                        <span>{data.address}</span>
                       )}
                       {/* <div className="text-xs">
                         <Stars stars={data.stars} />

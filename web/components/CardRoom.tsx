@@ -5,6 +5,7 @@ import {
   Card,
   CardBody,
   CardTitle,
+  CardSubtitle
 } from "reactstrap"
 
 import Icon from "./Icon"
@@ -24,7 +25,7 @@ const CardRoom = (props) => {
           className="img-fluid"
           sizes="(max-width:576px) 100vw, (max-width:991px) 50vw, (max-width:1199px) 30vw, 250px"
         />
-        <Link href="/detail-rooms">
+        <Link href={`/locations/${data.slug}`}>
           <a className="tile-link" />
         </Link>
         <div className="card-img-overlay-top text-right">
@@ -36,10 +37,13 @@ const CardRoom = (props) => {
       <CardBody className="d-flex align-items-center">
         <div className="w-100">
           <CardTitle tag="h6">
-            <Link href="/detail-rooms">
+            <Link href={`/locations/${data.slug}`}>
               <a className="text-decoration-none text-dark">{data.title}</a>
             </Link>
           </CardTitle>
+          <CardSubtitle>
+            {data.address}
+          </CardSubtitle>
           {/* <CardSubtitle className="d-flex mb-3">
             <p className="flex-grow-1 mb-0 text-muted text-sm">
               {data.subtitle}

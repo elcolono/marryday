@@ -11,24 +11,23 @@ import {
   Button,
 } from "reactstrap"
 
-import Pagination from "../components/Pagination"
-import Map from "../components/Map"
+import Pagination from "../../components/Pagination"
+import Map from "../../components/Map"
 
-import ResultsTopBar from "../components/ResultsTopBar"
-import CardRoom from "../components/CardRoom"
+import ResultsTopBar from "../../components/ResultsTopBar"
+import CardRoom from "../../components/CardRoom"
 
-import data from "../data/category-2-rooms.json"
-import geoJSON from "../data/rooms-geojson.json"
+import data from "../../data/category-2-rooms.json"
 import { GetServerSideProps } from "next"
-import { fetchAPIwithSSR } from "../lib/api"
+import { fetchAPIwithSSR } from "../../lib/api"
 
 const Category2Rooms = (props) => {
 
   const { locations } = props
 
   const [hoverCard, setHoverCard] = React.useState(null)
-  const onCardEnter = (id) => {
-    setHoverCard(id)
+  const onCardEnter = (slug) => {
+    setHoverCard(slug)
   }
   const onCardLeave = () => {
     setHoverCard(null)
@@ -76,7 +75,7 @@ const Category2Rooms = (props) => {
                     key={location.title}
                     sm="6"
                     className="mb-5 hover-animate"
-                    onMouseEnter={() => onCardEnter(location.id)}
+                    onMouseEnter={() => onCardEnter(location.slug)}
                     onMouseLeave={() => onCardLeave()}
                   >
                     <CardRoom data={location} />
