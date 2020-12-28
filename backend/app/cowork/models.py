@@ -1,6 +1,8 @@
 from django.db import models
 import uuid
-# Create your models here.
+from django.utils.text import slugify
+from datetime import datetime
+from django.core.exceptions import ValidationError
 
 RENT_OBJECT_TYPES = (
     ('phone', 'Phone'),
@@ -10,12 +12,28 @@ RENT_OBJECT_TYPES = (
 
 
 class Location(models.Model):
-    title = models.CharField(max_length=150)
+    is_active = models.BooleanField(default=True)
+    title = models.CharField(max_length=150, unique=True)
     address = models.CharField(max_length=150)
     postcode = models.CharField(max_length=50)
     city = models.CharField(max_length=150)
     lat = models.DecimalField(decimal_places=4, max_digits=10, null=True)
     lng = models.DecimalField(decimal_places=4, max_digits=10, null=True)
+    slug = models.CharField(max_length=150, blank=True, null=True)
+
+    def clean(self):
+        if(self.is_active is True and self.images.count() < 3):
+            print(self.images.count())
+            raise ValidationError(
+                'Please insert at least 3 Location Images before activation.')
+
+        if(self.is_active is True and self.rent_objects.count() <= 0):
+            raise ValidationError(
+                'Please create at least 1 Rentobject before activation.')
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.title)
+        super().save(*args, **kwargs)  # Call the "real" save() method.
 
     # def clean(self):
     #     if any(self.errors):
@@ -32,7 +50,7 @@ class RentObject(models.Model):
     title = models.CharField(max_length=150)
     type = models.CharField(max_length=150, choices=RENT_OBJECT_TYPES)
     location = models.ForeignKey(
-        Location, related_name="locations", on_delete=models.PROTECT)
+        Location, related_name="rent_objects", on_delete=models.PROTECT)
 
     def __str__(self):
         return self.title

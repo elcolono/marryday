@@ -9,6 +9,9 @@ from django.db.models import Prefetch
 from datetime import timedelta
 
 
+# All API VIEWS:
+# https://www.django-rest-framework.org/api-guide/generic-views/#retrieveapiview
+
 # Booking
 class BookingCreateView(generics.CreateAPIView):
     serializer_class = BookingSerializer
@@ -31,8 +34,14 @@ class BookingCreateView(generics.CreateAPIView):
 
 # Locations
 class LocationListView(generics.ListAPIView):
+    queryset = Location.objects.filter(is_active=True)
+    serializer_class = LocationSerializer
+
+
+class LocationRetrieveView(generics.RetrieveAPIView):
     queryset = Location.objects.all()
     serializer_class = LocationSerializer
+    lookup_field = 'slug'
 
 
 # RentObjects

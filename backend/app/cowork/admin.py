@@ -5,6 +5,7 @@ from .models import Location, RentObject, Booking, LocationImage
 
 class LocationImageInline(admin.TabularInline):
     model = LocationImage
+    # min_num = 3
 
 
 class LocationImageAdmin(admin.ModelAdmin):
