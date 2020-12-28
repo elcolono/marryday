@@ -48,13 +48,17 @@ class Booking(models.Model):
 
 
 class Image(models.Model):
+    def update_filename(instance, filename):
+        ext = filename.split('.')[-1]
+        return f"locations/{instance.location_id}/{instance.title}.{ext}"
+
     uuid = models.UUIDField(
         primary_key=True, default=uuid.uuid4, editable=False,
     )
     is_thumbnail = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     title = models.CharField(max_length=100)
-    image = models.ImageField()
+    image = models.FileField(upload_to=update_filename)
 
     class Meta:
         abstract = True
