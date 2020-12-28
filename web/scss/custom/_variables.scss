@@ -76,7 +76,7 @@ $colors: map-merge((
   }  
 }
 @else if $templateColour == blue and not $primary {
-  $primary:  #4E66F8;
+  $primary:  #f48300;
   @if not $secondary {
     $secondary: #e83e8c;
   }

@@ -55,8 +55,6 @@ export default function Booking({ user, mainMenus, flatMenus, themeSettings }) {
                     <BookingFormWithNoSSR />
                 )}
 
-            <script src="assets/js/vendors.bundle.js"></script>
-            <script src="assets/js/scripts.bundle.js"></script>
         </Layout>
     )
 }

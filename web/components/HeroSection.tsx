@@ -8,7 +8,7 @@ import {
     Col,
 } from "reactstrap"
 
-import Image from "../components/CustomImage"
+import Image from "./CustomImage"
 
 
 const HerSection = ({ data }) => {
@@ -37,7 +37,7 @@ const HerSection = ({ data }) => {
 
         <section className="position-relative py-6">
             <img
-                src={process.env.CLIENT_API_URL + data.image.url}
+                src={data.image.url}
                 alt="Alt text"
                 className="bg-image"
             />

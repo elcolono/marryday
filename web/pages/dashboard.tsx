@@ -335,8 +335,6 @@ export default function Index({ user, mainMenus, flatMenus, themeSettings }) {
                     </div>
                 )}
 
-            <script src="assets/js/vendors.bundle.js"></script>
-            <script src="assets/js/scripts.bundle.js"></script>
         </Layout >
     )
 }

@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import { fetchAPIwithSSR } from '../lib/api'
 import { CMS_NAME } from '../lib/constants'
-import HeroSection from '../components/hero-section'
+import HeroSection from '../components/HeroSection'
 import ContentSection from '../components/content-section'
 import CounterSection from '../components/counter-section'
 import CTASection from '../components/cta-section'
