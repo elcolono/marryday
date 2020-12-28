@@ -248,3 +248,16 @@ REST_AUTH_REGISTER_SERIALIZERS = {
 }
 
 # REST_USE_JWT = True
+
+# S3 Bucket Connection
+# app user with programmatic access
+AWS_ACCESS_KEY_ID = 'AKIA4NGTH73S3GKH6Y4R'
+AWS_SECRET_ACCESS_KEY = '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'
+
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+AWS_STORAGE_BUCKET_NAME = 'mowo-location-images'
+AWS_S3_REGION_NAME = 'eu-central-1'
+AWS_S3_FILE_OVERWRITE = False
+# Setting AWS_QUERYSTRING_AUTH to False to remove query parameter authentication from generated URLs. This can be useful if your S3 buckets are public.
+# BUT WITH AUTH QUERYSTRING AND ERROR OCCURES - NOT DEBUGGED YET
+AWS_QUERYSTRING_AUTH = False

@@ -1,6 +1,16 @@
 from django.contrib import admin
-from .models import Location, RentObject, Booking
+from .models import Location, RentObject, Booking, LocationImage
 # Register your models here.
+
+
+class LocationImageInline(admin.TabularInline):
+    model = LocationImage
+
+
+class LocationImageAdmin(admin.ModelAdmin):
+    search_fields = ('title', 'image')
+    list_display = ('title', 'image')
+    list_filter = ('title', 'image')
 
 
 class RentObjectInline(admin.TabularInline):
@@ -11,7 +21,7 @@ class LocationAdmin(admin.ModelAdmin):
     search_fields = ('title', 'address', 'postcode', 'city')
     list_display = ('title', 'address', 'postcode', 'city', 'lat', 'lng',)
     list_filter = ('title', 'address', 'postcode', 'city')
-    inlines = [RentObjectInline]
+    inlines = [RentObjectInline, LocationImageInline]
 
 
 class RentObjectAdmin(admin.ModelAdmin):
@@ -26,6 +36,7 @@ class BookingAdmin(admin.ModelAdmin):
     list_filter = search_fields = ('rent_object', 'start', 'end')
 
 
+admin.site.register(LocationImage, LocationImageAdmin)
 admin.site.register(Location, LocationAdmin)
 admin.site.register(RentObject, RentObjectAdmin)
 admin.site.register(Booking, BookingAdmin)
