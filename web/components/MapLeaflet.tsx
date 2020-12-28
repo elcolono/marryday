@@ -1,8 +1,8 @@
 import React from "react"
 import Link from "next/link"
-import { MapContainer, Marker, Popup, TileLayer, Tooltip, Circle } from "react-leaflet"
+import { Map, Marker, Popup, TileLayer, Tooltip, Circle } from "react-leaflet"
 import "leaflet/dist/leaflet.css"
-import Stars from "./Stars"
+// import L from 'leaflet'
 
 const MapLeaflet = (props) => {
   const tileLayers = [
@@ -68,39 +68,37 @@ const MapLeaflet = (props) => {
   })
 
   const markers =
-    props.geoJSON &&
-    props.geoJSON.features &&
-    props.geoJSON.features.map((feature) => [
-      feature.geometry.coordinates[1],
-      feature.geometry.coordinates[0],
+    props.locations &&
+    props.locations.map((location) => [
+      location.lat,
+      location.lng,
     ])
 
   return (
-    <MapContainer
+    <Map
       center={props.center && props.center}
       zoom={props.zoom}
       scrollWheelZoom={focus}
       className={props.className}
       dragging={props.dragging}
       tap={props.tap}
-      bounds={props.geoJSON ? markers : null}
+      bounds={props.locations ? markers : null}
       onFocus={() => setFocus(true)}
       onBlur={() => setFocus(false)}
     >
       <TileLayer
-        url={tileLayers[1].tiles}
+        url={tileLayers[0].tiles}
         attribution={tileLayers[0].attribution}
       />
-      {props.geoJSON &&
-        props.geoJSON.features &&
-        props.geoJSON.features.map((feature) => {
-          const data = feature.properties
+      {props.locations &&
+        props.locations.map((location) => {
+          const data = location
           return props.popupVenue ? (
             <Marker
               key={data.id}
               position={[
-                feature.geometry.coordinates[1],
-                feature.geometry.coordinates[0],
+                data.lat,
+                data.lng,
               ]}
               onMouseOver={() => {
                 setHover(data.id)
@@ -109,18 +107,18 @@ const MapLeaflet = (props) => {
                 setHover(false)
               }}
               icon={
-                hover === data.id || props.hoverCard === feature.properties.id
+                hover === data.id || props.hoverCard === data.id
                   ? highlightIcon
                   : icon
               }
             >
               <Popup className="map-custom-popup" maxWidth="600" minWidth="200">
                 <div className="popup-venue">
-                  {data.image ? (
+                  {data.images ? (
                     <div
                       className={`image d-none d-md-block`}
                       style={{
-                        backgroundImage: `url(/content/img/photo/${data.image})`,
+                        backgroundImage: data.image[0].image,
                       }}
                     />
                   ) : (
@@ -130,7 +128,7 @@ const MapLeaflet = (props) => {
                     {data.name && (
                       <h6>
                         <Link href={data.link}>
-                          <a>{data.name}</a>
+                          <a>{data.title}</a>
                         </Link>
                       </h6>
                     )}
@@ -160,8 +158,8 @@ const MapLeaflet = (props) => {
                 icon={icon}
                 opacity={0}
                 position={[
-                  feature.geometry.coordinates[1],
-                  feature.geometry.coordinates[0],
+                  data.lat,
+                  data.lng,
                 ]}
                 onMouseOver={() => {
                   setHover(data.id)
@@ -174,37 +172,37 @@ const MapLeaflet = (props) => {
                   permanent={true}
                   interactive={true}
                   direction="top"
-                  className={`map-custom-tooltip ${hover === data.id || props.hoverCard === feature.properties.id
+                  className={`map-custom-tooltip ${hover === data.id || props.hoverCard === data.id
                     ? "active"
                     : ""
                     }`}
                 >
-                  ${data.price}
+                  {data.title}
                 </Tooltip>
 
                 <Popup className="map-custom-popup" maxWidth="600" minWidth="200">
                   <div className="popup-rental">
-                    {data.image ? (
+                    {data.images ? (
                       <div
                         className={`image d-none d-md-block`}
                         style={{
-                          backgroundImage: `url(/content/img/photo/${data.image})`,
+                          backgroundImage: `url(${data.images[0].image})`
                         }}
                       />
                     ) : (
                         <div className="image" />
                       )}
                     <div className="text">
-                      {data.name && (
+                      {data.title && (
                         <h6>
-                          <Link href={data.link}>
-                            <a>{data.name}</a>
+                          <Link href="/demo">
+                            <a>{data.title}</a>
                           </Link>
                         </h6>
                       )}
-                      <div className="text-xs">
+                      {/* <div className="text-xs">
                         <Stars stars={data.stars} />
-                      </div>
+                      </div> */}
                     </div>
                   </div>
                 </Popup>
@@ -224,7 +222,7 @@ const MapLeaflet = (props) => {
           weight={2}
         />
       )}
-    </MapContainer>
+    </Map>
   )
 }
 

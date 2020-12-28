@@ -106,14 +106,14 @@ const Footer = (props) => {
                   <img
                     width="32"
                     height="32"
-                    src="/content/svg/visa.svg"
+                    src="/assets/svg/visa.svg"
                     alt="..."
                     className="w-2rem"
                   />
                 </li>
                 <li className="list-inline-item">
                   <img
-                    src="/content/svg/mastercard.svg"
+                    src="/assets/svg/mastercard.svg"
                     width="32"
                     height="32"
                     alt="..."
@@ -122,7 +122,7 @@ const Footer = (props) => {
                 </li>
                 <li className="list-inline-item">
                   <img
-                    src="/content/svg/paypal.svg"
+                    src="/assets/svg/paypal.svg"
                     width="32"
                     height="32"
                     alt="..."
@@ -131,7 +131,7 @@ const Footer = (props) => {
                 </li>
                 <li className="list-inline-item">
                   <img
-                    src="/content/svg/western-union.svg"
+                    src="/assets/svg/western-union.svg"
                     width="32"
                     height="32"
                     alt="..."

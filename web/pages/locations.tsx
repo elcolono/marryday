@@ -22,22 +22,9 @@ import geoJSON from "../data/rooms-geojson.json"
 import { GetServerSideProps } from "next"
 import { fetchAPIwithSSR } from "../lib/api"
 
-// export async function getStaticProps() {
-//   return {
-//     props: {
-//       nav: {
-//         light: true,
-//         classes: "shadow",
-//         color: "white",
-//       },
-//       title: "Rooms | Category - Map on the top",
-//     },
-//   }
-// }
-
 const Category2Rooms = (props) => {
 
-  const { locations, user, mainMenus, flatMenus, themeSettings } = props
+  const { locations } = props
 
   const [hoverCard, setHoverCard] = React.useState(null)
   const onCardEnter = (id) => {
@@ -103,7 +90,7 @@ const Category2Rooms = (props) => {
               className="map-full shadow-left"
               center={[40.732346, -74.0014247]}
               zoom={14}
-              geoJSON={geoJSON}
+              locations={locations}
               hoverCard={hoverCard}
             />
           </Col>
@@ -123,6 +110,18 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   const flatMenus = (await fetchAPIwithSSR('/api/flat-menus', { method: 'GET', req: req })) ?? []
   const themeSettings = (await fetchAPIwithSSR('/api/theme-settings', { method: 'GET', req: req })) ?? []
   return {
-    props: { locations, user, mainMenus, flatMenus, themeSettings },
+    props: {
+      locations,
+      user,
+      mainMenus,
+      flatMenus,
+      themeSettings,
+      nav: {
+        light: true,
+        classes: "shadow",
+        color: "white",
+      },
+      title: "Rooms | Category - Map on the top",
+    },
   }
 }

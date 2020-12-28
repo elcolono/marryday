@@ -5,13 +5,8 @@ import {
   Card,
   CardBody,
   CardTitle,
-  CardSubtitle,
-  CardText,
-  Media,
 } from "reactstrap"
 
-import Stars from "./Stars"
-import Image from "./CustomImage"
 import Icon from "./Icon"
 
 const CardRoom = (props) => {
