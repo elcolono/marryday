@@ -104,17 +104,17 @@ export default Category2Rooms
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   const locations = (await fetchAPIwithSSR('/api/v1/cowork/locations/', { method: 'GET', req: req })) ?? []
-  const user = (await fetchAPIwithSSR('/api/v1/rest-auth/user/', { method: 'GET', req: req })) ?? null
-  const mainMenus = (await fetchAPIwithSSR('/api/main-menus', { method: 'GET', req: req })) ?? []
-  const flatMenus = (await fetchAPIwithSSR('/api/flat-menus', { method: 'GET', req: req })) ?? []
-  const themeSettings = (await fetchAPIwithSSR('/api/theme-settings', { method: 'GET', req: req })) ?? []
+  // const user = (await fetchAPIwithSSR('/api/v1/rest-auth/user/', { method: 'GET', req: req })) ?? null
+  // const mainMenus = (await fetchAPIwithSSR('/api/main-menus', { method: 'GET', req: req })) ?? []
+  // const flatMenus = (await fetchAPIwithSSR('/api/flat-menus', { method: 'GET', req: req })) ?? []
+  // const themeSettings = (await fetchAPIwithSSR('/api/theme-settings', { method: 'GET', req: req })) ?? []
   return {
     props: {
       locations,
-      user,
-      mainMenus,
-      flatMenus,
-      themeSettings,
+      // user,
+      // mainMenus,
+      // flatMenus,
+      // themeSettings,
       nav: {
         light: true,
         classes: "shadow",

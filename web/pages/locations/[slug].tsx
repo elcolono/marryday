@@ -1,21 +1,15 @@
 import React from "react"
 import Link from "next/link"
+import dynamic from "next/dynamic"
 
 import {
     Container,
     Row,
     Col,
-    Form,
-    Label,
-    Input,
-    Button,
-    FormGroup,
     Media,
     Badge,
 } from "reactstrap"
 import UseWindowSize from "../../hooks/UseWindowSize"
-// import { DateRangePicker } from "react-dates"
-import Swiper from "../../components/Swiper"
 
 import data from "../../data/detail-rooms.json"
 
@@ -24,17 +18,17 @@ import Gallery from "../../components/Gallery"
 import Map from "../../components/Map"
 import Image from "../../components/CustomImage"
 
-
 import { GetServerSideProps } from "next";
 import { fetchAPIwithSSR } from "../../lib/api";
 
 const LocationDetail = (props) => {
     const { location } = props
     const size = UseWindowSize()
-    const [range, setRange] = React.useState([
-        { startDate: new Date() },
-        { endDate: "" },
-    ])
+
+    const BookingFormWithNoSSR = dynamic(() => import("../../components/BookingForm"), {
+        ssr: false
+    });
+
     const groupByN = (n, data) => {
         let result = []
         for (let i = 0; i < data.length; i += n) result.push(data.slice(i, i + n))
@@ -46,16 +40,16 @@ const LocationDetail = (props) => {
     return (
         <React.Fragment>
             <section>
-                <SwiperGallery data={data.swiper} />
+                <SwiperGallery data={location.images} />
                 <Container className="py-5">
                     <Row>
-                        <Col lg="8">
+                        <Col lg="7">
                             <div className="text-block">
                                 <p className="text-primary">
                                     <i className="fa-map-marker-alt fa mr-1" />
                     &nbsp;{data.location && data.location}
                                 </p>
-                                {data.title && <h1>{data.title}</h1>}
+                                {location.title && <h1>{location.title}</h1>}
                                 {data.category && (
                                     <div className="text-muted text-uppercase mb-4">
                                         {data.category}
@@ -89,33 +83,7 @@ const LocationDetail = (props) => {
                                     floor and can make arrangements for small children with a
                     portable crib and highchair if requested.{" "}
                                 </p>
-                                <p className="text-muted font-weight-light">
-                                    Also in the apartment:
-                  </p>
-                                <ul className="text-muted font-weight-light">
-                                    <li>TV with Netflix and DirectTVNow</li>
-                                    <li>Free WiFi</li>
-                                    <li>Gourmet Coffee/Tea making supplies</li>
-                                    <li>Fresh Sheets and Towels</li>
-                                    <li>
-                                        Toaster, microwave, pots and pans and basic cooking needs
-                                        like salt, pepper, sugar, and olive oil.
-                    </li>
-                                    <li>Air Conditioning to keep you cool all summer!</li>
-                                </ul>
-                                <p className="text-muted font-weight-light">
-                                    The apartment is surprisingly quiet for being in the heart of
-                                    a vibrant, bustling neighborhood.
-                  </p>
-                                <h6 className="mb-3">Interaction with guests</h6>
-                                <p className="text-muted font-weight-light">
-                                    We live in the two floors above the garden apartment so we are
-                                    usually available to answer questions. The garden apartment is
-                                    separate from our living space. We are happy to provide advice
-                                    on local attractions, restaurants and transportation around
-                                    the city. If there's anything you need please don't hesitate
-                                    to ask!
-                  </p>
+            
                             </div>
                             {data.amenities && (
                                 <React.Fragment>
@@ -230,7 +198,7 @@ const LocationDetail = (props) => {
                                 </div>
                             )}
                         </Col>
-                        <Col lg="4">
+                        <Col lg="5">
                             <div
                                 style={{ top: "100px" }}
                                 className="p-4 shadow ml-lg-4 rounded sticky-top"
@@ -242,6 +210,8 @@ const LocationDetail = (props) => {
                     per night
                   </p>
                                 <hr className="my-4" />
+                                <BookingFormWithNoSSR locationSlug={location.slug} />
+{/* 
                                 <Form
                                     id="booking-form"
                                     method="get"
@@ -261,12 +231,13 @@ const LocationDetail = (props) => {
                                             <option value="5">5 Guests</option>
                                         </Input>
                                     </FormGroup>
+                                    <BookingFormWithNoSSR locationSlug={location.slug} />
                                     <FormGroup>
                                         <Button type="submit" color="primary" block>
                                             Book your stay
                       </Button>
                                     </FormGroup>
-                                </Form>
+                                </Form> */}
                                 <p className="text-muted text-sm text-center">
                                     Some additional text can be also placed here.
                   </p>
@@ -320,17 +291,17 @@ export default LocationDetail
 
 export const getServerSideProps: GetServerSideProps = async ({ params, req }) => {
     const location = (await fetchAPIwithSSR(`/api/v1/cowork/location/${params.slug}`, { method: 'GET', req: req })) ?? []
-    const user = (await fetchAPIwithSSR('/api/v1/rest-auth/user/', { method: 'GET', req: req })) ?? null
-    const mainMenus = (await fetchAPIwithSSR('/api/main-menus', { method: 'GET', req: req })) ?? []
-    const flatMenus = (await fetchAPIwithSSR('/api/flat-menus', { method: 'GET', req: req })) ?? []
-    const themeSettings = (await fetchAPIwithSSR('/api/theme-settings', { method: 'GET', req: req })) ?? []
+    // const user = (await fetchAPIwithSSR('/api/v1/rest-auth/user/', { method: 'GET', req: req })) ?? null
+    // const mainMenus = (await fetchAPIwithSSR('/api/main-menus', { method: 'GET', req: req })) ?? []
+    // const flatMenus = (await fetchAPIwithSSR('/api/flat-menus', { method: 'GET', req: req })) ?? []
+    // const themeSettings = (await fetchAPIwithSSR('/api/theme-settings', { method: 'GET', req: req })) ?? []
     return {
         props: {
             location,
-            user,
-            mainMenus,
-            flatMenus,
-            themeSettings,
+            // user,
+            // mainMenus,
+            // flatMenus,
+            // themeSettings,
             nav: {
                 light: true,
                 classes: "shadow",

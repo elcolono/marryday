@@ -22,6 +22,17 @@
     }
 }
 
+.icon-image-rounded {
+    display: inline-block;
+    width: 14rem;
+    height: 14rem;
+    
+    img {
+        width: 100%;
+        height: 100%;
+    }
+}
+
 .icon-rounded {
     display: inline-block;
     width: 4rem;

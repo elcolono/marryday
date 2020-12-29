@@ -2,32 +2,28 @@ import clsx from "clsx";
 import format from "date-fns/format";
 import isSameDay from "date-fns/isSameDay";
 import endOfWeek from "date-fns/endOfWeek";
-import React from "react";
+import React, { useState } from "react";
 import startOfWeek from "date-fns/startOfWeek";
 import isWithinInterval from "date-fns/isWithinInterval";
-import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
+import { DatePicker, MuiPickersUtilsProvider, DatePickerProps } from "@material-ui/pickers";
 import { createStyles } from "@material-ui/styles";
 // this guy required only on the docs site to work with dynamic date library
 import { makeJSDateObject } from '../helpers/utils';
 import { IconButton, withStyles } from "@material-ui/core";
 import DateFnsUtils from '@date-io/date-fns'; // choose your lib
+import { Button } from "reactstrap";
 
 
 // TODO: Datepicker gehört und Weekday GRId gehören getrennt
 
 const CustomElements = ({ classes, selectedDate, handleWeekChange }) => {
 
-  // const formatWeekSelectLabel = (date, invalidLabel) => {
-  //   let dateClone = makeJSDateObject(date);
-
-  //   return dateClone && isValid(dateClone)
-  //     ? `Week of ${format(startOfWeek(dateClone), "MMM do")}`
-  //     : invalidLabel;
-  // };
+  const [open, setOpen] = useState(false);
 
   const renderWrappedWeekDay = (date, selectedDate, dayInCurrentMonth) => {
     let dateClone = makeJSDateObject(date);
     let selectedDateClone = makeJSDateObject(selectedDate);
+
 
     const start = startOfWeek(selectedDateClone);
     const end = endOfWeek(selectedDateClone);
@@ -56,20 +52,29 @@ const CustomElements = ({ classes, selectedDate, handleWeekChange }) => {
     );
   };
 
+
   return (
-    <>
-      <MuiPickersUtilsProvider utils={DateFnsUtils}>
-        <DatePicker
-          disablePast
-          label="Week picker"
-          value={selectedDate}
-          onChange={handleWeekChange}
-          renderDay={renderWrappedWeekDay}
-          variant="inline"
-        // labelFunc={formatWeekSelectLabel}
-        />
-      </MuiPickersUtilsProvider>
-    </>
+
+    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+      <Button
+        color="items"
+        className="btn-items-increase"
+        onClick={() => setOpen(isOpen => !isOpen)}
+      ><i className="fa fa-calendar"></i></Button>
+
+      <DatePicker
+        open={open}
+        hidden={true}
+        disablePast
+        // label="Week picker"
+        value={selectedDate}
+        onChange={handleWeekChange}
+        renderDay={renderWrappedWeekDay}
+        onClose={() => setOpen(isOpen => !isOpen)}
+      // variant="inline"
+      // labelFunc={formatWeekSelectLabel}
+      />
+    </MuiPickersUtilsProvider>
   );
 
 }

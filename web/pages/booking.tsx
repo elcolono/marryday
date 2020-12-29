@@ -9,7 +9,7 @@ import dynamic from "next/dynamic";
 import Layout from '../components/Layout'
 import Head from 'next/head'
 import { GetServerSideProps } from 'next';
-import BookingForm from '../components/booking-form';
+import BookingForm from '../components/BookingForm';
 
 export default function Booking({ user, mainMenus, flatMenus, themeSettings }) {
 
@@ -18,7 +18,7 @@ export default function Booking({ user, mainMenus, flatMenus, themeSettings }) {
     const MapWithNoSSR = dynamic(() => import("../components/map"), {
         ssr: false
     });
-    const BookingFormWithNoSSR = dynamic(() => import("../components/booking-form"), {
+    const BookingFormWithNoSSR = dynamic(() => import("../components/BookingForm"), {
         ssr: false
     });
 

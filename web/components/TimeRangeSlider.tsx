@@ -10,6 +10,7 @@ import isAfter from 'date-fns/isAfter'
 import TimeRange from 'react-timeline-range-slider'
 import Draggable from 'react-draggable';
 import { endOfDay, startOfDay } from 'date-fns'
+import { Button } from 'reactstrap'
 
 
 const now = new Date()
@@ -163,18 +164,21 @@ const TimeRangeSlider = ({
     };
 
     return (
-        <>
-            <span className={`border p-2 ${isLoading && 'disabled'}`} onClick={decreaseTimeRangeIndex}>{"<"}</span>
-            {/* <span onClick={() => setTimeRangeIndex(0)} className={`p-2 m-1 border rounded-circle ${timeRangeIndex === 0 && 'border-primary'} ${!checkTimeRangeSelectable(0) && 'disabled'}`}>00:00</span>
-            <span onClick={() => setTimeRangeIndex(1)} className={`p-2 m-1 border rounded-circle ${timeRangeIndex === 1 && 'border-primary'} ${!checkTimeRangeSelectable(1) && 'disabled'}`}>04:00</span>
-            <span onClick={() => setTimeRangeIndex(2)} className={`p-2 m-1 border rounded-circle ${timeRangeIndex === 2 && 'border-primary'} ${!checkTimeRangeSelectable(2) && 'disabled'}`}>08:00</span>
-            <span onClick={() => setTimeRangeIndex(3)} className={`p-2 m-1 border rounded-circle ${timeRangeIndex === 3 && 'border-primary'} ${!checkTimeRangeSelectable(3) && 'disabled'}`}>12:00</span>
-            <span onClick={() => setTimeRangeIndex(4)} className={`p-2 m-1 border rounded-circle ${timeRangeIndex === 4 && 'border-primary'} ${!checkTimeRangeSelectable(4) && 'disabled'}`}>16:00</span>
-            <span onClick={() => setTimeRangeIndex(5)} className={`p-2 m-1 border rounded-circle ${timeRangeIndex === 5 && 'border-primary'} ${!checkTimeRangeSelectable(5) && 'disabled'}`}>20:00</span> */}
-            <span className={`border p-2 ${isLoading && 'disabled'}`} onClick={increaseTimeRangeIndex}>{">"}</span>
+        <React.Fragment>
+            <Button
+                disabled={isLoading}
+                color="items"
+                className="btn-items-increase m-1"
+                onClick={decreaseTimeRangeIndex}
+            ><i className="fa fa-chevron-left"></i></Button>
+            <Button
+                disabled={isLoading}
+                color="items"
+                className="btn-items-increase m-1"
+                onClick={increaseTimeRangeIndex}
+            ><i className="fa fa-chevron-right"></i></Button>
 
             <div className="d-flex align-items-center">
-
                 <Draggable
                     axis="x"
                     handle=".handle"
@@ -188,7 +192,7 @@ const TimeRangeSlider = ({
                 // onStop={this.handleStop}
                 >
                     <div>
-                        <div className="handle">Drag from here</div>
+                        {/* <div className="handle">Drag from here</div> */}
                         <TimeRange
                             error={error}
                             ticksNumber={36}
@@ -204,15 +208,8 @@ const TimeRangeSlider = ({
 
 
             </div>
-            <div>x: {deltaPosition.x.toFixed(0)}, y: {deltaPosition.y.toFixed(0)}</div>
-
-            <style jsx>{`
-                .disabled {
-                    pointer-events:none;
-                    opacity: 0.5;
-                };
-            `}</style>
-        </>
+            {/* <div>x: {deltaPosition.x.toFixed(0)}, y: {deltaPosition.y.toFixed(0)}</div> */}
+        </React.Fragment>
     )
 }
 
