@@ -86,7 +86,7 @@ export default function BookingForm({ locationSlug }) {
     }
 
     const onChangeTimeInterval = ti => {
-        console.log("TimeInterval changed", ti)
+        // console.log("TimeInterval changed", ti)
         setSelectedInterval(ti)
     }
 

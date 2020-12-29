@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 import addHours from 'date-fns/addHours'
 import subHours from 'date-fns/subHours'
@@ -40,11 +40,18 @@ const TimeRangeSlider = ({
     errorHandler,
     error
 }) => {
+    const [firstRender, setFirestRender] = useState(true)
+    const [isLoading, setIsLoading] = useState(false)
 
     const [timelineInterval, setTimelineInterval] = useState([subHours(nearestHour, 12), addHours(nearestHour, 12)])
     const [timelinePosition, setTimelinePosition] = useState(startTimeLinePosition)
 
-    const [isLoading, setIsLoading] = useState(false)
+    useEffect(() => {
+        if (!firstRender) {
+            setTimelineInterval([startOfDay(selectedDate), endOfDay(selectedDate)])
+        }
+        setFirestRender(false)
+    }, [selectedDate])
 
 
     const getDisabledIntervals = () => {
@@ -104,7 +111,21 @@ const TimeRangeSlider = ({
         }
     }
 
+
+    const clearSelectedTimeInterval = () => {
+        const ti = [addHours(timelineInterval[0], 13), addHours(timelineInterval[0], 15)]
+        console.log("clearSelectedTimeInterval", ti)
+        changeTimeInterval(ti)
+    }
+
     const onChangeTimeInterval = (ti) => {
+        // console.log("onChangeTimeInterval", ti)
+        const isStartVisible = isWithinInterval(ti[0], { start: addHours(timelineInterval[0], 12), end: addHours(timelineInterval[0], 17.5) })
+        const isEndVisible = isWithinInterval(ti[0], { start: addHours(timelineInterval[0], 12), end: addHours(timelineInterval[0], 17.5) })
+        if (!isStartVisible && !isEndVisible) {
+            return clearSelectedTimeInterval()
+        }
+
         // Check interval 
         changeTimeInterval(ti)
         // setLastAction(undefined)
@@ -112,47 +133,56 @@ const TimeRangeSlider = ({
 
     return (
         <React.Fragment>
-            <Button
-                disabled={isLoading}
-                color="items"
-                className="btn-items-increase m-1"
-                onClick={() => decreaseTimeRangeIndex()}
-            ><i className="fa fa-chevron-left"></i></Button>
-            <Button
-                disabled={isLoading}
-                color="items"
-                className="btn-items-increase m-1"
-                onClick={() => increaseTimeRangeIndex()}
-            ><i className="fa fa-chevron-right"></i></Button>
+            <div className="d-flex justify-content-between">
+                <div>
+                    <Button
+                        disabled={isLoading}
+                        color="items"
+                        className="btn-items-increase m-1"
+                        onClick={() => decreaseTimeRangeIndex()}
+                    ><i className="fa fa-chevron-left"></i></Button>
+                    <Button
+                        disabled={isLoading}
+                        color="items"
+                        className="btn-items-increase m-1"
+                        onClick={() => increaseTimeRangeIndex()}
+                    ><i className="fa fa-chevron-right"></i></Button>
+                </div>
 
-            <div className="d-flex align-items-center">
-                <Draggable
-                    axis="x"
-                    handle=".handle"
-                    // defaultPosition={{ x: 0, y: 0 }}
-                    // bounds={{ top: -100, left: -1000, right: 0, bottom: 100 }}
-                    position={{ x: timelinePosition, y: 0 }}
-                    grid={[25, 25]}
-                    scale={1}
-                >
-                    <div>
-                        {/* <div className="handle">Drag from here</div> */}
-                        <TimeRange
-                            error={error}
-                            ticksNumber={36}
-                            selectedInterval={selectedInterval}
-                            // timelineInterval={[addHours(selectedDate, timeRangeIndex * 4), addHours(selectedDate, (timeRangeIndex * 4) + 8)]}
-                            // timelineInterval={[startOfDay(selectedDate), endOfDay(selectedDate)]}
-                            timelineInterval={timelineInterval}
-                            onUpdateCallback={errorHandler}
-                            onChangeCallback={onChangeTimeInterval}
-                            disabledIntervals={getDisabledIntervals()}
-                        />
-                    </div>
-                </Draggable>
-
-
+                <Button
+                    disabled={isLoading}
+                    color="items"
+                    className="btn-items-increase m-1"
+                    onClick={() => clearSelectedTimeInterval()}
+                ><i className="fa fa-times"></i></Button>
             </div>
+
+            <Draggable
+                axis="x"
+                handle=".handle"
+                // defaultPosition={{ x: 0, y: 0 }}
+                // bounds={{ top: -100, left: -1000, right: 0, bottom: 100 }}
+                position={{ x: timelinePosition, y: 0 }}
+                grid={[25, 25]}
+                scale={1}
+            >
+                <div>
+                    {/* <div className="handle">Drag from here</div> */}
+                    <TimeRange
+                        error={error}
+                        ticksNumber={36}
+                        selectedInterval={selectedInterval}
+                        // timelineInterval={[addHours(selectedDate, timeRangeIndex * 4), addHours(selectedDate, (timeRangeIndex * 4) + 8)]}
+                        // timelineInterval={[startOfDay(selectedDate), endOfDay(selectedDate)]}
+                        timelineInterval={timelineInterval}
+                        onUpdateCallback={errorHandler}
+                        onChangeCallback={onChangeTimeInterval}
+                        disabledIntervals={getDisabledIntervals()}
+                    />
+                </div>
+            </Draggable>
+
+
             <div>x: {timelinePosition}</div>
             <div>start: {format(selectedInterval[0], "yyyy-MM-dd'T'HH:mm:ss.SSSxxx")}</div>
             <div>end: {format(selectedInterval[1], "yyyy-MM-dd'T'HH:mm:ss.SSSxxx")}</div>

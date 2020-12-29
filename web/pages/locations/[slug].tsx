@@ -43,7 +43,7 @@ const LocationDetail = (props) => {
                 <SwiperGallery data={location.images} />
                 <Container className="py-5">
                     <Row>
-                        <Col lg="7">
+                        <Col lg="6">
                             <div className="text-block">
                                 <p className="text-primary">
                                     <i className="fa-map-marker-alt fa mr-1" />
@@ -198,7 +198,7 @@ const LocationDetail = (props) => {
                                 </div>
                             )}
                         </Col>
-                        <Col lg="5">
+                        <Col lg="6">
                             <div
                                 style={{ top: "100px" }}
                                 className="p-4 shadow ml-lg-4 rounded sticky-top"
@@ -246,7 +246,7 @@ const LocationDetail = (props) => {
                                     <p>
                                         <a href="#" className="text-secondary text-sm">
                                             <i className="fa fa-heart" />
-                        &nbsp;Bookmark This Listing
+                        &nbsp;MoWo Spaces
                       </a>
                                     </p>
                                     <p className="text-muted text-sm">
