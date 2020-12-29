@@ -56,7 +56,5 @@ class FlexPage(Page):
         APIField('content'),
     ]
 
-    template = "cms/flex/flex_page.html"
-
     class Meta:
         abstract = True

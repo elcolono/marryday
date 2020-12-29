@@ -67,6 +67,12 @@ class PageHeadingSectionBlock(blocks.StructBlock):
 # FAQ Section
 class FAQSectionBlock(blocks.StructBlock):
     """ FAQ Block - Ued by each section """
+    heading = blocks.CharBlock(
+        required=False,
+        max_length=80,
+        label='Heading',
+        default='Super Awesome Section',
+    )
     faqs = blocks.ListBlock(
         blocks.StructBlock([
             ("heading", blocks.CharBlock(required=True, max_length=1000)),
@@ -319,6 +325,8 @@ class ComingSoonSectionBlock(blocks.StructBlock):
         label = 'Coming Soon Section'
 
 # Login Section Block
+
+
 class LoginSectionBlock(blocks.StructBlock):
     """ Login Section Block """
     heading = blocks.CharBlock(required=True, max_length=100, label="Title")
@@ -333,11 +341,14 @@ class LoginSectionBlock(blocks.StructBlock):
         label='Image',
         width='fill-960x720',
     )
+
     class Meta:
         """ meta data """
         label = 'Login Section'
 
 # Booking Section Block
+
+
 class BookingSectionBlock(blocks.StructBlock):
     """ Booking Section Block """
     heading = blocks.CharBlock(required=True, max_length=100, label="Title")
@@ -347,11 +358,14 @@ class BookingSectionBlock(blocks.StructBlock):
         label='Description',
         default='The thing we do is better than any other similar thing and this hero panel will convince you of that, just by having a glorious background image.',
     )
+
     class Meta:
         """ meta data """
         label = 'Booking Section'
 
 # Counter Section Block
+
+
 class CounterSectionBlock(blocks.StructBlock):
     """ Counter Section Block """
     heading = blocks.CharBlock(required=True, max_length=100, label="Title")

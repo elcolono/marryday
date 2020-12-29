@@ -55,12 +55,12 @@ class RentObjectListView(generics.ListCreateAPIView):
         Filtering against `location` & `type` query parameter in the URL.
         """
         queryset = RentObject.objects.all()
-        location = self.request.query_params.get('location', None)
+        location_slug = self.request.query_params.get('location', None)
         rent_type = self.request.query_params.get('type', None)
         date = self.request.query_params.get('date', None)
 
-        if location is not None:
-            queryset = queryset.filter(location=location)
+        if location_slug is not None:
+            queryset = queryset.filter(location__slug=location_slug)
         if rent_type is not None:
             queryset = queryset.filter(type=rent_type)
         if date is not None:
