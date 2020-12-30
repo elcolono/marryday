@@ -4,6 +4,7 @@ import {
     Spinner
 } from 'reactstrap'
 import ProgressBar from '../ProgressBar';
+import differenceInMinutes from 'date-fns/differenceInMinutes';
 
 import { Formik, Form } from 'formik';
 
@@ -50,6 +51,9 @@ export default function CheckoutPage({ locationSlug }) {
 
     async function _submitForm(values, actions) {
         const card = elements.getElement(CardElement);
+        const totalMinutes = differenceInMinutes(values['timeInterval'][1], values['timeInterval'][0]);
+        const hourPrice = 6.95;
+        const checkPrice = totalMinutes * (hourPrice / 60)
 
         const { paymentMethod, error } = await stripe.createPaymentMethod({
             type: 'card',
@@ -58,16 +62,22 @@ export default function CheckoutPage({ locationSlug }) {
         console.log(paymentMethod)
         ApiService.saveStripeInfo({
             email: values['email'],
-            payment_method_id: paymentMethod.id
+            payment_method_id: paymentMethod.id,
+            timeInterval: values['timeInterval'],
+            rentObject: values['rentobject'],
+            firstName: values['firstName'],
+            lastName: values['lastName'],
+            checkPrice: checkPrice
         })
             .then(response => {
                 console.log(response.data);
+                setActiveStep(activeStep + 1);
+
             }).catch(error => {
                 console.log(error)
             })
 
         actions.setSubmitting(false);
-        setActiveStep(activeStep + 1);
     }
 
     function _handleSubmit(values, actions) {
@@ -121,11 +131,8 @@ export default function CheckoutPage({ locationSlug }) {
                                                 className={classes.button}
                                                 block
                                             >
-                                                {isLastStep ? 'Place order' : 'Weiter'}
+                                                {isLastStep ? 'Place order' : isSubmitting ? <Spinner /> : 'Weiter'}
                                             </Button>
-                                            {isSubmitting && (
-                                                <Spinner />
-                                            )}
                                         </div>
                                     </div>
                                     {/* <pre >{JSON.stringify(values, null, 4)}</pre> */}

@@ -7,6 +7,7 @@ const {
         firstName,
         lastName,
         email,
+        validCard
     }
 } = checkoutFormModel;
 
@@ -20,10 +21,11 @@ export default [
         [firstName.name]: Yup.string().required(`${firstName.requiredErrorMsg}`),
         [lastName.name]: Yup.string().required(`${lastName.requiredErrorMsg}`),
         [email.name]: Yup.string().required(`${email.requiredErrorMsg}`),
+        [validCard.name]: Yup.boolean().isTrue(),
         // [nameOnCard.name]: Yup.string().required(`${nameOnCard.requiredErrorMsg}`),
         // [cardNumber.name]: Yup.string()
         //     .required(`${cardNumber.requiredErrorMsg}`)
-        //     .matches(visaRegEx, cardNumber.invalidErrorMsg),
+        //     .matches(visaRegEx, cardNumber.invalidErrorMsg)
         // [expiryDate.name]: Yup.string()
         //     .nullable()
         //     .required(`${expiryDate.requiredErrorMsg}`)

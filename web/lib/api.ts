@@ -26,6 +26,38 @@ export default class ApiService {
     static saveStripeInfo(data = {}) {
         return api.post(`/payments/save-stripe-info/`, data)
     }
+
+    static signin = (email, password) => {
+        Cookies.remove('token');
+        localStorage.removeItem('user');
+        return api.post('/rest-auth/login/', { email, password })
+            .then(response => {
+                return response;
+            })
+            .catch((e) => {
+                Cookies.remove('token');
+                localStorage.removeItem('user');
+                return e.response
+            });
+    };
+
+    static signout = next => {
+        Cookies.remove('token');
+        localStorage.removeItem('user');
+        api.delete;
+        api.post('/rest-auth/logout/')
+            .then(response => {
+                next();
+            })
+            .catch(e => console.log(e.response));
+    };
+
+    // autheticate user by pass data to cookie and localstorage
+    static authenticate = (data, next) => {
+        Cookies.set('token', data.key);
+        localStorage.setItem('user', data.user)
+        next();
+    };
 }
 
 

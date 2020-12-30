@@ -1,15 +1,16 @@
-import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
+import { CardElement } from "@stripe/react-stripe-js";
 
 import React, { useState } from 'react';
-import { InputField, DatePickerField } from '../FormFields';
+import { InputField } from '../FormFields';
 import {
   Row,
   Col,
   Label,
-  Button,
-  InputGroup,
-  InputGroupAddon,
-} from "reactstrap"
+  FormFeedback
+} from "reactstrap";
+import format from 'date-fns/format';
+import differenceInMinutes from 'date-fns/differenceInMinutes';
+import { useFormikContext } from 'formik';
 
 
 export default function PaymentForm(props) {
@@ -18,17 +19,29 @@ export default function PaymentForm(props) {
   const [error, setError] = useState(null);
 
   const {
-    formField: { firstName, lastName, email, nameOnCard, cardNumber, expiryDate, cvv }
+    formField: { firstName, lastName, email }
   } = props;
+  const { values, setFieldValue } = useFormikContext()
+
+  const totalMinutes = differenceInMinutes(values['timeInterval'][1], values['timeInterval'][0]);
+  const hourPrice = 6.95;
+  const totalPrice = totalMinutes * (hourPrice / 60)
 
 
   // Handle real-time validation errors from the card Element.
   const handleChange = (event) => {
+
     if (event.error) {
       setError(event.error.message);
     } else {
       setError(null);
+      setFieldValue('validCard', event.complete)
     }
+  }
+
+
+  const round = (num) => {
+    return Math.round((num + Number.EPSILON) * 100) / 100
   }
 
   return (
@@ -82,7 +95,7 @@ export default function PaymentForm(props) {
             Credit or debit card
           </Label>
           <CardElement
-            className="form-control"
+            className={`form-control ${error && 'border-danger'}`}
             id="card-element"
             onChange={handleChange}
             options={{
@@ -100,75 +113,50 @@ export default function PaymentForm(props) {
               },
             }}
           />
+          <FormFeedback className="d-block">{error}</FormFeedback>
         </Col>
 
-
-        {/* <Col md="6" className="form-group" key={nameOnCard.name}>
-          <Label for={nameOnCard.name} className="form-label">
-            {nameOnCard.label}
-          </Label>
-          <InputField
-            name={nameOnCard.name}
-            label={nameOnCard.label}
-            fullWidth
-          />
+        <Col md="12">
+          <div className="border-bottom py-3">
+            <ul className="list-unstyled mb-0">
+              {values['objectType'] == 'phone' ? <li className="mb-3"><i className="fas fa-phone fa-fw text-muted mr-2" />1 x Phonebox</li> :
+                values['objectType'] == 'desktop' ? <li className="mb-3"><i className="fas fa-users fa-fw text-muted mr-2" />1 Desktop</li> :
+                  values['objectType'] == 'meeting' ? <li className="mb-3"><i className="fas fa-users fa-fw text-muted mr-2" />1 Meeting</li> :
+                    <i className="fas fa-users fa-fw text-muted mr-2" />
+              }
+              <li className="mb-0">
+                <i className="far fa-calendar fa-fw text-muted mr-2" />
+                {format(values['timeInterval'][0], 'MMM dd, yyyy HH:mm')}
+                <i className="fas fa-arrow-right fa-fw text-muted mx-3" />
+                {format(values['timeInterval'][1], 'MMM dd, yyyy HH:mm')}
+              </li>
+            </ul>
+          </div>
         </Col>
 
-        <Col md="6" className="form-group" key={cardNumber.name}>
-          <Label for={cardNumber.name} className="form-label">
-            {cardNumber.label}
-          </Label>
-          <InputField
-            name={cardNumber.name}
-            label={cardNumber.label}
-            fullWidth
-          />
-        </Col>
-
-        <Col md="4" className="form-group" key={expiryDate.name}>
-          <Label for={expiryDate.name} className="form-label">
-            {expiryDate.label}
-          </Label>
-
-          <DatePickerField
-            name={expiryDate.name}
-            label={expiryDate.label}
-            format="MM/yy"
-            views={['year', 'month']}
-            minDate={new Date()}
-            maxDate={new Date('2050/12/31')}
-            fullWidth
-            open={open}
-            onClose={() => setOpen(isOpen => !isOpen)}
-            hidden
-          />
-
-          <InputGroup>
-            <InputField
-              name={expiryDate.name}
-              label={expiryDate.label}
-              fullWidth
-              disabled
-            />
-            <InputGroupAddon addonType="append">
-              <Button
-                className="btn-items-increase"
-                onClick={() => setOpen(isOpen => !isOpen)}
-              ><i className="fa fa-calendar"></i>
-              </Button>
-            </InputGroupAddon>
-          </InputGroup>
+        <Col md="12" className="form-group" >
+          <div className="text-block pt-3 pb-0">
+            <table className="w-100">
+              <tbody>
+                <tr>
+                  <th className="font-weight-normal py-2">€ {(hourPrice / 60).toFixed(2)} x {totalMinutes} Minuten</th>
+                  <td className="text-right py-2">€ {round(totalPrice)}</td>
+                </tr>
+                <tr>
+                  <th className="font-weight-normal pt-2 pb-3">MwSt.</th>
+                  <td className="text-right pt-2 pb-3">€ {round(totalPrice * 0.2)}</td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr className="border-top">
+                  <th className="pt-3">Total</th>
+                  <td className="font-weight-bold text-right pt-3">€ {round(totalPrice)}</td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
 
         </Col>
-
-        <Col md="4" className="form-group" key={cvv.name}>
-          <Label for={cvv.name} className="form-label">
-            {cvv.label}
-          </Label>
-
-          <InputField name={cvv.name} label={cvv.label} fullWidth />
-        </Col> */}
-
 
       </Row>
     </React.Fragment>
