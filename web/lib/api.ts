@@ -22,6 +22,12 @@ export const api = Axios.create({
     headers: setAuthHeader()
 })
 
+export default class ApiService {
+    static saveStripeInfo(data = {}) {
+        return api.post(`/payments/save-stripe-info/`, data)
+    }
+}
+
 
 export async function fetchAPIwithSSR(url, { method, req } = {}) {
     const res = await fetch(API_URL + url, {

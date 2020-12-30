@@ -1,3 +1,5 @@
+import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
+
 import React, { useState } from 'react';
 import { InputField, DatePickerField } from '../FormFields';
 import {
@@ -13,9 +15,21 @@ import {
 export default function PaymentForm(props) {
 
   const [open, setOpen] = useState(false);
+  const [error, setError] = useState(null);
+
   const {
     formField: { firstName, lastName, email, nameOnCard, cardNumber, expiryDate, cvv }
   } = props;
+
+
+  // Handle real-time validation errors from the card Element.
+  const handleChange = (event) => {
+    if (event.error) {
+      setError(event.error.message);
+    } else {
+      setError(null);
+    }
+  }
 
   return (
     <React.Fragment>
@@ -52,7 +66,6 @@ export default function PaymentForm(props) {
           />
         </Col>
 
-
         <Col md="12" className="form-group" key={email.name}>
           <Label for={email.name} className="form-label">
             {email.label}
@@ -64,7 +77,33 @@ export default function PaymentForm(props) {
           />
         </Col>
 
-        <Col md="6" className="form-group" key={nameOnCard.name}>
+        <Col md="12" className="form-group" >
+          <Label for="card-element" className="form-label">
+            Credit or debit card
+          </Label>
+          <CardElement
+            className="form-control"
+            id="card-element"
+            onChange={handleChange}
+            options={{
+              style: {
+                base: {
+                  fontSize: '16px',
+                  color: '#424770',
+                  '::placeholder': {
+                    color: '#aab7c4',
+                  },
+                },
+                invalid: {
+                  color: '#9e2146',
+                },
+              },
+            }}
+          />
+        </Col>
+
+
+        {/* <Col md="6" className="form-group" key={nameOnCard.name}>
           <Label for={nameOnCard.name} className="form-label">
             {nameOnCard.label}
           </Label>
@@ -128,7 +167,8 @@ export default function PaymentForm(props) {
           </Label>
 
           <InputField name={cvv.name} label={cvv.label} fullWidth />
-        </Col>
+        </Col> */}
+
 
       </Row>
     </React.Fragment>

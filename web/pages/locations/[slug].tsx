@@ -21,9 +21,13 @@ import Icon from '../../components/Icon';
 import { GetServerSideProps } from "next";
 import { fetchAPIwithSSR } from "../../lib/api";
 
+import { Elements } from '@stripe/react-stripe-js';
+import { loadStripe } from "@stripe/stripe-js/pure";
+
 const LocationDetail = (props) => {
     const { location } = props
     const size = UseWindowSize()
+    const stripePromise = loadStripe('pk_test_51I47k4IpxsSLqlNa6T7HoFrFVoxyEalH5VROqKLV1DvZTBMV2WWWS4anN5fdWwqtdPIXaJU3VKR3bwmYhQliv3Or00c3rJIp2Q');
 
     // const BookingFormWithNoSSR = dynamic(() => import("../../components/BookingForm"), {
     //     ssr: false
@@ -138,8 +142,11 @@ const LocationDetail = (props) => {
 
 
                                 {/* <BookingFormWithNoSSR locationSlug={location.slug} /> */}
-                                <BookingWithNoSSR locationSlug={location.slug} />
-        
+                                <Elements stripe={stripePromise}>
+                                    <BookingWithNoSSR locationSlug={location.slug} />
+                                </Elements>
+
+
                                 <CardFooter className="bg-primary-light py-4 border-0">
                                     <Media className="align-items-center">
                                         <Media body>

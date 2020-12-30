@@ -17,12 +17,14 @@ import validationSchema from './FormModel/validationSchema';
 import bookingFormModel from './FormModel/bookingFormModel';
 import formInitialValues from './FormModel/formInitialValues';
 
+import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
+
 import useStyles from './stlyes';
+import ApiService from '../../lib/api';
 
-const steps = ['Shipping address', 'Payment details', 'Review your order'];
+const steps = ['Booking details', 'Payment details'];
+
 const { formId, formField } = bookingFormModel;
-
-
 
 export default function CheckoutPage({ locationSlug }) {
     const classes = useStyles();
@@ -30,28 +32,41 @@ export default function CheckoutPage({ locationSlug }) {
     const currentValidationSchema = validationSchema[activeStep];
     const isLastStep = activeStep === steps.length - 1;
 
+    const stripe = useStripe();
+    const elements = useElements();
+
     function _renderStepContent(step) {
         switch (step) {
             case 0:
                 return <BookingForm formField={formField} locationSlug={locationSlug} />;
             case 1:
                 return <PaymentForm formField={formField} />;
-            case 2:
-                return <ReviewOrder />;
+            // case 2:
+            //     return <ReviewOrder />;
             default:
                 return <div>Not Found</div>;
         }
     }
 
-    function _sleep(ms) {
-        return new Promise(resolve => setTimeout(resolve, ms));
-    }
-
     async function _submitForm(values, actions) {
-        await _sleep(1000);
-        alert(JSON.stringify(values, null, 2));
-        actions.setSubmitting(false);
+        const card = elements.getElement(CardElement);
 
+        const { paymentMethod, error } = await stripe.createPaymentMethod({
+            type: 'card',
+            card: card,
+        });
+        console.log(paymentMethod)
+        ApiService.saveStripeInfo({
+            email: values['email'],
+            payment_method_id: paymentMethod.id
+        })
+            .then(response => {
+                console.log(response.data);
+            }).catch(error => {
+                console.log(error)
+            })
+
+        actions.setSubmitting(false);
         setActiveStep(activeStep + 1);
     }
 
@@ -77,7 +92,7 @@ export default function CheckoutPage({ locationSlug }) {
 
     return (
         <React.Fragment>
-            <ProgressBar progress={progressWidth[activeStep]} />
+            <ProgressBar progress={(100 / steps.length) * (activeStep + 1)} />
             <React.Fragment>
                 {activeStep === steps.length ? (
                     <CheckoutSuccess />
@@ -88,7 +103,7 @@ export default function CheckoutPage({ locationSlug }) {
                             onSubmit={_handleSubmit}
                         >
                             {({ isSubmitting, values }) => (
-                                <Form id={formId} className="p-4">
+                                <Form id={formId} className="p-4 stripe-form">
                                     {_renderStepContent(activeStep)}
 
                                     <div className={classes.buttons}>
@@ -113,12 +128,10 @@ export default function CheckoutPage({ locationSlug }) {
                                             )}
                                         </div>
                                     </div>
-                                    <pre >{JSON.stringify(values, null, 4)}</pre>
+                                    {/* <pre >{JSON.stringify(values, null, 4)}</pre> */}
 
                                 </Form>
-
                             )}
-
                         </Formik>
                     )}
             </React.Fragment>
