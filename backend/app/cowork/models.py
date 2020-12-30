@@ -3,6 +3,7 @@ import uuid
 from django.utils.text import slugify
 from datetime import datetime
 from django.core.exceptions import ValidationError
+from tinymce.models import HTMLField
 
 RENT_OBJECT_TYPES = (
     ('phone', 'Phone'),
@@ -20,6 +21,7 @@ class Location(models.Model):
     lat = models.DecimalField(decimal_places=4, max_digits=10, null=True)
     lng = models.DecimalField(decimal_places=4, max_digits=10, null=True)
     slug = models.CharField(max_length=150, blank=True, null=True)
+    description = HTMLField(null=True, blank=True)
 
     def clean(self):
         if(self.is_active is True and self.images.count() < 3):

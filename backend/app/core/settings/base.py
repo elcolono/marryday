@@ -72,6 +72,7 @@ INSTALLED_APPS = [
     'wagtailmetadata',
     'django.contrib.sitemaps',
     'corsheaders',
+    'tinymce',
 
     # Auth
     'rest_framework',
