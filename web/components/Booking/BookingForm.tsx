@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
-import { api } from '../lib/api'
+import { api } from '../../lib/api'
 import { eachDayOfInterval } from "date-fns/esm";
 
-import { Location, RentObject, Interval } from '../lib/interfaces'
+import { Location, RentObject, Interval } from '../../lib/interfaces'
 
 import { Form, FormGroup, Label, Input, Spinner, Button, Row, Col } from "reactstrap";
 import startOfWeek from "date-fns/startOfWeek";
@@ -12,14 +12,24 @@ import format from "date-fns/format";
 import addDays from "date-fns/addDays";
 import subDays from 'date-fns/subDays'
 import isBefore from "date-fns/isBefore"
-import CustomDatepicker from './CustomDatepicker';
+import CustomDatepicker from '../CustomDatepicker';
 
-import TimeRangeSlider from './TimeRangeSlider';
+import TimeRangeSlider from '../TimeRangeSlider';
 import Draggable from 'react-draggable';
 
-export default function BookingForm({ locationSlug }) {
+import { useFormikContext } from 'formik';
 
-    const [objectType, setObjectType] = useState('phone')
+
+export default function BookingForm(props) {
+
+    const {
+        locationSlug,
+        formField: {
+            start,
+            end
+        }
+    } = props;
+    const { setFieldValue, values } = useFormikContext()
 
     const [selectedDate, setSelectedDate] = useState(startOfDay(new Date()))
     const [week, setWeek] = useState<Array<Date>>(undefined)
@@ -34,15 +44,15 @@ export default function BookingForm({ locationSlug }) {
 
 
     useEffect(() => {
-        selectedDate && setWeekDays(selectedDate);
-    }, [selectedDate])
+        values && values['selectedDate'] && setWeekDays(values['selectedDate']);
+    }, [values['selectedDate']])
 
 
     useEffect(() => {
         const fetchRentObjects = async () => {
             if (locationSlug) {
                 try {
-                    const response = await api.get(`/cowork/rentobjects?location=${locationSlug}&type=${objectType}&date=${selectedDate.toISOString()}`)
+                    const response = await api.get(`/cowork/rentobjects?location=${locationSlug}&type=${values['objectType']}&date=${values['selectedDate'].toISOString()}`)
                     const rentObjects = response.data as Array<RentObject>;
                     setRentObjects(rentObjects);
                     setRentObject(rentObjects[0])
@@ -52,42 +62,42 @@ export default function BookingForm({ locationSlug }) {
             }
         }
         fetchRentObjects()
-    }, [locationSlug, objectType, selectedDate])
+    }, [locationSlug, values['objectType'], values['selectedDate']])
 
     async function handleSubmit(e) {
-        e.preventDefault();
-        setIsLoading(true)
-        const data = {
-            "rent_object": rentObject['id'],
-            "start": selectedInterval[0],
-            "end": selectedInterval[1],
-        }
-        console.log(data);
-        try {
-            await api.post('/cowork/bookings/', data)
-            setIsLoading(false)
-        } catch (error) {
-            console.log(error)
-            setIsLoading(false)
-        }
+        // e.preventDefault();
+        // setIsLoading(true)
+        // const data = {
+        //     "rent_object": rentObject['id'],
+        //     "start": selectedInterval[0],
+        //     "end": selectedInterval[1],
+        // }
+        // console.log(data);
+        // try {
+        //     await api.post('/cowork/bookings/', data)
+        //     setIsLoading(false)
+        // } catch (error) {
+        //     console.log(error)
+        //     setIsLoading(false)
+        // }
     }
 
     const handleValueChange = async (value, name) => {
         // Check target value wheter to conditionally make new request
-        name == 'objectType' && setObjectType(value)
-        name == 'selectedDate' && setSelectedDate(value)
+        name == 'selectedDate' && setFieldValue('selectedDate', value);
+        name == 'objectType' && setFieldValue('objectType', value);
     }
 
-    const setWeekDays = selectedDate => {
-        const weekStart = startOfWeek(selectedDate);
-        const weekEnd = endOfWeek(selectedDate);
+    const setWeekDays = date => {
+        const weekStart = startOfWeek(date);
+        const weekEnd = endOfWeek(date);
         var result = eachDayOfInterval({ start: weekStart, end: weekEnd });
         setWeek(result)
     }
 
     const onChangeTimeInterval = ti => {
-        // console.log("TimeInterval changed", ti)
-        setSelectedInterval(ti)
+        setFieldValue(start.name, ti[0]);
+        setFieldValue(end.name, ti[1]);
     }
 
     const timeRangeErrorHandler = ({ error }) => {
@@ -97,13 +107,12 @@ export default function BookingForm({ locationSlug }) {
     return (
 
         <section id="intro_section">
-
             <p className="text-muted">
                 <span className="text-primary h2">
                     € {' '}
-                    {objectType == "desktop" && 8.99}
-                    {objectType == "phone" && 6.99}
-                    {objectType == "meeting" && 7.99}
+                    {values && values['objectType'] == "desktop" && 8.99}
+                    {values && values['objectType'] == "phone" && 6.99}
+                    {values && values['objectType'] == "meeting" && 7.99}
                 </span>{" "}
                     / Stunde
                 </p>
@@ -114,39 +123,37 @@ export default function BookingForm({ locationSlug }) {
                     {/* Rent Objects */}
                     <FormGroup tag="fieldset">
                         <div className="pb-2 d-flex">
-                            <div className={`flex-fill py-3 text-center card ${objectType && objectType == 'desktop' && 'border-primary'}`} onClick={() => handleValueChange('desktop', 'objectType')} >
+                            <div className={`flex-fill py-3 text-center card ${values && values['objectType'] == 'desktop' && 'border-primary'}`} onClick={() => handleValueChange('desktop', 'objectType')} >
                                 <span>Desktop</span>
                             </div>
-                            <div className={`flex-fill py-3 text-center card ${objectType && objectType == 'phone' && 'border-primary'}`} onClick={() => handleValueChange('phone', 'objectType')}>
+                            <div className={`flex-fill py-3 text-center card ${values && values['objectType'] == 'phone' && 'border-primary'}`} onClick={() => handleValueChange('phone', 'objectType')}>
                                 <span>Phone</span>
                             </div>
-                            <div className={`flex-fill py-3 text-center card ${objectType && objectType == 'meeting' && 'border-primary'}`} onClick={() => handleValueChange('meeting', 'objectType')}>
+                            <div className={`flex-fill py-3 text-center card ${values && values['objectType'] == 'meeting' && 'border-primary'}`} onClick={() => handleValueChange('meeting', 'objectType')}>
                                 <span>Meeting</span>
                             </div>
                         </div>
 
                         <div className="p-2 d-flex justify-content-between">
-                            <span>{selectedDate && startOfWeek(selectedDate).toLocaleDateString}</span>
-                            <CustomDatepicker selectedDate={selectedDate} handleWeekChange={(selectedDate) => setSelectedDate(startOfDay(selectedDate))} />
+                            <span>{values && startOfWeek(values['selectedDate']).toLocaleDateString}</span>
+                            <CustomDatepicker
+                                selectedDate={values['selectedDate']}
+                                handleWeekChange={(date) => handleValueChange(startOfDay(date), 'selectedDate')}
+                            />
                         </div>
 
                         <Draggable
                             axis="x"
-                            // handle=".handle"
                             defaultPosition={{ x: 0, y: 0 }}
                             bounds={{ left: -200, right: 0 }}
-                        // grid={[25, 25]}
-                        // scale={1}
-                        // onStart={this.handleStart}
-                        // onStop={this.handleStop}
                         >
                             <div className="week-slider row">
                                 {week && week.map((el, i) => {
                                     return (
                                         <div
-                                            className={`text-center col card py-2 m-1 ${isBefore(el, startOfDay(new Date())) && 'disabled'} ${selectedDate.toDateString() === el.toDateString() && 'border-primary'}`}
+                                            className={`text-center col card py-2 m-1 ${isBefore(el, startOfDay(new Date())) && 'disabled'} ${values && values['selectedDate'].toDateString() === el.toDateString() && 'border-primary'}`}
                                             key={i}
-                                            onClick={() => setSelectedDate(el)}>
+                                            onClick={() => handleValueChange(startOfDay(el), 'selectedDate')}>
                                             {/* {weekDay.toLocaleDateString()} */}
                                             <div>{format(el, 'd')}</div>
                                             <div>{format(el, 'iii')}</div>
@@ -177,23 +184,23 @@ export default function BookingForm({ locationSlug }) {
 
                     {rentObject && (
                         <TimeRangeSlider
-                            selectedDate={selectedDate}
+                            selectedDate={values['selectedDate']}
                             selectedInterval={selectedInterval}
                             disabledIntervals={rentObject.bookings}
                             changeTimeInterval={onChangeTimeInterval}
-                            increaseSelectedDay={() => setSelectedDate(addDays(selectedDate, 1))}
-                            decreaseSelectedDay={() => setSelectedDate(subDays(selectedDate, 1))}
+                            increaseSelectedDay={() => handleValueChange(addDays(selectedDate, 1), 'selectedDate')}
+                            decreaseSelectedDay={() => handleValueChange(subDays(selectedDate, 1), 'selectedDate')}
                             errorHandler={timeRangeErrorHandler}
                             error={timeRangeError}
                         />
                     )}
 
                     {/* BOOKING BUTTON */}
-                    <FormGroup className="mt-5">
+                    {/* <FormGroup className="mt-5">
                         <Button disabled={(isLoading || timeRangeError) && true} type="submit" color="primary" block>
                             Reservieren {isLoading && (<Spinner />)}
                         </Button>
-                    </FormGroup>
+                    </FormGroup> */}
                     {/* <Button disabled={(isLoading || timeRangeError) && true} type="submit" className="btn btn-danger btn-block">Buchen {isLoading && (<Spinner />)}</Button> */}
                 </Form>
             </div>

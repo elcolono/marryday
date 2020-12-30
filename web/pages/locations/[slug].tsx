@@ -7,7 +7,7 @@ import {
     Row,
     Col,
     Media,
-    Badge,
+    CardFooter,
 } from "reactstrap"
 import UseWindowSize from "../../hooks/UseWindowSize"
 
@@ -16,7 +16,7 @@ import data from "../../data/detail-rooms.json"
 import SwiperGallery from "../../components/SwiperGallery"
 import Gallery from "../../components/Gallery"
 import Map from "../../components/Map"
-import Image from "../../components/CustomImage"
+import Icon from '../../components/Icon';
 
 import { GetServerSideProps } from "next";
 import { fetchAPIwithSSR } from "../../lib/api";
@@ -25,10 +25,12 @@ const LocationDetail = (props) => {
     const { location } = props
     const size = UseWindowSize()
 
-    const BookingFormWithNoSSR = dynamic(() => import("../../components/BookingForm"), {
+    // const BookingFormWithNoSSR = dynamic(() => import("../../components/BookingForm"), {
+    //     ssr: false
+    // });
+    const BookingWithNoSSR = dynamic(() => import("../../components/Booking"), {
         ssr: false
     });
-
     const groupByN = (n, data) => {
         let result = []
         for (let i = 0; i < data.length; i += n) result.push(data.slice(i, i + n))
@@ -127,25 +129,34 @@ const LocationDetail = (props) => {
                             )}
                         </Col>
                         <Col lg="6">
+
                             <div
                                 style={{ top: "100px" }}
-                                className="p-4 shadow ml-lg-4 rounded sticky-top"
+                                className="shadow ml-lg-4 rounded sticky-top"
                             >
-                                <BookingFormWithNoSSR locationSlug={location.slug} />
+                                {/* <ProgressBar progress={50} /> */}
 
-                                <p className="text-muted text-sm text-center">
-                                    Some additional text can be also placed here.
-                                </p>
-                                <hr className="my-4" />
-                                <div className="text-center">
-                                    <p>
-                                        <a href="#" className="text-secondary text-sm">
-                                            <i className="fa fa-heart" />
-                                            &nbsp;MoWo Spaces
-                                        </a>
-                                    </p>
 
-                                </div>
+                                {/* <BookingFormWithNoSSR locationSlug={location.slug} /> */}
+                                <BookingWithNoSSR locationSlug={location.slug} />
+        
+                                <CardFooter className="bg-primary-light py-4 border-0">
+                                    <Media className="align-items-center">
+                                        <Media body>
+                                            <h6 className="text-primary">Flexible – free cancellation</h6>
+                                            <p className="text-sm text-primary opacity-8 mb-0">
+                                                Cancel within 48 hours of booking to get a full refund.{" "}
+                                                <a href="#" className="text-reset ml-3">
+                                                    More details
+              </a>
+                                            </p>
+                                        </Media>
+                                        <Icon
+                                            icon="diploma-1"
+                                            className="svg-icon-light w-3rem h-3rem ml-2 text-primary"
+                                        />
+                                    </Media>
+                                </CardFooter>
                             </div>
                         </Col>
                     </Row>

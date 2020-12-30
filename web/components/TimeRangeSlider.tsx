@@ -14,6 +14,7 @@ import Draggable from 'react-draggable';
 import { endOfDay, startOfDay } from 'date-fns'
 import { Button } from 'reactstrap'
 
+import { useFormikContext } from 'formik';
 
 const now = new Date()
 const nearestHour = roundToNearestMinutes(now, { nearestTo: 30 })
@@ -40,6 +41,9 @@ const TimeRangeSlider = ({
     errorHandler,
     error
 }) => {
+
+    const { setFieldValue, values } = useFormikContext()
+
     const [firstRender, setFirestRender] = useState(true)
     const [isLoading, setIsLoading] = useState(false)
 
@@ -47,6 +51,9 @@ const TimeRangeSlider = ({
     const [timelinePosition, setTimelinePosition] = useState(startTimeLinePosition)
 
     useEffect(() => {
+        if (firstRender) {
+            setFieldValue('timeInterval', getInitInterval())
+        }
         if (!firstRender) {
             setTimelineInterval([startOfDay(selectedDate), endOfDay(selectedDate)])
         }
@@ -111,24 +118,20 @@ const TimeRangeSlider = ({
         }
     }
 
-
     const clearSelectedTimeInterval = () => {
         const ti = [addHours(timelineInterval[0], 13), addHours(timelineInterval[0], 15)]
-        console.log("clearSelectedTimeInterval", ti)
-        changeTimeInterval(ti)
+        // Set formik values
+        setFieldValue("timeInterval", ti);
     }
 
     const onChangeTimeInterval = (ti) => {
-        // console.log("onChangeTimeInterval", ti)
         const isStartVisible = isWithinInterval(ti[0], { start: addHours(timelineInterval[0], 12), end: addHours(timelineInterval[0], 17.5) })
         const isEndVisible = isWithinInterval(ti[0], { start: addHours(timelineInterval[0], 12), end: addHours(timelineInterval[0], 17.5) })
         if (!isStartVisible && !isEndVisible) {
             return clearSelectedTimeInterval()
         }
-
-        // Check interval 
-        changeTimeInterval(ti)
-        // setLastAction(undefined)
+        // Set formik values
+        setFieldValue("timeInterval", ti);
     }
 
     return (
@@ -164,9 +167,6 @@ const TimeRangeSlider = ({
 
             <Draggable
                 axis="x"
-                handle=".handle"
-                // defaultPosition={{ x: 0, y: 0 }}
-                // bounds={{ top: -100, left: -1000, right: 0, bottom: 100 }}
                 position={{ x: timelinePosition, y: 0 }}
                 grid={[25, 25]}
                 scale={1}
@@ -176,9 +176,7 @@ const TimeRangeSlider = ({
                     <TimeRange
                         error={error}
                         ticksNumber={36}
-                        selectedInterval={selectedInterval}
-                        // timelineInterval={[addHours(selectedDate, timeRangeIndex * 4), addHours(selectedDate, (timeRangeIndex * 4) + 8)]}
-                        // timelineInterval={[startOfDay(selectedDate), endOfDay(selectedDate)]}
+                        selectedInterval={values['timeInterval']}
                         timelineInterval={timelineInterval}
                         onUpdateCallback={errorHandler}
                         onChangeCallback={onChangeTimeInterval}
