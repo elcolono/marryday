@@ -38,7 +38,7 @@ const Gallery = (props) => {
           >
             <Image
               key={index}
-              src={`/content/img/photo/${item.img}`}
+              src={item.image}
               width={1350}
               height={900}
               alt={item.alt}
@@ -53,13 +53,9 @@ const Gallery = (props) => {
 
       {lightBoxOpen && (
         <Lightbox
-          mainSrc={`/content/img/photo/${data[activeImage].img}`}
-          nextSrc={`/content/img/photo/${
-            data[(activeImage + 1) % data.length].img
-          }`}
-          prevSrc={`/content/img/photo/${
-            data[(activeImage + data.length - 1) % data.length].img
-          }`}
+          mainSrc={data[activeImage].image}
+          nextSrc={data[(activeImage + 1) % data.length].image}
+          prevSrc={data[(activeImage + data.length - 1) % data.length].image}
           onCloseRequest={() => setLightBoxOpen(false)}
           imageCaption={data[activeImage].title}
           onMovePrevRequest={() =>

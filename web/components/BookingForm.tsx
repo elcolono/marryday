@@ -97,6 +97,18 @@ export default function BookingForm({ locationSlug }) {
     return (
 
         <section id="intro_section">
+
+            <p className="text-muted">
+                <span className="text-primary h2">
+                    € {' '}
+                    {objectType == "desktop" && 8.99}
+                    {objectType == "phone" && 6.99}
+                    {objectType == "meeting" && 7.99}
+                </span>{" "}
+                    / Stunde
+                </p>
+
+            <hr className="my-4" />
             <div className="overflow-hidden">
                 <Form onSubmit={handleSubmit} className="pt-3">
                     {/* Rent Objects */}
@@ -162,6 +174,7 @@ export default function BookingForm({ locationSlug }) {
                             </FormGroup>
                         ))}
                     </FormGroup>
+
                     {rentObject && (
                         <TimeRangeSlider
                             selectedDate={selectedDate}
@@ -175,9 +188,13 @@ export default function BookingForm({ locationSlug }) {
                         />
                     )}
 
-
                     {/* BOOKING BUTTON */}
-                    <Button disabled={(isLoading || timeRangeError) && true} type="submit" className="btn btn-danger btn-block">Buchen {isLoading && (<Spinner />)}</Button>
+                    <FormGroup className="mt-5">
+                        <Button disabled={(isLoading || timeRangeError) && true} type="submit" color="primary" block>
+                            Reservieren {isLoading && (<Spinner />)}
+                        </Button>
+                    </FormGroup>
+                    {/* <Button disabled={(isLoading || timeRangeError) && true} type="submit" className="btn btn-danger btn-block">Buchen {isLoading && (<Spinner />)}</Button> */}
                 </Form>
             </div>
             <style jsx>{`

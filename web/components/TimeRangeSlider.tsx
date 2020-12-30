@@ -133,7 +133,7 @@ const TimeRangeSlider = ({
 
     return (
         <React.Fragment>
-            <div className="d-flex justify-content-between">
+            <div className="d-flex justify-content-between align-items-center">
                 <div>
                     <Button
                         disabled={isLoading}
@@ -148,6 +148,11 @@ const TimeRangeSlider = ({
                         onClick={() => increaseTimeRangeIndex()}
                     ><i className="fa fa-chevron-right"></i></Button>
                 </div>
+
+                <span className="text-muted">
+                    29.12.2020{'\n'}
+                    16:00 - 18:00
+                </span>
 
                 <Button
                     disabled={isLoading}
@@ -182,10 +187,10 @@ const TimeRangeSlider = ({
                 </div>
             </Draggable>
 
-
+            {/* 
             <div>x: {timelinePosition}</div>
             <div>start: {format(selectedInterval[0], "yyyy-MM-dd'T'HH:mm:ss.SSSxxx")}</div>
-            <div>end: {format(selectedInterval[1], "yyyy-MM-dd'T'HH:mm:ss.SSSxxx")}</div>
+            <div>end: {format(selectedInterval[1], "yyyy-MM-dd'T'HH:mm:ss.SSSxxx")}</div> */}
 
         </React.Fragment>
     )
