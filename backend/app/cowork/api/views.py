@@ -1,3 +1,6 @@
+import stripe
+from django.conf import settings
+
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 
@@ -15,7 +18,7 @@ from datetime import timedelta
 # Booking
 class BookingCreateView(generics.CreateAPIView):
     serializer_class = BookingSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    # permission_classes = [permissions.IsAuthenticated]
 
     def create(self, request):
 
@@ -26,10 +29,56 @@ class BookingCreateView(generics.CreateAPIView):
 
         # Check if time range is not yet booked
 
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        # Save Booking
+        booking = serializer.save()
+
+        # Make payment
+        email = booking_data['email']
+        payment_method_id = booking_data['payment_method_id']
+        extra_msg = ''
+        # checking if customer with provided email already exists
+
+        # STRIPE Payment
+        stripe.api_key = settings.STRIPE_SECRET_KEY
+        try:
+            # Create new Checkout Session for the order
+            # Other optional params include:
+            # [billing_address_collection] - to display billing address details on the page
+            # [customer] - if you have an existing Stripe Customer ID
+            # [payment_intent_data] - capture the payment later
+            # [customer_email] - prefill the email input in the form
+            # For full details see https://stripe.com/docs/api/checkout/sessions/create
+            customer_data = stripe.Customer.list(email=email).data
+
+            if len(customer_data) == 0:
+                # creating customer
+                customer = stripe.Customer.create(
+                    email=email,
+                    payment_method=payment_method_id,
+                    invoice_settings={
+                        'default_payment_method': payment_method_id
+                    }
+                )
+            else:
+                customer = customer_data[0]
+                extra_msg = "Customer already existed."
+
+            # creating paymentIntent
+
+            stripe.PaymentIntent.create(customer=customer,
+                                        payment_method=payment_method_id,
+                                        currency='pln', amount=1500,
+                                        confirm=True)
+
+        except Exception as e:
+            booking.delete()
+            return Response({'error': str(e)})
+
+        return Response(status=status.HTTP_200_OK, data={'message': 'Success', 'data': {'customer_id': customer.id,
+                                                                                        'extra_msg': extra_msg}})
 
 
 # Locations

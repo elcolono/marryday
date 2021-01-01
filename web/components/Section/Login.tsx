@@ -18,16 +18,16 @@ export default function LoginSection({ data }) {
 
                                     <Formik
                                         initialValues={{ email: '', password: '' }}
-                                        validationSchema={Yup.object({
-                                            email: Yup
-                                                .string()
-                                                .email('Ungültige Email Adresse')
-                                                .required('Erforderlich'),
-                                            password: Yup
-                                                .string()
-                                                .max(15, 'Ungültiges Passwort')
-                                                .required('Erforderlich'),
-                                        })}
+                                        // validationSchema={Yup.object({
+                                        //     email: Yup
+                                        //         .string()
+                                        //         .email('Ungültige Email Adresse')
+                                        //         .required('Erforderlich'),
+                                        //     password: Yup
+                                        //         .string()
+                                        //         .max(15, 'Ungültiges Passwort')
+                                        //         .required('Erforderlich'),
+                                        // })}
                                         onSubmit={(values, { setSubmitting, setStatus }) => {
                                             setStatus(false)
                                             setTimeout(() => {

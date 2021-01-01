@@ -1,15 +1,15 @@
 import Head from 'next/head'
 import { fetchAPIwithSSR } from '../lib/api'
 import { CMS_NAME } from '../lib/constants'
-import HeroSection from '../components/HeroSection'
+import HeroSection from '../components/Section/HeroSection'
 import ContentSection from '../components/Section/Content'
-import CounterSection from '../components/counter-section'
+import CounterSection from '../components/Section/counter-section'
 import CTASection from '../components/Section/Cta'
 import ServiceSection from '../components/Section/Services'
-import TeamSection from '../components/team-section'
-import HeadingSection from '../components/heading-section'
-import PricingSection from '../components/pricing-section'
-import ContactSection from '../components/contact-section'
+import TeamSection from '../components/Section/team-section'
+import HeadingSection from '../components/Section/heading-section'
+import PricingSection from '../components/Section/pricing-section'
+import ContactSection from '../components/Section/contact-section'
 import FAQSection from '../components/Section/Faq'
 import LoginSection from '../components/Section/Login'
 
@@ -32,7 +32,7 @@ export default function SubPage({ user, allContent, mainMenus, flatMenus, themeS
         if (section.type == 'service_section_block') return <ServiceSection key={i} data={section.value} />
         if (section.type == 'team_section_block') return <TeamSection key={i} data={section.value} />
         if (section.type == 'pricing_section_block') return <PricingSection key={i} data={section.value} />
-        if (section.type == 'contact_section_block') return <ContactSection key={i} data={section.value} />
+        if (section.type == 'contact_section_block') return <ContactSection key={i} title={allContent.title} data={section.value} />
         if (section.type == 'faq_section_block') return <FAQSection key={i} data={section.value} />
         if (section.type == 'login_section_block') return <LoginSection key={i} data={section.value} />
       })}

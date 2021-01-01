@@ -2,7 +2,7 @@ import React from "react"
 import Link from "next/link"
 import { Container, Row, Col, Form, Input, Button, Badge } from "reactstrap"
 
-import footerContent from "../data/footer.json"
+import footerContent from "../../data/footer.json"
 
 const Footer = (props) => {
   return (
@@ -55,7 +55,7 @@ const Footer = (props) => {
                           <Link href={link.link}>
                             <a className="text-muted">
                               {link.title}
-                              {link.new && (
+                              {link && (
                                 <Badge color="info-light" className="ml-1">
                                   New
                                 </Badge>

@@ -9,9 +9,9 @@ const ProgressBar = (props) => {
       <div
         role="progressbar"
         style={{ width: props.progress + "%" }}
-        aria-valuenow="0"
-        aria-valuemin="0"
-        aria-valuemax="100"
+        aria-valuenow={0}
+        aria-valuemin={0}
+        aria-valuemax={100}
         className="progress-bar"
       />
     </div>

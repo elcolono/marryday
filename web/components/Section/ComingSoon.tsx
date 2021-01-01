@@ -1,5 +1,5 @@
 import { Formik } from 'formik'
-import { fetchAPI } from '../lib/api';
+import { fetchAPI } from '../../lib/api';
 import Countdown from 'react-countdown';
 import * as Yup from 'yup'
 
@@ -51,11 +51,11 @@ export default function ComingSoonSection({ data }) {
 
                                     <Formik
                                         initialValues={{ email: '' }}
-                                        validationSchema={Yup.object({
-                                            email: Yup.string()
-                                                .email('Ungültige Email Adresse')
-                                                .required('Erforderlich'),
-                                        })}
+                                        // validationSchema={Yup.object({
+                                        //     email: Yup.string()
+                                        //         .email('Ungültige Email Adresse')
+                                        //         .required('Erforderlich'),
+                                        // })}
                                         onSubmit={(values, { setSubmitting, setStatus }) => {
                                             setStatus(false)
                                             setTimeout(() => {

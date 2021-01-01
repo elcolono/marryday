@@ -2,7 +2,7 @@ import React from "react"
 import Link from "next/link"
 import { Map, Marker, Popup, TileLayer, Tooltip, Circle } from "react-leaflet"
 import "leaflet/dist/leaflet.css"
-// import L from 'leaflet'
+import L from 'leaflet'
 
 const MapLeaflet = (props) => {
   const tileLayers = [

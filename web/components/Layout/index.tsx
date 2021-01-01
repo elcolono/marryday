@@ -1,13 +1,13 @@
 import React from "react"
 import Head from "next/head"
-import NextNProgress from "./NextNProgress"
+import NextNProgress from "../NextNProgress"
 import GoogleFonts from "next-google-fonts"
 
 import Header from "./Header"
 import Footer from "./Footer"
-import { FormProvider } from "../components/FormContext"
-import { BookingProvider } from "./BookingContext"
-import SvgIcons from "./SvgIcons"
+import { FormProvider } from "../FormContext"
+import { BookingProvider } from "../BookingContext"
+import SvgIcons from "../SvgIcons"
 
 import CookieConsent from "react-cookie-consent";
 

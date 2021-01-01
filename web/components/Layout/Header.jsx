@@ -22,15 +22,15 @@ import {
   Badge,
 } from "reactstrap"
 
-import UseWindowSize from "../hooks/UseWindowSize"
+import UseWindowSize from "../../hooks/UseWindowSize"
 
-import ActiveLink from "./ActiveLink"
+import ActiveLink from "../ActiveLink"
 
-import menu from "../data/menu.json"
+import menu from "../../data/menu.json"
 
-import userMenu from "../data/user-menu.json"
-import Image from "./CustomImage"
-import Icon from "./Icon"
+import userMenu from "../../data/user-menu.json"
+import Image from "../CustomImage"
+import Icon from "../Icon"
 
 const Header = (props) => {
   const [collapsed, setCollapsed] = React.useState(false)

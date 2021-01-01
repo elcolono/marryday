@@ -23,7 +23,7 @@ export default [
         [lastName.name]: Yup.string().required(`${lastName.requiredErrorMsg}`),
         [email.name]: Yup.string().required(`${email.requiredErrorMsg}`),
         [validCard.name]: Yup.boolean().isTrue(),
-        [rentObject.name]: Yup.string().required(`${rentObject.requiredErrorMsg}`),
+        [rentObject.name]: Yup.object().required(`${rentObject.requiredErrorMsg}`),
 
         // [nameOnCard.name]: Yup.string().required(`${nameOnCard.requiredErrorMsg}`),
         // [cardNumber.name]: Yup.string()

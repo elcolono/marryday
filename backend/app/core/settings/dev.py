@@ -32,6 +32,9 @@ DATABASES = {
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
+# Stripe payment
+STRIPE_SECRET_KEY = 'sk_test_51I47k4IpxsSLqlNauw6wmmjRKovYXwaHQqmmb4QXs6kIoXsDX3SPJId1Lrhafy2kU3oBmSKtMWAJ637MoZ5KLmIE00SvOF10NX'
+
 
 try:
     from .local import *

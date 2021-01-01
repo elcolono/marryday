@@ -7,11 +7,18 @@
 import React from "react"
 import NProgress from "nprogress"
 import Router from "next/router"
-import PropTypes from "prop-types"
-// import styled from 'styled-components';
+
+
+interface INextNProgressProps {
+  color: String,
+  startPosition: number,
+  stopDelayMs: number,
+  height: number
+  options: object,
+};
 
 /* eslint-disable react/prefer-stateless-function */
-class NextNProgress extends React.Component {
+class NextNProgress extends React.Component<INextNProgressProps> {
   static defaultProps = {
     color: "#29D",
     startPosition: 0.3,
@@ -119,13 +126,6 @@ class NextNProgress extends React.Component {
     Router.events.on("routeChangeComplete", this.routeChangeEnd)
     Router.events.on("routeChangeError", this.routeChangeEnd)
   }
-}
-
-NextNProgress.propTypes = {
-  color: PropTypes.string,
-  startPosition: PropTypes.number,
-  stopDelayMs: PropTypes.number,
-  options: PropTypes.object,
 }
 
 export default NextNProgress

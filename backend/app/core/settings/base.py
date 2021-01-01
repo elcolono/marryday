@@ -263,3 +263,7 @@ AWS_S3_FILE_OVERWRITE = False
 # Setting AWS_QUERYSTRING_AUTH to False to remove query parameter authentication from generated URLs. This can be useful if your S3 buckets are public.
 # BUT WITH AUTH QUERYSTRING AND ERROR OCCURES - NOT DEBUGGED YET
 AWS_QUERYSTRING_AUTH = False
+
+
+# Stripe payment
+STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY')

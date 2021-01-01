@@ -60,14 +60,15 @@ export default function CheckoutPage({ locationSlug }) {
             card: card,
         });
         console.log(paymentMethod)
-        ApiService.saveStripeInfo({
+        ApiService.makeBooking({
             email: values['email'],
             payment_method_id: paymentMethod.id,
-            timeInterval: values['timeInterval'],
-            rentObject: values['rentobject'],
+            start: values['timeInterval'][0],
+            end: values['timeInterval'][1],
+            rent_object: values['rentObject'].id,
             firstName: values['firstName'],
             lastName: values['lastName'],
-            checkPrice: checkPrice
+            check_price: checkPrice
         })
             .then(response => {
                 console.log(response.data);
@@ -135,7 +136,7 @@ export default function CheckoutPage({ locationSlug }) {
                                             </Button>
                                         </div>
                                     </div>
-                                    <pre >{JSON.stringify(values, null, 4)}</pre>
+                                    {/* <pre >{JSON.stringify(values, null, 4)}</pre> */}
 
                                 </Form>
                             )}

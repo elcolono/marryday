@@ -5,8 +5,8 @@ import { API_URL } from './constants'
 import Cookies from 'js-cookie'
 import { getCookieFromReq } from '../helpers/utils'
 
-const setAuthHeader = (req) => {
-    const token = req ? getCookieFromReq(req, 'token') : Cookies.get('token');
+const setAuthHeader = (req = undefined) => {
+    const token = req ? getCookieFromReq(req) : Cookies.get('token');
     if (token) {
         return {
             'authorization': `Token ${token}`,
@@ -26,6 +26,11 @@ export default class ApiService {
     static saveStripeInfo(data = {}) {
         return api.post(`/payments/save-stripe-info/`, data)
     }
+
+    static makeBooking(data = {}) {
+        return api.post(`/cowork/bookings/`, data)
+    }
+
 
     static signin = (email, password) => {
         Cookies.remove('token');
@@ -61,7 +66,7 @@ export default class ApiService {
 }
 
 
-export async function fetchAPIwithSSR(url, { method, req } = {}) {
+export async function fetchAPIwithSSR(url, { method = 'GET', req = undefined } = {}) {
     const res = await fetch(API_URL + url, {
         method: method,
         headers: setAuthHeader(req)
@@ -84,10 +89,7 @@ export async function fetchAPIwithSSR(url, { method, req } = {}) {
 
 
 
-
-
-
-export async function fetchAPI(url, { method, body } = {}) {
+export async function fetchAPI(url, { method = "GET", body = {} } = {}) {
     const res = await fetch(process.env.CLIENT_API_URL + url, {
         method: method,
         headers: {

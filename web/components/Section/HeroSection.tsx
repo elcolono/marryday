@@ -8,7 +8,7 @@ import {
     Col,
 } from "reactstrap"
 
-import Image from "./CustomImage"
+import Image from "../CustomImage"
 
 
 const HerSection = ({ data }) => {

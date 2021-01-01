@@ -18,6 +18,8 @@ services:
       MAILCHIMP_API_KEY: "${MAILCHIMP_API_KEY}"
       MAILCHIMP_EMAIL_LIST_ID: "d224e7b68b"
       MAILCHIMP_DATA_CENTER: "us7"
+      STRIPE_SECRET_KEY: "sk_test_51I47k4IpxsSLqlNauw6wmmjRKovYXwaHQqmmb4QXs6kIoXsDX3SPJId1Lrhafy2kU3oBmSKtMWAJ637MoZ5KLmIE00SvOF10NX"
+
     volumes:
       - /statics/backend/static_files:/app/static
       - /statics/backend/media_files:/app/media

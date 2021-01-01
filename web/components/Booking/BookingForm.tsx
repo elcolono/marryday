@@ -93,7 +93,7 @@ export default function BookingForm(props) {
             <hr className="my-4" />
             <div className="">
                 {/* Rent Objects */}
-                <FormGroup tag="fieldset">
+                <FormGroup className="overflow-hidden" tag="fieldset">
                     <div className="pb-2 d-flex">
                         <div className={`flex-fill py-3 text-center card ${values && values['objectType'] == 'desktop' && 'border-primary'}`} onClick={() => handleValueChange('desktop', 'objectType')} >
                             <span>Desktop</span>
@@ -149,12 +149,15 @@ export default function BookingForm(props) {
                                 fullWidth
                             />
                         </FormGroup>
-                        {values['rentObject'] && <TimeRangeSlider
-                            selectedDate={values['selectedDate']}
-                            disabledIntervals={values['rentObject'].bookings}
-                            errorHandler={timeRangeErrorHandler}
-                            error={timeRangeError}
-                        />}
+                        <div className="overflow-hidden">
+                            {values['rentObject'] && <TimeRangeSlider
+                                selectedDate={values['selectedDate']}
+                                disabledIntervals={values['rentObject'].bookings}
+                                errorHandler={timeRangeErrorHandler}
+                                error={timeRangeError}
+                            />}
+                        </div>
+
 
                     </React.Fragment>
                 ) : <div className="text-block">
