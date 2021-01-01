@@ -3,7 +3,9 @@ const {
   formField: {
     objectType,
     selectedDate,
+    rentObjects,
     timeInterval,
+    rentObject,
     firstName,
     lastName,
     email,
@@ -14,6 +16,10 @@ const {
 export default {
   [objectType.name]: 'phone',
   [selectedDate.name]: new Date(),
+  
+  [rentObjects.name]: [],
+  [rentObject.name]: '',
+
   [timeInterval.name]: [],
   [firstName.name]: '',
   [lastName.name]: '',

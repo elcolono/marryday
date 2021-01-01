@@ -33,11 +33,7 @@ const getInitInterval = () => {
 
 const TimeRangeSlider = ({
     selectedDate,
-    changeTimeInterval,
     disabledIntervals,
-    selectedInterval = getInitInterval(),
-    increaseSelectedDay,
-    decreaseSelectedDay,
     errorHandler,
     error
 }) => {

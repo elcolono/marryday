@@ -12,10 +12,18 @@ export default {
       label: 'Date*',
       requiredErrorMsg: 'Date is required'
     },
+    rentObjects: {
+      name: 'rentObjects',
+    },
     timeInterval: {
       name: 'timeInterval',
       label: 'Time interval*',
       requiredErrorMsg: 'Time interval is required'
+    },
+    rentObject: {
+      name: 'rentObject',
+      label: 'Rent object*',
+      requiredErrorMsg: 'Rent object is required'
     },
     firstName: {
       name: 'firstName',

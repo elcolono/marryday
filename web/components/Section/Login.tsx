@@ -1,6 +1,6 @@
 import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
-import { signin, authenticate } from '../actions/auth'
+import ApiService from '../../lib/api'
 import Router from 'next/router'
 
 export default function LoginSection({ data }) {
@@ -31,10 +31,10 @@ export default function LoginSection({ data }) {
                                         onSubmit={(values, { setSubmitting, setStatus }) => {
                                             setStatus(false)
                                             setTimeout(() => {
-                                                signin(values.email, values.password).then((response) => {
+                                                ApiService.signin(values.email, values.password).then((response) => {
                                                     if (response.status == 200 && response.data.key) {
                                                         setStatus("Erfolgreich angemeldet")
-                                                        authenticate(response.data, () => Router.push('/booking'))
+                                                        ApiService.authenticate(response.data, () => Router.push('/booking'))
                                                     } else {
                                                         setStatus("Fehler bei Anmeldung")
                                                     }

@@ -126,9 +126,9 @@ export default function PaymentForm(props) {
               }
               <li className="mb-0">
                 <i className="far fa-calendar fa-fw text-muted mr-2" />
-                {format(values['timeInterval'][0], 'MMM dd, yyyy HH:mm')}
+                {values['timeInterval'][0] && format(values['timeInterval'][0], 'MMM dd, yyyy HH:mm')}
                 <i className="fas fa-arrow-right fa-fw text-muted mx-3" />
-                {format(values['timeInterval'][1], 'MMM dd, yyyy HH:mm')}
+                {values['timeInterval'][1] && format(values['timeInterval'][1], 'MMM dd, yyyy HH:mm')}
               </li>
             </ul>
           </div>

@@ -11,7 +11,7 @@ import HeadingSection from '../components/heading-section'
 import PricingSection from '../components/pricing-section'
 import ContactSection from '../components/contact-section'
 import FAQSection from '../components/Section/Faq'
-import LoginSection from '../components/login-section'
+import LoginSection from '../components/Section/Login'
 
 export default function SubPage({ user, allContent, mainMenus, flatMenus, themeSettings }) {
   return (
