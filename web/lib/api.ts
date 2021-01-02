@@ -35,6 +35,10 @@ export default class ApiService {
         return api.get(`/cowork/locations/`)
     }
 
+    static fetchCities() {
+        return api.get('/cowork/cities/')
+    }
+
     static signin = (email, password) => {
         Cookies.remove('token');
         localStorage.removeItem('user');

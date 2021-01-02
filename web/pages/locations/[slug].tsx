@@ -54,7 +54,7 @@ const LocationDetail = (props) => {
                             <div className="text-block">
                                 <p className="text-primary">
                                     <i className="fa-map-marker-alt fa mr-1" />
-                                    &nbsp;{location.address && location.address}, {location.postcode && location.postcode} {location.city && location.city}
+                                    &nbsp;{location.address && location.address}, {location.city.postcode && location.city.postcode} {location.city.title && location.city.title}
                                 </p>
                                 {location.title && <h1> MoWo {location.title}</h1>}
                                 <div className="text-muted text-uppercase mb-4">
@@ -180,17 +180,14 @@ export default LocationDetail
 
 export const getServerSideProps: GetServerSideProps = async ({ params, req }) => {
     const location = (await fetchAPIwithSSR(`/api/v1/cowork/location/${params.slug}`, { method: 'GET', req: req })) ?? []
-    // const user = (await fetchAPIwithSSR('/api/v1/rest-auth/user/', { method: 'GET', req: req })) ?? null
-    // const mainMenus = (await fetchAPIwithSSR('/api/main-menus', { method: 'GET', req: req })) ?? []
-    // const flatMenus = (await fetchAPIwithSSR('/api/flat-menus', { method: 'GET', req: req })) ?? []
-    // const themeSettings = (await fetchAPIwithSSR('/api/theme-settings', { method: 'GET', req: req })) ?? []
+    const settings = (await fetchAPIwithSSR('/api/page/home', { method: 'GET', req: req })) ?? []
     return {
         props: {
             location,
+            themeSettings: settings.theme_settings,
+            mainMenus: settings.main_menus,
+            flatMenus: settings.flat_menus,
             // user,
-            // mainMenus,
-            // flatMenus,
-            // themeSettings,
             nav: {
                 light: true,
                 classes: "shadow",

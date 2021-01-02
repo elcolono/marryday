@@ -4,9 +4,9 @@ from django.conf import settings
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 
-from ..models import RentObject, Location, Booking
+from ..models import RentObject, Location, Booking, City
 from .serializers.common import (
-    RentObjectSerializer, BookingSerializer, LocationSerializer)
+    RentObjectSerializer, BookingSerializer, LocationSerializer, CitySerializer)
 from dateutil.parser import parse
 from django.db.models import Prefetch
 from datetime import timedelta
@@ -14,6 +14,11 @@ from datetime import timedelta
 
 # All API VIEWS:
 # https://www.django-rest-framework.org/api-guide/generic-views/#retrieveapiview
+
+# Cites
+class CityListView(generics.ListAPIView):
+    queryset = City.objects.filter(is_active=True)
+    serializer_class = CitySerializer
 
 # Booking
 class BookingCreateView(generics.CreateAPIView):

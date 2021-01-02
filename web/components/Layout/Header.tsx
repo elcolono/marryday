@@ -180,7 +180,7 @@ const Header = (props) => {
                   ) : (
                       <ActiveLink
                         activeClassName="active"
-                        href={item.link_page.slug}
+                        href={`/${item.link_page.slug}`}
                         passHref
                       >
                         <NavLink onClick={() => onLinkClick(item.title)}>
@@ -189,6 +189,20 @@ const Header = (props) => {
                       </ActiveLink>
                     )}
                 </NavItem>)}
+
+              <NavItem className="mt-3 mt-lg-0 ml-lg-3 d-lg-none d-xl-inline-block">
+                <ActiveLink
+                  activeClassName="active"
+                  href={`/locations`}
+                  passHref
+                >
+                  <a
+                    className="btn btn-primary"
+                  >
+                    Location finden
+                  </a>
+                </ActiveLink>
+              </NavItem>
             </Nav>
           </Collapse>
         </Container>

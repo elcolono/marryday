@@ -37,7 +37,7 @@ const Category2Rooms = (props) => {
       <Container fluid>
         <Row>
           <Col lg="6" className="py-4 p-xl-5">
-            <Form>
+            {/* <Form>
               <Row>
                 <Col md="6" lg="12" className="mb-4">
                   <Label for="form_type" className="form-label">
@@ -66,7 +66,7 @@ const Category2Rooms = (props) => {
 
               </Row>
             </Form>
-            <hr className="my-4" />
+            <hr className="my-4" /> */}
             <ResultsTopBar sortBy={data.sortby} />
             <Row>
               {locations &&
@@ -82,7 +82,7 @@ const Category2Rooms = (props) => {
                   </Col>
                 ))}
             </Row>
-            <Pagination />
+            {/* <Pagination /> */}
           </Col>
           <Col lg="6" className="map-side-lg pr-lg-0">
             <Map
@@ -104,17 +104,14 @@ export default Category2Rooms
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   const locations = (await fetchAPIwithSSR('/api/v1/cowork/locations/', { method: 'GET', req: req })) ?? []
-  // const user = (await fetchAPIwithSSR('/api/v1/rest-auth/user/', { method: 'GET', req: req })) ?? null
-  // const mainMenus = (await fetchAPIwithSSR('/api/main-menus', { method: 'GET', req: req })) ?? []
-  // const flatMenus = (await fetchAPIwithSSR('/api/flat-menus', { method: 'GET', req: req })) ?? []
-  // const themeSettings = (await fetchAPIwithSSR('/api/theme-settings', { method: 'GET', req: req })) ?? []
+  const settings = (await fetchAPIwithSSR('/api/page/home', { method: 'GET', req: req })) ?? []
   return {
     props: {
       locations,
+      themeSettings: settings.theme_settings,
+      mainMenus: settings.main_menus,
+      flatMenus: settings.flat_menus,
       // user,
-      // mainMenus,
-      // flatMenus,
-      // themeSettings,
       nav: {
         light: true,
         classes: "shadow",
@@ -124,3 +121,4 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
     },
   }
 }
+

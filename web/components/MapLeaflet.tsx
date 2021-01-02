@@ -4,6 +4,8 @@ import { Map, Marker, Popup, TileLayer, Tooltip, Circle } from "react-leaflet"
 import "leaflet/dist/leaflet.css"
 import L from 'leaflet'
 
+import isEmpty from 'lodash/isEmpty'
+
 const MapLeaflet = (props) => {
   const tileLayers = [
     {
@@ -74,6 +76,13 @@ const MapLeaflet = (props) => {
       location.lng,
     ])
 
+  const bounds =
+    props.bounds &&
+    props.bounds.map((location) => [
+      location.lat,
+      location.lng,
+    ])
+
   return (
     <Map
       center={props.center && props.center}
@@ -82,7 +91,7 @@ const MapLeaflet = (props) => {
       className={props.className}
       dragging={props.dragging}
       tap={props.tap}
-      bounds={props.locations ? markers : null}
+      bounds={!isEmpty(props.bounds) ? bounds : markers}
       onFocus={() => setFocus(true)}
       onBlur={() => setFocus(false)}
     >
@@ -125,9 +134,9 @@ const MapLeaflet = (props) => {
                       <div className="image" />
                     )}
                   <div className="text">
-                    {data.name && (
+                    {data.slug && data.title && (
                       <h6>
-                        <Link href={data.link}>
+                        <Link href={`/locations/${data.slug}`}>
                           <a>{data.title}</a>
                         </Link>
                       </h6>
@@ -193,9 +202,9 @@ const MapLeaflet = (props) => {
                         <div className="image" />
                       )}
                     <div className="text">
-                      {data.title && (
+                      {data.slug && data.title && (
                         <h6>
-                          <Link href="/demo">
+                          <Link href={`/locations/${data.slug}`}>
                             <a>{data.title}</a>
                           </Link>
                         </h6>

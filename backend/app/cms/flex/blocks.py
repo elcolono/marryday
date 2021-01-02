@@ -60,7 +60,6 @@ class PageHeadingSectionBlock(blocks.StructBlock):
 
     class Meta:
         """ Meta data """
-        template = 'blocks/page_heading_section.html'
         label = 'Page Heading Section'
 
 
@@ -176,7 +175,6 @@ class HeroSectionBlock(blocks.StructBlock):
 
     class Meta:
         """ Meta data """
-        template = 'blocks/hero_section.html'
         label = 'Hero Section'
 
 
@@ -212,7 +210,6 @@ class TestimonialSectionBlock(blocks.StructBlock):
 
     class Meta:
         """ Meta data """
-        template = 'blocks/testimonial_section.html'
         label = 'Testimonial Section'
 
 
@@ -228,7 +225,6 @@ class LogoCloudBlock(blocks.StructBlock):
 
     class Meta:
         """ Meta data """
-        template = 'blocks/logo_cloud.html'
         label = 'Logo Cloud'
 
 
@@ -259,7 +255,6 @@ class ServiceSectionBlock(blocks.StructBlock):
 
     class Meta:
         """ meta data """
-        template = 'blocks/service_section.html'
         label = 'Service Section'
 
 
@@ -278,7 +273,6 @@ class FeatureSectionBlock(blocks.StructBlock):
 
     class Meta:
         """ meta data """
-        template = 'blocks/feature_section.html'
         label = 'Feature Section'
 
 
@@ -385,7 +379,6 @@ class CounterSectionBlock(blocks.StructBlock):
 
     class Meta:
         """ meta data """
-        template = 'blocks/counter_section.html'
         label = 'Counter Section'
 
 
@@ -426,7 +419,6 @@ class CTASection(blocks.StructBlock):
 
     class Meta:
         """ meta data """
-        template = 'blocks/cta_section.html'
         label = 'CTA Section'
 
 
@@ -512,5 +504,25 @@ class PortfolioSectionBlock(blocks.StructBlock):
 
     class Meta:
         """ meta data """
-        template = 'blocks/portfolio_section.html'
         label = 'Portfolio Section'
+
+
+# Map Section
+class MapSectionBlock(blocks.StructBlock):
+    """ Map Block"""
+    heading = blocks.CharBlock(
+        required=False,
+        max_length=80,
+        label='Heading',
+        default='Super Awesome Section',
+    )
+    description = blocks.TextBlock(
+        required=False,
+        max_length=400,
+        label='Description',
+        default='The thing we do is better than any other similar thing and this hero panel will convince you of that, just by having a glorious background image.',
+    )
+
+    class Meta:
+        """ Meta data """
+        label = 'Map Section'

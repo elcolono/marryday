@@ -1,24 +1,35 @@
 from rest_framework import serializers
-from ...models import RentObject, Booking, Location, LocationImage, Image
+from ...models import RentObject, Booking, Location, LocationImage, Image, City
 
+# Cities
+
+
+class CitySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = City
+        fields = '__all__'
 
 # Images
+
+
 class LocationImageSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = LocationImage
         fields = '__all__'
 
-
 # Locations
+
+
 class LocationSerializer(serializers.ModelSerializer):
 
     images = LocationImageSerializer(many=True)
+    city = CitySerializer()
 
     class Meta:
         model = Location
-        fields = ('slug', 'title', 'address', 'postcode',
-                  'city', 'lat', 'lng', 'images', 'description')
+        fields = ('slug', 'title', 'address', 'city',
+                  'lat', 'lng', 'images', 'description')
 
 
 # Bookings

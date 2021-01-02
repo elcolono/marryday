@@ -12,12 +12,24 @@ RENT_OBJECT_TYPES = (
 )
 
 
+class City(models.Model):
+    is_active = models.BooleanField(default=False)
+    title = models.CharField(max_length=150, unique=True)
+    postcode = models.CharField(max_length=50)
+
+    class Meta:
+        verbose_name_plural = "Cities"
+
+    def __str__(self):
+        return self.title
+
+
 class Location(models.Model):
-    is_active = models.BooleanField(default=True)
+    is_active = models.BooleanField(default=False)
     title = models.CharField(max_length=150, unique=True)
     address = models.CharField(max_length=150)
-    postcode = models.CharField(max_length=50)
-    city = models.CharField(max_length=150)
+    city = models.ForeignKey(
+        City, related_name="locations", on_delete=models.PROTECT, null=True)
     lat = models.DecimalField(decimal_places=4, max_digits=10, null=True)
     lng = models.DecimalField(decimal_places=4, max_digits=10, null=True)
     slug = models.CharField(max_length=150, blank=True, null=True)

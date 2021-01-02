@@ -10,6 +10,9 @@ import TeamSection from '../components/Section/team-section'
 import HeadingSection from '../components/Section/heading-section'
 import ComingSoonSection from '../components/Section/ComingSoon'
 import FAQSection from '../components/Section/Faq'
+import MapSection from '../components/Section/Map'
+import StepSection from '../components/Section/Step'
+
 import { GetServerSideProps } from 'next'
 
 export default function Index(pageProps) {
@@ -25,6 +28,7 @@ export default function Index(pageProps) {
       </Head>
       {page.content.map((section, i) => {
         if (section.type == 'page_heading_section_block') return <HeadingSection key={i} title={page.title} data={section.value} />
+        if (section.type == 'map_section_block') return <MapSection key={i} data={section.value} />
         if (section.type == 'hero_section_block') return <HeroSection key={i} data={section.value} />
         if (section.type == 'content_section_block') return <ContentSection key={i} data={section.value} />
         if (section.type == 'counter_section_block') return <CounterSection key={i} data={section.value} />
