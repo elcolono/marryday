@@ -9,7 +9,6 @@ import {
     Media,
     CardFooter,
 } from "reactstrap"
-import UseWindowSize from "../../hooks/UseWindowSize"
 
 import data from "../../data/detail-rooms.json"
 
@@ -26,12 +25,8 @@ import { loadStripe } from "@stripe/stripe-js/pure";
 
 const LocationDetail = (props) => {
     const { location } = props
-    const size = UseWindowSize()
     const stripePromise = loadStripe('pk_test_51I47k4IpxsSLqlNa6T7HoFrFVoxyEalH5VROqKLV1DvZTBMV2WWWS4anN5fdWwqtdPIXaJU3VKR3bwmYhQliv3Or00c3rJIp2Q');
 
-    // const BookingFormWithNoSSR = dynamic(() => import("../../components/BookingForm"), {
-    //     ssr: false
-    // });
     const BookingWithNoSSR = dynamic(() => import("../../components/Booking"), {
         ssr: false
     });

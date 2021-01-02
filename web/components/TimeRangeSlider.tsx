@@ -163,8 +163,9 @@ const TimeRangeSlider = ({
 
             <Draggable
                 axis="x"
+                defaultPosition={{ x: 0, y: 0 }}
                 position={{ x: timelinePosition, y: 0 }}
-                grid={[25, 25]}
+                // grid={[25, 25]}
                 scale={1}
             >
                 <div>

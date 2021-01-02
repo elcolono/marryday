@@ -1,7 +1,6 @@
 import React from 'react';
 import { at } from 'lodash';
 import { useField } from 'formik';
-import { TextField } from '@material-ui/core';
 import { Input, Label, FormFeedback } from 'reactstrap';
 
 export default function InputField(props) {
