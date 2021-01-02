@@ -1,5 +1,6 @@
 """ All blocks """
 from wagtail.core import blocks
+from wagtail.core.models import Page
 from wagtail.images.blocks import ImageChooserBlock
 
 from wagtail.images.models import Image as WagtailImage
@@ -26,8 +27,11 @@ class WagtailImageSerializer(serializers.ModelSerializer):
 
 
 class APIImageChooserBlock(ImageChooserBlock):
-    def __init__(self, width, *args, **kwargs):
+    required = False
+
+    def __init__(self, width, required=False, *args, **kwargs):
         self.width = width
+        self.required = required
         super().__init__()
 
     def get_api_representation(self, value, context=None):
@@ -35,6 +39,15 @@ class APIImageChooserBlock(ImageChooserBlock):
             return WagtailImageSerializer(context=context, width=self.width).to_representation(value)
         else:
             return ''
+
+
+class APIPageChooserBlock(blocks.PageChooserBlock):
+    # pass
+    def get_api_representation(self, value, context=None):
+        if value:
+            return {
+                'slug': value.slug,
+            }
 
 
 # Heading Section
@@ -53,9 +66,22 @@ class PageHeadingSectionBlock(blocks.StructBlock):
         default='The thing we do is better than any other similar thing and this hero panel will convince you of that, just by having a glorious background image.',
     )
     image = APIImageChooserBlock(
-        required=False,
         label='Image',
         width='fill-960x720',
+    )
+    primary_button_link = APIPageChooserBlock(
+        required=False,
+    )
+    primary_button_text = blocks.CharBlock(
+        required=False,
+        max_length=80,
+    )
+    secondary_button_link = APIPageChooserBlock(
+        required=False,
+    )
+    secondary_button_text = blocks.CharBlock(
+        required=False,
+        max_length=80,
     )
 
     class Meta:
@@ -232,7 +258,18 @@ class LogoCloudBlock(blocks.StructBlock):
 
 class ServiceSectionBlock(blocks.StructBlock):
     """ Service Section Block """
-    heading = blocks.CharBlock(required=True, max_length=100, label="Title")
+    heading = blocks.CharBlock(
+        required=True,
+        max_length=100,
+        label="Heading",
+        default='Super Awesome Hero Heading',
+    )
+    subheading = blocks.CharBlock(
+        required=False,
+        max_length=100,
+        label="Subheading",
+        default='Super Awesome Subheading',
+    )
     layout = blocks.ChoiceBlock(
         choices=(
             ('service_with_icon', 'Services with Icons'),
@@ -441,17 +478,22 @@ class PricingSectionBlock(blocks.StructBlock):
         blocks.StructBlock([
             ("heading", blocks.CharBlock(required=True, max_length=100)),
             ("price", blocks.CharBlock(required=True, max_length=100)),
-            ("type", blocks.ChoiceBlock(required=True, choices=(
-                ('hourly', 'Hourly'),
-                ('monthly', 'Monthly'),
-                ('unique', 'Unique')
-            ))),
+            # ("type", blocks.ChoiceBlock(required=True, choices=(
+            #     ('hourly', 'Hourly'),
+            #     ('monthly', 'Monthly'),
+            #     ('unique', 'Unique')
+            # ))),
             ("description", blocks.RichTextBlock(
                 required=False,
                 max_length=400,
                 label='Description',
                 default='The thing we do is better than any other similar thing and this hero panel will convince you of that, just by having a glorious background image.',
             )),
+            ("items", blocks.ListBlock(
+                blocks.StructBlock([
+                    ("name", blocks.CharBlock(required=True)),
+                    ("status", blocks.BooleanBlock(default=True))
+                ])))
         ])
     )
 

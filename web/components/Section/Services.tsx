@@ -13,6 +13,12 @@ export default function ServiceSection({ data }) {
 
         <section className="py-6">
             <Container>
+                <div className="text-center pb-lg-4">
+                    {data.subheading && <p className="subtitle text-secondary">
+                        {data.subheading}
+                    </p>}
+                    <h2 className="mb-5">{data.heading}</h2>
+                </div>
                 <Row>
                     {data.services && data.services.map((service, i) => (
                         <Col key={i} md="4" className="text-center text-md-left mb-4 mb-md-0">
