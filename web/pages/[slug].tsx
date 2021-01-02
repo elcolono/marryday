@@ -12,18 +12,21 @@ import PricingSection from '../components/Section/pricing-section'
 import ContactSection from '../components/Section/contact-section'
 import FAQSection from '../components/Section/Faq'
 import LoginSection from '../components/Section/Login'
+import { GetServerSideProps } from 'next'
 
-export default function SubPage({ user, allContent, mainMenus, flatMenus, themeSettings }) {
+export default function SubPage(pageProps) {
+
+  const { page } = pageProps;
   return (
     <>
       <Head>
-        <title>{allContent.title} | {CMS_NAME}</title>
+        <title>{page.title} | {CMS_NAME}</title>
 
         {/* <!-- Seo Meta --> */}
         <meta name="description" content="Listigo | Directory Bootstrap 4 Template" />
         <meta name="keywords" content="listing dashboard, directory panel, listing, responsive directory, directory template, themeforest, listing template, css3, html5" />
       </Head>
-      {allContent.content.map((section, i) => {
+      {page.content.map((section, i) => {
         if (section.type == 'page_heading_section_block') return <HeadingSection key={i} title={allContent.title} data={section.value} />
         if (section.type == 'hero_section_block') return <HeroSection key={i} data={section.value} />
         if (section.type == 'content_section_block') return <ContentSection key={i} data={section.value} />
@@ -40,14 +43,23 @@ export default function SubPage({ user, allContent, mainMenus, flatMenus, themeS
   )
 }
 
-// If you export an async function called getStaticProps from a page, Next.js will pre-render this page at build time using the props returned by getStaticProps.
-export async function getServerSideProps({ params, req }) {
-  const user = (await fetchAPIwithSSR('/api/v1/rest-auth/user/', { req: req })) ?? null
-  const allContent = (await fetchAPIwithSSR(`/api/v2/pages/find/?html_path=${params.slug}`, { method: 'GET' })) ?? []
-  const mainMenus = (await fetchAPIwithSSR('/api/main-menus', { method: 'GET' })) ?? []
-  const flatMenus = (await fetchAPIwithSSR('/api/flat-menus', { method: 'GET' })) ?? []
-  const themeSettings = (await fetchAPIwithSSR('/api/theme-settings', { method: 'GET' })) ?? []
+export const getServerSideProps: GetServerSideProps = async ({ params, req }) => {
+  const settings = (await fetchAPIwithSSR('/api/page/home', { method: 'GET', req: req })) ?? []
+  const page = (await fetchAPIwithSSR(`/api/v2/pages/find/?html_path=${params.slug}`, { method: 'GET', req: req })) ?? []
+  // const user = (await fetchAPIwithSSR('/api/v1/rest-auth/user/', { method: 'GET', req: req })) ?? null
   return {
-    props: { user, allContent, mainMenus, flatMenus, themeSettings },
+    props: {
+      page: page,
+      themeSettings: settings.theme_settings,
+      mainMenus: settings.main_menus,
+      flatMenus: settings.flat_menus,
+      // user,
+      nav: {
+        light: true,
+        classes: "shadow",
+        color: "white",
+      },
+      title: "Rooms | Category - Map on the top",
+    },
   }
 }
