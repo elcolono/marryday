@@ -27,7 +27,7 @@ export default function SubPage(pageProps) {
         <meta name="keywords" content="listing dashboard, directory panel, listing, responsive directory, directory template, themeforest, listing template, css3, html5" />
       </Head>
       {page.content.map((section, i) => {
-        if (section.type == 'page_heading_section_block') return <HeadingSection key={i} title={allContent.title} data={section.value} />
+        if (section.type == 'page_heading_section_block') return <HeadingSection key={i} title={page.title} data={section.value} />
         if (section.type == 'hero_section_block') return <HeroSection key={i} data={section.value} />
         if (section.type == 'content_section_block') return <ContentSection key={i} data={section.value} />
         if (section.type == 'counter_section_block') return <CounterSection key={i} data={section.value} />
@@ -35,7 +35,7 @@ export default function SubPage(pageProps) {
         if (section.type == 'service_section_block') return <ServiceSection key={i} data={section.value} />
         if (section.type == 'team_section_block') return <TeamSection key={i} data={section.value} />
         if (section.type == 'pricing_section_block') return <PricingSection key={i} data={section.value} />
-        if (section.type == 'contact_section_block') return <ContactSection key={i} title={allContent.title} data={section.value} />
+        if (section.type == 'contact_section_block') return <ContactSection key={i} title={page.title} data={section.value} />
         if (section.type == 'faq_section_block') return <FAQSection key={i} data={section.value} />
         if (section.type == 'login_section_block') return <LoginSection key={i} data={section.value} />
       })}
