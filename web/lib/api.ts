@@ -31,6 +31,9 @@ export default class ApiService {
         return api.post(`/cowork/bookings/`, data)
     }
 
+    static fetchLocations() {
+        return api.get(`/cowork/locations/`)
+    }
 
     static signin = (email, password) => {
         Cookies.remove('token');
