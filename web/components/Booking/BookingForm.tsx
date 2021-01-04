@@ -5,9 +5,8 @@ import { api } from '../../lib/api';
 import { RentObject } from '../../lib/interfaces';
 
 import isEmpty from 'lodash/isEmpty'
-import Draggable from 'react-draggable';
 import { useFormikContext } from 'formik';
-import { FormGroup } from "reactstrap";
+import { FormGroup, Nav, NavItem, NavLink } from "reactstrap";
 
 import TimeRangeSlider from '../TimeRangeSlider';
 import SelectField from '../FormFields/SelectField';
@@ -19,9 +18,7 @@ import endOfWeek from "date-fns/endOfWeek";
 import startOfDay from "date-fns/startOfDay";
 import format from "date-fns/format";
 import isBefore from "date-fns/isBefore"
-
-
-
+import Swiper from 'react-id-swiper';
 
 
 export default function BookingForm(props) {
@@ -77,9 +74,25 @@ export default function BookingForm(props) {
         setTimeRangeError(error)
     }
 
+    const objectTypes = [
+        {
+            label: "Desktop",
+            value: "desktop"
+        },
+        {
+            label: "Phone",
+            value: "phone"
+        },
+        {
+            label: "Meeting",
+            value: "meeting"
+        }
+    ]
+
     return (
 
         <section id="intro_section">
+
             <p className="text-muted">
                 <span className="text-primary h2">
                     € {' '}
@@ -91,90 +104,89 @@ export default function BookingForm(props) {
                 </p>
 
             <hr className="my-4" />
-            <div className="">
-                {/* Rent Objects */}
-                <FormGroup className="overflow-hidden" tag="fieldset">
-                    <div className="pb-2 d-flex">
-                        <div className={`flex-fill py-3 text-center card ${values && values['objectType'] == 'desktop' && 'border-primary'}`} onClick={() => handleValueChange('desktop', 'objectType')} >
-                            <span>Desktop</span>
-                        </div>
-                        <div className={`flex-fill py-3 text-center card ${values && values['objectType'] == 'phone' && 'border-primary'}`} onClick={() => handleValueChange('phone', 'objectType')}>
-                            <span>Phone</span>
-                        </div>
-                        <div className={`flex-fill py-3 text-center card ${values && values['objectType'] == 'meeting' && 'border-primary'}`} onClick={() => handleValueChange('meeting', 'objectType')}>
-                            <span>Meeting</span>
-                        </div>
-                    </div>
 
-                    <div className="p-2 d-flex justify-content-between">
-                        <span>{values && startOfWeek(values['selectedDate']).toLocaleDateString}</span>
-                        <CustomDatepicker
-                            selectedDate={values['selectedDate']}
-                            handleWeekChange={(date) => handleValueChange(startOfDay(date), 'selectedDate')}
-                        />
-                    </div>
+            {/* Rent Objects */}
+            <Nav className="nav-pills-custom">
+                {objectTypes && objectTypes.map((ot) => (
+                    <NavItem className="flex-fill text-center" key={ot.value} >
+                        <NavLink
+                            href="#"
+                            onClick={() => handleValueChange(ot.value, 'objectType')}
+                            className={ot.value === values['objectType'] ? "active" : ""}
+                        >
+                            {ot.label}
+                        </NavLink>
+                    </NavItem>
+                ))}
+            </Nav>
 
-                    <Draggable
-                        axis="x"
-                        defaultPosition={{ x: 0, y: 0 }}
-                        bounds={{ left: -200, right: 0 }}
-                    >
-                        <div className="week-slider row">
-                            {week && week.map((el, i) => {
-                                return (
-                                    <div
-                                        className={`text-center col card py-2 m-1 ${isBefore(el, startOfDay(new Date())) && 'disabled'} ${values && values['selectedDate'].toDateString() === el.toDateString() && 'border-primary'}`}
-                                        key={i}
-                                        onClick={() => handleValueChange(startOfDay(el), 'selectedDate')}>
-                                        {/* {weekDay.toLocaleDateString()} */}
-                                        <div>{format(el, 'd')}</div>
-                                        <div>{format(el, 'iii')}</div>
-                                    </div>
-                                )
-                            })}
-                        </div>
-                    </Draggable>
-                </FormGroup>
-
-                {/* Rent Objects */}
-
-
-                {!isEmpty(values['rentObjects']) ? (
-                    <React.Fragment>
-                        <FormGroup className="mt-5" tag="fieldset">
-                            <SelectField
-                                name={rentObject.name}
-                                label={rentObject.label}
-                                data={values['rentObjects']}
-                                fullWidth
-                            />
-                        </FormGroup>
-                        <div className="overflow-hidden">
-                            {values['rentObject'] && <TimeRangeSlider
-                                selectedDate={values['selectedDate']}
-                                disabledIntervals={values['rentObject'].bookings}
-                                errorHandler={timeRangeErrorHandler}
-                                error={timeRangeError}
-                            />}
-                        </div>
-
-
-                    </React.Fragment>
-                ) : <div className="text-block">
-                        <p className="text-muted text-center">Sorry, leider noch keine Objekte vorhanden.</p>
-                        <p className="mb-5 text-center">
-                            <img
-                                src="/assets/img/illustration/undraw_through_the_desert_fcin.svg"
-                                width={400}
-                                height={279}
-                                // layout="intrinsic"
-                                alt=""
-                                className="img-fluid"
-                                sizes="(max-width: 576px) 100vw, 530px"
-                            />
-                        </p>
-                    </div>}
+            {/* Date Picker */}
+            <div className="p-2 d-flex justify-content-between">
+                <span>{values && startOfWeek(values['selectedDate']).toLocaleDateString}</span>
+                <CustomDatepicker
+                    selectedDate={values['selectedDate']}
+                    handleWeekChange={(date) => handleValueChange(startOfDay(date), 'selectedDate')}
+                />
             </div>
+            <Nav className="nav-pills-custom">
+                <Swiper
+                    slidesPerView={5}
+                >
+                    {week && week.map((date, index) => (
+                        <NavItem className="text-center" key={index} >
+                            <NavLink
+                                href="#"
+                                key={index}
+                                onClick={() => handleValueChange(startOfDay(date), 'selectedDate')}
+                                className={values && values['selectedDate'].toDateString() === date.toDateString() ? "active" : ""}
+                                disabled={isBefore(date, startOfDay(new Date()))}
+                            >
+                                <div>{format(date, 'd')}</div>
+                                <div>{format(date, 'iii')}</div>
+                            </NavLink>
+                        </NavItem>
+
+                    ))}
+                </Swiper>
+            </Nav>
+
+            {/* Rent Objects */}
+            {!isEmpty(values['rentObjects']) ? (
+                <React.Fragment>
+                    <FormGroup className="mt-5" tag="fieldset">
+                        <SelectField
+                            name={rentObject.name}
+                            label={rentObject.label}
+                            data={values['rentObjects']}
+                            fullWidth
+                        />
+                    </FormGroup>
+                    <div className="overflow-hidden">
+                        {values['rentObject'] && <TimeRangeSlider
+                            selectedDate={values['selectedDate']}
+                            disabledIntervals={values['rentObject'].bookings}
+                            errorHandler={timeRangeErrorHandler}
+                            error={timeRangeError}
+                        />}
+                    </div>
+
+
+                </React.Fragment>
+            ) : <div className="text-block">
+                    <p className="text-muted text-center">Sorry, leider noch keine Objekte vorhanden.</p>
+                    <p className="mb-5 text-center">
+                        <img
+                            src="/assets/img/illustration/undraw_through_the_desert_fcin.svg"
+                            width={400}
+                            height={279}
+                            // layout="intrinsic"
+                            alt=""
+                            className="img-fluid"
+                            sizes="(max-width: 576px) 100vw, 530px"
+                        />
+                    </p>
+                </div>}
+
             <style jsx>{`
                 .disabled {
                     pointer-events:none;

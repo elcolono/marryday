@@ -1,5 +1,4 @@
 import React from "react"
-import Link from "next/link"
 import dynamic from "next/dynamic"
 
 import {
@@ -16,6 +15,7 @@ import SwiperGallery from "../../components/SwiperGallery"
 import Gallery from "../../components/Gallery"
 import Map from "../../components/Map"
 import Icon from '../../components/Icon';
+import BottomNav from '../../components/Layout/BottomNav'
 
 import { GetServerSideProps } from "next";
 import { fetchAPIwithSSR } from "../../lib/api";
@@ -26,6 +26,13 @@ import { loadStripe } from "@stripe/stripe-js/pure";
 const LocationDetail = (props) => {
     const { location } = props
     const stripePromise = loadStripe('pk_test_51I47k4IpxsSLqlNa6T7HoFrFVoxyEalH5VROqKLV1DvZTBMV2WWWS4anN5fdWwqtdPIXaJU3VKR3bwmYhQliv3Or00c3rJIp2Q');
+
+
+    const [isDesktop, setIsDesktop] = React.useState(false)
+
+    React.useEffect(() => {
+        setIsDesktop(window.innerWidth > 991)
+    })
 
     const BookingWithNoSSR = dynamic(() => import("../../components/Booking"), {
         ssr: false
@@ -53,7 +60,7 @@ const LocationDetail = (props) => {
                                 </p>
                                 {location.title && <h1> MoWo {location.title}</h1>}
                                 <div className="text-muted text-uppercase mb-4">
-                                    MoWo Original
+                                    MoWo Original {isDesktop ? "isDesktop" : "NotDesktop"}
                                 </div>
                                 {data.tags && (
                                     <ul className="list-inline text-sm mb-4">
@@ -137,10 +144,13 @@ const LocationDetail = (props) => {
 
 
                                 {/* <BookingFormWithNoSSR locationSlug={location.slug} /> */}
-                                <Elements stripe={stripePromise}>
-                                    <BookingWithNoSSR locationSlug={location.slug} />
-                                </Elements>
 
+
+                                {isDesktop &&
+                                    <Elements stripe={stripePromise}>
+                                        <BookingWithNoSSR locationSlug={location.slug} />
+                                    </Elements>
+                                }
 
                                 <CardFooter className="bg-primary-light py-4 border-0">
                                     <Media className="align-items-center">
@@ -163,6 +173,11 @@ const LocationDetail = (props) => {
                         </Col>
                     </Row>
                 </Container>
+                {!isDesktop && <BottomNav>
+                    <Elements stripe={stripePromise}>
+                        <BookingWithNoSSR locationSlug={location.slug} />
+                    </Elements>
+                </BottomNav>}
             </section>
 
         </React.Fragment>
