@@ -8,6 +8,7 @@ import addMinutes from 'date-fns/addMinutes'
 import isBefore from 'date-fns/isBefore'
 import isAfter from 'date-fns/isAfter'
 import format from "date-fns/format";
+import areIntervalsOverlapping from "date-fns/areIntervalsOverlapping"
 
 import TimeRange from 'react-timeline-range-slider'
 import Draggable from 'react-draggable';
@@ -118,11 +119,16 @@ const TimeRangeSlider = ({
         const ti = [addHours(timelineInterval[0], 13), addHours(timelineInterval[0], 15)]
         // Set formik values
         setFieldValue("timeInterval", ti);
+        // console.log(disabledIntervals.map(dti => {
+        //     const overlaps = areIntervalsOverlapping({ start: dti[0], end: dti[1] }, { start: ti[0], end: ti[1] })
+        //     if (overlaps) return true
+        // }))
+
     }
 
     const onChangeTimeInterval = (ti) => {
         const isStartVisible = isWithinInterval(ti[0], { start: addHours(timelineInterval[0], 12), end: addHours(timelineInterval[0], 17.5) })
-        const isEndVisible = isWithinInterval(ti[0], { start: addHours(timelineInterval[0], 12), end: addHours(timelineInterval[0], 17.5) })
+        const isEndVisible = isWithinInterval(ti[1], { start: addHours(timelineInterval[0], 12), end: addHours(timelineInterval[0], 17.5) })
         if (!isStartVisible && !isEndVisible) {
             return clearSelectedTimeInterval()
         }

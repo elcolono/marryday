@@ -6,8 +6,8 @@ const {
     rentObjects,
     timeInterval,
     rentObject,
-    firstName,
-    lastName,
+    // firstName,
+    // lastName,
     email,
     validCard
   }
@@ -21,8 +21,8 @@ export default {
   [rentObject.name]: '',
 
   [timeInterval.name]: [],
-  [firstName.name]: '',
-  [lastName.name]: '',
+  // [firstName.name]: '',
+  // [lastName.name]: '',
   [email.name]: '',
   [validCard.name]: false,
 };

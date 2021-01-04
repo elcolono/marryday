@@ -25,16 +25,16 @@ export default {
       label: 'Rent object*',
       requiredErrorMsg: 'Rent object is required'
     },
-    firstName: {
-      name: 'firstName',
-      label: 'Vorname*',
-      requiredErrorMsg: 'First name is required'
-    },
-    lastName: {
-      name: 'lastName',
-      label: 'Nachname*',
-      requiredErrorMsg: 'Last name is required'
-    },
+    // firstName: {
+    //   name: 'firstName',
+    //   label: 'Vorname*',
+    //   requiredErrorMsg: 'First name is required'
+    // },
+    // lastName: {
+    //   name: 'lastName',
+    //   label: 'Nachname*',
+    //   requiredErrorMsg: 'Last name is required'
+    // },
     email: {
       name: 'email',
       label: 'Email address',

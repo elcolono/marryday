@@ -57,7 +57,7 @@ export default function PaymentForm(props) {
       </div>
 
       <Row>
-        <Col md="6" className="form-group" key={firstName.name}>
+        {/* <Col md="6" className="form-group" key={firstName.name}>
           <Label for={firstName.name} className="form-label">
             {firstName.label}
           </Label>
@@ -77,7 +77,7 @@ export default function PaymentForm(props) {
             label={lastName.label}
             fullWidth
           />
-        </Col>
+        </Col> */}
 
         <Col md="12" className="form-group" key={email.name}>
           <Label for={email.name} className="form-label">

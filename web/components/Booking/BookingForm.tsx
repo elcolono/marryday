@@ -177,7 +177,7 @@ export default function BookingForm(props) {
                     <p className="mb-5 text-center">
                         <img
                             src="/assets/img/illustration/undraw_through_the_desert_fcin.svg"
-                            width={400}
+                            width={200}
                             height={279}
                             // layout="intrinsic"
                             alt=""

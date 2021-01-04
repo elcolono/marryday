@@ -19,8 +19,8 @@ export default [
 
     }),
     Yup.object().shape({
-        [firstName.name]: Yup.string().required(`${firstName.requiredErrorMsg}`),
-        [lastName.name]: Yup.string().required(`${lastName.requiredErrorMsg}`),
+        // [firstName.name]: Yup.string().required(`${firstName.requiredErrorMsg}`),
+        // [lastName.name]: Yup.string().required(`${lastName.requiredErrorMsg}`),
         [email.name]: Yup.string().required(`${email.requiredErrorMsg}`),
         [validCard.name]: Yup.boolean().isTrue(),
         [rentObject.name]: Yup.object().required(`${rentObject.requiredErrorMsg}`),
