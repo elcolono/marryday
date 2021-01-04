@@ -11,14 +11,18 @@ from dateutil.parser import parse
 from django.db.models import Prefetch
 from datetime import timedelta
 
+from django.db.models import Q
 
 # All API VIEWS:
 # https://www.django-rest-framework.org/api-guide/generic-views/#retrieveapiview
 
 # Cites
+
+
 class CityListView(generics.ListAPIView):
     queryset = City.objects.filter(is_active=True)
     serializer_class = CitySerializer
+
 
 # Booking
 class BookingCreateView(generics.CreateAPIView):
@@ -30,9 +34,27 @@ class BookingCreateView(generics.CreateAPIView):
         booking_data = request.data
         booking_data['user'] = request.user.id
 
-        serializer = BookingSerializer(data=booking_data)
+        # Check if payment data is complete
+        if not booking_data['email']:
+            return Response("Email is required", status=status.HTTP_400_BAD_REQUEST)
 
-        # Check if time range is not yet booked
+        if not booking_data['payment_method_id']:
+            return Response("Payment card is required", status=status.HTTP_400_BAD_REQUEST)
+        
+        
+        # Check if overlapping bookings exist
+        rent_object_bookings = Booking.objects.filter(
+            rent_object=booking_data['rent_object'])
+
+        overlapping_bookings = rent_object_bookings.filter(
+            Q(start__range=[booking_data['start'], booking_data['end']]) | Q(end__range=[booking_data['start'], booking_data['end']]))
+
+        if overlapping_bookings:
+            return Response("Overlapping booking detected.", status=status.HTTP_400_BAD_REQUEST)
+
+        
+        # Run serializer
+        serializer = BookingSerializer(data=booking_data)
 
         if not serializer.is_valid():
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
