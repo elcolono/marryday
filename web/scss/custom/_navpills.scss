@@ -11,10 +11,35 @@
         color: theme-color('primary');
         border: 1px solid theme-color('primary');
         border-radius: 50px;
+        &.active,
+        &:hover,
+        &:focus {
+            color: #fff;
+            background: theme-color('primary');
+        }
+
+        &:first-of-type {
+            margin-left: 0;
+        }
+    }
+}
+
+.nav-pills-custom-2 {
+    flex-wrap: wrap;
+
+    .nav-link {
+        margin: 10px;
+        color: theme-color('dark');
+        border: 1px solid $gray-300;
+        border-radius: 10px;
+        &.disabled {
+            color: #868e96;
+        }
 
         &.active,
         &:hover,
         &:focus {
+            border: 1px solid theme-color('primary');
             color: #fff;
             background: theme-color('primary');
         }

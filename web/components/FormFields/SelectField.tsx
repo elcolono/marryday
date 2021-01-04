@@ -15,7 +15,12 @@ function SelectField(props) {
 
   const { value: selectedValue } = field;
 
-
+  const customStyles = {
+    // control: (base, state) => ({
+    //   ...base,
+    //   borderColor: state.isSelected ? 'orange' : '',
+    // }),
+  }
   return (
     <React.Fragment>
 
@@ -27,6 +32,7 @@ function SelectField(props) {
         getOptionValue={(option) => option.id}
         onChange={(option: Option) => setValue(option)}
         instanceId={props.iid}
+        styles={customStyles}
       />
     </React.Fragment>
 

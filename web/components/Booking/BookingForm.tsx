@@ -106,7 +106,7 @@ export default function BookingForm(props) {
             <hr className="my-4" />
 
             {/* Rent Objects */}
-            <Nav className="nav-pills-custom">
+            <Nav className="nav-pills-custom-2">
                 {objectTypes && objectTypes.map((ot) => (
                     <NavItem className="flex-fill text-center" key={ot.value} >
                         <NavLink
@@ -128,7 +128,7 @@ export default function BookingForm(props) {
                     handleWeekChange={(date) => handleValueChange(startOfDay(date), 'selectedDate')}
                 />
             </div>
-            <Nav className="nav-pills-custom">
+            <Nav className="nav-pills-custom-2">
                 <Swiper
                     slidesPerView={5}
                 >
@@ -141,8 +141,8 @@ export default function BookingForm(props) {
                                 className={values && values['selectedDate'].toDateString() === date.toDateString() ? "active" : ""}
                                 disabled={isBefore(date, startOfDay(new Date()))}
                             >
-                                <div>{format(date, 'd')}</div>
-                                <div>{format(date, 'iii')}</div>
+                                <div><b>{format(date, 'd')}</b></div>
+                                <div><small>{format(date, 'iii')}</small></div>
                             </NavLink>
                         </NavItem>
 
@@ -186,13 +186,6 @@ export default function BookingForm(props) {
                         />
                     </p>
                 </div>}
-
-            <style jsx>{`
-                .disabled {
-                    pointer-events:none;
-                    opacity: 0.5;
-                };
-            `}</style>
         </section >
     )
 }

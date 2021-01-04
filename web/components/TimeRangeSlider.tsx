@@ -133,24 +133,12 @@ const TimeRangeSlider = ({
     return (
         <React.Fragment>
             <div className="d-flex justify-content-between align-items-center">
-                <div>
-                    <Button
-                        disabled={isLoading}
-                        color="items"
-                        className="btn-items-increase m-1"
-                        onClick={() => decreaseTimeRangeIndex()}
-                    ><i className="fa fa-chevron-left"></i></Button>
-                    <Button
-                        disabled={isLoading}
-                        color="items"
-                        className="btn-items-increase m-1"
-                        onClick={() => increaseTimeRangeIndex()}
-                    ><i className="fa fa-chevron-right"></i></Button>
-                </div>
 
                 <span className="text-muted">
-                    29.12.2020{'\n'}
-                    16:00 - 18:00
+                    <i className="far fa-calendar fa-fw text-muted mr-2" />
+                    {values['timeInterval'][0] && format(values['timeInterval'][0], 'MMM dd, HH:mm')}
+                    <i className="fas fa-arrow-right fa-fw text-muted mx-1" />
+                    {values['timeInterval'][1] && format(values['timeInterval'][1], 'dd, HH:mm')}
                 </span>
 
                 <Button
@@ -165,6 +153,7 @@ const TimeRangeSlider = ({
                 axis="x"
                 defaultPosition={{ x: 0, y: 0 }}
                 position={{ x: timelinePosition, y: 0 }}
+                onStart={() => false}
                 // grid={[25, 25]}
                 scale={1}
             >
@@ -181,6 +170,21 @@ const TimeRangeSlider = ({
                     />
                 </div>
             </Draggable>
+
+            <div>
+                <Button
+                    disabled={isLoading}
+                    color="items"
+                    className="btn-items-increase m-1"
+                    onClick={() => decreaseTimeRangeIndex()}
+                ><i className="fa fa-chevron-left"></i></Button>
+                <Button
+                    disabled={isLoading}
+                    color="items"
+                    className="btn-items-increase m-1"
+                    onClick={() => increaseTimeRangeIndex()}
+                ><i className="fa fa-chevron-right"></i></Button>
+            </div>
 
             {/* 
             <div>x: {timelinePosition}</div>

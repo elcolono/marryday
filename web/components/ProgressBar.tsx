@@ -4,7 +4,7 @@ const ProgressBar = (props) => {
   return (
     <div
       style={{ height: "8px", top: "71px" }}
-      className="progress rounded-0 sticky-top"
+      className="progress rounded-0"
     >
       <div
         role="progressbar"
