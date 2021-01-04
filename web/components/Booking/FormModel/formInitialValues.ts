@@ -9,7 +9,8 @@ const {
     // firstName,
     // lastName,
     email,
-    validCard
+    completeCard,
+    emptyCard
   }
 } = checkoutFormModel;
 
@@ -24,5 +25,6 @@ export default {
   // [firstName.name]: '',
   // [lastName.name]: '',
   [email.name]: '',
-  [validCard.name]: false,
+  [completeCard.name]: false,
+  [emptyCard.name]: true,
 };

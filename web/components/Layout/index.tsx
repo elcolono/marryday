@@ -5,11 +5,11 @@ import GoogleFonts from "next-google-fonts"
 
 import Header from "./Header"
 import Footer from "./Footer"
-import { FormProvider } from "../FormContext"
-import { BookingProvider } from "../BookingContext"
 import SvgIcons from "../SvgIcons"
 
 import CookieConsent from "react-cookie-consent";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Layout = (pageProps) => {
   const headerProps = {
@@ -43,23 +43,8 @@ const Layout = (pageProps) => {
       </Head>
       <NextNProgress color="#4E66F8" options={{ showSpinner: false }} />
       {!pageProps.hideHeader && <Header {...headerProps} />}
-      {pageProps.listingForm || pageProps.bookingForm ? (
-        <React.Fragment>
-          {pageProps.listingForm && (
-            <FormProvider>
-              <main>{pageProps.children}</main>
-            </FormProvider>
-          )}
-          {pageProps.bookingForm && (
-            <BookingProvider>
-              <main>{pageProps.children}</main>
-            </BookingProvider>
-          )}
-        </React.Fragment>
-      ) : (
-          <main>{pageProps.children}</main>
-        )}
-
+      <main>{pageProps.children}</main>
+      <ToastContainer position="bottom-right" />
       {!pageProps.hideFooter && <Footer {...footerProps} />}
       <SvgIcons />
       <CookieConsent>This website uses cookies to enhance the user experience.</CookieConsent>

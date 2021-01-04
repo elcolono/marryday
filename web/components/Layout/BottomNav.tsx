@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { Modal, ModalHeader, Navbar, Button, NavbarBrand } from 'reactstrap';
 
-
-
 const BottomNav = (props) => {
 
     const [modal, setModal] = useState(false);

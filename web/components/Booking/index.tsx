@@ -7,6 +7,7 @@ import ProgressBar from '../ProgressBar';
 import differenceInMinutes from 'date-fns/differenceInMinutes';
 
 import { Formik, Form } from 'formik';
+import { toast } from 'react-toastify';
 
 // import AddressForm from './AddressForm';
 import BookingForm from './BookingForm';
@@ -71,14 +72,15 @@ export default function CheckoutPage({ locationSlug }) {
             check_price: checkPrice
         })
             .then(response => {
-                console.log(response.data);
                 setActiveStep(activeStep + 1);
+                toast.success("Booking was successful!");
+                actions.setSubmitting(false);
 
             }).catch(error => {
-                console.log(error)
+                toast.error(`${error.response.data}`);
+                actions.setSubmitting(false);
             })
 
-        actions.setSubmitting(false);
     }
 
     function _handleSubmit(values, actions) {
@@ -129,14 +131,13 @@ export default function CheckoutPage({ locationSlug }) {
                                                 type="submit"
                                                 // variant="contained"
                                                 color="primary"
-                                                className={classes.button}
                                                 block
                                             >
-                                                {isLastStep ? 'Place order' : isSubmitting ? <Spinner /> : 'Weiter'}
+                                                {isSubmitting ? <Spinner size={'sm'} /> : isLastStep ? 'Jetzt buchen' : 'Weiter'}
                                             </Button>
                                         </div>
                                     </div>
-                                    {/* <pre >{JSON.stringify(values, null, 4)}</pre> */}
+                                    {/* <pre>{JSON.stringify(values, null, 4)}</pre> */}
 
                                 </Form>
                             )}

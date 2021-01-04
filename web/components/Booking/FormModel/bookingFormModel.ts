@@ -38,12 +38,15 @@ export default {
     email: {
       name: 'email',
       label: 'Email address',
-      requiredErrorMsg: 'Email is required'
+      requiredErrorMsg: 'Your email is required.'
     },
-    validCard: {
-      name: 'validCard',
-      label: 'Valid card',
-      requiredErrorMsg: 'Card must be valid'
+    completeCard: {
+      name: 'completeCard',
+      requiredErrorMsg: 'Your card is incomplete.'
+    },
+    emptyCard: {
+      name: 'emptyCard',
+      requiredErrorMsg: 'Your card number is required.'
     },
 
   }

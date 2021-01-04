@@ -9,8 +9,6 @@ import {
     CardFooter,
 } from "reactstrap"
 
-import data from "../../data/detail-rooms.json"
-
 import SwiperGallery from "../../components/SwiperGallery"
 import Gallery from "../../components/Gallery"
 import Map from "../../components/Map"
@@ -43,7 +41,7 @@ const LocationDetail = (props) => {
         return result
     }
 
-    const groupedAmenities = data.amenities && groupByN(4, data.amenities)
+    // const groupedAmenities = data.amenities && groupByN(4, data.amenities)
 
     return (
         <React.Fragment>
@@ -60,9 +58,9 @@ const LocationDetail = (props) => {
                                 </p>
                                 {location.title && <h1> MoWo {location.title}</h1>}
                                 <div className="text-muted text-uppercase mb-4">
-                                    MoWo Original {isDesktop ? "isDesktop" : "NotDesktop"}
+                                    MoWo Original
                                 </div>
-                                {data.tags && (
+                                {/* {data.tags && (
                                     <ul className="list-inline text-sm mb-4">
                                         {data.tags.map((tag) => (
                                             <li key={tag.value} className="list-inline-item mr-3">
@@ -73,11 +71,11 @@ const LocationDetail = (props) => {
                                             </li>
                                         ))}
                                     </ul>
-                                )}
+                                )} */}
                                 <div className="text-muted-html" dangerouslySetInnerHTML={{ __html: location.description }}></div>
                             </div>
 
-                            {data.amenities && (
+                            {/* {data.amenities && (
                                 <React.Fragment>
                                     <div className="text-block">
                                         <h4 className="mb-4">Amenities</h4>
@@ -103,7 +101,7 @@ const LocationDetail = (props) => {
                                     </div>
 
                                 </React.Fragment>
-                            )}
+                            )} */}
 
                             {location.lat && location.lng && (
                                 <div className="text-block">

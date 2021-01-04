@@ -19,9 +19,9 @@ export default function PaymentForm(props) {
   const [error, setError] = useState(null);
 
   const {
-    formField: { firstName, lastName, email }
+    formField: { email }
   } = props;
-  const { values, setFieldValue } = useFormikContext()
+  const { values, errors, setFieldValue, setFieldError } = useFormikContext()
 
   const totalMinutes = differenceInMinutes(values['timeInterval'][1], values['timeInterval'][0]);
   const hourPrice = 6.95;
@@ -30,12 +30,13 @@ export default function PaymentForm(props) {
 
   // Handle real-time validation errors from the card Element.
   const handleChange = (event) => {
-
+    console.log(event)
     if (event.error) {
-      setError(event.error.message);
+      setFieldValue('completeCard', event.complete)
+      setFieldError('completeCard', event.error.message);
     } else {
-      setError(null);
-      setFieldValue('validCard', event.complete)
+      setFieldValue('completeCard', event.complete)
+      setFieldValue('emptyCard', event.empty)
     }
   }
 
@@ -113,7 +114,7 @@ export default function PaymentForm(props) {
               },
             }}
           />
-          <FormFeedback className="d-block">{error}</FormFeedback>
+          <FormFeedback className="d-block">{errors['emptyCard'] || errors['completeCard']}</FormFeedback>
         </Col>
 
         <Col md="12">

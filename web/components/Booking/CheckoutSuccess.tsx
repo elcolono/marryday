@@ -8,7 +8,7 @@ function CheckoutSuccess() {
             <Col lg="12" className="p-4">
                 <p className="subtitle text-primary">MoWo Space</p>
                 <h1 className="h2 mb-5">
-                    Buchung erfolgreich
+                    Buchung war erfolgreich
                 </h1>
                 <div className="text-block">
                     <p className="text-muted">Thank you for your booking, Ondrej.</p>
@@ -33,7 +33,7 @@ function CheckoutSuccess() {
                     <p className="mb-5 text-center">
                         <img
                             src="/assets/img/illustration/undraw_celebration_0jvk.svg"
-                            width={400}
+                            width={200}
                             height={279}
                             // layout="intrinsic"
                             alt=""
