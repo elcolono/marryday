@@ -97,12 +97,6 @@ export default function CheckoutPage({ locationSlug }) {
         setActiveStep(activeStep - 1);
     }
 
-    const progressWidth = {
-        0: 33.33,
-        1: 66.66,
-        2: 100,
-    }
-
     return (
         <React.Fragment>
             <ProgressBar progress={(100 / steps.length) * (activeStep + 1)} />
