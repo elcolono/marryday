@@ -1,7 +1,9 @@
 from django.urls import path
-from cowork.api.views import RentObjectListView, LocationListView, LocationRetrieveView, BookingCreateView, CheckInListView, CityListView
+from cowork.api.views import RentObjectListView, LocationListView, LocationRetrieveView, BookingCreateView, CheckInListView, CityListView, send_test_mail
 
 urlpatterns = [
+    # Cites
+    path("mail/", send_test_mail, name="test-mail"),
     # Cites
     path("cities/", CityListView.as_view(), name="city-list"),
     # Bookings

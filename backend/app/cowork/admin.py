@@ -17,10 +17,12 @@ class LocationImageAdmin(admin.ModelAdmin):
 class RentObjectInline(admin.TabularInline):
     model = RentObject
 
+
 class CityAdmin(admin.ModelAdmin):
     search_fields = ('title', 'postcode')
     list_display = ('title', 'postcode')
     list_filter = ('title', 'postcode')
+
 
 class LocationAdmin(admin.ModelAdmin):
     search_fields = ('title', 'address')
@@ -36,9 +38,10 @@ class RentObjectAdmin(admin.ModelAdmin):
 
 
 class BookingAdmin(admin.ModelAdmin):
-    search_fields = ('rent_object', 'start', 'end')
-    list_display = ('rent_object', 'start', 'end')
-    list_filter = search_fields = ('rent_object', 'start', 'end')
+    search_fields = ('rent_object', 'start', 'end', 'payment_intent_id')
+    list_display = ('rent_object', 'start', 'end', 'payment_intent_id')
+    list_filter = search_fields = (
+        'rent_object', 'start', 'end', 'payment_intent_id')
 
 
 admin.site.register(LocationImage, LocationImageAdmin)
