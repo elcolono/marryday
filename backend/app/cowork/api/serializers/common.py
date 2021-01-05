@@ -34,6 +34,8 @@ class LocationSerializer(serializers.ModelSerializer):
 
 # Bookings
 class BookingSerializer(serializers.ModelSerializer):
+    rent_object = serializers.StringRelatedField()
+
     class Meta:
         model = Booking
         fields = ('user', 'rent_object', 'start', 'end', 'payment_intent_id')

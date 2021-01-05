@@ -71,6 +71,7 @@ class RentObject(models.Model):
 
 
 class Booking(models.Model):
+    uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.ForeignKey(
         'accounts.User', related_name="bookings", on_delete=models.PROTECT, null=True)
     rent_object = models.ForeignKey(

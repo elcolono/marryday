@@ -54,6 +54,20 @@ class CityListView(generics.ListAPIView):
 
 
 # Booking
+class BookingRetrieveView(generics.RetrieveAPIView):
+    queryset = Booking.objects.all()
+    serializer_class = BookingSerializer
+    lookup_field = 'uuid'
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        payment_intent_id = instance.payment_intent_id
+        paymnet_intent = stripe.PaymentIntent.retrieve(payment_intent_id,)
+
+        serializer = self.get_serializer(instance)
+        return Response(data={'booking': serializer.data, 'payment_intent': paymnet_intent})
+
+
 class BookingCreateView(generics.CreateAPIView):
     serializer_class = BookingSerializer
     # permission_classes = [permissions.IsAuthenticated]

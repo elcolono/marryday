@@ -1,5 +1,5 @@
 from django.urls import path
-from cowork.api.views import RentObjectListView, LocationListView, LocationRetrieveView, BookingCreateView, CheckInListView, CityListView, send_test_mail
+from cowork.api.views import RentObjectListView, LocationListView, LocationRetrieveView, BookingCreateView, BookingRetrieveView, CheckInListView, CityListView, send_test_mail
 
 urlpatterns = [
     # Cites
@@ -8,6 +8,7 @@ urlpatterns = [
     path("cities/", CityListView.as_view(), name="city-list"),
     # Bookings
     path("bookings/", BookingCreateView.as_view(), name="booking-create"),
+    path("booking/<uuid>", BookingRetrieveView.as_view(), name="booking-detail"),
     # RentObjects
     path("rentobjects/", RentObjectListView.as_view(), name="rentobject-list"),
     # Locations
