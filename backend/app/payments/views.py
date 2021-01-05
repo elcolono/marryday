@@ -29,6 +29,17 @@ def confirm_payment_intent(request):
 
 
 @api_view(['POST'])
+def retrieve_payment_intent(request):
+    try:
+        data = request.data
+        payment_intent_id = data['payment_intent_id']
+        paymnet_intent = stripe.PaymentIntent.retrieve(payment_intent_id,)
+    except Exception as e:
+        return Response({'error': str(e)})
+    return Response(status=status.HTTP_200_OK, data={"message": "Success", "data": paymnet_intent})
+
+
+@api_view(['POST'])
 def save_stripe_info(request):
     data = request.data
     email = data['email']
