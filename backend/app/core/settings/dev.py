@@ -30,8 +30,6 @@ DATABASES = {
     }
 }
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
 # S3 Bucket Connection
 AWS_ACCESS_KEY_ID = 'AKIA4NGTH73S3GKH6Y4R'
 AWS_SECRET_ACCESS_KEY = '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'

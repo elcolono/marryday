@@ -236,7 +236,16 @@ ACCOUNT_EMAIL_CONFIRMATION_ANONYMOUS_REDIRECT_URL = '/?verification=1'
 ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = '/?verification=1'
 
 SITE_ID = 1
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+
+# EMAIL SETTINGS
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'andreas.siedler@gmail.com'
+# EMAIL_HOST_PASSWORD = '!Andi_89'
+EMAIL_HOST_PASSWORD = 'vvpkjhotdfnhibeg'
 
 # instruct rest_auth to use custom UserSerializer
 REST_AUTH_SERIALIZERS = {
