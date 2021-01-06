@@ -1,9 +1,10 @@
+from django.conf import settings
 import stripe
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-stripe.api_key = 'sk_test_51I47k4IpxsSLqlNauw6wmmjRKovYXwaHQqmmb4QXs6kIoXsDX3SPJId1Lrhafy2kU3oBmSKtMWAJ637MoZ5KLmIE00SvOF10NX'
+stripe.api_key = settings.STRIPE_SECRET_KEY
 
 
 @api_view(['POST'])
@@ -33,10 +34,21 @@ def retrieve_payment_intent(request):
     try:
         data = request.data
         payment_intent_id = data['payment_intent_id']
-        paymnet_intent = stripe.PaymentIntent.retrieve(payment_intent_id,)
+        paymnet_intent = stripe.PaymentIntent.retrieve(payment_intent_id)
     except Exception as e:
         return Response({'error': str(e)})
     return Response(status=status.HTTP_200_OK, data={"message": "Success", "data": paymnet_intent})
+
+
+@api_view(['POST'])
+def retrieve_invoice(request):
+    try:
+        data = request.data
+        invoice_id = data['invoice_id']
+        invoice = stripe.Invoice.retrieve(invoice_id)
+    except Exception as e:
+        return Response({'error': str(e)})
+    return Response(status=status.HTTP_200_OK, data={"message": "Success", "data": invoice})
 
 
 @api_view(['POST'])

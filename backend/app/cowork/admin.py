@@ -29,6 +29,16 @@ class LocationAdmin(admin.ModelAdmin):
     list_display = ('title', 'address', 'lat', 'lng',)
     list_filter = ('title', 'address')
     inlines = [RentObjectInline, LocationImageInline]
+    fieldsets = fieldsets = (
+        ('General', {
+            # 'classes': ('wide', 'extrapretty', 'collapse',),
+            'fields': ('is_active', 'title', 'address', 'city', 'lat', 'lng', 'description', 'slug',)
+        }),
+        # ('Advanced options', {
+        #     'classes': ('collapse',),
+        #     'fields': ('registration_required', 'template_name'),
+        # }),
+    )
 
 
 class RentObjectAdmin(admin.ModelAdmin):
@@ -42,6 +52,7 @@ class BookingAdmin(admin.ModelAdmin):
     list_display = ('rent_object', 'start', 'end', 'payment_intent_id')
     list_filter = search_fields = (
         'rent_object', 'start', 'end', 'payment_intent_id')
+    readonly_fields = ('payment_intent_id',)
 
 
 admin.site.register(LocationImage, LocationImageAdmin)

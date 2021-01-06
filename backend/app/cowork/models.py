@@ -34,6 +34,9 @@ class Location(models.Model):
     lng = models.DecimalField(decimal_places=4, max_digits=10, null=True)
     slug = models.CharField(max_length=150, blank=True, null=True)
     description = HTMLField(null=True, blank=True)
+    # phone_price = models.DecimalField(decimal_places=2, blank=True, null=True)
+    # desktop_price = models.DecimalField(decimal_places=2, blank=True, null=True)
+    # meeting_price = models.DecimalField(decimal_places=2, blank=True, null=True)
 
     def clean(self):
         if(self.is_active is True and self.images.count() < 3):
@@ -67,13 +70,14 @@ class RentObject(models.Model):
         Location, related_name="rent_objects", on_delete=models.PROTECT)
 
     def __str__(self):
-        return self.title
+        return f"{self.title} ({self.location})"
 
 
 class Booking(models.Model):
-    uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    uuid = models.UUIDField(
+        primary_key=True, default=uuid.uuid4, editable=False)
     user = models.ForeignKey(
-        'accounts.User', related_name="bookings", on_delete=models.PROTECT, null=True)
+        'accounts.User', related_name="bookings", on_delete=models.PROTECT, null=True, blank=True)
     rent_object = models.ForeignKey(
         RentObject, related_name="bookings", on_delete=models.PROTECT)
     start = models.DateTimeField()

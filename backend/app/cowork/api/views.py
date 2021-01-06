@@ -6,13 +6,14 @@ from rest_framework.response import Response
 
 from ..models import RentObject, Location, Booking, City
 from .serializers.common import (
-    RentObjectSerializer, BookingSerializer, LocationSerializer, CitySerializer)
+    RentObjectSerializer, BookingCreateSerializer, BookingRetrieveSerializer, LocationSerializer, CitySerializer)
 from dateutil.parser import parse
 from django.db.models import Prefetch
 from datetime import timedelta
 
 from django.db.models import Q
 from django.core.mail import EmailMultiAlternatives
+from django.template.loader import render_to_string
 
 
 from django.http import HttpResponse, HttpResponseNotFound, JsonResponse
@@ -37,7 +38,8 @@ def send_test_mail(request):
         subject, from_email, to = 'hello', 'from@example.com', [
             'andreas.siedler@gmail.com']
         text_content = 'This is an important message.'
-        html_content = '<p>This is an <strong>important</strong> message.</p>'
+        html_content = render_to_string(
+            'booking-success.html', {'invoice_link': f'{settings.CLIENT_DOMAIN}invoices/2f23c7f8-e68c-4c5d-bc1e-da0e0ff0bcfd'})
         msg = EmailMultiAlternatives(
             subject, text_content, from_email, to)
         msg.attach_alternative(html_content, "text/html")
@@ -56,7 +58,7 @@ class CityListView(generics.ListAPIView):
 # Booking
 class BookingRetrieveView(generics.RetrieveAPIView):
     queryset = Booking.objects.all()
-    serializer_class = BookingSerializer
+    serializer_class = BookingRetrieveSerializer
     lookup_field = 'uuid'
 
     def retrieve(self, request, *args, **kwargs):
@@ -69,7 +71,7 @@ class BookingRetrieveView(generics.RetrieveAPIView):
 
 
 class BookingCreateView(generics.CreateAPIView):
-    serializer_class = BookingSerializer
+    # serializer_class = BookingCreateSerializer
     # permission_classes = [permissions.IsAuthenticated]
 
     def create(self, request):
@@ -151,11 +153,22 @@ class BookingCreateView(generics.CreateAPIView):
             # booking.delete()
             return Response({'error': str(e)})
 
+        ######################## Validate and Save Booking ########################
+        # Run serializer
+        serializer = BookingCreateSerializer(data=booking_data)
+
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        # Save Booking
+        booking = serializer.save()
+
         ######################## Sending Email ########################
         try:
             subject, from_email, to = 'hello', 'andreas@mowo.space', email
             text_content = 'This is an important message.'
-            html_content = '<p>This is an <strong>important</strong> message.</p>'
+            html_content = render_to_string(
+                'booking-success.html', {'invoice_link': f'{settings.CLIENT_DOMAIN}invoices/{booking.uuid}'})
             msg = EmailMultiAlternatives(
                 subject, text_content, from_email, [to])
             msg.attach_alternative(html_content, "text/html")
@@ -164,16 +177,7 @@ class BookingCreateView(generics.CreateAPIView):
             # booking.delete()
             return Response({'error': str(e)})
 
-        ######################## Validate and Save Booking ########################
-        # Run serializer
-        serializer = BookingSerializer(data=booking_data)
-
-        if not serializer.is_valid():
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-        # Save Booking
-        booking = serializer.save()
-
+        ######################## Return Success ########################
         return Response(status=status.HTTP_200_OK, data={'message': 'Success', 'data': {'customer_id': customer.id,
                                                                                         'extra_msg': extra_msg}})
 
@@ -255,7 +259,7 @@ class CheckInListView(generics.ListCreateAPIView):
     # queryset = RentObject.objects.all()
     # serializer_class = RentObjectSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-    serializer_class = BookingSerializer
+    serializer_class = BookingRetrieveSerializer
 
     def get_queryset(self):
         """

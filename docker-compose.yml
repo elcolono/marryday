@@ -22,6 +22,7 @@ services:
       AWS_SECRET_ACCESS_KEY: "${AWS_SECRET_ACCESS_KEY}"
       AWS_STORAGE_BUCKET_NAME: "mowo-local"
       STRIPE_SECRET_KEY: "${STRIPE_SECRET_KEY}"
+      CLIENT_DOMAIN: "http://localhost:3001/"
 
     volumes:
       - /statics/backend/static_files:/app/static

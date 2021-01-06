@@ -114,13 +114,14 @@ export default function CheckoutPage({ locationSlug }) {
                                     {_renderStepContent(activeStep)}
 
                                     <div className={classes.buttons}>
-                                        {activeStep !== 0 && (
+                                        {activeStep !== 0 && !isSubmitting && (
                                             <Button color="link" className="text-muted" onClick={_handleBack}>
                                                 Zurück
                                             </Button>
                                         )}
                                         <div>
                                             <Button
+                                                id="submit-button"
                                                 disabled={isSubmitting}
                                                 type="submit"
                                                 // variant="contained"

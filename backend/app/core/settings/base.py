@@ -276,3 +276,7 @@ AWS_QUERYSTRING_AUTH = False
 
 # Stripe payment
 STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY')
+
+
+# Client Domain
+CLIENT_DOMAIN = os.environ.get('CLIENT_DOMAIN')

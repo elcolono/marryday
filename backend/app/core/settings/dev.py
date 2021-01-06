@@ -38,6 +38,8 @@ AWS_STORAGE_BUCKET_NAME = 'mowo-location-images'
 # Stripe payment
 STRIPE_SECRET_KEY = 'sk_test_51I47k4IpxsSLqlNauw6wmmjRKovYXwaHQqmmb4QXs6kIoXsDX3SPJId1Lrhafy2kU3oBmSKtMWAJ637MoZ5KLmIE00SvOF10NX'
 
+# Client Domain
+CLIENT_DOMAIN = 'http://localhost:3001/'
 
 try:
     from .local import *
