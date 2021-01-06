@@ -15,7 +15,7 @@ const {
 } = checkoutFormModel;
 
 export default {
-  [objectType.name]: 'phone',
+  [objectType.name]: 'desktop',
   [selectedDate.name]: new Date(),
   
   [rentObjects.name]: [],
