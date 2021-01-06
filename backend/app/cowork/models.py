@@ -34,11 +34,27 @@ class Location(models.Model):
     lng = models.DecimalField(decimal_places=4, max_digits=10, null=True)
     slug = models.CharField(max_length=150, blank=True, null=True)
     description = HTMLField(null=True, blank=True)
-    # phone_price = models.DecimalField(decimal_places=2, blank=True, null=True)
-    # desktop_price = models.DecimalField(decimal_places=2, blank=True, null=True)
-    # meeting_price = models.DecimalField(decimal_places=2, blank=True, null=True)
+    phone_hour_price = models.DecimalField(
+        decimal_places=2, blank=True, null=True, max_digits=10)
+    desktop_hour_price = models.DecimalField(
+        decimal_places=2, blank=True, null=True, max_digits=10)
+    meeting_hour_price = models.DecimalField(
+        decimal_places=2, blank=True, null=True, max_digits=10)
 
     def clean(self):
+        rent_objects = self.rent_objects.all()
+        if any(obj.type == 'phone' for obj in rent_objects) and not self.phone_hour_price:
+            raise ValidationError(
+                'You have created an "Phone" rent object so please insert a phone price.')
+
+        if any(obj.type == 'desktop' for obj in rent_objects) and not self.desktop_hour_price:
+            raise ValidationError(
+                'You have created an "Desktop" rent object so please insert a desktop price.')
+
+        if any(obj.type == 'meeting' for obj in rent_objects) and not self.meeting_hour_price:
+            raise ValidationError(
+                'You have created an "Meeting" rent object so please insert a meeting price.')
+
         if(self.is_active is True and self.images.count() < 3):
             print(self.images.count())
             raise ValidationError(
@@ -68,6 +84,11 @@ class RentObject(models.Model):
     type = models.CharField(max_length=150, choices=RENT_OBJECT_TYPES)
     location = models.ForeignKey(
         Location, related_name="rent_objects", on_delete=models.PROTECT)
+
+    # def clean(self):
+    #     location = self.location_set.get()
+    #     raise ValidationError(
+    #         'Rent Object Error.')
 
     def __str__(self):
         return f"{self.title} ({self.location})"
