@@ -146,7 +146,7 @@ const LocationDetail = (props) => {
 
                                 {isDesktop &&
                                     <Elements stripe={stripePromise}>
-                                        <BookingWithNoSSR locationSlug={location.slug} />
+                                        <BookingWithNoSSR locationSlug={location.slug} prices={location.prices} />
                                     </Elements>
                                 }
 
@@ -173,7 +173,7 @@ const LocationDetail = (props) => {
                 </Container>
                 {!isDesktop && <BottomNav>
                     <Elements stripe={stripePromise}>
-                        <BookingWithNoSSR locationSlug={location.slug} />
+                        <BookingWithNoSSR locationSlug={location.slug} prices={location.prices} />
                     </Elements>
                 </BottomNav>}
             </section>
