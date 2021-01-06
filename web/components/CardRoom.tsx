@@ -5,7 +5,8 @@ import {
   Card,
   CardBody,
   CardTitle,
-  CardSubtitle
+  CardSubtitle,
+  CardText
 } from "reactstrap"
 
 import Icon from "./Icon"
@@ -38,24 +39,24 @@ const CardRoom = (props) => {
         <div className="w-100">
           <CardTitle tag="h6">
             <Link href={`/locations/${data.slug}`}>
-              <a className="text-decoration-none text-dark">{data.title}</a>
+              <a className="text-decoration-none text-dark">MoWo {data.title}</a>
             </Link>
           </CardTitle>
-          <CardSubtitle>
+          {/* <CardSubtitle>
             {data.address}
-          </CardSubtitle>
-          {/* <CardSubtitle className="d-flex mb-3">
+          </CardSubtitle> */}
+          <CardSubtitle className="d-flex mb-3">
             <p className="flex-grow-1 mb-0 text-muted text-sm">
-              {data.subtitle}
+              {data.address}
             </p>
-            <p className="flex-shrink-1 mb-0 card-stars text-xs text-right">
+            {/* <p className="flex-shrink-1 mb-0 card-stars text-xs text-right">
               <Stars stars={data.stars} />
-            </p>
+            </p> */}
           </CardSubtitle>
           <CardText className="text-muted">
-            <span className="h4 text-primary">${data.price}</span>
-            &nbsp;per night
-          </CardText> */}
+            <span className="h4 text-primary">€ {data.prices.desktop_hour && data.prices.desktop_hour.toFixed(2)}</span>
+            &nbsp;per hour
+          </CardText>
         </div>
       </CardBody>
     </Card>

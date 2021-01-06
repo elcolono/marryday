@@ -24,6 +24,7 @@ import Swiper from 'react-id-swiper';
 export default function BookingForm(props) {
 
     const {
+        prices,
         locationSlug,
         formField: {
             rentObjects,
@@ -96,9 +97,9 @@ export default function BookingForm(props) {
             <p className="text-muted">
                 <span className="text-primary h2">
                     € {' '}
-                    {values && values['objectType'] == "desktop" && 8.99}
-                    {values && values['objectType'] == "phone" && 6.99}
-                    {values && values['objectType'] == "meeting" && 7.99}
+                    {values && values['objectType'] == "desktop" && prices.desktop_hour && prices.desktop_hour.toFixed(2)}
+                    {values && values['objectType'] == "phone" && prices.phone_hour && prices.phone_hour.toFixed(2)}
+                    {values && values['objectType'] == "meeting" && prices.meeting_hour && prices.meeting_hour.toFixed(2)}
                 </span>{" "}
                     / Stunde
                 </p>

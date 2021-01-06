@@ -11,6 +11,7 @@ import {
 import format from 'date-fns/format';
 import differenceInMinutes from 'date-fns/differenceInMinutes';
 import { useFormikContext } from 'formik';
+import Decimal from 'decimal.js';
 
 
 export default function PaymentForm(props) {
@@ -26,10 +27,10 @@ export default function PaymentForm(props) {
 
   const totalMinutes = differenceInMinutes(values['timeInterval'][1], values['timeInterval'][0]);
   const hourPrice =
-    objectType == 'phone' ? prices.phone_hour :
-      objectType == 'desktop' ? prices.desktop_hour :
-        objectType == 'meeting' ? prices.meeting_hour : 0
-  const totalPrice = totalMinutes * (hourPrice / 60)
+    objectType == 'phone' ? prices.phone_hour && new Decimal(prices.phone_hour) :
+      objectType == 'desktop' ? prices.desktop_hour && new Decimal(prices.desktop_hour) :
+        objectType == 'meeting' ? prices.meeting_hour && new Decimal(prices.meeting_hour) : new Decimal(0)
+  const totalPrice = hourPrice && hourPrice.dividedBy(60).mul(totalMinutes);
 
 
   // Handle real-time validation errors from the card Element.
@@ -145,18 +146,18 @@ export default function PaymentForm(props) {
               <tbody>
                 <tr>
                   {/* <th className="font-weight-normal py-2">€ {(hourPrice / 60).toFixed(2)} x {totalMinutes} Minuten</th> */}
-                  <th className="font-weight-normal py-2">€ {(hourPrice * 0.8).toFixed(2)} x {totalMinutes / 60} Stunden</th>
-                  <td className="text-right py-2">€ {round(totalPrice * 0.8).toFixed(2)}</td>
+                  <th className="font-weight-normal py-2">€ {hourPrice && hourPrice.mul(0.8).toFixed(2).toString()} x {totalMinutes && totalMinutes / 60} Stunden</th>
+                  <td className="text-right py-2">€ {totalPrice && totalPrice.mul(0.8).toFixed(2).toString()}</td>
                 </tr>
                 <tr>
                   <th className="font-weight-normal pt-2 pb-3">MwSt.</th>
-                  <td className="text-right pt-2 pb-3">€ {round(totalPrice * 0.2).toFixed(2)}</td>
+                  <td className="text-right pt-2 pb-3">€ {totalPrice && totalPrice.mul(0.2).toFixed(2).toString()}</td>
                 </tr>
               </tbody>
               <tfoot>
                 <tr className="border-top">
                   <th className="pt-3">Total</th>
-                  <td className="font-weight-bold text-right pt-3">€ {round(totalPrice).toFixed(2)}</td>
+                  <td className="font-weight-bold text-right pt-3">€ {totalPrice && totalPrice.toFixed(2).toString()}</td>
                 </tr>
               </tfoot>
             </table>

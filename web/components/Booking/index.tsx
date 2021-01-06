@@ -28,7 +28,7 @@ const steps = ['Booking details', 'Payment details'];
 
 const { formId, formField } = bookingFormModel;
 
-export default function CheckoutPage({ locationSlug }) {
+export default function CheckoutPage({ locationSlug, prices }) {
     const classes = useStyles();
     const [activeStep, setActiveStep] = useState(0);
     const currentValidationSchema = validationSchema[activeStep];
@@ -40,9 +40,9 @@ export default function CheckoutPage({ locationSlug }) {
     function _renderStepContent(step) {
         switch (step) {
             case 0:
-                return <BookingForm formField={formField} locationSlug={locationSlug} />;
+                return <BookingForm formField={formField} locationSlug={locationSlug} prices={prices} />;
             case 1:
-                return <PaymentForm formField={formField} />;
+                return <PaymentForm formField={formField} prices={prices} />;
             // case 2:
             //     return <ReviewOrder />;
             default:
