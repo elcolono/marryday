@@ -31,11 +31,13 @@ class LocationAdmin(admin.ModelAdmin):
     inlines = [RentObjectInline, LocationImageInline]
     fieldsets = fieldsets = (
         ('General', {
-            # 'classes': ('wide', 'extrapretty', 'collapse',),
             'fields': ('is_active', 'title', 'address', 'city', 'lat', 'lng', 'description', 'slug',)
         }),
+        ('Pricing', {
+            'fields': ('phone_hour_price', 'desktop_hour_price', 'meeting_hour_price',)
+        }),
         # ('Advanced options', {
-        #     'classes': ('collapse',),
+            # 'classes': ('wide', 'extrapretty', 'collapse',),
         #     'fields': ('registration_required', 'template_name'),
         # }),
     )
