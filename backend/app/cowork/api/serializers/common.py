@@ -25,11 +25,20 @@ class LocationSerializer(serializers.ModelSerializer):
 
     images = LocationImageSerializer(many=True)
     city = CitySerializer()
+    prices = serializers.SerializerMethodField()
+
+    def get_prices(self, obj):
+        data = {
+            'phone_hour': obj.phone_hour_price,
+            'desktop_hour': obj.desktop_hour_price,
+            'meeting_hour': obj.meeting_hour_price,
+        }
+        return data
 
     class Meta:
         model = Location
         fields = ('slug', 'title', 'address', 'city',
-                  'lat', 'lng', 'images', 'description')
+                  'lat', 'lng', 'images', 'description', 'prices',)
 
 
 # Bookings
