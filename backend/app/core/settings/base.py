@@ -280,3 +280,11 @@ STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY')
 
 # Client Domain
 CLIENT_DOMAIN = os.environ.get('CLIENT_DOMAIN')
+
+# TinyMCE Config
+TINYMCE_DEFAULT_CONFIG = {
+    # 'theme': "advanced",
+    # 'relative_urls': False, # default value
+    # 'width': '100%',
+    'height': 300
+}
