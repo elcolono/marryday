@@ -15,16 +15,20 @@ import { useFormikContext } from 'formik';
 
 export default function PaymentForm(props) {
 
-  const [open, setOpen] = useState(false);
   const [error, setError] = useState(null);
 
   const {
+    prices,
     formField: { email }
   } = props;
   const { values, errors, setFieldValue, setFieldError } = useFormikContext()
+  const objectType = values['objectType'];
 
   const totalMinutes = differenceInMinutes(values['timeInterval'][1], values['timeInterval'][0]);
-  const hourPrice = 6.95;
+  const hourPrice =
+    objectType == 'phone' ? prices.phone_hour :
+      objectType == 'desktop' ? prices.desktop_hour :
+        objectType == 'meeting' ? prices.meeting_hour : 0
   const totalPrice = totalMinutes * (hourPrice / 60)
 
 
@@ -127,9 +131,9 @@ export default function PaymentForm(props) {
               }
               <li className="mb-0">
                 <i className="far fa-calendar fa-fw text-muted mr-2" />
-                {values['timeInterval'][0] && format(values['timeInterval'][0], 'MMM dd, yyyy HH:mm')}
+                {values['timeInterval'][0] && format(values['timeInterval'][0], 'MMM dd, HH:mm')}
                 <i className="fas fa-arrow-right fa-fw text-muted mx-3" />
-                {values['timeInterval'][1] && format(values['timeInterval'][1], 'MMM dd, yyyy HH:mm')}
+                {values['timeInterval'][1] && format(values['timeInterval'][1], 'MMM dd, HH:mm')}
               </li>
             </ul>
           </div>
@@ -140,18 +144,19 @@ export default function PaymentForm(props) {
             <table className="w-100">
               <tbody>
                 <tr>
-                  <th className="font-weight-normal py-2">€ {(hourPrice / 60).toFixed(2)} x {totalMinutes} Minuten</th>
-                  <td className="text-right py-2">€ {round(totalPrice)}</td>
+                  {/* <th className="font-weight-normal py-2">€ {(hourPrice / 60).toFixed(2)} x {totalMinutes} Minuten</th> */}
+                  <th className="font-weight-normal py-2">€ {(hourPrice * 0.8).toFixed(2)} x {totalMinutes / 60} Stunden</th>
+                  <td className="text-right py-2">€ {round(totalPrice * 0.8).toFixed(2)}</td>
                 </tr>
                 <tr>
                   <th className="font-weight-normal pt-2 pb-3">MwSt.</th>
-                  <td className="text-right pt-2 pb-3">€ {round(totalPrice * 0.2)}</td>
+                  <td className="text-right pt-2 pb-3">€ {round(totalPrice * 0.2).toFixed(2)}</td>
                 </tr>
               </tbody>
               <tfoot>
                 <tr className="border-top">
                   <th className="pt-3">Total</th>
-                  <td className="font-weight-bold text-right pt-3">€ {round(totalPrice)}</td>
+                  <td className="font-weight-bold text-right pt-3">€ {round(totalPrice).toFixed(2)}</td>
                 </tr>
               </tfoot>
             </table>
