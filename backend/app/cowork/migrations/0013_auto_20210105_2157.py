@@ -31,7 +31,7 @@ class Migration(migrations.Migration):
             model_name='booking',
             name='uuid',
             field=models.UUIDField(default=uuid.uuid4, unique=True, editable=False, primary_key=True, serialize=False)
-        )
+        ),
         migrations.AlterField(
             model_name='booking',
             name='payment_intent_id',
