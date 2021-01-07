@@ -96,7 +96,7 @@ class RentObject(models.Model):
 
 class Booking(models.Model):
     uuid = models.UUIDField(
-        primary_key=True, default=uuid.uuid4, editable=False)
+        primary_key=True, default=uuid.uuid4, unique=True, editable=False)
     user = models.ForeignKey(
         'accounts.User', related_name="bookings", on_delete=models.PROTECT, null=True, blank=True)
     rent_object = models.ForeignKey(
@@ -104,6 +104,11 @@ class Booking(models.Model):
     start = models.DateTimeField()
     end = models.DateTimeField()
     payment_intent_id = models.CharField(max_length=50, blank=True)
+
+    def save(self, *args, **kwargs):
+        if not self.uuid:
+            self.uuid = uuid.uuid4()
+        super(Model, self).save(*args, **kwargs)
 
 
 class Image(models.Model):
