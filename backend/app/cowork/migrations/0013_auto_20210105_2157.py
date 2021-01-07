@@ -18,16 +18,16 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
+        migrations.AddField(
+            model_name='booking',
+            name='uuid',
+            field=models.UUIDField(blank=True, null=True),
+        ),
+        migrations.RunPython(create_uuid),
         migrations.RemoveField(
             model_name='booking',
             name='id',
         ),
-        migrations.AddField(
-            model_name='booking',
-            name='uuid',
-            field=models.UUIDField(blank=True, null=True, primary_key=True),
-        ),
-        migrations.RunPython(create_uuid),
         migrations.AlterField(
             model_name='booking',
             name='uuid',
