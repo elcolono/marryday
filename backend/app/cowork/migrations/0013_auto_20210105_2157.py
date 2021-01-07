@@ -18,7 +18,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='booking',
             name='uuid',
-            field=models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False),
+            field=models.UUIDField(default=uuid.uuid4, unique=True, editable=False, primary_key=True, serialize=False),
         ),
         migrations.AlterField(
             model_name='booking',
