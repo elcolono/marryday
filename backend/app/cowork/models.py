@@ -105,11 +105,6 @@ class Booking(models.Model):
     end = models.DateTimeField()
     payment_intent_id = models.CharField(max_length=50, blank=True)
 
-    def save(self, *args, **kwargs):
-        if not self.uuid:
-            self.uuid = uuid.uuid4()
-        super(Model, self).save(*args, **kwargs)
-
 
 class Image(models.Model):
     def update_filename(instance, filename):
