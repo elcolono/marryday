@@ -3,6 +3,7 @@
 from django.db import migrations, models
 import uuid
 
+
 def create_uuid(apps, schema_editor):
     Booking = apps.get_model('cowork', 'Booking')
     for book in Booking.objects.all():
@@ -24,13 +25,14 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='booking',
             name='uuid',
-            field=models.UUIDField(blank=True, null=True),
+            field=models.UUIDField(blank=True, null=True, primary_key=True),
         ),
         migrations.RunPython(create_uuid),
         migrations.AlterField(
             model_name='booking',
             name='uuid',
-            field=models.UUIDField(default=uuid.uuid4, unique=True, editable=False, primary_key=True, serialize=False)
+            field=models.UUIDField(
+                default=uuid.uuid4, unique=True, editable=False, primary_key=True, serialize=False)
         ),
         migrations.AlterField(
             model_name='booking',
