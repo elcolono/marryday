@@ -66,7 +66,6 @@ INSTALLED_APPS = [
     # Third-Party Apps
     'modelcluster',
     'taggit',
-    'compressor',
     'wagtailmenus',
     'wagtail.contrib.modeladmin',
     'wagtail.contrib.settings',

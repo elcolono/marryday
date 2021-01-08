@@ -2,7 +2,6 @@ django==3.1.*
 wagtail==2.11.*
 wagtailmenus==3.0.*
 wagtail-metadata==3.3.*
-django_compressor==2.4.*
 psycopg2-binary==2.8.*
 python-dotenv==0.15.*
 django-cors-headers==3.5.*

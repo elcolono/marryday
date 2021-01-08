@@ -62,20 +62,20 @@ LOGGING = {
 }
 
 # Compressor SETTINGS
-STATICFILES_FINDERS += ['compressor.finders.CompressorFinder',]
+# STATICFILES_FINDERS += ['compressor.finders.CompressorFinder',]
 
-COMPRESS_ENABLED = True
-COMPRESS_OFFLINE = True
+# COMPRESS_ENABLED = True
+# COMPRESS_OFFLINE = True
 
-COMPRESS_URL = STATIC_URL
-COMPRESS_CSS_FILTERS = [
-    'compressor.filters.css_default.CssAbsoluteFilter',
-    'compressor.filters.cssmin.CSSMinFilter'
-]
-COMPRESS_JS_FILTERS = [
-    'compressor.filters.jsmin.JSMinFilter',
-]
-COMPRESS_STORAGE = 'compressor.storage.GzipCompressorFileStorage' 
+# COMPRESS_URL = STATIC_URL
+# COMPRESS_CSS_FILTERS = [
+#     'compressor.filters.css_default.CssAbsoluteFilter',
+#     'compressor.filters.cssmin.CSSMinFilter'
+# ]
+# COMPRESS_JS_FILTERS = [
+#     'compressor.filters.jsmin.JSMinFilter',
+# ]
+# COMPRESS_STORAGE = 'compressor.storage.GzipCompressorFileStorage' 
 
 
 try:
