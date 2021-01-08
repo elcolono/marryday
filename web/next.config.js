@@ -28,7 +28,7 @@ module.exports = withPlugins(
     {
         images: {
             deviceSizes: [320, 480, 640, 750, 828, 1080, 1200, 1920, 2048, 3840],
-            domains: ['mowo-location-images.s3.amazonaws.com']
+            domains: ['mowo-location-images.s3.amazonaws.com', 'mowo-testing.s3.amazonaws.com',]
             // loader: "imgix", // Uncomment this line for STATIC EXPORT
             // path: "", // Uncomment this line for STATIC EXPORT
         },
