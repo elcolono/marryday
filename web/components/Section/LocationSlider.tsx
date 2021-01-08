@@ -31,7 +31,7 @@ const LocationSlider = (props) => {
                 </div>
             </Container>
             <Container>
-                {/* {locations && <Swiper
+                {locations && <Swiper
                     className="swiper-container-mx-negative pt-3 pb-5"
                     perView={1}
                     spaceBetween={20}
@@ -42,7 +42,7 @@ const LocationSlider = (props) => {
                     data={locations}
                     cards
                     loop
-                />} */}
+                />}
                 <div className="text-center mt-5">
                     <Link href="/locations">
                         <a className="btn btn-outline-primary">Alle Standorte</a>
