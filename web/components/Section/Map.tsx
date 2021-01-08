@@ -1,6 +1,6 @@
 import React from "react"
 
-import { Container, Nav, NavItem, NavLink } from "reactstrap"
+import { Container, Nav, NavItem, NavLink, Row, Col } from "reactstrap"
 import Map from "../Map"
 import ApiService from "../../lib/api"
 
@@ -12,7 +12,7 @@ const MapSection = ({ data }) => {
     const [locations, setLocations] = React.useState(null)
     const [cities, setCities] = React.useState(null)
 
-    const [selectedCity, setSelectedCity] = React.useState(null)
+    const [selectedCity, setSelectedCity] = React.useState(2)
 
     React.useEffect(() => {
         ApiService.fetchLocations().then(response => {
@@ -41,18 +41,16 @@ const MapSection = ({ data }) => {
                 </div>
             </section>
 
-            <section className="py-5 bg-gray-100 shadow">
+            <section className="py-5 bg-gray-100">
                 <Container>
-                    {/* <h1>{data.title && data.title}</h1> */}
-                    <h1>{data.heading}</h1>
-                    <p className="lead mb-5">{data.description}</p>
                     {cities && (
                         <React.Fragment>
-                            <h5>Standorte</h5>
+                            {/* <h5>MoWo Standorte</h5> */}
                             <Nav className="nav-pills-custom">
                                 {cities.map((city, index) => (
                                     <NavItem key={city.title} >
                                         <NavLink
+                                            href="#"
                                             onClick={() => setSelectedCity(city.id)}
                                             className={city.id === selectedCity ? "active" : ""}
                                         >
@@ -63,6 +61,13 @@ const MapSection = ({ data }) => {
                             </Nav>
                         </React.Fragment>
                     )}
+                    <Row>
+                        <Col md="12">
+                            {data.heading && <h1 className="mt-4">{data.heading}</h1>}
+                            {data.description && <p className="lead mb-5">{data.description}</p>}
+                        </Col>
+                    </Row>
+
                 </Container>
             </section>
         </React.Fragment>

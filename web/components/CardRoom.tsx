@@ -9,6 +9,7 @@ import {
   CardText
 } from "reactstrap"
 
+import Image from "./CustomImage"
 import Icon from "./Icon"
 
 const CardRoom = (props) => {
@@ -16,12 +17,12 @@ const CardRoom = (props) => {
   return (
     <Card className="h-100 border-0 shadow">
       <div className="card-img-top overflow-hidden gradient-overlay">
-        <img
+        <Image
           src={data.images[0].image}
           width={1350}
           height={900}
           alt={data.title}
-          // layout="responsive"
+          layout="responsive"
           loading={props.eager ? "eager" : "lazy"}
           className="img-fluid"
           sizes="(max-width:576px) 100vw, (max-width:991px) 50vw, (max-width:1199px) 30vw, 250px"

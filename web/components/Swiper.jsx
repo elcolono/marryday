@@ -2,7 +2,6 @@ import React from "react"
 
 import CardRoom from "./CardRoom"
 import ReactIdSwiper from "react-id-swiper"
-import Image from "./CustomImage"
 
 const Swiper = (props) => {
   const breakpoints = []
@@ -38,7 +37,6 @@ const Swiper = (props) => {
   }
   const params = {
     containerClass: `swiper-container ${props.className}`,
-
     slidesPerView: props.perView,
     effect: props.effect,
     allowTouchMove: props.allowTouchMove === false ? false : true,
@@ -71,30 +69,15 @@ const Swiper = (props) => {
   }
   return props.data ? (
     <ReactIdSwiper {...params}>
-      {props.data.map((slide, index) =>
-        props.simple ? (
-          <div key={slide}>
-            <Image
-              src={`/content/img/photo/${slide}`}
-              layout="fill"
-              className="bg-image"
-              alt="Hero image"
-              loading="eager"
-            />
-          </div>
-        ) : (
-            <div key={index} className="h-auto px-2">
-              {props.cards && (
-                <div className="w-100 h-100 hover-animate">
-                  <CardRoom data={slide.properties} eager />
-                </div>
-              )}
+      {props.data.map((location, index) =>
+        <div key={index} className="h-auto px-2">
+            <div className="w-100 h-100 hover-animate">
+              <CardRoom data={location} eager />
             </div>
-          )
-      )}
+        </div>)}
     </ReactIdSwiper>
   ) : (
-      "loading"
+      <div>loading</div>
     )
 }
 

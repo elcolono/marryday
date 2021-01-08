@@ -210,7 +210,7 @@ const MapLeaflet = (props) => {
                         </h6>
                       )}
                       {data.address && (
-                        <span>{data.address}</span>
+                        <p className="text-muted mb-1">{data.address}</p>
                       )}
                       {/* <div className="text-xs">
                         <Stars stars={data.stars} />

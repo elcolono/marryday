@@ -10,15 +10,15 @@ This repository provides an application for deploying a Django backend served by
     * port: 8000
 
 
-### Development (For Development)
 
-* dev.mowo.space
-* set env variables in the container MANUALLY OR DELETE ENV FILE AFTER CONTAINER SPIN UP
-
+#### Testing
+* Spin up App
+    docker-compose -f docker-compose.yml -f docker-compose.testing.yml build
+    docker-compose -f docker-compose.yml -f docker-compose.testing.yml up
+    docker-compose -f docker-compose.yml -f docker-compose.testing.yml down
 
 
 ### Production (For hHetzner)
-
 * Create Postres DB
     * DB name
     * DB password
@@ -33,4 +33,9 @@ This repository provides an application for deploying a Django backend served by
 * "Cannot read property 'menu_items' of undefined"
     * Add main menu
     * Add flat menu
+
+* Spin up App
+    * docker-compose -f docker-compose.yml -f docker-compose.production.yml build
+    * docker-compose -f docker-compose.yml -f docker-compose.production.yml up
+    * docker-compose -f docker-compose.yml -f docker-compose.production.yml down
 

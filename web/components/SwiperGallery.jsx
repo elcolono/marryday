@@ -1,5 +1,6 @@
-import Image from "./CustomImage"
 import React from "react"
+
+import Image from "./CustomImage"
 
 import ReactIdSwiper from "react-id-swiper"
 import Lightbox from "react-image-lightbox"
@@ -73,11 +74,11 @@ const SwiperGallery = (props) => {
       <ReactIdSwiper {...params}>
         {data.map((item, index) => (
           <div key={index} className="img-gallery">
-            <img
+            <Image
               src={item.image}
               width={1350}
               height={900}
-              // layout="responsive"
+              layout="responsive"
               alt={item.alt}
               loading="eager"
               className="img-fluid img-gallery"

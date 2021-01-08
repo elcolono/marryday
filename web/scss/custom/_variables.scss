@@ -78,7 +78,7 @@ $colors: map-merge((
 @else if $templateColour == blue and not $primary {
   $primary:  #f48300;
   @if not $secondary {
-    $secondary: #e83e8c;
+    $secondary:#f48300;;
   }
 }
 @else if $templateColour == sea and not $primary {

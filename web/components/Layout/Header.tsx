@@ -198,6 +198,7 @@ const Header = (props) => {
                 >
                   <a
                     className="btn btn-primary"
+                    onClick={() => onLinkClick('locations')}
                   >
                     Location finden
                   </a>

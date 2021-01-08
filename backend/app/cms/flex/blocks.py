@@ -50,6 +50,28 @@ class APIPageChooserBlock(blocks.PageChooserBlock):
             }
 
 
+
+# Location Slider Block
+class LocationSliderBlock(blocks.StructBlock):
+    """ Service Section Block """
+    heading = blocks.CharBlock(
+        required=False,
+        max_length=100,
+        label="Heading",
+        default='Super Awesome Hero Heading',
+    )
+    subheading = blocks.CharBlock(
+        required=False,
+        max_length=100,
+        label="Subheading",
+        default='Super Awesome Subheading',
+    )
+
+    class Meta:
+        """ meta data """
+        label = 'Location Slider'
+
+
 # Heading Section
 class PageHeadingSectionBlock(blocks.StructBlock):
     """ Section Base Block - Ued by each section """
