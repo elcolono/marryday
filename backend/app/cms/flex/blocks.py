@@ -50,6 +50,26 @@ class APIPageChooserBlock(blocks.PageChooserBlock):
             }
 
 
+# Location Slider Block
+class CityGalleryBlock(blocks.StructBlock):
+    """ City Gallery Block"""
+    heading = blocks.CharBlock(
+        required=False,
+        max_length=100,
+        label="Heading",
+        default='Super Awesome Hero Heading',
+    )
+    description = blocks.TextBlock(
+        required=False,
+        max_length=5000,
+        label='Description',
+        default='The thing we do is better than any other similar thing and this hero panel will convince you of that, just by having a glorious background image.',
+    )
+
+    class Meta:
+        """ meta data """
+        label = 'City Gallery Block'
+
 
 # Location Slider Block
 class LocationSliderBlock(blocks.StructBlock):

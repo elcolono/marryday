@@ -1,6 +1,11 @@
 from django.contrib import admin
-from .models import Location, RentObject, Booking, LocationImage, City
+from .models import Location, RentObject, Booking, LocationImage, CityImage, City
 # Register your models here.
+
+
+class CityImageInline(admin.TabularInline):
+    model = CityImage
+    # min_num = 3
 
 
 class LocationImageInline(admin.TabularInline):
@@ -22,6 +27,7 @@ class CityAdmin(admin.ModelAdmin):
     search_fields = ('title', 'postcode')
     list_display = ('title', 'postcode')
     list_filter = ('title', 'postcode')
+    inlines = [CityImageInline]
 
 
 class LocationAdmin(admin.ModelAdmin):
@@ -37,7 +43,7 @@ class LocationAdmin(admin.ModelAdmin):
             'fields': ('phone_hour_price', 'desktop_hour_price', 'meeting_hour_price',)
         }),
         # ('Advanced options', {
-            # 'classes': ('wide', 'extrapretty', 'collapse',),
+        # 'classes': ('wide', 'extrapretty', 'collapse',),
         #     'fields': ('registration_required', 'template_name'),
         # }),
     )
@@ -57,7 +63,6 @@ class BookingAdmin(admin.ModelAdmin):
     readonly_fields = ('payment_intent_id',)
 
 
-admin.site.register(LocationImage, LocationImageAdmin)
 admin.site.register(Location, LocationAdmin)
 admin.site.register(RentObject, RentObjectAdmin)
 admin.site.register(Booking, BookingAdmin)

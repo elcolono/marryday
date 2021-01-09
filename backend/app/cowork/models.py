@@ -16,9 +16,14 @@ class City(models.Model):
     is_active = models.BooleanField(default=False)
     title = models.CharField(max_length=150, unique=True)
     postcode = models.CharField(max_length=50)
+    slug = models.CharField(max_length=150, blank=True, null=True)
 
     class Meta:
         verbose_name_plural = "Cities"
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.title)
+        super().save(*args, **kwargs)  # Call the "real" save() method.
 
     def __str__(self):
         return self.title
@@ -108,8 +113,7 @@ class Booking(models.Model):
 
 class Image(models.Model):
     def update_filename(instance, filename):
-        ext = filename.split('.')[-1]
-        return f"locations/{instance.location_id}/{instance.title}.{ext}"
+        pass
 
     uuid = models.UUIDField(
         primary_key=True, default=uuid.uuid4, editable=False,
@@ -117,12 +121,25 @@ class Image(models.Model):
     is_thumbnail = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     title = models.CharField(max_length=100)
-    image = models.FileField(upload_to=update_filename)
+    # image = models.FileField(upload_to=update_filename)
 
     class Meta:
         abstract = True
 
 
 class LocationImage(Image):
+    def update_filename(instance, filename):
+        ext = filename.split('.')[-1]
+        return f"locations/{instance.location_id}/{instance.title}.{ext}"
+    image = models.FileField(upload_to=update_filename)
     location = models.ForeignKey(
         Location, related_name="images", on_delete=models.PROTECT)
+
+
+class CityImage(Image):
+    def update_filename(instance, filename):
+        ext = filename.split('.')[-1]
+        return f"cities/{instance.city_id}/{instance.title}.{ext}"
+    image = models.FileField(upload_to=update_filename)
+    city = models.ForeignKey(
+        City, related_name="images", on_delete=models.PROTECT)

@@ -1,15 +1,13 @@
 from rest_framework import serializers
-from ...models import RentObject, Booking, Location, LocationImage, Image, City
+from ...models import RentObject, Booking, Location, LocationImage, CityImage, Image, City
 
-# Cities
-
-
-class CitySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = City
-        fields = '__all__'
 
 # Images
+class CityImageSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = CityImage
+        fields = '__all__'
 
 
 class LocationImageSerializer(serializers.ModelSerializer):
@@ -18,9 +16,17 @@ class LocationImageSerializer(serializers.ModelSerializer):
         model = LocationImage
         fields = '__all__'
 
+
+# Cities
+class CitySerializer(serializers.ModelSerializer):
+    images = CityImageSerializer(many=True)
+
+    class Meta:
+        model = City
+        fields = ('id', 'title', 'postcode', 'slug', 'images',)
+
+
 # Locations
-
-
 class LocationSerializer(serializers.ModelSerializer):
 
     images = LocationImageSerializer(many=True)
