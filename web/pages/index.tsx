@@ -12,6 +12,7 @@ import ComingSoonSection from '../components/Section/ComingSoon'
 import FAQSection from '../components/Section/Faq'
 import MapSection from '../components/Section/Map'
 import LocationSlider from '../components/Section/LocationSlider'
+import CityGallery from '../components/Section/CItyGallery'
 
 import { GetServerSideProps } from 'next'
 
@@ -26,10 +27,12 @@ export default function Index(pageProps) {
         <meta name="description" content="Listigo | Directory Bootstrap 4 Template" />
         <meta name="keywords" content="listing dashboard, directory panel, listing, responsive directory, directory template, themeforest, listing template, css3, html5" />
       </Head>
+      {/* <CityGallery /> */}
       {page.content.map((section, i) => {
         if (section.type == 'page_heading_section_block') return <HeadingSection key={i} title={page.title} data={section.value} />
         if (section.type == 'map_section_block') return <MapSection key={i} data={section.value} />
         if (section.type == 'location_slider_section_block') return <LocationSlider key={i} data={section.value} />
+        if (section.type == 'city_gallery_section_block') return <CityGallery key={i} data={section.value} />
         if (section.type == 'hero_section_block') return <HeroSection key={i} data={section.value} />
         if (section.type == 'content_section_block') return <ContentSection key={i} data={section.value} />
         if (section.type == 'counter_section_block') return <CounterSection key={i} data={section.value} />

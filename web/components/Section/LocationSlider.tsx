@@ -23,7 +23,7 @@ const LocationSlider = (props) => {
     }, [])
 
     return (
-        <section className={`py-6 ${props.greyBackground ? "bg-gray-100" : ""}`}>
+        <section className={`pt-6 ${props.greyBackground ? "bg-gray-100" : ""}`}>
             <Container>
                 <div className="text-center pb-lg-4">
                     {data.subheading && <p className="subtitle text-secondary">{data.subheading}</p>}
