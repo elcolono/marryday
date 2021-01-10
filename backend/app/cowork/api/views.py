@@ -15,8 +15,11 @@ from django.db.models import Q
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 
+from payments.models import Payment
+from payments.api.serializers.common import PaymentSerializer
 
 from django.http import HttpResponse, HttpResponseNotFound, JsonResponse
+from decimal import Decimal
 
 # All API VIEWS:
 # https://www.django-rest-framework.org/api-guide/generic-views/#retrieveapiview
@@ -85,6 +88,10 @@ class BookingCreateView(generics.CreateAPIView):
         end = booking_data['end']
         email = booking_data['email']
         payment_method_id = booking_data['payment_method_id']
+        check_price = booking_data['check_price']
+        check_price_cent = int(float(check_price) * 100)
+
+        # ToDo check if price is corrent
 
         # Check if payment data is complete
         if not rent_object:
@@ -102,6 +109,9 @@ class BookingCreateView(generics.CreateAPIView):
         if not payment_method_id:
             return Response("Payment card is required", status=status.HTTP_400_BAD_REQUEST)
 
+        if not check_price_cent:
+            return Response("Check price cent card is required", status=status.HTTP_400_BAD_REQUEST)
+
         ######################## Overlapping Bookings ########################
         rent_object_bookings = Booking.objects.filter(
             rent_object=rent_object)
@@ -111,6 +121,16 @@ class BookingCreateView(generics.CreateAPIView):
 
         if overlapping_bookings:
             return Response("Overlapping booking detected.", status=status.HTTP_400_BAD_REQUEST)
+
+        ######################## Validate and Save Booking ########################
+        # Run serializer
+        serializer = BookingCreateSerializer(data=booking_data)
+
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        # Save Booking
+        booking = serializer.save()
 
         ######################## Stripe Payment ########################
         extra_msg = ''
@@ -126,42 +146,40 @@ class BookingCreateView(generics.CreateAPIView):
             # [payment_intent_data] - capture the payment later
             # [customer_email] - prefill the email input in the form
             # For full details see https://stripe.com/docs/api/checkout/sessions/create
-            customer_data = stripe.Customer.list(email=email).data
+            # customer_data = stripe.Customer.list(email=email).data
 
-            if len(customer_data) == 0:
-                # creating customer
-                customer = stripe.Customer.create(
-                    email=email,
-                    payment_method=payment_method_id,
-                    invoice_settings={
-                        'default_payment_method': payment_method_id
-                    }
-                )
-            else:
-                customer = customer_data[0]
-                extra_msg = "Customer already existed."
+            # if len(customer_data) == 0:
+            #     # creating customer
+            #     customer = stripe.Customer.create(
+            #         email=email,
+            #         payment_method=payment_method_id,
+            #         invoice_settings={
+            #             'default_payment_method': payment_method_id
+            #         }
+            #     )
+            # else:
+            #     customer = customer_data[0]
+            #     extra_msg = "Customer already existed."
 
             # creating paymentIntent
 
-            payment_intent = stripe.PaymentIntent.create(customer=customer,
-                                                         payment_method=payment_method_id,
-                                                         currency='pln', amount=1500,
+            payment_intent = stripe.PaymentIntent.create(payment_method=payment_method_id,
+                                                         currency='eur', amount=check_price_cent,
                                                          confirm=True)
-            booking_data['payment_intent_id'] = payment_intent.id
+
+            ######################## Create Payment ########################
+            payment = Payment(booking=booking, payment_intent_id=payment_intent.id)
+            if not payment:
+                return Response("Could not create payment.", status=status.HTTP_400_BAD_REQUEST)
+            payment.clean()
+            payment.save()
+            # booking_data['payment_intent_id'] = payment_intent.id
 
         except Exception as e:
-            # booking.delete()
-            return Response({'error': str(e)})
-
-        ######################## Validate and Save Booking ########################
-        # Run serializer
-        serializer = BookingCreateSerializer(data=booking_data)
-
-        if not serializer.is_valid():
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-        # Save Booking
-        booking = serializer.save()
+            payment.delete()
+            booking.delete()
+            print(str(e))
+            return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
 
         ######################## Sending Email ########################
         try:
@@ -174,12 +192,14 @@ class BookingCreateView(generics.CreateAPIView):
             msg.attach_alternative(html_content, "text/html")
             msg.send()
         except Exception as e:
-            # booking.delete()
+            booking.delete()
             return Response({'error': str(e)})
 
         ######################## Return Success ########################
-        return Response(status=status.HTTP_200_OK, data={'message': 'Success', 'data': {'customer_id': customer.id,
-                                                                                        'extra_msg': extra_msg}})
+
+        payment_serializer = PaymentSerializer(payment)
+
+        return Response(data=payment_serializer.data, status=status.HTTP_201_CREATED)
 
 
 # Locations

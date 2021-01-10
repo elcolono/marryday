@@ -108,7 +108,7 @@ class Booking(models.Model):
         RentObject, related_name="bookings", on_delete=models.PROTECT)
     start = models.DateTimeField()
     end = models.DateTimeField()
-    payment_intent_id = models.CharField(max_length=50, blank=True)
+    # payment_intent_id = models.CharField(max_length=50, blank=True)
 
 
 class Image(models.Model):

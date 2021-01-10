@@ -54,14 +54,14 @@ class BookingRetrieveSerializer(serializers.ModelSerializer):
     class Meta:
         model = Booking
         fields = ('user', 'rent_object',
-                  'start', 'end', 'payment_intent_id')
+                  'start', 'end',)
 
 
 class BookingCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Booking
-        fields = ('user', 'rent_object',
-                  'start', 'end', 'payment_intent_id')
+        fields = ('uuid', 'user', 'rent_object',
+                  'start', 'end',)
 
 
 # RentObjects

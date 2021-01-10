@@ -56,11 +56,10 @@ class RentObjectAdmin(admin.ModelAdmin):
 
 
 class BookingAdmin(admin.ModelAdmin):
-    search_fields = ('rent_object', 'start', 'end', 'payment_intent_id')
-    list_display = ('rent_object', 'start', 'end', 'payment_intent_id')
+    search_fields = ('rent_object', 'start', 'end',)
+    list_display = ('rent_object', 'start', 'end',)
     list_filter = search_fields = (
-        'rent_object', 'start', 'end', 'payment_intent_id')
-    readonly_fields = ('payment_intent_id',)
+        'rent_object', 'start', 'end',)
 
 
 admin.site.register(Location, LocationAdmin)
