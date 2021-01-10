@@ -90,6 +90,10 @@ export default function BookingForm(props) {
         }
     ]
 
+    const params = {
+        slidesPerView: 5,
+    }
+
     return (
 
         <section id="intro_section">
@@ -130,9 +134,7 @@ export default function BookingForm(props) {
                 />
             </div>
             <Nav className="nav-pills-custom-2">
-                <Swiper
-                    slidesPerView={5}
-                >
+                <Swiper {...params}>
                     {week && week.map((date, index) => (
                         <NavItem className="text-center" key={index} >
                             <NavLink
