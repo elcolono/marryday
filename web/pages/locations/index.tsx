@@ -67,7 +67,7 @@ const Category2Rooms = (props) => {
               </Row>
             </Form>
             <hr className="my-4" /> */}
-            <ResultsTopBar sortBy={data.sortby} />
+            {/* <ResultsTopBar sortBy={data.sortby} /> */}
             <Row>
               {locations &&
                 locations.map((location) => (
