@@ -32,16 +32,16 @@ const SwiperGallery = (props) => {
     lastSlide.previousSibling.addEventListener("click", () =>
       edgeSlidesClick(0)
     )
-    return () => {
-      firstSlide.removeEventListener("click", () => edgeSlidesClick())
-      firstSlide.previousSibling.removeEventListener("click", () =>
-        edgeSlidesClick()
-      )
-      lastSlide.addEventListener("click", () => edgeSlidesClick())
-      lastSlide.previousSibling.addEventListener("click", () =>
-        edgeSlidesClick()
-      )
-    }
+    // return () => {
+    //   firstSlide.removeEventListener("click", () => edgeSlidesClick())
+    //   firstSlide.previousSibling.removeEventListener("click", () =>
+    //     edgeSlidesClick()
+    //   )
+    //   lastSlide.addEventListener("click", () => edgeSlidesClick())
+    //   lastSlide.previousSibling.addEventListener("click", () =>
+    //     edgeSlidesClick()
+    //   )
+    // }
   }, [edgeSlidesClick])
 
   const params = {
