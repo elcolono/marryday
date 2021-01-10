@@ -4,7 +4,19 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
+from payments.models import Payment
+from .serializers.common import PaymentSerializer
+from rest_framework import generics, permissions, status
+
+
 stripe.api_key = settings.STRIPE_SECRET_KEY
+
+
+# Payment
+class PaymentRetrieveView(generics.RetrieveAPIView):
+    queryset = Payment.objects.all()
+    serializer_class = PaymentSerializer
+    lookup_field = 'uuid'
 
 
 @api_view(['POST'])

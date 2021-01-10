@@ -28,7 +28,7 @@ urlpatterns = [
         confirm_email, name='account_confirm_email'),
 
     url(r'^api/v1/cowork/', include("cowork.api.urls")),
-    url(r'^api/v1/payments/', include('payments.urls')),
+    url(r'^api/v1/payments/', include('payments.api.urls')),
 
     url(r'^documents/', include(wagtaildocs_urls)),
     url(r'^search/$', search_views.search, name='search'),
