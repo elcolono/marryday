@@ -168,7 +168,8 @@ class BookingCreateView(generics.CreateAPIView):
                                                          confirm=True)
 
             ######################## Create Payment ########################
-            payment = Payment(booking=booking, payment_intent_id=payment_intent.id)
+            payment = Payment(
+                booking=booking, payment_intent_id=payment_intent.id, amount=payment_intent.amount)
             if not payment:
                 return Response("Could not create payment.", status=status.HTTP_400_BAD_REQUEST)
             payment.clean()

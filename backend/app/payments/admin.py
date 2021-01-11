@@ -4,9 +4,14 @@ from .models import Payment
 
 
 class PaymentAdmin(admin.ModelAdmin):
-    search_fields = ('payment_intent_id', 'invoice_no')
-    list_display = ('payment_intent_id', 'invoice_no')
-    list_filter = ('payment_intent_id', 'invoice_no')
+    search_fields = ('invoice_no',
+                     'amount', 'invoice_date',)
+    list_display = ('invoice_no',
+                    'amount', 'invoice_date',)
+    list_filter = ('invoice_no',
+                   'amount', 'invoice_date',)
+    fields = ('booking', 'invoice_no',  'amount', 'invoice_date', 'created_at', 'updated_at',)
+    readonly_fields = ('invoice_date', 'created_at', 'updated_at',)
 
 
 admin.site.register(Payment, PaymentAdmin)

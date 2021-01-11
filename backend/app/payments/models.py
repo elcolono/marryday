@@ -5,7 +5,7 @@ import uuid
 
 
 def increment_invoice_number():
-    last_invoice = Payment.objects.all().order_by('uuid').last()
+    last_invoice = Payment.objects.all().order_by('created_at').last()
     if not last_invoice:
         return '21-0001'
     invoice_no = last_invoice.invoice_no
@@ -25,3 +25,7 @@ class Payment(models.Model):
     invoice_no = models.CharField(
         max_length=500, default=increment_invoice_number, null=True, blank=True)
     payment_intent_id = models.CharField(max_length=50, blank=True)
+    invoice_date = models.DateTimeField(auto_now_add=True, null=True)
+    amount = models.IntegerField(null=True)
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True, null=True)
