@@ -4,91 +4,137 @@ import { Container, Row, Col, Form, Input, Button, Badge } from "reactstrap"
 
 import footerContent from "../../data/footer.json"
 
-const Footer = (props) => {
+const Footer = ({ flatMenus, themeSettings }) => {
   return (
     <footer className="position-relative z-index-10 d-print-none">
       <div className="py-6 bg-gray-200 text-muted">
+
         <Container>
           <Row>
-            {footerContent &&
-              footerContent.map((item) => (
-                <Col
-                  key={item.title}
-                  lg={item.lg && item.lg}
-                  md={item.md && item.md}
+
+            {flatMenus &&
+              flatMenus.map((menu) => {
+                if (menu.handle == "social") return <Col
+                  key={menu.title}
+                  lg={4}
                   className="mb-5 mb-lg-0"
                 >
                   <div className="font-weight-bold text-uppercase text-dark mb-3">
-                    {item.title}
+                    {menu.title}
                   </div>
-                  {item.content && (
-                    <p
-                      className={
-                        item.contentBottomMargin
-                          ? `mb-${item.contentBottomMargin}`
-                          : ""
-                      }
-                    >
-                      {item.content}
+                  {menu.heading && (
+                    <p>
+                      {menu.heading}
                     </p>
                   )}
-                  {item.social && (
-                    <ul className="list-inline">
-                      {item.social.map((socialIcon) => (
-                        <li key={socialIcon.title} className="list-inline-item">
-                          <a
-                            href={socialIcon.link}
-                            target="_blank"
-                            title={socialIcon.title}
-                            className="text-muted text-hover-primary"
-                          >
-                            <i className={`fab fa-${socialIcon.title}`} />
-                          </a>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                  {item.links && (
-                    <ul className="list-unstyled">
-                      {item.links.map((link) => (
-                        <li key={link.title}>
-                          <Link href={link.link}>
-                            <a className="text-muted">
-                              {link.title}
-                              {link && (
-                                <Badge color="info-light" className="ml-1">
-                                  New
-                                </Badge>
-                              )}
-                            </a>
-                          </Link>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                  {item.form && (
-                    <Form id="newsletter-form">
-                      <div className="input-group mb-3">
-                        <Input
-                          type="email"
-                          placeholder={item.form.placeholder}
-                          aria-label={item.form.placeholder}
-                          className="bg-transparent border-dark border-right-0"
-                        />
-                        <div className="input-group-append">
-                          <Button
-                            className="btn-outline-dark border-left-0"
-                            color="deoco"
-                            type="submit"
-                          >
-                            <i className="fa fa-paper-plane text-lg" />
-                          </Button>
-                        </div>
-                      </div>
-                    </Form>
-                  )}
+                  <ul className="list-inline">
+                    {menu.menu_items.map((item, i) => (
+                      <li key={i} className="list-inline-item">
+                        <a
+                          href={item.link_url}
+                          target="_blank"
+                          className="text-muted text-hover-primary"
+                        >
+                          <i className={`fab fa-${item.link_text}`} />
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
                 </Col>
-              ))}
+              })}
+
+            {flatMenus &&
+              flatMenus.map((menu) => {
+                if (menu.handle == "links_useful") return <Col
+                  key={menu.title}
+                  lg={2}
+                  md={6}
+                  className="mb-5 mb-lg-0"
+                >
+                  <div className="font-weight-bold text-uppercase text-dark mb-3">
+                    {menu.title}
+                  </div>
+                  {menu.heading && (
+                    <p>
+                      {menu.heading}
+                    </p>
+                  )}
+                  <ul className="list-unstyled">
+                    {menu.menu_items.map((item, i) => (
+                      <li key={i}>
+                        <Link href={item.link_page.slug}>
+                          <a className="text-muted">
+                            {item.link_text}
+                          </a>
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+
+                </Col>
+              })}
+
+            {flatMenus &&
+              flatMenus.map((menu) => {
+                if (menu.handle == "links_legal") return <Col
+                  key={menu.title}
+                  lg={menu.lg && menu.lg}
+                  md={menu.md && menu.md}
+                  className="mb-5 mb-lg-0"
+                >
+                  <div className="font-weight-bold text-uppercase text-dark mb-3">
+                    {menu.title}
+                  </div>
+                  {menu.heading && (
+                    <p>
+                      {menu.heading}
+                    </p>
+                  )}
+                  <ul className="list-unstyled">
+                    {menu.menu_items.map((item, i) => (
+                      <li key={i}>
+                        <Link href={item.link_page.slug}>
+                          <a className="text-muted">
+                            {item.link_text}
+                          </a>
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </Col>
+              })}
+
+
+            {flatMenus &&
+              flatMenus.map((menu) => {
+                if (menu.handle == "contact") return <Col
+                  key={menu.title}
+                  lg={4}
+                  className="mb-5 mb-lg-0"
+                >
+                  <div className="font-weight-bold text-uppercase text-dark mb-3">
+                    {menu.title}
+                  </div>
+                  {menu.heading && (
+                    <p>
+                      {menu.heading}
+                    </p>
+                  )}
+                  <ul className="list-inline">
+                    {menu.menu_items.map((item, i) => (
+                      <li key={i} className="list-inline-item">
+                        <a
+                          href={item.link_url}
+                          className="text-muted text-hover-primary"
+                        >
+                          <i className={`fa fa-${item.handle}`} /> {item.link_text}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </Col>
+              })}
+
           </Row>
         </Container>
       </div>
@@ -97,7 +143,7 @@ const Footer = (props) => {
           <Row className="align-items-center">
             <Col md="6" className="text-center text-md-left">
               <p className="text-sm mb-md-0">
-                © 2020, Your company. All rights reserved.
+                © 2021, MoWo Spaces GesbR. All rights reserved.
               </p>
             </Col>
             <Col md="6">
