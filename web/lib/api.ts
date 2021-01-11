@@ -43,6 +43,10 @@ export default class ApiService {
         return api.get(`/cowork/booking/${bookingId}`)
     }
 
+    static fetchPayment({ paymentId }) {
+        return api.get(`/payments/payment/${paymentId}`)
+    }
+
     static signin = (email, password) => {
         Cookies.remove('token');
         localStorage.removeItem('user');

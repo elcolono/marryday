@@ -31,11 +31,14 @@ const { formId, formField } = bookingFormModel;
 export default function CheckoutPage({ locationSlug, prices }) {
     const classes = useStyles();
     const [activeStep, setActiveStep] = useState(0);
+    const [createdBooking, setCreatedBooking] = useState(undefined);
+
     const currentValidationSchema = validationSchema[activeStep];
     const isLastStep = activeStep === steps.length - 1;
 
     const stripe = useStripe();
     const elements = useElements();
+
 
     function _renderStepContent(step) {
         switch (step) {
@@ -52,26 +55,23 @@ export default function CheckoutPage({ locationSlug, prices }) {
 
     async function _submitForm(values, actions) {
         const card = elements.getElement(CardElement);
-        const totalMinutes = differenceInMinutes(values['timeInterval'][1], values['timeInterval'][0]);
-        const hourPrice = 6.95;
-        const checkPrice = totalMinutes * (hourPrice / 60)
 
         const { paymentMethod, error } = await stripe.createPaymentMethod({
             type: 'card',
             card: card,
         });
-        console.log(paymentMethod)
         ApiService.makeBooking({
             email: values['email'],
             payment_method_id: paymentMethod.id,
             start: values['timeInterval'][0],
             end: values['timeInterval'][1],
             rent_object: values['rentObject'].id,
-            firstName: values['firstName'],
-            lastName: values['lastName'],
-            check_price: checkPrice
+            first_name: values['firstName'],
+            last_name: values['lastName'],
+            check_price: values['checkPrice'],
         })
             .then(response => {
+                setCreatedBooking(response.data)
                 setActiveStep(activeStep + 1);
                 toast.success("Booking was successful!");
                 actions.setSubmitting(false);
@@ -101,8 +101,8 @@ export default function CheckoutPage({ locationSlug, prices }) {
         <React.Fragment>
             <ProgressBar progress={(100 / steps.length) * (activeStep + 1)} />
             <React.Fragment>
-                {activeStep === steps.length ? (
-                    <CheckoutSuccess />
+                {activeStep === steps.length && createdBooking ? (
+                    <CheckoutSuccess createdBooking={createdBooking} />
                 ) : (
                         <Formik
                             initialValues={formInitialValues}

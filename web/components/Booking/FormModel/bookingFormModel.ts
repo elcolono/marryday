@@ -48,6 +48,9 @@ export default {
       name: 'emptyCard',
       requiredErrorMsg: 'Your card number is required.'
     },
+    checkPrice: {
+      name: 'checkPrice',
+    }
 
   }
 };

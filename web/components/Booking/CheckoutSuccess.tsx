@@ -2,10 +2,11 @@ import React from 'react';
 import Link from 'next/link';
 import { Button, Col } from 'reactstrap';
 
-function CheckoutSuccess() {
+function CheckoutSuccess({ createdBooking }) {
     return (
         <React.Fragment>
             <Col lg="12" className="p-4">
+                {/* <pre>{JSON.stringify(createdBooking, null, 2)}</pre> */}
                 <p className="subtitle text-primary">MoWo Space</p>
                 <h1 className="h2 mb-5">
                     Buchung war erfolgreich
@@ -15,20 +16,20 @@ function CheckoutSuccess() {
                     <p className="text-muted mb-5">Samsa was a travelling salesman - and above it there hung a picture that he had recently cut out of an illustrated magazine and housed in a nice, gilded frame.</p>
                     <p className="text-center mb-5">
                         <Link href="buchung" passHref>
-                            <Button color="primary" className="mx-2 mb-2">
-                                <i className="far fa-file mr-2" />
+                            <a>
+                                <Button color="primary" className="mx-2 mb-2">
+                                    <i className="far fa-file mr-2" />
                                 Buchung anzeigen
-                            </Button>
+                                </Button>
+                            </a>
                         </Link>
-                        <Link href="/rechung" passHref>
-                            <Button color="outline-muted" className="mb-2">
-                                Rechnung
-                            </Button>
+                        <Link href={`/payments/${createdBooking.uuid}`} passHref>
+                            <a target={"_blank"}>
+                                <Button color="outline-muted" className="mb-2">
+                                    Rechnung
+                                </Button>
+                            </a>
                         </Link>
-                        <Link href="link">
-                            <a className="d-block">Erneut buchen</a>
-                        </Link>
-
                     </p>
                     <p className="mb-5 text-center">
                         <img

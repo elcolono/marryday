@@ -24,7 +24,6 @@ export default function PaymentForm(props) {
   } = props;
   const { values, errors, setFieldValue, setFieldError } = useFormikContext()
   const objectType = values['objectType'];
-
   const totalMinutes = differenceInMinutes(values['timeInterval'][1], values['timeInterval'][0]);
   const hourPrice =
     objectType == 'phone' ? prices.phone_hour && new Decimal(prices.phone_hour) :
@@ -32,6 +31,10 @@ export default function PaymentForm(props) {
         objectType == 'meeting' ? prices.meeting_hour && new Decimal(prices.meeting_hour) : new Decimal(0)
   const totalPrice = hourPrice && hourPrice.dividedBy(60).mul(totalMinutes);
 
+
+  React.useEffect(() => {
+    setFieldValue('checkPrice', totalPrice.toFixed(2).toString());
+  }, [])
 
   // Handle real-time validation errors from the card Element.
   const handleChange = (event) => {
@@ -157,7 +160,7 @@ export default function PaymentForm(props) {
               <tfoot>
                 <tr className="border-top">
                   <th className="pt-3">Total</th>
-                  <td className="font-weight-bold text-right pt-3">€ {totalPrice && totalPrice.toFixed(2).toString()}</td>
+                  <td className="font-weight-bold text-right pt-3">€ {values['checkPrice']}</td>
                 </tr>
               </tfoot>
             </table>

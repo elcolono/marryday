@@ -15,53 +15,32 @@ import {
   BreadcrumbItem,
   Table,
   CardFooter,
-  Spinner,
 } from "reactstrap"
 
 import data from "../../data/user-invoice.json"
 import { GetServerSideProps } from "next"
 import ApiService, { fetchAPIwithSSR } from "../../lib/api"
+import Decimal from 'decimal.js';
+
 
 const UserInvoice = (props) => {
-  const { bookingId } = props;
 
+  const { payment } = props;
 
-  const [booking, setBooking] = React.useState(undefined);
-
-  React.useEffect(() => {
-    ApiService.fetchBooking({ bookingId: bookingId }).then(response => {
-      setBooking(response.data);
-    }).catch(error => {
-    })
-  }, [])
-
-  const payment_receipt_number = booking && booking.payment_intent.charges.data[0].receipt_number;
-  // Create a new JavaScript Date object based on the timestamp
-  // multiplied by 1000 so that the argument is in milliseconds, not seconds.
-  const payment_created = booking && format(new Date(booking.payment_intent.created * 1000), 'MMM dd, yyyy');
-  const rent_object = booking && booking.booking.rent_object;
-  const start = booking && new Date(booking.booking.start);
-  const end = booking && new Date(booking.booking.end);
-  const amount = booking && booking.payment_intent.amount;
-
-  // Subtotal price calculation
-  const subTotal = data.items.reduce(
-    (sum, { price, quantity }) => sum + price * quantity,
-    0
-  )
-
-  // Vat percentage
-  const VAT = 21
 
   // Price total
-  const total = subTotal * (1 + VAT / 100)
+  const total = new Decimal(payment.amount).dividedBy(100)
+
+  // Subtotal price calculation
+  const subTotal = new Decimal(payment.amount).mul(0.8).dividedBy(100)
 
   // Vat part of total price
-  const totalVAT = total - subTotal
+  const totalVAT = total.minus(subTotal)
 
   return (
     <section className="py-5 p-print-0">
-      {booking &&
+      {/* <pre>{JSON.stringify(payment, null, 2)}</pre> */}
+      {payment &&
         <Container>
           {/* <pre>{JSON.stringify(booking, null, 4)}</pre> */}
           <Row className="mb-4 d-print-none">
@@ -77,14 +56,14 @@ const UserInvoice = (props) => {
                     <a>Account</a>
                   </Link>
                 </BreadcrumbItem>
-                <BreadcrumbItem active>Invoice {payment_receipt_number}</BreadcrumbItem>
+                <BreadcrumbItem active>Invoice {payment.invoice_no}</BreadcrumbItem>
               </Breadcrumb>
             </Col>
             <Col lg="6" className="text-lg-right">
               {/* <Button color="primary" className="mr-2">
                 <i className="far fa-file-pdf mr-2" /> Download PDF
               </Button> */}
-              <Button color="primary" className="mr-2"onClick={() => window.print()}>
+              <Button color="primary" className="mr-2" onClick={() => window.print()}>
                 <i className="fas fa-print mr-2" /> Drucken / Speichern
             </Button>
             </Col>
@@ -99,8 +78,8 @@ const UserInvoice = (props) => {
                     height="60" />
                 </Col>
                 <Col md="6" className="text-md-right">
-                  <h3 className="mb-0">Invoice {payment_receipt_number}</h3>
-                  <p className="mb-0">Issued on {payment_created}</p>
+                  <h3 className="mb-0">Invoice {payment.invoice_no}</h3>
+                  <p className="mb-0">Issued on {format(new Date(payment.invoice_date), 'MMM dd, yyyy')} </p>
                 </Col>
               </Row>
             </CardHeader>
@@ -112,13 +91,13 @@ const UserInvoice = (props) => {
                   <p className="text-muted">
                     2344 Maria Enzersdorf
                   <br />
-                    <strong>Österreich</strong>
+                    <strong>Austria</strong>
                   </p>
                 </Col>
                 <Col sm="6" className="pr-lg-4">
                   <h2 className="h6 text-uppercase mb-4">Customer</h2>
-                  <h6 className="mb-1">James Brown</h6>
-                  <p className="text-muted">
+                  <h6 className="mb-1">Anonymous</h6>
+                  {/* <p className="text-muted">
                     13/25 New Avenue
                   <br />
                   New Heaven
@@ -128,12 +107,12 @@ const UserInvoice = (props) => {
                   England
                   <br />
                     <strong>Great Britain</strong>
-                  </p>
+                  </p> */}
                 </Col>
               </Row>
               <Row className="mb-5">
                 <Col md="6" className="pr-lg-3 text-sm">
-                  <Row className="mb-2 mb-sm-1">
+                  {/* <Row className="mb-2 mb-sm-1">
                     <Col sm="6" className="text-uppercase text-muted">
                       Bank account
                   </Col>
@@ -148,13 +127,13 @@ const UserInvoice = (props) => {
                     <Col sm="6" className="text-sm-right">
                       {data.number}
                     </Col>
-                  </Row>
+                  </Row> */}
                   <Row className="mb-2 mb-sm-1">
                     <Col sm="6" className="text-uppercase text-muted">
                       Payment method
                   </Col>
                     <Col sm="6" className="text-sm-right">
-                      Bank transfer
+                      Credit card
                   </Col>
                   </Row>
                 </Col>
@@ -164,7 +143,7 @@ const UserInvoice = (props) => {
                       Issued on
                   </Col>
                     <Col sm="6" className="text-sm-right">
-                      {data.issued}
+                      {format(new Date(payment.invoice_date), 'MMM dd, yyyy')}
                     </Col>
                   </Row>
                   <Row className="mb-2 mb-sm-1">
@@ -172,7 +151,7 @@ const UserInvoice = (props) => {
                       Due on
                   </Col>
                     <Col sm="6" className="text-sm-right">
-                      {data.due}
+                      {format(new Date(payment.invoice_date), 'MMM dd, yyyy')}
                     </Col>
                   </Row>
                 </Col>
@@ -191,12 +170,12 @@ const UserInvoice = (props) => {
                 <tbody>
                   <tr>
                     <td className="text-center">1</td>
-                    <td className="font-weight-bold">{rent_object}</td>
-                    <td>{format(start, 'MMM dd, yyyy HH:mm')} bis {format(end, 'MMM dd, yyyy HH:mm')}</td>
-                    <td className="text-right">€ {amount}</td>
+                    <td className="font-weight-bold">{payment.booking.rent_object}</td>
+                    <td>{format(new Date(payment.booking.start), 'MMM dd, yyyy HH:mm')} bis {format(new Date(payment.booking.end), 'MMM dd, yyyy HH:mm')}</td>
+                    <td className="text-right">€ {total.toFixed(2)}</td>
                     <td className="text-center">1</td>
                     <td className="text-right">
-                      € {amount}
+                      € {total.toFixed(2)}
                     </td>
                   </tr>
                   {/* {data.items.map((item, index) => (
@@ -221,17 +200,17 @@ const UserInvoice = (props) => {
                       <tr className="text-sm">
                         <td className="font-weight-bold">Subtotal</td>
                         <td className="text-right">
-                          ${subTotal.toLocaleString("en-US")}
+                          € {subTotal.toFixed(2)}
                         </td>
                       </tr>
                       <tr className="text-sm">
-                        <td className="font-weight-bold">VAT ({VAT}%)</td>
-                        <td className="text-right">${totalVAT.toFixed(2)}</td>
+                        <td className="font-weight-bold">VAT (20%)</td>
+                        <td className="text-right">€ {totalVAT.toFixed(2)}</td>
                       </tr>
                       <tr>
                         <td className="text-uppercase font-weight-bold">Total</td>
                         <td className="text-right font-weight-bold">
-                          ${(+total.toFixed(2)).toLocaleString("en-US")}
+                          € {total.toFixed(2)}
                         </td>
                       </tr>
                     </tbody>
@@ -240,7 +219,7 @@ const UserInvoice = (props) => {
               </Row>
             </CardBody>
             <CardFooter className="bg-gray-100 p-5 px-print-0 border-0 text-right text-sm">
-              <p className="mb-0">Thank you for you business. Directory, Inc.</p>
+              <p className="mb-0">Thank you for you business. MoWo Spaces GesbR.</p>
             </CardFooter>
           </Card>
         </Container>}
@@ -253,10 +232,11 @@ export default UserInvoice
 export const getServerSideProps: GetServerSideProps = async ({ params, req }) => {
   // const booking = (await fetchAPIwithSSR(`/api/v1/cowork/booking/${params.bookingId}`, { method: 'GET', req: req })) ?? []
   const settings = (await fetchAPIwithSSR('/api/page/home', { method: 'GET', req: req })) ?? []
+  const payment = (await fetchAPIwithSSR(`/api/v1/payments/payment/${params.paymentUuid}`, { method: 'GET', req: req })) ?? []
+
   return {
     props: {
-      // booking,
-      bookingId: params.bookingId,
+      payment,
       themeSettings: settings.theme_settings,
       mainMenus: settings.main_menus,
       flatMenus: settings.flat_menus,

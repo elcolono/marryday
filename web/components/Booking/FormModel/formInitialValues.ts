@@ -10,14 +10,15 @@ const {
     // lastName,
     email,
     completeCard,
-    emptyCard
+    emptyCard,
+    checkPrice,
   }
 } = checkoutFormModel;
 
 export default {
   [objectType.name]: 'desktop',
   [selectedDate.name]: new Date(),
-  
+
   [rentObjects.name]: [],
   [rentObject.name]: '',
 
@@ -27,4 +28,5 @@ export default {
   [email.name]: '',
   [completeCard.name]: false,
   [emptyCard.name]: true,
+  [checkPrice.name]: "0",
 };
