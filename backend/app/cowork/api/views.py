@@ -38,7 +38,7 @@ def send_test_mail(request):
         #     ['andreas.siedler@gmail.com'],
         #     fail_silently=False,
         # )
-        subject, from_email, to = 'hello', 'from@example.com', [
+        subject, from_email, to = 'Erfolgreiche Buchung', 'MoWo Spaces<no-reply@mowo.space>', [
             'andreas.siedler@gmail.com']
         text_content = 'This is an important message.'
         html_content = render_to_string(
@@ -90,6 +90,9 @@ class BookingCreateView(generics.CreateAPIView):
         payment_method_id = booking_data['payment_method_id']
         check_price = booking_data['check_price']
         check_price_cent = int(float(check_price) * 100)
+        location_slug = booking_data['location_slug']
+        location = Location.objects.get(slug=location_slug)
+        contacts = location.forwarding_contacts.all()
 
         # ToDo check if price is corrent
 
@@ -111,6 +114,9 @@ class BookingCreateView(generics.CreateAPIView):
 
         if not check_price_cent:
             return Response("Check price cent card is required", status=status.HTTP_400_BAD_REQUEST)
+
+        if not location:
+            return Response("No location was found", status=status.HTTP_400_BAD_REQUEST)
 
         ######################## Overlapping Bookings ########################
         rent_object_bookings = Booking.objects.filter(
@@ -139,30 +145,7 @@ class BookingCreateView(generics.CreateAPIView):
         # STRIPE Payment
         stripe.api_key = settings.STRIPE_SECRET_KEY
         try:
-            # Create new Checkout Session for the order
-            # Other optional params include:
-            # [billing_address_collection] - to display billing address details on the page
-            # [customer] - if you have an existing Stripe Customer ID
-            # [payment_intent_data] - capture the payment later
-            # [customer_email] - prefill the email input in the form
-            # For full details see https://stripe.com/docs/api/checkout/sessions/create
-            # customer_data = stripe.Customer.list(email=email).data
-
-            # if len(customer_data) == 0:
-            #     # creating customer
-            #     customer = stripe.Customer.create(
-            #         email=email,
-            #         payment_method=payment_method_id,
-            #         invoice_settings={
-            #             'default_payment_method': payment_method_id
-            #         }
-            #     )
-            # else:
-            #     customer = customer_data[0]
-            #     extra_msg = "Customer already existed."
-
             # creating paymentIntent
-
             payment_intent = stripe.PaymentIntent.create(payment_method=payment_method_id,
                                                          currency='eur', amount=check_price_cent,
                                                          confirm=True)
@@ -182,9 +165,9 @@ class BookingCreateView(generics.CreateAPIView):
             print(str(e))
             return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
 
-        ######################## Sending Email ########################
+        ######################## Sending Booking Email to Customer ########################
         try:
-            subject, from_email, to = 'hello', 'andreas@mowo.space', email
+            subject, from_email, to = 'Erfolgreiche Buchung', 'MoWo Spaces<no-reply@mowo.space>', email
             text_content = 'This is an important message.'
             html_content = render_to_string(
                 'booking-success.html', {'invoice_link': f'{settings.CLIENT_DOMAIN}invoices/{booking.uuid}'})
@@ -192,6 +175,21 @@ class BookingCreateView(generics.CreateAPIView):
                 subject, text_content, from_email, [to])
             msg.attach_alternative(html_content, "text/html")
             msg.send()
+        except Exception as e:
+            booking.delete()
+            return Response({'error': str(e)})
+
+        ######################## Sending Booking Confirmation to Location Forwarding Contacts ########################
+        try:
+            for contact in contacts:
+                subject, from_email, to = 'Erfolgreiche Buchung', 'MoWo Spaces<no-reply@mowo.space>', contact.email
+                text_content = 'This is an important message.'
+                html_content = render_to_string(
+                    'booking-confirmation.html', {'first_name': contact.first_name, 'last_name': contact.last_name})
+                msg = EmailMultiAlternatives(
+                    subject, text_content, from_email, [to])
+                msg.attach_alternative(html_content, "text/html")
+                msg.send()
         except Exception as e:
             booking.delete()
             return Response({'error': str(e)})

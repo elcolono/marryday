@@ -69,6 +69,7 @@ export default function CheckoutPage({ locationSlug, prices }) {
             first_name: values['firstName'],
             last_name: values['lastName'],
             check_price: values['checkPrice'],
+            location_slug: locationSlug,
         })
             .then(response => {
                 setCreatedBooking(response.data)

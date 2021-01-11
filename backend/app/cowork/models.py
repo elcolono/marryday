@@ -29,6 +29,14 @@ class City(models.Model):
         return self.title
 
 
+class ForwardingContact(models.Model):
+    email = models.EmailField(max_length=254)
+    first_name = models.CharField(max_length=150)
+    last_name = models.CharField(max_length=150)
+    location = models.ForeignKey(
+        'cowork.Location', related_name="forwarding_contacts", on_delete=models.CASCADE, null=True)
+
+
 class Location(models.Model):
     is_active = models.BooleanField(default=False)
     title = models.CharField(max_length=150, unique=True)

@@ -239,12 +239,12 @@ SITE_ID = 1
 
 # EMAIL SETTINGS
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST = 'smtp.world4you.com'
 EMAIL_USE_TLS = True
-EMAIL_PORT = 587
-EMAIL_HOST_USER = 'andreas.siedler@gmail.com'
+EMAIL_PORT = 25
+EMAIL_HOST_USER = 'andreas@mowo.space'
 # EMAIL_HOST_PASSWORD = '!Andi_89'
-EMAIL_HOST_PASSWORD = 'vvpkjhotdfnhibeg'
+EMAIL_HOST_PASSWORD = 'z7La=Vz7=N'
 
 # instruct rest_auth to use custom UserSerializer
 REST_AUTH_SERIALIZERS = {

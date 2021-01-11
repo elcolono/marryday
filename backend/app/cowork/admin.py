@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Location, RentObject, Booking, LocationImage, CityImage, City
+from .models import Location, RentObject, Booking, LocationImage, CityImage, City, ForwardingContact
 # Register your models here.
 
 
@@ -23,6 +23,10 @@ class RentObjectInline(admin.TabularInline):
     model = RentObject
 
 
+class ForwardingContactsInline(admin.TabularInline):
+    model = ForwardingContact
+
+
 class CityAdmin(admin.ModelAdmin):
     search_fields = ('title', 'postcode')
     list_display = ('title', 'postcode')
@@ -34,7 +38,7 @@ class LocationAdmin(admin.ModelAdmin):
     search_fields = ('title', 'address')
     list_display = ('title', 'address', 'lat', 'lng',)
     list_filter = ('title', 'address')
-    inlines = [RentObjectInline, LocationImageInline]
+    inlines = [RentObjectInline, LocationImageInline, ForwardingContactsInline]
     fieldsets = fieldsets = (
         ('General', {
             'fields': ('is_active', 'title', 'address', 'city', 'lat', 'lng', 'description', 'slug',)
