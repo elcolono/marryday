@@ -51,11 +51,6 @@ const UserInvoice = (props) => {
                     <a>Home</a>
                   </Link>
                 </BreadcrumbItem>
-                <BreadcrumbItem>
-                  <Link href="/user-account">
-                    <a>Account</a>
-                  </Link>
-                </BreadcrumbItem>
                 <BreadcrumbItem active>Invoice {payment.invoice_no}</BreadcrumbItem>
               </Breadcrumb>
             </Col>
