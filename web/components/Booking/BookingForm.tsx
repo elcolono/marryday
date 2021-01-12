@@ -167,7 +167,7 @@ export default function BookingForm(props) {
                     <div className="overflow-hidden">
                         {values['rentObject'] && <TimeRangeSlider
                             selectedDate={values['selectedDate']}
-                            disabledIntervals={values['rentObject'].bookings}
+                            disabledIntervals={values['rentObject'].rent_object_bookings}
                             errorHandler={timeRangeErrorHandler}
                             error={timeRangeError}
                         />}

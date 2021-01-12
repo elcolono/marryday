@@ -44,30 +44,30 @@ class LocationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Location
         fields = ('slug', 'title', 'address', 'city',
-                  'lat', 'lng', 'images', 'description', 'prices',)
+                  'lat', 'lng', 'images', 'description', 'prices', 'public_phone')
 
 
 # Bookings
 class BookingRetrieveSerializer(serializers.ModelSerializer):
     rent_object = serializers.StringRelatedField()
-
+    location = LocationSerializer()
     class Meta:
         model = Booking
-        fields = ('user', 'rent_object',
-                  'start', 'end',)
+        fields = ('uuid', 'user', 'rent_object',
+                  'start', 'end', 'location')
 
 
 class BookingCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Booking
         fields = ('uuid', 'user', 'rent_object',
-                  'start', 'end',)
+                  'start', 'end', 'location',)
 
 
 # RentObjects
 class RentObjectSerializer(serializers.ModelSerializer):
-    bookings = BookingRetrieveSerializer(many=True)
+    rent_object_bookings = BookingRetrieveSerializer(many=True)
 
     class Meta:
         model = RentObject
-        fields = ('id', 'title', 'type', 'location', 'bookings',)
+        fields = ('id', 'title', 'type', 'location', 'rent_object_bookings',)

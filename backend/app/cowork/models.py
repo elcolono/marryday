@@ -53,6 +53,7 @@ class Location(models.Model):
         decimal_places=2, blank=True, null=True, max_digits=10)
     meeting_hour_price = models.DecimalField(
         decimal_places=2, blank=True, null=True, max_digits=10)
+    public_phone = models.CharField(max_length=150, null=True)
 
     def clean(self):
         rent_objects = self.rent_objects.all()
@@ -112,8 +113,10 @@ class Booking(models.Model):
         primary_key=True, default=uuid.uuid4, unique=True, editable=False)
     user = models.ForeignKey(
         'accounts.User', related_name="bookings", on_delete=models.PROTECT, null=True, blank=True)
+    location = models.ForeignKey(
+        Location, related_name="location_bookings", on_delete=models.PROTECT, null=True)
     rent_object = models.ForeignKey(
-        RentObject, related_name="bookings", on_delete=models.PROTECT)
+        RentObject, related_name="rent_object_bookings", on_delete=models.PROTECT, null=True)
     start = models.DateTimeField()
     end = models.DateTimeField()
     # payment_intent_id = models.CharField(max_length=50, blank=True)

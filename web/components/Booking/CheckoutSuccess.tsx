@@ -11,12 +11,13 @@ function CheckoutSuccess({ createdBooking }) {
                 <h1 className="h2 mb-5">
                     Buchung war erfolgreich
                 </h1>
+                {/* {JSON.stringify(createdBooking)} */}
                 <div className="text-block">
                     <p className="text-muted">Thank you for your booking, Ondrej.</p>
                     <p className="text-muted mb-5">Samsa was a travelling salesman - and above it there hung a picture that he had recently cut out of an illustrated magazine and housed in a nice, gilded frame.</p>
                     <p className="text-center mb-5">
-                        <Link href="buchung" passHref>
-                            <a>
+                        <Link href={`/bookings/${createdBooking.booking.uuid}`} passHref>
+                            <a target={"_blank"}>
                                 <Button color="primary" className="mx-2 mb-2">
                                     <i className="far fa-file mr-2" />
                                 Buchung anzeigen

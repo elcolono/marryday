@@ -66,11 +66,8 @@ class BookingRetrieveView(generics.RetrieveAPIView):
 
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
-        payment_intent_id = instance.payment_intent_id
-        paymnet_intent = stripe.PaymentIntent.retrieve(payment_intent_id,)
-
         serializer = self.get_serializer(instance)
-        return Response(data={'booking': serializer.data, 'payment_intent': paymnet_intent})
+        return Response(data=serializer.data)
 
 
 class BookingCreateView(generics.CreateAPIView):
@@ -80,7 +77,6 @@ class BookingCreateView(generics.CreateAPIView):
     def create(self, request):
 
         booking_data = request.data
-        booking_data['user'] = request.user.id
 
         ######################## Validate data ########################
         rent_object = booking_data['rent_object']
@@ -117,6 +113,11 @@ class BookingCreateView(generics.CreateAPIView):
 
         if not location:
             return Response("No location was found", status=status.HTTP_400_BAD_REQUEST)
+
+        ######################## Populate Booking data ########################
+
+        booking_data['user'] = request.user.id
+        booking_data['location'] = location.id
 
         ######################## Overlapping Bookings ########################
         rent_object_bookings = Booking.objects.filter(
@@ -236,7 +237,7 @@ class RentObjectListView(generics.ListCreateAPIView):
             # startdate has to be parsed so for timedelta calculation
             enddate = parse(date) + timedelta(days=1)
             queryset = queryset.prefetch_related(Prefetch(
-                'bookings',
+                'rent_object_bookings',
                 queryset=Booking.objects.filter(
                     # values can be strings or date objects
                     # startdate=string and enddate=Dateobject

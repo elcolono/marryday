@@ -41,7 +41,7 @@ class LocationAdmin(admin.ModelAdmin):
     inlines = [RentObjectInline, LocationImageInline, ForwardingContactsInline]
     fieldsets = fieldsets = (
         ('General', {
-            'fields': ('is_active', 'title', 'address', 'city', 'lat', 'lng', 'description', 'slug',)
+            'fields': ('is_active', 'title', 'address', 'city', 'public_phone', 'lat', 'lng', 'description', 'slug')
         }),
         ('Pricing', {
             'fields': ('phone_hour_price', 'desktop_hour_price', 'meeting_hour_price',)
@@ -61,7 +61,7 @@ class RentObjectAdmin(admin.ModelAdmin):
 
 class BookingAdmin(admin.ModelAdmin):
     search_fields = ('rent_object', 'start', 'end',)
-    list_display = ('rent_object', 'start', 'end',)
+    list_display = ('location', 'rent_object', 'start', 'end',)
     list_filter = search_fields = (
         'rent_object', 'start', 'end',)
 
