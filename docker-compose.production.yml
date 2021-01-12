@@ -7,6 +7,8 @@ services:
     environment:
       POSTGRES_DB_PASSWORD: "${POSTGRES_DB_PASSWORD}"
       MAILCHIMP_API_KEY: "${MAILCHIMP_API_KEY}"
+      CLIENT_DOMAIN: "https://www.mowo.space/"
+
 
   db:
     env_file: .env.production

@@ -42,10 +42,27 @@ See : https://typescript.nuxtjs.org/cookbook/components/
 
 ### Deployment Setup on any linux machine (Hetzner, AWS, etc.)
 
+First go into the project root folder and git pull testing / production
+
+Then build and run project
+
+#### Local
 Build and deploy image
 ```
 docker-compose build
 docker-compose up -d
+```
+#### Testing
+docker-compose -f docker-compose.yml -f docker-compose.testing.yml build
+docker-compose -f docker-compose.yml -f docker-compose.testing.yml up
+docker-compose -f docker-compose.yml -f docker-compose.testing.yml down
+
+#### Production
+docker-compose -f docker-compose.yml -f docker-compose.production.yml build
+docker-compose -f docker-compose.yml -f docker-compose.production.yml up
+docker-compose -f docker-compose.yml -f docker-compose.production.yml down
+
+
 ```
 
 Change wagtail site settings host to 'backend' and port to 8000

@@ -31,14 +31,6 @@ DATABASES = {
     }
 }
 
-# EMAIL SETTINGS
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_USE_TLS = True
-EMAIL_PORT = 587
-EMAIL_HOST_USER = 'andreas.siedler@gmail.com'
-EMAIL_HOST_PASSWORD = '!Andi_89'
-
 ## Logging configuration
 LOGGING = {
     'version': 1,
@@ -70,20 +62,20 @@ LOGGING = {
 }
 
 # Compressor SETTINGS
-STATICFILES_FINDERS += ['compressor.finders.CompressorFinder',]
+# STATICFILES_FINDERS += ['compressor.finders.CompressorFinder',]
 
-COMPRESS_ENABLED = True
-COMPRESS_OFFLINE = True
+# COMPRESS_ENABLED = True
+# COMPRESS_OFFLINE = True
 
-COMPRESS_URL = STATIC_URL
-COMPRESS_CSS_FILTERS = [
-    'compressor.filters.css_default.CssAbsoluteFilter',
-    'compressor.filters.cssmin.CSSMinFilter'
-]
-COMPRESS_JS_FILTERS = [
-    'compressor.filters.jsmin.JSMinFilter',
-]
-COMPRESS_STORAGE = 'compressor.storage.GzipCompressorFileStorage' 
+# COMPRESS_URL = STATIC_URL
+# COMPRESS_CSS_FILTERS = [
+#     'compressor.filters.css_default.CssAbsoluteFilter',
+#     'compressor.filters.cssmin.CSSMinFilter'
+# ]
+# COMPRESS_JS_FILTERS = [
+#     'compressor.filters.jsmin.JSMinFilter',
+# ]
+# COMPRESS_STORAGE = 'compressor.storage.GzipCompressorFileStorage' 
 
 
 try:

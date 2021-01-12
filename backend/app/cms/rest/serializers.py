@@ -6,16 +6,35 @@ from cms.home.models import SubPage
 from cms.theme.models import ThemeSettings
 from wagtailmenus.models import FlatMenu, FlatMenuItem, MainMenu, MainMenuItem
 
+# Page Serializers
+
+
+class JSONSerializerField(serializers.Field):
+    """ Serializer for JSONField -- required to make field writable"""
+    def to_internal_value(self, data):
+        return data
+    def to_representation(self, value):
+        return value
+
 
 class SubPageSerializer(serializers.ModelSerializer):
+    # content = JSONSerializerField()
+
     class Meta:
         model = SubPage
-        fields = ('depth', 'title', 'slug')
+        fields = ('depth', 'title', 'slug', 'content')
+
+
+# Menu Serializers
+class LinkPageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SubPage
+        fields = ('title', 'slug')
 
 
 class MainMenuItemSerializer(serializers.ModelSerializer):
     """ COMMENTS """
-    link_page = SubPageSerializer()
+    link_page = LinkPageSerializer()
 
     class Meta:
         model = MainMenuItem
@@ -33,7 +52,7 @@ class MainMenuSerializer(serializers.Serializer):
 
 class FlatMenuItemSerializer(serializers.ModelSerializer):
     """ COMMENTS """
-    link_page = SubPageSerializer()
+    link_page = LinkPageSerializer()
 
     class Meta:
         model = FlatMenuItem
@@ -47,7 +66,6 @@ class FlatMenuSerializer(serializers.ModelSerializer):
     class Meta:
         model = FlatMenu
         fields = '__all__'
-
 
 
 class ThemeSettingsSerializer(serializers.ModelSerializer):

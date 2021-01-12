@@ -1,3 +1,5 @@
+import json
+
 from django.conf import settings
 
 from rest_framework.views import APIView
@@ -6,13 +8,11 @@ from rest_framework import status
 
 from wagtailmenus.models import MainMenu, FlatMenu
 from cms.rest import serializers
-from cms.home.models import SubPage
+from cms.home.models import SubPage, HomePage
 from cms.theme.models import ThemeSettings
 
 import mailchimp_marketing as MailchimpMarketing
 from mailchimp_marketing.api_client import ApiClientError
-
-import json
 
 
 # Mailchimp Views
@@ -82,22 +82,69 @@ class ThemeSettingsAPIViewSet(APIView):
     def get(self, request):
         """ GET theme settings"""
         try:
+            main_menus = MainMenu.objects.all()
+            flat_menus = FlatMenu.objects.all()
             theme_settings = ThemeSettings.objects.first()
+
+        except MainMenu.DoesNotExist:
+            return Response("Main Menus do not exist", status=status.HTTP_400_BAD_REQUEST)
         except ThemeSettings.DoesNotExist:
             return Response("Theme settings do not exist", status=status.HTTP_400_BAD_REQUEST)
-        serializer = serializers.ThemeSettingsSerializer(theme_settings)
-        return Response(serializer.data)
+        except FlatMenu.DoesNotExist:
+            return Response("Flat Menues do not exist", status=status.HTTP_400_BAD_REQUEST)
+
+        main_menus_serializer = serializers.MainMenuSerializer(
+            main_menus, many=True)
+        theme_settings_serializer = serializers.ThemeSettingsSerializer(
+            theme_settings)
+        flat_menus_serializer = serializers.FlatMenuSerializer(
+            flat_menus, many=True)
+
+        # return Response(serializer.data)
+        return Response({
+            "theme_settings": theme_settings_serializer.data,
+            "main_menus": main_menus_serializer.data,
+            "flat_menus": flat_menus_serializer.data
+        })
 
 
-# Subpage Views
-# class SubpageAPIViewSet(APIView):
-#     """ COMMENTS """
-#     def get(self, request):
-#         """ GET patient Profile"""
-#         try:
-#             subpage = SubPage.objects.first()
-#         except MainMenu.DoesNotExist:
-#             return Response("Page does not exist", status=status.HTTP_400_BAD_REQUEST)
+class PageAPIViewSet(APIView):
+    """ COMMENTS """
 
-#         serializer = serializers.SubPageSerializer(subpage)
-#         return Response(serializer.data)
+    def get(self, request, *args, **kwargs):
+        slug = kwargs.get('slug')
+
+        try:
+            # if (slug == "home"):
+            #     page_content = HomePage.objects.first()
+            # else:
+            #     page_content = SubPage.objects.get(slug=slug)
+            main_menus = MainMenu.objects.all()
+            flat_menus = FlatMenu.objects.all()
+            theme_settings = ThemeSettings.objects.first()
+
+        # except SubPage.DoesNotExist:
+        #     return Response("SubPage does not exist", status=status.HTTP_400_BAD_REQUEST)
+        except MainMenu.DoesNotExist:
+            return Response("Main Menus do not exist", status=status.HTTP_400_BAD_REQUEST)
+        except ThemeSettings.DoesNotExist:
+            return Response("Theme settings do not exist", status=status.HTTP_400_BAD_REQUEST)
+        except FlatMenu.DoesNotExist:
+            return Response("Flat Menues do not exist", status=status.HTTP_400_BAD_REQUEST)
+
+        # page_serializer = serializers.SubPageSerializer(page_content)
+        main_menus_serializer = serializers.MainMenuSerializer(
+            main_menus, many=True)
+        theme_settings_serializer = serializers.ThemeSettingsSerializer(
+            theme_settings)
+        flat_menus_serializer = serializers.FlatMenuSerializer(
+            flat_menus, many=True)
+
+
+        # return Response(serializer.data)
+        return Response({
+            # "page_content": page_content,
+            "theme_settings": theme_settings_serializer.data,
+            "main_menus": main_menus_serializer.data,
+            "flat_menus": flat_menus_serializer.data
+        })

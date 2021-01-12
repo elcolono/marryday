@@ -30,8 +30,13 @@ DATABASES = {
     }
 }
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# S3 Bucket Connection
+AWS_ACCESS_KEY_ID = 'AKIA4NGTH73S3GKH6Y4R'
+AWS_STORAGE_BUCKET_NAME = 'mowo-location-images'
 
+
+# Client Domain
+CLIENT_DOMAIN = 'http://localhost:3001/'
 
 try:
     from .local import *

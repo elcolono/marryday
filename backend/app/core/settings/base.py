@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     'profiles',
     'search',
     'cowork',
+    'payments',
     'cms.home',
     'cms.flex',
     'cms.theme',
@@ -65,13 +66,13 @@ INSTALLED_APPS = [
     # Third-Party Apps
     'modelcluster',
     'taggit',
-    'compressor',
     'wagtailmenus',
     'wagtail.contrib.modeladmin',
     'wagtail.contrib.settings',
     'wagtailmetadata',
     'django.contrib.sitemaps',
     'corsheaders',
+    'tinymce',
 
     # Auth
     'rest_framework',
@@ -234,7 +235,16 @@ ACCOUNT_EMAIL_CONFIRMATION_ANONYMOUS_REDIRECT_URL = '/?verification=1'
 ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = '/?verification=1'
 
 SITE_ID = 1
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+
+# EMAIL SETTINGS
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.world4you.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 25
+EMAIL_HOST_USER = 'andreas@mowo.space'
+# EMAIL_HOST_PASSWORD = '!Andi_89'
+EMAIL_HOST_PASSWORD = 'z7La=Vz7=N'
 
 # instruct rest_auth to use custom UserSerializer
 REST_AUTH_SERIALIZERS = {
@@ -248,3 +258,32 @@ REST_AUTH_REGISTER_SERIALIZERS = {
 }
 
 # REST_USE_JWT = True
+
+# S3 Bucket Connection
+# app user with programmatic access
+AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
+AWS_S3_REGION_NAME = 'eu-central-1'
+AWS_S3_FILE_OVERWRITE = False
+# Setting AWS_QUERYSTRING_AUTH to False to remove query parameter authentication from generated URLs. This can be useful if your S3 buckets are public.
+# BUT WITH AUTH QUERYSTRING AND ERROR OCCURES - NOT DEBUGGED YET
+AWS_QUERYSTRING_AUTH = False
+
+
+# Stripe payment
+STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY')
+
+
+# Client Domain
+CLIENT_DOMAIN = os.environ.get('CLIENT_DOMAIN')
+
+# TinyMCE Config
+TINYMCE_DEFAULT_CONFIG = {
+    # 'theme': "advanced",
+    # 'relative_urls': False, # default value
+    # 'width': '100%',
+    'height': 300
+}

@@ -1,5 +1,6 @@
 """ All blocks """
 from wagtail.core import blocks
+from wagtail.core.models import Page
 from wagtail.images.blocks import ImageChooserBlock
 
 from wagtail.images.models import Image as WagtailImage
@@ -26,8 +27,11 @@ class WagtailImageSerializer(serializers.ModelSerializer):
 
 
 class APIImageChooserBlock(ImageChooserBlock):
-    def __init__(self, width, *args, **kwargs):
+    required = False
+
+    def __init__(self, width, required=False, *args, **kwargs):
         self.width = width
+        self.required = required
         super().__init__()
 
     def get_api_representation(self, value, context=None):
@@ -35,6 +39,57 @@ class APIImageChooserBlock(ImageChooserBlock):
             return WagtailImageSerializer(context=context, width=self.width).to_representation(value)
         else:
             return ''
+
+
+class APIPageChooserBlock(blocks.PageChooserBlock):
+    # pass
+    def get_api_representation(self, value, context=None):
+        if value:
+            return {
+                'slug': value.slug,
+            }
+
+
+# Location Slider Block
+class CityGalleryBlock(blocks.StructBlock):
+    """ City Gallery Block"""
+    heading = blocks.CharBlock(
+        required=False,
+        max_length=100,
+        label="Heading",
+        default='Super Awesome Hero Heading',
+    )
+    description = blocks.TextBlock(
+        required=False,
+        max_length=5000,
+        label='Description',
+        default='The thing we do is better than any other similar thing and this hero panel will convince you of that, just by having a glorious background image.',
+    )
+
+    class Meta:
+        """ meta data """
+        label = 'City Gallery Block'
+
+
+# Location Slider Block
+class LocationSliderBlock(blocks.StructBlock):
+    """ Service Section Block """
+    heading = blocks.CharBlock(
+        required=False,
+        max_length=100,
+        label="Heading",
+        default='Super Awesome Hero Heading',
+    )
+    subheading = blocks.CharBlock(
+        required=False,
+        max_length=100,
+        label="Subheading",
+        default='Super Awesome Subheading',
+    )
+
+    class Meta:
+        """ meta data """
+        label = 'Location Slider'
 
 
 # Heading Section
@@ -53,20 +108,38 @@ class PageHeadingSectionBlock(blocks.StructBlock):
         default='The thing we do is better than any other similar thing and this hero panel will convince you of that, just by having a glorious background image.',
     )
     image = APIImageChooserBlock(
-        required=False,
         label='Image',
         width='fill-960x720',
+    )
+    primary_button_link = APIPageChooserBlock(
+        required=False,
+    )
+    primary_button_text = blocks.CharBlock(
+        required=False,
+        max_length=80,
+    )
+    secondary_button_link = APIPageChooserBlock(
+        required=False,
+    )
+    secondary_button_text = blocks.CharBlock(
+        required=False,
+        max_length=80,
     )
 
     class Meta:
         """ Meta data """
-        template = 'blocks/page_heading_section.html'
         label = 'Page Heading Section'
 
 
 # FAQ Section
 class FAQSectionBlock(blocks.StructBlock):
     """ FAQ Block - Ued by each section """
+    heading = blocks.CharBlock(
+        required=False,
+        max_length=80,
+        label='Heading',
+        default='Super Awesome Section',
+    )
     faqs = blocks.ListBlock(
         blocks.StructBlock([
             ("heading", blocks.CharBlock(required=True, max_length=1000)),
@@ -170,7 +243,6 @@ class HeroSectionBlock(blocks.StructBlock):
 
     class Meta:
         """ Meta data """
-        template = 'blocks/hero_section.html'
         label = 'Hero Section'
 
 
@@ -206,7 +278,6 @@ class TestimonialSectionBlock(blocks.StructBlock):
 
     class Meta:
         """ Meta data """
-        template = 'blocks/testimonial_section.html'
         label = 'Testimonial Section'
 
 
@@ -222,7 +293,6 @@ class LogoCloudBlock(blocks.StructBlock):
 
     class Meta:
         """ Meta data """
-        template = 'blocks/logo_cloud.html'
         label = 'Logo Cloud'
 
 
@@ -230,7 +300,18 @@ class LogoCloudBlock(blocks.StructBlock):
 
 class ServiceSectionBlock(blocks.StructBlock):
     """ Service Section Block """
-    heading = blocks.CharBlock(required=True, max_length=100, label="Title")
+    heading = blocks.CharBlock(
+        required=True,
+        max_length=100,
+        label="Heading",
+        default='Super Awesome Hero Heading',
+    )
+    subheading = blocks.CharBlock(
+        required=False,
+        max_length=100,
+        label="Subheading",
+        default='Super Awesome Subheading',
+    )
     layout = blocks.ChoiceBlock(
         choices=(
             ('service_with_icon', 'Services with Icons'),
@@ -253,7 +334,6 @@ class ServiceSectionBlock(blocks.StructBlock):
 
     class Meta:
         """ meta data """
-        template = 'blocks/service_section.html'
         label = 'Service Section'
 
 
@@ -272,7 +352,6 @@ class FeatureSectionBlock(blocks.StructBlock):
 
     class Meta:
         """ meta data """
-        template = 'blocks/feature_section.html'
         label = 'Feature Section'
 
 
@@ -319,6 +398,8 @@ class ComingSoonSectionBlock(blocks.StructBlock):
         label = 'Coming Soon Section'
 
 # Login Section Block
+
+
 class LoginSectionBlock(blocks.StructBlock):
     """ Login Section Block """
     heading = blocks.CharBlock(required=True, max_length=100, label="Title")
@@ -333,11 +414,14 @@ class LoginSectionBlock(blocks.StructBlock):
         label='Image',
         width='fill-960x720',
     )
+
     class Meta:
         """ meta data """
         label = 'Login Section'
 
 # Booking Section Block
+
+
 class BookingSectionBlock(blocks.StructBlock):
     """ Booking Section Block """
     heading = blocks.CharBlock(required=True, max_length=100, label="Title")
@@ -347,11 +431,14 @@ class BookingSectionBlock(blocks.StructBlock):
         label='Description',
         default='The thing we do is better than any other similar thing and this hero panel will convince you of that, just by having a glorious background image.',
     )
+
     class Meta:
         """ meta data """
         label = 'Booking Section'
 
 # Counter Section Block
+
+
 class CounterSectionBlock(blocks.StructBlock):
     """ Counter Section Block """
     heading = blocks.CharBlock(required=True, max_length=100, label="Title")
@@ -371,7 +458,6 @@ class CounterSectionBlock(blocks.StructBlock):
 
     class Meta:
         """ meta data """
-        template = 'blocks/counter_section.html'
         label = 'Counter Section'
 
 
@@ -412,7 +498,6 @@ class CTASection(blocks.StructBlock):
 
     class Meta:
         """ meta data """
-        template = 'blocks/cta_section.html'
         label = 'CTA Section'
 
 
@@ -435,17 +520,22 @@ class PricingSectionBlock(blocks.StructBlock):
         blocks.StructBlock([
             ("heading", blocks.CharBlock(required=True, max_length=100)),
             ("price", blocks.CharBlock(required=True, max_length=100)),
-            ("type", blocks.ChoiceBlock(required=True, choices=(
-                ('hourly', 'Hourly'),
-                ('monthly', 'Monthly'),
-                ('unique', 'Unique')
-            ))),
+            # ("type", blocks.ChoiceBlock(required=True, choices=(
+            #     ('hourly', 'Hourly'),
+            #     ('monthly', 'Monthly'),
+            #     ('unique', 'Unique')
+            # ))),
             ("description", blocks.RichTextBlock(
                 required=False,
                 max_length=400,
                 label='Description',
                 default='The thing we do is better than any other similar thing and this hero panel will convince you of that, just by having a glorious background image.',
             )),
+            ("items", blocks.ListBlock(
+                blocks.StructBlock([
+                    ("name", blocks.CharBlock(required=True)),
+                    ("status", blocks.BooleanBlock(default=True))
+                ])))
         ])
     )
 
@@ -498,5 +588,25 @@ class PortfolioSectionBlock(blocks.StructBlock):
 
     class Meta:
         """ meta data """
-        template = 'blocks/portfolio_section.html'
         label = 'Portfolio Section'
+
+
+# Map Section
+class MapSectionBlock(blocks.StructBlock):
+    """ Map Block"""
+    heading = blocks.CharBlock(
+        required=False,
+        max_length=80,
+        label='Heading',
+        default='Super Awesome Section',
+    )
+    description = blocks.TextBlock(
+        required=False,
+        max_length=400,
+        label='Description',
+        default='The thing we do is better than any other similar thing and this hero panel will convince you of that, just by having a glorious background image.',
+    )
+
+    class Meta:
+        """ Meta data """
+        label = 'Map Section'

@@ -21,12 +21,15 @@ urlpatterns = [
     url(r'^admin/', include(wagtailadmin_urls)),
 
     url(r'^api/v1/rest-auth/', include('rest_auth.urls')),
-    url(r'^api/v1/rest-auth/registration/', include('rest_auth.registration.urls')),
+    url(r'^api/v1/rest-auth/registration/',
+        include('rest_auth.registration.urls')),
     url(r'^api/v1/account/', include('allauth.urls')),
-    url(r'^api/v1/accounts-rest/registration/account-confirm-email/(?P<key>.+)/$', confirm_email, name='account_confirm_email'),
+    url(r'^api/v1/accounts-rest/registration/account-confirm-email/(?P<key>.+)/$',
+        confirm_email, name='account_confirm_email'),
 
     url(r'^api/v1/cowork/', include("cowork.api.urls")),
-    
+    url(r'^api/v1/payments/', include('payments.api.urls')),
+
     url(r'^documents/', include(wagtaildocs_urls)),
     url(r'^search/$', search_views.search, name='search'),
 

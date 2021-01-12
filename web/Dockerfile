@@ -16,6 +16,9 @@ ENV BASE_URL=$BASE_URL
 ENV BASE_SERVER_URL=$BASE_SERVER_URL
 
 ADD . /usr/src/app/
+# Shap error fix: You need a different version of Sharp on Docker and on your local machine.
+# Therefore add another yarn version under docker   
+RUN yarn add sharp
 RUN yarn install
 
 # Build app

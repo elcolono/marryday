@@ -5,10 +5,10 @@ from wagtail.core.models import Page
 from wagtail.core.fields import StreamField, RichTextField
 from wagtail.api import APIField
 
-from .blocks import (PageHeadingSectionBlock, HeroSectionBlock, LogoCloudBlock, ServiceSectionBlock,
+from .blocks import (PageHeadingSectionBlock, MapSectionBlock, HeroSectionBlock, LogoCloudBlock, ServiceSectionBlock,
                      FeatureSectionBlock, CounterSectionBlock, TeamSectionBlock, CTASection, PricingSectionBlock, ContactSectionBlock,
                      ContentSectionBlock, TestimonialSectionBlock, HTMLSectionBlock, PortfolioSectionBlock, ComingSoonSectionBlock,
-                     FAQSectionBlock, LoginSectionBlock, BookingSectionBlock)
+                     FAQSectionBlock, LoginSectionBlock, BookingSectionBlock, LocationSliderBlock, CityGalleryBlock)
 
 
 # Create your models here.
@@ -23,7 +23,10 @@ class FlexPage(Page):
     content = StreamField(
         [
             ('page_heading_section_block', PageHeadingSectionBlock()),
+            ('map_section_block', MapSectionBlock()),
             ('hero_section_block', HeroSectionBlock()),
+            ('location_slider_section_block', LocationSliderBlock()),
+            ('city_gallery_section_block', CityGalleryBlock()),
             ('logo_cloud_block', LogoCloudBlock()),
             ('service_section_block', ServiceSectionBlock()),
             ('feature_section_block', FeatureSectionBlock()),
@@ -55,8 +58,6 @@ class FlexPage(Page):
         APIField('seo_text'),
         APIField('content'),
     ]
-
-    template = "cms/flex/flex_page.html"
 
     class Meta:
         abstract = True
