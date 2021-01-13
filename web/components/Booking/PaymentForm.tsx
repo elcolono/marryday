@@ -57,7 +57,7 @@ export default function PaymentForm(props) {
     <React.Fragment>
 
       <div className="d-flex justify-content-between align-items-end mb-4">
-        <h5 className="mb-0">Pay with your card</h5>
+        <h5 className="mb-0">Bezahle mit deiner Karte</h5>
         <div className="text-muted">
           <i className="fab fa-cc-amex fa-2x mr-2" />
           <i className="fab fa-cc-visa fa-2x mr-2" />
@@ -96,18 +96,20 @@ export default function PaymentForm(props) {
             name={email.name}
             label={email.label}
             fullWidth
+            placeholder="Email Adresse"
           />
         </Col>
 
         <Col md="12" className="form-group" >
           <Label for="card-element" className="form-label">
-            Credit or debit card
+            Kredit- oder Bakomatkarte
           </Label>
           <CardElement
             className={`form-control ${error && 'border-danger'}`}
             id="card-element"
             onChange={handleChange}
             options={{
+              hidePostalCode: true,
               style: {
                 base: {
                   fontSize: '16px',

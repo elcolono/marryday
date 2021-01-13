@@ -171,7 +171,10 @@ class BookingCreateView(generics.CreateAPIView):
             subject, from_email, to = 'Erfolgreiche Buchung', 'MoWo Spaces<no-reply@mowo.space>', email
             text_content = 'This is an important message.'
             html_content = render_to_string(
-                'booking-success.html', {'invoice_link': f'{settings.CLIENT_DOMAIN}invoices/{booking.uuid}'})
+                'booking-success.html', {
+                    'booking_link': f'{settings.CLIENT_DOMAIN}bookings/{booking.uuid}',
+                    'payment_link': f'{settings.CLIENT_DOMAIN}payments/{payment.uuid}'},
+            )
             msg = EmailMultiAlternatives(
                 subject, text_content, from_email, [to])
             msg.attach_alternative(html_content, "text/html")
@@ -185,12 +188,15 @@ class BookingCreateView(generics.CreateAPIView):
             for contact in contacts:
                 subject, from_email, to = 'Erfolgreiche Buchung', 'MoWo Spaces<no-reply@mowo.space>', contact.email
                 text_content = 'This is an important message.'
-                html_content = render_to_string(
-                    'booking-confirmation.html', {'first_name': contact.first_name, 'last_name': contact.last_name})
-                msg = EmailMultiAlternatives(
-                    subject, text_content, from_email, [to])
-                msg.attach_alternative(html_content, "text/html")
-                msg.send()
+            html_content = render_to_string(
+                'booking-confirmation.html', {
+                    'booking_link': f'{settings.CLIENT_DOMAIN}bookings/{booking.uuid}',
+                    'payment_link': f'{settings.CLIENT_DOMAIN}payments/{payment.uuid}'},
+            )
+            msg = EmailMultiAlternatives(
+                subject, text_content, from_email, [to])
+            msg.attach_alternative(html_content, "text/html")
+            msg.send()
         except Exception as e:
             booking.delete()
             return Response({'error': str(e)})

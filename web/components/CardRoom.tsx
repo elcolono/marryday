@@ -56,7 +56,7 @@ const CardRoom = (props) => {
           </CardSubtitle>
           <CardText className="text-muted">
             <span className="h4 text-primary">€ {data.prices.desktop_hour && data.prices.desktop_hour.toFixed(2)}</span>
-            &nbsp;per hour
+            &nbsp;/ Stunde
           </CardText>
         </div>
       </CardBody>

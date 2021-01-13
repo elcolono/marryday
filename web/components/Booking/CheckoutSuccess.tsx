@@ -9,12 +9,14 @@ function CheckoutSuccess({ createdBooking }) {
                 {/* <pre>{JSON.stringify(createdBooking, null, 2)}</pre> */}
                 <p className="subtitle text-primary">MoWo Space</p>
                 <h1 className="h2 mb-5">
-                    Buchung war erfolgreich
+                    Erfolgreiche Buchung
                 </h1>
                 {/* {JSON.stringify(createdBooking)} */}
                 <div className="text-block">
-                    <p className="text-muted">Thank you for your booking, Ondrej.</p>
-                    <p className="text-muted mb-5">Samsa was a travelling salesman - and above it there hung a picture that he had recently cut out of an illustrated magazine and housed in a nice, gilded frame.</p>
+                    <p className="text-muted">Vielen Dank für deine Buchung.</p>
+                    <p className="text-muted">In Kürze erhälst du eine Bestätigungsmail mit deinem Buchungs- und Rechnungslink. Hast du weitere Fragen zu deiner Buchung oder einer Stornierung melde dich bitte unter:
+                    {' '}<a href="mailto:contact@mowo.space">contact@mowo.space</a>.</p>
+                    <p className="text-muted mb-5">Vielen Dank, dein MoWo Team.</p>
                     <p className="text-center mb-5">
                         <Link href={`/bookings/${createdBooking.booking.uuid}`} passHref>
                             <a target={"_blank"}>

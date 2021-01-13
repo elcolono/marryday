@@ -23,7 +23,7 @@ import { loadStripe } from "@stripe/stripe-js/pure";
 
 const LocationDetail = (props) => {
     const { location } = props
-    const stripePromise = loadStripe('pk_test_51I47k4IpxsSLqlNa6T7HoFrFVoxyEalH5VROqKLV1DvZTBMV2WWWS4anN5fdWwqtdPIXaJU3VKR3bwmYhQliv3Or00c3rJIp2Q');
+    const stripePromise = loadStripe('pk_test_51I47k4IpxsSLqlNa6T7HoFrFVoxyEalH5VROqKLV1DvZTBMV2WWWS4anN5fdWwqtdPIXaJU3VKR3bwmYhQliv3Or00c3rJIp2Q', { locale: 'de' });
 
 
     const [isDesktop, setIsDesktop] = React.useState(false)
@@ -153,12 +153,10 @@ const LocationDetail = (props) => {
                                 <CardFooter className="bg-primary-light py-4 border-0">
                                     <Media className="align-items-center">
                                         <Media body>
-                                            <h6 className="text-primary">Flexible – free cancellation</h6>
+                                            <h6 className="text-primary">Flexible – kostenlose Stornierung</h6>
                                             <p className="text-sm text-primary opacity-8 mb-0">
-                                                Cancel within 48 hours of booking to get a full refund.{" "}
-                                                <a href="#" className="text-reset ml-3">
-                                                    More details
-              </a>
+                                                Storniere deine Buchung 24 Stunden vor Beginn deines MoWo Termins. {' '}
+                                                <a href="#" className="text-reset">Mehr erfahren</a>
                                             </p>
                                         </Media>
                                         <Icon

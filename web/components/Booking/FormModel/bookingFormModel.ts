@@ -37,7 +37,7 @@ export default {
     // },
     email: {
       name: 'email',
-      label: 'Email address',
+      label: 'Email Adresse',
       requiredErrorMsg: 'Your email is required.'
     },
     completeCard: {

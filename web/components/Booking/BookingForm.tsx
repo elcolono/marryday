@@ -77,11 +77,11 @@ export default function BookingForm(props) {
 
     const objectTypes = [
         {
-            label: "Desktop",
+            label: "Arbeiten",
             value: "desktop"
         },
         {
-            label: "Phone",
+            label: "Telefonie",
             value: "phone"
         },
         {
