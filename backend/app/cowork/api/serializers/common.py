@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from ...models import RentObject, Booking, Location, LocationImage, CityImage, Image, City
+from ...models import RentObject, Booking, Location, LocationImage, CityImage, Image, City, OpeningHours
 
 
 # Images
@@ -26,12 +26,22 @@ class CitySerializer(serializers.ModelSerializer):
         fields = ('id', 'title', 'postcode', 'slug', 'images',)
 
 
+# Opening hours
+class OpeningHoursSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = OpeningHours
+        fields = ('weekday', 'from_hour', 'to_hour',)
+
+
 # Locations
+
+
 class LocationSerializer(serializers.ModelSerializer):
 
     images = LocationImageSerializer(many=True)
     city = CitySerializer()
     prices = serializers.SerializerMethodField()
+    opening_hours = OpeningHoursSerializer(many=True)
 
     def get_prices(self, obj):
         data = {
@@ -44,13 +54,14 @@ class LocationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Location
         fields = ('slug', 'title', 'address', 'city',
-                  'lat', 'lng', 'images', 'description', 'prices', 'public_phone')
+                  'lat', 'lng', 'images', 'description', 'prices', 'public_phone', 'opening_hours')
 
 
 # Bookings
 class BookingRetrieveSerializer(serializers.ModelSerializer):
     rent_object = serializers.StringRelatedField()
     location = LocationSerializer()
+
     class Meta:
         model = Booking
         fields = ('uuid', 'user', 'rent_object',

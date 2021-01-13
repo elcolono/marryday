@@ -7,6 +7,7 @@ import {
     Col,
     Media,
     CardFooter,
+    Table
 } from "reactstrap"
 
 import SwiperGallery from "../../components/SwiperGallery"
@@ -20,6 +21,12 @@ import { fetchAPIwithSSR } from "../../lib/api";
 
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from "@stripe/stripe-js/pure";
+
+import filter from 'lodash/filter'
+import map from 'lodash/map'
+import isEmpty from 'lodash/isEmpty'
+import split from 'lodash/split'
+import join from 'lodash/join'
 
 const LocationDetail = (props) => {
     const { location } = props
@@ -35,13 +42,22 @@ const LocationDetail = (props) => {
     const BookingWithNoSSR = dynamic(() => import("../../components/Booking"), {
         ssr: false
     });
-    const groupByN = (n, data) => {
-        let result = []
-        for (let i = 0; i < data.length; i += n) result.push(data.slice(i, i + n))
-        return result
-    }
 
-    // const groupedAmenities = data.amenities && groupByN(4, data.amenities)
+    const WEEKDAYS = [
+        "Montag",
+        "Dienstag",
+        "Mittwoch",
+        "Donnerstag",
+        "Freitag",
+        "Samstag",
+        "Sonntag",
+    ]
+
+
+    const renderOpeningHours = (openingHours) => {
+        return isEmpty(openingHours) && <div>Geschlossen</div> || map(openingHours, (el, i) => <div key={i}>{join(split(el.from_hour, ':', 2), ':')} - {join(split(el.to_hour, ':', 2), ':')} </div>)
+
+    }
 
     return (
         <React.Fragment>
@@ -50,6 +66,7 @@ const LocationDetail = (props) => {
                 <Container className="py-5">
                     <Row>
                         <Col lg="6">
+                            {/* <pre>{JSON.stringify(location, null, 2)}</pre> */}
 
                             <div className="text-block">
                                 <p className="text-primary">
@@ -60,60 +77,49 @@ const LocationDetail = (props) => {
                                 <div className="text-muted text-uppercase mb-4">
                                     MoWo Original
                                 </div>
-                                {/* {data.tags && (
-                                    <ul className="list-inline text-sm mb-4">
-                                        {data.tags.map((tag) => (
-                                            <li key={tag.value} className="list-inline-item mr-3">
-                                                <i
-                                                    className={`fa fa-${tag.icon} mr-1 text-secondary`}
-                                                />{" "}
-                                                {tag.value}
-                                            </li>
-                                        ))}
-                                    </ul>
-                                )} */}
                                 <div className="text-muted-html" dangerouslySetInnerHTML={{ __html: location.description }}></div>
                             </div>
 
-                            {/* {data.amenities && (
-                                <React.Fragment>
-                                    <div className="text-block">
-                                        <h4 className="mb-4">Amenities</h4>
-                                        <Row>
-                                            {groupedAmenities &&
-                                                groupedAmenities.map((amenityBlock) => (
-                                                    <Col key={amenityBlock[0].value} md="6">
-                                                        <ul className="list-unstyled text-muted">
-                                                            {amenityBlock.map((amenity) => (
-                                                                <li key={amenity.value} className="mb-2">
-                                                                    <i
-                                                                        className={`fa fa-${amenity.icon} text-secondary w-1rem mr-3 text-center`}
-                                                                    />
-                                                                    <span className="text-sm">
-                                                                        {amenity.value}
-                                                                    </span>
-                                                                </li>
-                                                            ))}
-                                                        </ul>
-                                                    </Col>
-                                                ))}
-                                        </Row>
-                                    </div>
 
-                                </React.Fragment>
-                            )} */}
+                            {location.opening_hours && (
+                                <div className="text-block">
+                                    <h3 className="mb-4">Öffnungszeiten</h3>
+                                    <Table className="text-sm mb-0">
+                                        <tbody>
+                                            {map(WEEKDAYS, (item, index) => (
+                                                <tr key={index}>
+                                                    <th
+                                                        className={`pl-0 ${index === 0 ? "border-0" : ""
+                                                            }`}
+                                                    >
+                                                        {item}
+                                                    </th>
+                                                    <td
+                                                        className={`pr-0 text-right ${index === 0 ? "border-0" : ""
+                                                            }`}
+                                                    >
+                                                        {renderOpeningHours(map(filter(location.opening_hours, { 'weekday': index + 1 })))}
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </Table>
+                                </div>
+                            )}
 
                             {location.lat && location.lng && (
                                 <div className="text-block">
-                                    <h3 className="mb-4">Location</h3>
+                                    <h3 className="mb-4">Karte</h3>
                                     <div className="map-wrapper-300 mb-3">
                                         <Map
                                             className="h-100"
-                                            // center={[40.732346, -74.0014247]}
+                                            markerPosition={[location.lat, location.lng]}
                                             center={[location.lat, location.lng]}
-                                            circlePosition={[location.lat, location.lng]}
-                                            circleRadius={500}
+                                            // circlePosition={[location.lat, location.lng]}
+                                            // circleRadius={500}
                                             zoom={14}
+                                            scrollWheelZoom={false}
+                                            geoJSON={false}
                                         />
                                     </div>
                                 </div>
@@ -138,11 +144,6 @@ const LocationDetail = (props) => {
                                 style={{ top: "100px" }}
                                 className="shadow ml-lg-4 rounded sticky-top"
                             >
-                                {/* <ProgressBar progress={50} /> */}
-
-
-                                {/* <BookingFormWithNoSSR locationSlug={location.slug} /> */}
-
 
                                 {isDesktop &&
                                     <Elements stripe={stripePromise}>

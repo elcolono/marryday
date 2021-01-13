@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.postgres.fields import ArrayField
 import uuid
 from django.utils.text import slugify
 from datetime import datetime
@@ -35,6 +36,33 @@ class ForwardingContact(models.Model):
     last_name = models.CharField(max_length=150)
     location = models.ForeignKey(
         'cowork.Location', related_name="forwarding_contacts", on_delete=models.CASCADE, null=True)
+
+
+WEEKDAYS = [
+    (1, ("Monday")),
+    (2, ("Tuesday")),
+    (3, ("Wednesday")),
+    (4, ("Thursday")),
+    (5, ("Friday")),
+    (6, ("Saturday")),
+    (7, ("Sunday")),
+]
+
+
+class OpeningHours(models.Model):
+
+    weekday = models.IntegerField(choices=WEEKDAYS)
+    from_hour = models.TimeField()
+    to_hour = models.TimeField()
+    location = models.ForeignKey('cowork.Location', related_name="opening_hours", on_delete=models.CASCADE)
+
+    class Meta:
+        ordering = ('weekday', 'from_hour')
+        unique_together = ('weekday', 'from_hour', 'to_hour')
+
+    def __unicode__(self):
+        return u'%s: %s - %s' % (self.get_weekday_display(),
+                                 self.from_hour, self.to_hour)
 
 
 class Location(models.Model):
