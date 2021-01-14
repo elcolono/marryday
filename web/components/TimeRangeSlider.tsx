@@ -5,10 +5,10 @@ import subHours from 'date-fns/subHours'
 import isWithinInterval from 'date-fns/isWithinInterval'
 import roundToNearestMinutes from 'date-fns/roundToNearestMinutes'
 import addMinutes from 'date-fns/addMinutes'
+import subMinutes from 'date-fns/subMinutes'
+
 import isBefore from 'date-fns/isBefore'
-import isAfter from 'date-fns/isAfter'
 import format from "date-fns/format";
-import areIntervalsOverlapping from "date-fns/areIntervalsOverlapping"
 
 import TimeRange from 'react-timeline-range-slider'
 import Draggable from 'react-draggable';
@@ -19,7 +19,7 @@ import { useFormikContext } from 'formik';
 
 const now = new Date()
 const nearestHour = roundToNearestMinutes(now, { nearestTo: 30 })
-const startTimeLinePosition = -750
+const startTimeLinePosition = -500
 const stepInterval = 250;
 
 
@@ -127,9 +127,12 @@ const TimeRangeSlider = ({
     }
 
     const onChangeTimeInterval = (ti) => {
-        const isStartVisible = isWithinInterval(ti[0], { start: addHours(timelineInterval[0], 12), end: addHours(timelineInterval[0], 17.5) })
-        const isEndVisible = isWithinInterval(ti[1], { start: addHours(timelineInterval[0], 12), end: addHours(timelineInterval[0], 17.5) })
-        if (!isStartVisible && !isEndVisible) {
+        console.log("onChangeTimeInterval", ti)
+        // const isStartVisible = isWithinInterval(ti[0], { start: addHours(timelineInterval[0], 12), end: addHours(timelineInterval[0], 17.5) })
+        // const isEndVisible = isWithinInterval(ti[1], { start: addHours(timelineInterval[0], 12), end: addHours(timelineInterval[0], 17.5) })
+        const isStartWithinTimelineInterval = isWithinInterval(ti[0], { start: addMinutes(timelineInterval[0], 1), end: subMinutes(timelineInterval[1], 1) })
+        const isEndWithinTimelineInterval = isWithinInterval(ti[1], { start: addHours(timelineInterval[0], 1), end: subHours(timelineInterval[1], 1) })
+        if (!isStartWithinTimelineInterval || !isEndWithinTimelineInterval) {
             return clearSelectedTimeInterval()
         }
         // Set formik values
