@@ -137,7 +137,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params, req }) =>
                 classes: "shadow",
                 color: "white",
             },
-            title: "Booking | MoWo Spaces",
+            title: "Buchungsbestätigung",
         },
     }
 }

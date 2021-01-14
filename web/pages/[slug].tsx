@@ -1,6 +1,5 @@
-import Head from 'next/head'
+import React from 'react'
 import { fetchAPIwithSSR } from '../lib/api'
-import { CMS_NAME } from '../lib/constants'
 import HeroSection from '../components/Section/HeroSection'
 import ContentSection from '../components/Section/Content'
 import CounterSection from '../components/Section/counter-section'
@@ -18,14 +17,7 @@ export default function SubPage(pageProps) {
 
   const { page } = pageProps;
   return (
-    <>
-      <Head>
-        <title>{page.title} | {CMS_NAME}</title>
-
-        {/* <!-- Seo Meta --> */}
-        <meta name="description" content="Listigo | Directory Bootstrap 4 Template" />
-        <meta name="keywords" content="listing dashboard, directory panel, listing, responsive directory, directory template, themeforest, listing template, css3, html5" />
-      </Head>
+    <React.Fragment>
       {page.content.map((section, i) => {
         if (section.type == 'page_heading_section_block') return <HeadingSection key={i} title={page.title} data={section.value} />
         if (section.type == 'hero_section_block') return <HeroSection key={i} data={section.value} />
@@ -39,7 +31,7 @@ export default function SubPage(pageProps) {
         if (section.type == 'faq_section_block') return <FAQSection key={i} data={section.value} />
         if (section.type == 'login_section_block') return <LoginSection key={i} data={section.value} />
       })}
-    </>
+    </React.Fragment>
   )
 }
 
@@ -59,7 +51,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params, req }) =>
         classes: "shadow",
         color: "white",
       },
-      title: "Rooms | Category - Map on the top",
+      title: page.title,
     },
   }
 }

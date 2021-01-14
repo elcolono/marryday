@@ -38,7 +38,7 @@ const Layout = (pageProps) => {
       {/* Google Fonts - preload & async load to avoid render blocking */}
       <GoogleFonts href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:ital,wght@0,300;0,400;0,700;1,400&display=swap" />
       <Head>
-        <title>{pageProps.title} - Directory React Theme</title>
+        <title>{pageProps.title} - MoWo Spaces</title>
         <link rel="icon" href="/favicon.png" />
       </Head>
       <NextNProgress color="#4E66F8" options={{ showSpinner: false }} />

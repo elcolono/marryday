@@ -1,5 +1,6 @@
 import React from "react"
 import dynamic from "next/dynamic"
+import { CMS_NAME } from "../../lib/constants"
 
 import {
     Container,
@@ -200,7 +201,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params, req }) =>
                 classes: "shadow",
                 color: "white",
             },
-            title: "Rooms | Category - Map on the top",
+            title: location.title,
         },
     }
 }

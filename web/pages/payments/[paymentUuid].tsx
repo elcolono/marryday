@@ -241,7 +241,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params, req }) =>
         classes: "shadow",
         color: "white",
       },
-      title: "Rooms | Category - Map on the top",
+      title: "Bezahlung",
     },
   }
 }
