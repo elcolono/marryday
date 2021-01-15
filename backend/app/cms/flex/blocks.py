@@ -168,6 +168,7 @@ class ContactSectionBlock(blocks.StructBlock):
                 ('phone', 'Phone'),
             ))),
             ("heading", blocks.CharBlock(required=True, max_length=100)),
+            ("content", blocks.TextBlock(required=True, max_length=500)),
             ("data", blocks.TextBlock(required=True, max_length=300)),
         ])
     )

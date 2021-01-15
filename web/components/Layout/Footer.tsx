@@ -1,17 +1,15 @@
 import React from "react"
 import Link from "next/link"
-import { Container, Row, Col, Form, Input, Button, Badge } from "reactstrap"
+import { Container, Row, Col } from "reactstrap"
 
-import footerContent from "../../data/footer.json"
-
-const Footer = ({ flatMenus, themeSettings }) => {
+const Footer = ({ flatMenus }) => {
   return (
     <footer className="position-relative z-index-10 d-print-none">
       <div className="py-6 bg-gray-200 text-muted">
 
         <Container>
           <Row>
-
+            {/* {JSON.stringify(flatMenus)} */}
             {flatMenus &&
               flatMenus.map((menu) => {
                 if (menu.handle == "social") return <Col
@@ -62,7 +60,7 @@ const Footer = ({ flatMenus, themeSettings }) => {
                   <ul className="list-unstyled">
                     {menu.menu_items.map((item, i) => (
                       <li key={i}>
-                        <Link href={item.link_page.slug}>
+                        <Link href={item.link_page ? item.link_page.slug : item.link_url}>
                           <a className="text-muted">
                             {item.link_text}
                           </a>
@@ -93,8 +91,8 @@ const Footer = ({ flatMenus, themeSettings }) => {
                   <ul className="list-unstyled">
                     {menu.menu_items.map((item, i) => (
                       <li key={i}>
-                        <Link href={item.link_page.slug}>
-                          <a className="text-muted">
+                        <Link href={item.link_page ? item.link_page.slug : item.link_url}>
+                          <a className="text-muted" target={item.link_url && '_blank'} >
                             {item.link_text}
                           </a>
                         </Link>
