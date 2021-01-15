@@ -78,8 +78,8 @@ const Footer = ({ flatMenus, themeSettings }) => {
               flatMenus.map((menu) => {
                 if (menu.handle == "links_legal") return <Col
                   key={menu.title}
-                  lg={menu.lg && menu.lg}
-                  md={menu.md && menu.md}
+                  lg={2}
+                  md={6}
                   className="mb-5 mb-lg-0"
                 >
                   <div className="font-weight-bold text-uppercase text-dark mb-3">
