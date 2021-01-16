@@ -2,6 +2,7 @@ import { Formik } from 'formik'
 import * as Yup from 'yup'
 import ApiService from '../lib/api';
 import { toast } from 'react-toastify';
+import { Form, Input, Button, Spinner } from "reactstrap"
 
 const NewsletterSubscribeForm = () => (
     <Formik
@@ -28,33 +29,37 @@ const NewsletterSubscribeForm = () => (
     >
         {({
             values,
-            errors,
-            touched,
             handleChange,
             handleBlur,
             handleSubmit,
             isSubmitting,
-            status,
             /* and other goodies */
         }) => (
-            <form onSubmit={handleSubmit}>
-                <div className="form-control-icon form-control-icon_right">
-                    <input
-                        className="form-control mt-3"
+
+            <Form id="newsletter-form" onSubmit={handleSubmit}>
+                <div className="input-group mb-3">
+                    <Input
                         placeholder="Email Adresse"
                         type="email"
                         name="email"
                         onChange={handleChange}
                         onBlur={handleBlur}
                         value={values.email}
+                        className="bg-transparent border-dark border-right-0"
                     />
-                    <button type="submit" disabled={isSubmitting} className="form-control-icon_wrapper">
-                        {isSubmitting && (<div className="spinner-border spinner-border-sm"></div>) || (<span><i className="ion-md-arrow-forward"></i></span>)}
-                    </button>
-                    <div className="text-danger mt-2">{errors.email && touched.email && errors.email}</div>
-                    <div className="text-danger mt-2">{status && status}</div>
+                    <div className="input-group-append">
+                        <Button
+                            disabled={isSubmitting}
+                            className="btn-outline-dark border-left-0"
+                            color="deoco"
+                            type="submit"
+                        >
+                            {isSubmitting && <Spinner size={"sm"} /> || <i className="fa fa-paper-plane text-lg" />}
+
+                        </Button>
+                    </div>
                 </div>
-            </form>
+            </Form>
         )}
     </Formik>
 )
