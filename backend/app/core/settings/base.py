@@ -276,6 +276,9 @@ AWS_QUERYSTRING_AUTH = False
 # Stripe payment
 STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY')
 
+# Pipedrive
+PIPEDRIVE_API_TOKEN = os.environ.get('PIPEDRIVE_API_TOKEN')
+PIPEDRIVE_URL = os.environ.get('PIPEDRIVE_URL')
 
 # Client Domain
 CLIENT_DOMAIN = os.environ.get('CLIENT_DOMAIN')

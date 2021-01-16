@@ -1,5 +1,6 @@
 import stripe
 import json
+import requests
 from django.conf import settings
 
 from rest_framework import generics, permissions, status
@@ -378,3 +379,57 @@ class MailchimpAudienceAPIVIEWSet(APIView):
             json_error = json.loads(error.text)
             return Response("Sie sind bereits angemeldet.", status=status.HTTP_400_BAD_REQUEST)
         return Response("Was successful")
+
+
+# Mailchimp Views
+class PipeDriveAPIVIEWSet(APIView):
+    """ COMMENTS """
+
+    def post(self, request):
+
+        pipedrive_api_token = settings.PIPEDRIVE_API_TOKEN
+        email_address = request.data['email']
+        first_name = request.data['firstName']
+        last_name = request.data['lastName']
+        message_note = request.data['messageNote']
+
+        if not pipedrive_api_token or not email_address or not first_name or not last_name:
+            return Response("All data is required", status=status.HTTP_400_BAD_REQUEST)
+
+        # Search for person
+        response = requests.get(
+            f'{settings.PIPEDRIVE_URL}persons/search?api_token={pipedrive_api_token}&exact_match=true&term={email_address}')
+        content = json.loads(response.content)
+
+        # if person not exist create person else get id from reqeust
+        if not content['data']['items']:
+            post_data = {
+                'name': f'{first_name} {last_name}',
+                'email': email_address
+            }
+            response = requests.post(
+                f'{settings.PIPEDRIVE_URL}persons?api_token={pipedrive_api_token}', data=post_data)
+            content = json.loads(response.content)
+            person_id = content['data']['id']
+        else:
+            person_id = content['data']['items'][0]['item']['id']
+
+        # Create deal
+        post_data = {
+            'title': f'{first_name} {last_name} deal',
+            'person_id': person_id
+        }
+        response = requests.post(
+            f'{settings.PIPEDRIVE_URL}deals?api_token={pipedrive_api_token}', data=post_data)
+        content = json.loads(response.content)
+
+        # Add note
+        post_data = {
+            'content': message_note,
+            'deal_id': content['data']['id']
+        }
+        response = requests.post(
+            f'{settings.PIPEDRIVE_URL}notes?api_token={pipedrive_api_token}', data=post_data)
+        content = response.content
+
+        return Response("Nachricht erfolgreich gesendet!")

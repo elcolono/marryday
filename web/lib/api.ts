@@ -31,6 +31,10 @@ export default class ApiService {
         return api.post(`/cowork/bookings/`, data)
     }
 
+    static addContact(data = {}) {
+        return api.post(`/cowork/pipedrive-deal`, data)
+    }
+
     static addSubscriber(data = {}) {
         return api.post(`/cowork/mailchimp-audience`, data)
     }

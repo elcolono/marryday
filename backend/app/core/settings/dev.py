@@ -41,6 +41,10 @@ MAILCHIMP_DATA_CENTER = "us7"
 MAILCHIMP_EMAIL_LIST_ID = "d224e7b68b"
 
 
+# Pipedrive
+PIPEDRIVE_URL = "https://mowospaces.pipedrive.com/api/v1/"
+
+
 # Client Domain
 CLIENT_DOMAIN = 'http://localhost:3001/'
 

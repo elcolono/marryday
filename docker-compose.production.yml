@@ -9,7 +9,7 @@ services:
       MAILCHIMP_API_KEY: "${MAILCHIMP_API_KEY}"
       AWS_STORAGE_BUCKET_NAME: "mowo-production"
       CLIENT_DOMAIN: "https://www.mowo.space/"
-
+      PIPEDRIVE_URL: "https://mowospaces.pipedrive.com/api/v1/"
 
   db:
     env_file: .env.production

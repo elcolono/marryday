@@ -1,5 +1,5 @@
 from django.urls import path
-from cowork.api.views import RentObjectListView, LocationListView, LocationRetrieveView, BookingCreateView, BookingRetrieveView, CheckInListView, CityListView, send_test_mail, MailchimpAudienceAPIVIEWSet
+from cowork.api.views import RentObjectListView, LocationListView, LocationRetrieveView, BookingCreateView, BookingRetrieveView, CheckInListView, CityListView, send_test_mail, MailchimpAudienceAPIVIEWSet, PipeDriveAPIVIEWSet
 
 urlpatterns = [
     # Cites
@@ -17,5 +17,9 @@ urlpatterns = [
     # Locations
     path("checkins/", CheckInListView.as_view(), name="checkin-list"),
     # Mailchimp
-    path("mailchimp-audience", MailchimpAudienceAPIVIEWSet.as_view(), name="mailchimp-add"),
+    path("mailchimp-audience", MailchimpAudienceAPIVIEWSet.as_view(),
+         name="mailchimp-add"),
+    # Pipedrive
+    path("pipedrive-deal", PipeDriveAPIVIEWSet.as_view(),
+         name="pipedrive-deal-add"),
 ]
