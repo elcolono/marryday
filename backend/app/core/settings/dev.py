@@ -35,6 +35,12 @@ AWS_ACCESS_KEY_ID = 'AKIA4NGTH73S3GKH6Y4R'
 AWS_STORAGE_BUCKET_NAME = 'mowo-location-images'
 
 
+# Mailchimp DEV Config
+# MAILCHIMP_API_KEY is set via .env config for DEV Environment
+MAILCHIMP_DATA_CENTER = "us7"
+MAILCHIMP_EMAIL_LIST_ID = "d224e7b68b"
+
+
 # Client Domain
 CLIENT_DOMAIN = 'http://localhost:3001/'
 

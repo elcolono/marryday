@@ -1,8 +1,10 @@
 import stripe
+import json
 from django.conf import settings
 
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from ..models import RentObject, Location, Booking, City
 from .serializers.common import (
@@ -20,6 +22,9 @@ from payments.api.serializers.common import PaymentSerializer
 
 from django.http import HttpResponse, HttpResponseNotFound, JsonResponse
 from decimal import Decimal
+
+from mailchimp_marketing.api_client import ApiClientError
+import mailchimp_marketing as MailchimpMarketing
 
 # All API VIEWS:
 # https://www.django-rest-framework.org/api-guide/generic-views/#retrieveapiview
@@ -331,3 +336,45 @@ class CheckInListView(generics.ListCreateAPIView):
         #         if init:
 
         return bookings
+
+
+# Mailchimp Views
+class MailchimpAudienceAPIVIEWSet(APIView):
+    """ COMMENTS """
+
+    def post(self, request):
+
+        mailchimp_api_key = settings.MAILCHIMP_API_KEY
+        mailchimp_data_center = settings.MAILCHIMP_DATA_CENTER
+        mailchimp_email_list_id = settings.MAILCHIMP_EMAIL_LIST_ID
+        # Check if payment data is complete
+        if not mailchimp_api_key or not mailchimp_email_list_id or not mailchimp_email_list_id:
+            return Response("Technical error", status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            """ COMMENTS """
+            mailchimp = MailchimpMarketing.Client()
+            mailchimp.set_config({
+                "api_key": mailchimp_api_key,
+                "server": mailchimp_data_center
+            })
+            list_id = mailchimp_email_list_id
+
+            email_address = request.data['email']
+            member_info = {
+                "email_address": email_address,
+                "status": "subscribed",
+                # "merge_fields": {
+                #     "FNAME": "Prudence",
+                #     "LNAME": "McVankab"
+                # }
+            }
+        except Exception as e:
+            return Response({'error': str(e)})
+        try:
+            response = mailchimp.lists.add_list_member(list_id, member_info)
+        except ApiClientError as error:
+            # print("An exception occurred: {}".format(error.text))
+            json_error = json.loads(error.text)
+            return Response("Sie sind bereits angemeldet.", status=status.HTTP_400_BAD_REQUEST)
+        return Response("Was successful")

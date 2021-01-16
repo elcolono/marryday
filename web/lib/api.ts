@@ -31,6 +31,10 @@ export default class ApiService {
         return api.post(`/cowork/bookings/`, data)
     }
 
+    static addSubscriber(data = {}) {
+        return api.post(`/cowork/mailchimp-audience`, data)
+    }
+
     static fetchLocations() {
         return api.get(`/cowork/locations/`)
     }
