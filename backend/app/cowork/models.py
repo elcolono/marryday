@@ -58,7 +58,7 @@ class OpeningHours(models.Model):
 
     class Meta:
         ordering = ('weekday', 'from_hour')
-        unique_together = ('weekday', 'from_hour', 'to_hour')
+        # unique_together = ('weekday', 'from_hour', 'to_hour')
 
     def __unicode__(self):
         return u'%s: %s - %s' % (self.get_weekday_display(),
