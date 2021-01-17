@@ -8,9 +8,9 @@ from rest_framework import serializers
 
 
 class WagtailImageSerializer(serializers.ModelSerializer):
-    def __init__(self, width, *args, **kwargs):
-        self.width = width
-        super().__init__()
+    # def __init__(self, width, *args, **kwargs):
+    #     self.width = width
+    #     super().__init__()
 
     url = serializers.SerializerMethodField()
 
@@ -21,22 +21,23 @@ class WagtailImageSerializer(serializers.ModelSerializer):
     def get_url(self, obj):
         # return obj.get_rendition('fill-300x186|jpegquality-60').url
         # return obj.get_rendition('fill-960x720').url
-        return obj.get_rendition(self.width).url
-
-        # blocks.py
+        # return obj.get_rendition(self.width).url
+        return obj.get_rendition('original').url
 
 
 class APIImageChooserBlock(ImageChooserBlock):
     required = False
 
-    def __init__(self, width, required=False, *args, **kwargs):
-        self.width = width
+    def __init__(self, required=False, *args, **kwargs):
+        # self.width = width
         self.required = required
         super().__init__()
 
     def get_api_representation(self, value, context=None):
         if value:
-            return WagtailImageSerializer(context=context, width=self.width).to_representation(value)
+            # Width because of next/images not needed anymore
+            # return WagtailImageSerializer(context=context, width=self.width).to_representation(value)
+            return WagtailImageSerializer(context=context).to_representation(value)
         else:
             return ''
 
@@ -95,6 +96,13 @@ class LocationSliderBlock(blocks.StructBlock):
 # Heading Section
 class PageHeadingSectionBlock(blocks.StructBlock):
     """ Section Base Block - Ued by each section """
+    layout = blocks.ChoiceBlock(
+        choices=(
+            ('without_background', 'Without background'),
+            ('with_background', 'With background')
+        ),
+        default="without_background"
+    )
     heading = blocks.CharBlock(
         required=False,
         max_length=80,
@@ -226,20 +234,18 @@ class HeroSectionBlock(blocks.StructBlock):
         label='Description',
         default='The thing we do is better than any other similar thing and this hero panel will convince you of that, just by having a glorious background image.',
     )
-    button = blocks.CharBlock(
+    button_text = blocks.CharBlock(
         required=False,
         max_length=100,
         label='Button text',
         default='Get in touch',
     )
-    button_link = blocks.URLBlock(
+    button_link = APIPageChooserBlock(
         required=False,
         label='Button link'
     )
     image = APIImageChooserBlock(
-        required=False,
-        label='Image',
-        width='fill-960x720'
+        required=True,
     )
 
     class Meta:

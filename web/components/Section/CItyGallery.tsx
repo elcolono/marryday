@@ -60,10 +60,10 @@ const CityGallery = (props) => {
                                 />
                                 <div className="p-3 p-sm-5 text-white z-index-20">
                                     <h4 className="h2">{city.title}</h4>
-                                    <p className="mb-4">Her comes subtitle</p>
-                                    <Link href={`/city/${city.slug}`}>
+                                    {/* <p className="mb-4">Her comes subtitle</p> */}
+                                    <Link href={`/locations`}>
                                         <Button
-                                            href={`/city/${city.slug}`}
+                                            // href={`/city/${city.slug}`}
                                             color="link"
                                             className="text-reset pl-0 stretched-link text-decoration-none"
                                         >

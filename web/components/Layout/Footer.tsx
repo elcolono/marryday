@@ -26,7 +26,6 @@ const Footer = ({ flatMenus }) => {
                       {menu.heading}
                     </p>
                   )}
-                  <div className="text-uppercase mb-3">Newsletter Anmeldung</div>
                   <NewsletterSubscribeForm />
                   <ul className="list-inline">
                     {menu.menu_items.map((item, i) => (
