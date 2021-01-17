@@ -13,9 +13,14 @@ This repository provides an application for deploying a Django backend served by
 
 #### Testing
 * Spin up App
-    docker-compose -f docker-compose.yml -f docker-compose.testing.yml build
-    docker-compose -f docker-compose.yml -f docker-compose.testing.yml up
-    docker-compose -f docker-compose.yml -f docker-compose.testing.yml down
+    1. git pull (testing branch)
+    2. docker-compose -f docker-compose.yml -f docker-compose.testing.yml up --build --force-recreate
+        * Combines: 
+        * docker-compose -f docker-compose.yml -f docker-compose.testing.yml build
+        * docker-compose -f docker-compose.yml -f docker-compose.testing.yml down
+        * docker-compose -f docker-compose.yml -f docker-compose.testing.yml up -d
+    5. docker system prune (keep it clean)
+
 
 
 ### Production (For hHetzner)
@@ -35,7 +40,9 @@ This repository provides an application for deploying a Django backend served by
     * Add flat menu
 
 * Spin up App
-    * docker-compose -f docker-compose.yml -f docker-compose.production.yml build
-    * docker-compose -f docker-compose.yml -f docker-compose.production.yml up
-    * docker-compose -f docker-compose.yml -f docker-compose.production.yml down
+    1. git pull (master branch)
+    2. docker-compose -f docker-compose.yml -f docker-compose.production.yml build
+    3. docker-compose -f docker-compose.yml -f docker-compose.production.yml down
+    4. docker-compose -f docker-compose.yml -f docker-compose.production.yml up -d
+    5. docker system prune (keep it clean)
 
