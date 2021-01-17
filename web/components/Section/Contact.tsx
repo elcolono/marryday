@@ -50,8 +50,7 @@ const ContactSection = ({ data, title }) => {
                 <Container>
                     <h2 className="h4 mb-5">Kontaktformular</h2>
                     <Row>
-                        <Col md="12" className="mb-5 mb-md-0">
-
+                        <Col md="7" className="mb-5 mb-md-0">
                             <Formik
                                 initialValues={{
                                     firstName: '',
@@ -144,7 +143,26 @@ const ContactSection = ({ data, title }) => {
                                     </Form>
                                 )}
                             </Formik>
-
+                        </Col>
+                        <Col md="5">
+                            <div className="pl-lg-4">
+                                {data.content && (
+                                    <p className="text-muted">{data.content}</p>
+                                )}
+                                {data.social && (
+                                    <div className="social">
+                                        <ul className="list-inline">
+                                            {data.social.map((icon) => (
+                                                <li key={icon.icon} className="list-inline-item">
+                                                    <a href={icon.link} target="_blank">
+                                                        <i className={`fab fa-${icon.icon}`} />
+                                                    </a>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                )}
+                            </div>
                         </Col>
                     </Row>
                 </Container>

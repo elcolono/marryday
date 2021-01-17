@@ -180,6 +180,18 @@ class ContactSectionBlock(blocks.StructBlock):
             ("data", blocks.TextBlock(required=True, max_length=300)),
         ])
     )
+    content = blocks.TextBlock(
+        required=False,
+        max_length=400,
+        label='Description',
+        default='The thing we do is better than any other similar thing and this hero panel will convince you of that, just by having a glorious background image.',
+    )
+    social = blocks.ListBlock(
+        blocks.StructBlock([
+            ("icon", blocks.CharBlock(required=False, max_length=100)),
+            ("link", blocks.URLBlock(required=False, max_length=100)),
+        ])
+    )
 
     class Meta:
         """ Meta data """
