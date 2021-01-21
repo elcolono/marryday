@@ -28,6 +28,7 @@ import map from 'lodash/map'
 import isEmpty from 'lodash/isEmpty'
 import split from 'lodash/split'
 import join from 'lodash/join'
+import { getCookieConsentValue } from "react-cookie-consent";
 
 const LocationDetail = (props) => {
     const { location } = props
@@ -35,8 +36,10 @@ const LocationDetail = (props) => {
 
 
     const [isDesktop, setIsDesktop] = React.useState(false)
+    const [acceptedCookies, setAcceptedCookies] = React.useState(undefined)
 
     React.useEffect(() => {
+        setAcceptedCookies(getCookieConsentValue())
         setIsDesktop(window.innerWidth > 991)
     })
 
@@ -146,9 +149,9 @@ const LocationDetail = (props) => {
                                 className="shadow ml-lg-4 rounded sticky-top"
                             >
 
-                                {isDesktop &&
+                                {isDesktop && acceptedCookies &&
                                     <Elements stripe={stripePromise}>
-                                        <BookingWithNoSSR locationSlug={location.slug} prices={location.prices} />
+                                        <BookingWithNoSSR openingHours={location.opening_hours} locationSlug={location.slug} prices={location.prices} />
                                     </Elements>
                                 }
 
@@ -171,7 +174,7 @@ const LocationDetail = (props) => {
                         </Col>
                     </Row>
                 </Container>
-                {!isDesktop && <BottomNav>
+                {!isDesktop && acceptedCookies && <BottomNav>
                     <Elements stripe={stripePromise}>
                         <BookingWithNoSSR locationSlug={location.slug} prices={location.prices} />
                     </Elements>

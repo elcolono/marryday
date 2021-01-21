@@ -47,7 +47,27 @@ const Layout = (pageProps) => {
       <ToastContainer position="bottom-right" />
       {!pageProps.hideFooter && <Footer {...footerProps} />}
       <SvgIcons />
-      <CookieConsent>This website uses cookies to enhance the user experience.</CookieConsent>
+      <CookieConsent
+        // Set cookie Consent True / false
+        // Additionally set cookie consent settings 
+        buttonText={"Ich stimme zu"}
+        style={{
+          background: "#f48300",
+          zIndex: "1050"
+        }}
+        buttonStyle={{
+          margin: "15px",
+          padding: "15px",
+          color: "#ffffff",
+          border: '1px solid #ffffff',
+          fontSize: "15px",
+          borderRadius: "50px",
+          background: "#f48300",
+        }}
+      >
+        Diese Website verwendet Cookies – nähere Informationen dazu und zu Ihren Rechten als Benutzer finden Sie in unserer Datenschutzerklärung am Ende der Seite.<br />
+        Klicken Sie auf „Ich stimme zu“, um Cookies zu akzeptieren und direkt unsere Website besuchen zu können.
+      </CookieConsent>
     </div>
   )
 }
