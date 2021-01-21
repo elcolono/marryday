@@ -151,7 +151,7 @@ const LocationDetail = (props) => {
 
                                 {isDesktop && acceptedCookies &&
                                     <Elements stripe={stripePromise}>
-                                        <BookingWithNoSSR openingHours={location.opening_hours} locationSlug={location.slug} prices={location.prices} />
+                                        <BookingWithNoSSR locationSlug={location.slug} prices={location.prices} />
                                     </Elements>
                                 }
 
