@@ -51,6 +51,9 @@ class LocationAdmin(admin.ModelAdmin):
         ('General', {
             'fields': ('is_active', 'booking_type', 'title', 'address', 'street_number', 'city', 'public_phone', 'lat', 'lng', 'description', 'website', 'slug')
         }),
+        ('Amenities', {
+            'fields': ('wifi', 'printer', 'air_condition', 'coffee', 'locker', 'shower')
+        }),
         ('Pricing', {
             'fields': ('phone_hour_price', 'desktop_hour_price', 'meeting_hour_price',)
         }),

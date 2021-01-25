@@ -86,6 +86,40 @@ const LocationDetail = (props) => {
                                 <div className="text-muted-html" dangerouslySetInnerHTML={{ __html: location.description }}></div>
                             </div>
 
+                            <div className="text-block">
+                                <h4 className="mb-4">Ausstattung</h4>
+                                <Row>
+                                    <Col md="6">
+                                        <ul className="list-unstyled text-muted">
+                                            {location.amenities.slice(0, 3).map((amenity) => (
+                                                <li key={amenity.type} className="mb-2">
+                                                    <i
+                                                        className={`fa fa-${amenity.icon} text-secondary w-1rem mr-3 text-center`}
+                                                    />
+                                                    <span className="text-sm">
+                                                        {!amenity.value && <del>{amenity.label}</del> || amenity.label}
+                                                    </span>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </Col>
+                                    <Col md="6">
+                                        <ul className="list-unstyled text-muted">
+                                            {location.amenities.slice(3, 6).map((amenity) => (
+                                                <li key={amenity.type} className="mb-2">
+                                                    <i
+                                                        className={`fa fa-${amenity.icon} text-secondary w-1rem mr-3 text-center`}
+                                                    />
+                                                    <span className="text-sm">
+                                                        {!amenity.value && <del>{amenity.label}</del> || amenity.label}
+                                                    </span>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </Col>
+                                </Row>
+                            </div>
+
 
                             {location.opening_hours && location.booking_type == "booking" && (
                                 <div className="text-block">

@@ -19,6 +19,7 @@ BOOKING_TYPES = (
     ('booking', 'Booking')
 )
 
+
 class Country(models.Model):
     is_active = models.BooleanField(default=False)
     title = models.CharField(max_length=150, unique=True)
@@ -111,7 +112,8 @@ class Location(models.Model):
         Country, related_name="locations", on_delete=models.PROTECT, null=True)
     lat = models.DecimalField(decimal_places=4, max_digits=10, null=True)
     lng = models.DecimalField(decimal_places=4, max_digits=10, null=True)
-    booking_type = models.CharField(max_length=150, choices=BOOKING_TYPES, default="linking")
+    booking_type = models.CharField(
+        max_length=150, choices=BOOKING_TYPES, default="linking")
     slug = models.CharField(max_length=150, blank=True, null=True)
     description = HTMLField(null=True, blank=True)
     phone_hour_price = models.DecimalField(
@@ -123,6 +125,12 @@ class Location(models.Model):
     public_phone = models.CharField(max_length=150, null=True)
     website = models.URLField(max_length=150, blank=True, null=True)
     utc_offset = models.IntegerField(null=True)
+    wifi = models.BooleanField(default=False)
+    printer = models.BooleanField(default=False)
+    air_condition = models.BooleanField(default=False)
+    coffee = models.BooleanField(default=False)
+    locker = models.BooleanField(default=False)
+    shower = models.BooleanField(default=False)
 
     def clean(self):
         rent_objects = self.rent_objects.all()

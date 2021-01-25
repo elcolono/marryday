@@ -41,7 +41,24 @@ class LocationSerializer(serializers.ModelSerializer):
     images = LocationImageSerializer(many=True)
     city = CitySerializer()
     prices = serializers.SerializerMethodField()
+    amenities = serializers.SerializerMethodField()
     opening_hours = OpeningHoursSerializer(many=True)
+
+    def get_amenities(self, obj):
+        data = [
+            {'type': 'wifi', 'label': 'Wifi', 'value': obj.wifi, 'icon': 'wifi'},
+            {'type': 'printer', 'label': 'Drucker',
+                'value': obj.printer, 'icon': 'print'},
+            {'type': 'air_condition',  'label': 'Klimaanlage',
+                'value': obj.air_condition, 'icon': 'fan'},
+            {'type': 'coffee', 'label': 'Kaffee',
+                'value': obj.coffee, 'icon': 'coffee'},
+            {'type': 'locker', 'label': 'Schrank',
+                'value': obj.locker, 'icon': 'lock'},
+            {'type': 'shower',  'label': 'Dusche',
+                'value': obj.shower, 'icon': 'shower'}
+        ]
+        return data
 
     def get_prices(self, obj):
         data = {
@@ -54,7 +71,8 @@ class LocationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Location
         fields = ('slug', 'booking_type', 'title', 'address', 'street_number', 'city',
-                  'lat', 'lng', 'images', 'description', 'prices', 'public_phone', 'opening_hours', 'website')
+                  'lat', 'lng', 'images', 'description', 'prices', 'public_phone', 'opening_hours',
+                  'website', 'amenities',)
 
 
 # Bookings
