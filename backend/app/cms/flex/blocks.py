@@ -117,7 +117,6 @@ class PageHeadingSectionBlock(blocks.StructBlock):
     )
     image = APIImageChooserBlock(
         label='Image',
-        width='fill-960x720',
     )
     primary_button_link = APIPageChooserBlock(
         required=False,
@@ -183,7 +182,7 @@ class ContactSectionBlock(blocks.StructBlock):
     content = blocks.TextBlock(
         required=False,
         max_length=400,
-        label='Description',
+        label='Content',
         default='The thing we do is better than any other similar thing and this hero panel will convince you of that, just by having a glorious background image.',
     )
     social = blocks.ListBlock(
@@ -344,7 +343,6 @@ class ServiceSectionBlock(blocks.StructBlock):
             ('image', APIImageChooserBlock(
                 required=False,
                 label='Image',
-                width='fill-320x320',
             )),
             ("heading", blocks.CharBlock(required=True, max_length=100)),
             ("description", blocks.TextBlock(required=True, max_length=300)),
@@ -385,7 +383,6 @@ class TeamSectionBlock(blocks.StructBlock):
             ("image", APIImageChooserBlock(
                 required=False,
                 label='Portrait Image',
-                width='fill-290x320',
             )),
         ])
     )
@@ -404,11 +401,6 @@ class ComingSoonSectionBlock(blocks.StructBlock):
         max_length=400,
         label='Description',
         default='The thing we do is better than any other similar thing and this hero panel will convince you of that, just by having a glorious background image.',
-    )
-    image = APIImageChooserBlock(
-        required=False,
-        label='Image',
-        width='fill-960x720',
     )
     timer = blocks.DateTimeBlock(required=True)
 
@@ -431,7 +423,6 @@ class LoginSectionBlock(blocks.StructBlock):
     image = APIImageChooserBlock(
         required=False,
         label='Image',
-        width='fill-960x720',
     )
 
     class Meta:
@@ -493,7 +484,6 @@ class CTASection(blocks.StructBlock):
     image = APIImageChooserBlock(
         required=False,
         label='Background Image',
-        width='fill-1920x720',
     )
 
     heading = blocks.CharBlock(
@@ -533,7 +523,6 @@ class PricingSectionBlock(blocks.StructBlock):
     image = APIImageChooserBlock(
         required=False,
         label='Image',
-        width='fill-290x320',
     )
     pricings = blocks.ListBlock(
         blocks.StructBlock([
