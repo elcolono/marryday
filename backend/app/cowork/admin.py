@@ -1,3 +1,6 @@
+"""
+Admin Settings
+"""
 from django.contrib import admin
 from .models import Location, RentObject, Booking, LocationImage, CityImage, City, ForwardingContact, OpeningHours
 # Register your models here.
@@ -45,7 +48,7 @@ class LocationAdmin(admin.ModelAdmin):
     inlines = [OpeningHoursInline, RentObjectInline, LocationImageInline, ForwardingContactsInline]
     fieldsets = fieldsets = (
         ('General', {
-            'fields': ('is_active', 'title', 'address', 'city', 'public_phone', 'lat', 'lng', 'description', 'slug')
+            'fields': ('is_active', 'booking_type', 'title', 'address', 'street_number', 'city', 'public_phone', 'lat', 'lng', 'description', 'slug')
         }),
         ('Pricing', {
             'fields': ('phone_hour_price', 'desktop_hour_price', 'meeting_hour_price',)

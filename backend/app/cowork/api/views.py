@@ -1,4 +1,7 @@
+"""cowork views"""
 import stripe
+import googlemaps
+
 import json
 import requests
 from django.conf import settings
@@ -7,7 +10,7 @@ from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from ..models import RentObject, Location, Booking, City
+from ..models import RentObject, Location, Booking, City, State, Country
 from .serializers.common import (
     RentObjectSerializer, BookingCreateSerializer, BookingRetrieveSerializer, LocationSerializer, CitySerializer)
 from dateutil.parser import parse
@@ -380,8 +383,9 @@ class MailchimpAudienceAPIVIEWSet(APIView):
             return Response("Sie sind bereits angemeldet.", status=status.HTTP_400_BAD_REQUEST)
         return Response("Was successful")
 
-
 # Mailchimp Views
+
+
 class PipeDriveAPIVIEWSet(APIView):
     """ COMMENTS """
 
@@ -433,3 +437,67 @@ class PipeDriveAPIVIEWSet(APIView):
         content = response.content
 
         return Response("Nachricht erfolgreich gesendet!")
+
+
+# Google Places
+class GoolgePlacesAPIViewSet(APIView):
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+    def post(self, request):
+        gmaps = googlemaps.Client(
+            key='AIzaSyBmWeP4Qc9OTKNHCYbeVtjAhBULx8xsNiQ')
+        # search_locations = gmaps.places(
+        #     query="cowork", location=("48.2082", "16.3738"), radius=1)
+
+        # Get all data
+
+        # Check country
+        # If it does not exist create it
+
+        search_locations = request.data
+        for location in search_locations:
+            detail_location = gmaps.place(place_id=location['place_id'])
+            doc = detail_location['result']
+
+            title = doc['name']
+
+            for address_component in doc['address_components']:
+                # {"long_name": "9", "short_name": "9", "types": ["street_number"]}
+                if "street_number" in address_component['types']:
+                    street_number = address_component['long_name']
+                if "route" in address_component['types']:
+                    route = address_component['long_name']
+                if "sublocality" in address_component['types']:
+                    sublocality = address_component['long_name']
+                if "locality" in address_component['types']:
+                    locality = address_component['long_name']
+                if "administrative_area_level_2" in address_component['types']:
+                    city = address_component['long_name']
+                if "administrative_area_level_1" in address_component['types']:
+                    state = address_component['long_name']
+                if "country" in address_component['types']:
+                    country = address_component['long_name']
+                if "postal_code" in address_component['types']:
+                    postal_code = address_component['long_name']
+
+            if "business_status" in doc:
+                business_status = doc['business_status']
+            if "geometry" in doc:
+                geometry = doc['geometry']
+            if "opening_hours" in doc:
+                opening_hours = doc['opening_hours']
+            if "reviews" in doc:
+                reviews = doc['reviews']
+
+            if "place_id" in doc:
+                google_place_id = doc['place_id']
+            if "utc_offset" in doc:
+                opening_hours = doc['utc_offset']
+            if "website" in doc:
+                reviews = doc['website']
+            if "photos" in doc:
+                reviews = doc['photos']
+
+            city = City.objects.get_or_create(title=city, postcode=postcode)
+            state = State.objects.get_or_create(title=state)
+            country = Country.objects.get_or_create(title=country)

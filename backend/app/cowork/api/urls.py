@@ -1,5 +1,5 @@
 from django.urls import path
-from cowork.api.views import RentObjectListView, LocationListView, LocationRetrieveView, BookingCreateView, BookingRetrieveView, CheckInListView, CityListView, send_test_mail, MailchimpAudienceAPIVIEWSet, PipeDriveAPIVIEWSet
+from cowork.api.views import RentObjectListView, LocationListView, LocationRetrieveView, BookingCreateView, BookingRetrieveView, CheckInListView, CityListView, send_test_mail, MailchimpAudienceAPIVIEWSet, PipeDriveAPIVIEWSet, GoolgePlacesAPIViewSet
 
 urlpatterns = [
     # Cites
@@ -22,4 +22,7 @@ urlpatterns = [
     # Pipedrive
     path("pipedrive-deal", PipeDriveAPIVIEWSet.as_view(),
          name="pipedrive-deal-add"),
+    # Google Places
+    path("google-places", GoolgePlacesAPIViewSet.as_view(),
+         name="google-places"),
 ]

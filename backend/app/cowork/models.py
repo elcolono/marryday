@@ -13,6 +13,38 @@ RENT_OBJECT_TYPES = (
 )
 
 
+BOOKING_TYPES = (
+    ('linking', 'Linking'),
+    ('enquiry', 'Enquiry'),
+    ('booking', 'Booking')
+)
+
+class Country(models.Model):
+    is_active = models.BooleanField(default=False)
+    title = models.CharField(max_length=150, unique=True)
+    slug = models.CharField(max_length=150, blank=True, null=True)
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.title)
+        super().save(*args, **kwargs)  # Call the "real" save() method.
+
+    def __str__(self):
+        return self.title
+
+
+class State(models.Model):
+    is_active = models.BooleanField(default=False)
+    title = models.CharField(max_length=150, unique=True)
+    slug = models.CharField(max_length=150, blank=True, null=True)
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.title)
+        super().save(*args, **kwargs)  # Call the "real" save() method.
+
+    def __str__(self):
+        return self.title
+
+
 class City(models.Model):
     is_active = models.BooleanField(default=False)
     title = models.CharField(max_length=150, unique=True)
@@ -54,7 +86,8 @@ class OpeningHours(models.Model):
     weekday = models.IntegerField(choices=WEEKDAYS)
     from_hour = models.TimeField()
     to_hour = models.TimeField()
-    location = models.ForeignKey('cowork.Location', related_name="opening_hours", on_delete=models.CASCADE)
+    location = models.ForeignKey(
+        'cowork.Location', related_name="opening_hours", on_delete=models.CASCADE)
 
     class Meta:
         ordering = ('weekday', 'from_hour')
@@ -67,12 +100,18 @@ class OpeningHours(models.Model):
 
 class Location(models.Model):
     is_active = models.BooleanField(default=False)
-    title = models.CharField(max_length=150, unique=True)
+    title = models.CharField(max_length=150, unique=True, null=True)
     address = models.CharField(max_length=150)
+    street_number = models.CharField(max_length=150, null=True)
     city = models.ForeignKey(
         City, related_name="locations", on_delete=models.PROTECT, null=True)
+    state = models.ForeignKey(
+        State, related_name="locations", on_delete=models.PROTECT, null=True)
+    country = models.ForeignKey(
+        Country, related_name="locations", on_delete=models.PROTECT, null=True)
     lat = models.DecimalField(decimal_places=4, max_digits=10, null=True)
     lng = models.DecimalField(decimal_places=4, max_digits=10, null=True)
+    booking_type = models.CharField(max_length=150, choices=BOOKING_TYPES, default="linking")
     slug = models.CharField(max_length=150, blank=True, null=True)
     description = HTMLField(null=True, blank=True)
     phone_hour_price = models.DecimalField(
@@ -82,6 +121,8 @@ class Location(models.Model):
     meeting_hour_price = models.DecimalField(
         decimal_places=2, blank=True, null=True, max_digits=10)
     public_phone = models.CharField(max_length=150, null=True)
+    website = models.CharField(max_length=150, blank=True, null=True)
+    utc_offset = models.IntegerField(null=True)
 
     def clean(self):
         rent_objects = self.rent_objects.all()
@@ -151,7 +192,7 @@ class Booking(models.Model):
 
 
 class Image(models.Model):
-    def update_filename(instance, filename):
+    def update_filename(self, instance, filename):
         pass
 
     uuid = models.UUIDField(
@@ -167,7 +208,7 @@ class Image(models.Model):
 
 
 class LocationImage(Image):
-    def update_filename(instance, filename):
+    def update_filename(self, instance, filename):
         ext = filename.split('.')[-1]
         return f"locations/{instance.location_id}/{instance.title}.{ext}"
     image = models.FileField(upload_to=update_filename)
@@ -176,7 +217,7 @@ class LocationImage(Image):
 
 
 class CityImage(Image):
-    def update_filename(instance, filename):
+    def update_filename(self, instance, filename):
         ext = filename.split('.')[-1]
         return f"cities/{instance.city_id}/{instance.title}.{ext}"
     image = models.FileField(upload_to=update_filename)
