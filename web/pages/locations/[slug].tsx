@@ -1,12 +1,14 @@
 import React from "react"
 import dynamic from "next/dynamic"
-import { CMS_NAME } from "../../lib/constants"
 
 import {
+    Button,
     Container,
     Row,
     Col,
     Media,
+    CardHeader,
+    CardBody,
     CardFooter,
     Table
 } from "reactstrap"
@@ -69,23 +71,23 @@ const LocationDetail = (props) => {
                 <SwiperGallery data={location.images} />
                 <Container className="py-5">
                     <Row>
-                        <Col lg="6">
+                        <Col lg={location.booking_type == "linking" ? '7' : '6'}>
                             {/* <pre>{JSON.stringify(location, null, 2)}</pre> */}
 
                             <div className="text-block">
                                 <p className="text-primary">
                                     <i className="fa-map-marker-alt fa mr-1" />
-                                    &nbsp;{location.address && location.address}, {location.city.postcode && location.city.postcode} {location.city.title && location.city.title}
+                                    &nbsp;{location.address && location.address} {location.street_number && location.street_number}, {location.city.postcode && location.city.postcode} {location.city.title && location.city.title}
                                 </p>
                                 {location.title && <h1> MoWo {location.title}</h1>}
-                                <div className="text-muted text-uppercase mb-4">
+                                {/* <div className="text-muted text-uppercase mb-4">
                                     MoWo Original
-                                </div>
+                                </div> */}
                                 <div className="text-muted-html" dangerouslySetInnerHTML={{ __html: location.description }}></div>
                             </div>
 
 
-                            {location.opening_hours && (
+                            {location.opening_hours && location.booking_type == "booking" && (
                                 <div className="text-block">
                                     <h3 className="mb-4">Öffnungszeiten</h3>
                                     <Table className="text-sm mb-0">
@@ -142,39 +144,86 @@ const LocationDetail = (props) => {
                                 </div>
                             )}
                         </Col>
-                        <Col lg="6">
-
+                        <Col lg={location.booking_type == "linking" ? '5' : '6'}>
                             <div
                                 style={{ top: "100px" }}
                                 className="shadow ml-lg-4 rounded sticky-top"
                             >
-
-                                {isDesktop && acceptedCookies &&
-                                    <Elements stripe={stripePromise}>
-                                        <BookingWithNoSSR locationSlug={location.slug} prices={location.prices} />
-                                    </Elements>
+                                {location.booking_type == "booking" && isDesktop && acceptedCookies &&
+                                    <React.Fragment>
+                                        <Elements stripe={stripePromise}>
+                                            <BookingWithNoSSR locationSlug={location.slug} prices={location.prices} />
+                                        </Elements>
+                                        <CardFooter className="bg-primary-light py-4 border-0">
+                                            <Media className="align-items-center">
+                                                <Media body>
+                                                    <h6 className="text-primary">Flexible – kostenlose Stornierung</h6>
+                                                    <p className="text-sm text-primary opacity-8 mb-0">
+                                                        Storniere deine Buchung 24 Stunden vor Beginn deines MoWo Termins. {' '}
+                                                        <a href="#" className="text-reset">Mehr erfahren</a>
+                                                    </p>
+                                                </Media>
+                                                <Icon
+                                                    icon="diploma-1"
+                                                    className="svg-icon-light w-3rem h-3rem ml-2 text-primary"
+                                                />
+                                            </Media>
+                                        </CardFooter>
+                                    </React.Fragment>
                                 }
 
-                                <CardFooter className="bg-primary-light py-4 border-0">
-                                    <Media className="align-items-center">
-                                        <Media body>
-                                            <h6 className="text-primary">Flexible – kostenlose Stornierung</h6>
-                                            <p className="text-sm text-primary opacity-8 mb-0">
-                                                Storniere deine Buchung 24 Stunden vor Beginn deines MoWo Termins. {' '}
-                                                <a href="#" className="text-reset">Mehr erfahren</a>
-                                            </p>
-                                        </Media>
-                                        <Icon
-                                            icon="diploma-1"
-                                            className="svg-icon-light w-3rem h-3rem ml-2 text-primary"
-                                        />
-                                    </Media>
-                                </CardFooter>
+                                {location.booking_type == "linking" && location.opening_hours && (
+                                    <div className="text-block">
+                                        <CardHeader className="bg-gray-100 py-4 border-0">
+                                            <Media className="align-items-center">
+                                                <Media body>
+                                                    <p className="subtitle text-sm text-primary">
+                                                        Besuchen Sie uns
+                                                    </p>
+                                                    <h4 className="mb-0">Öffnungszeiten </h4>
+                                                </Media>
+                                                <Icon
+                                                    icon="wall-clock-1"
+                                                    className="svg-icon-light w-3rem h-3rem ml-3 text-muted"
+                                                />
+                                            </Media>
+                                        </CardHeader>
+                                        <CardBody>
+                                            <Table className="text-sm mb-0">
+                                                <tbody>
+                                                    {map(WEEKDAYS, (item, index) => (
+                                                        <tr key={index}>
+                                                            <th
+                                                                className={`pl-0 ${index === 0 ? "border-0" : ""
+                                                                    }`}
+                                                            >
+                                                                {item}
+                                                            </th>
+                                                            <td
+                                                                className={`pr-0 text-right ${index === 0 ? "border-0" : ""
+                                                                    }`}
+                                                            >
+                                                                {renderOpeningHours(map(filter(location.opening_hours, { 'weekday': index + 1 })))}
+                                                            </td>
+                                                        </tr>
+                                                    ))}
+                                                </tbody>
+                                            </Table>
+                                            <div className="text-center mt-4">
+                                                <Button target="_blank" href={location.website} color="primary" block>
+                                                    {/* <i className="far fa-paper-plane mr-2" /> */}
+                                                    Besuch buchen
+                                                </Button>
+                                            </div>
+                                        </CardBody>
+                                    </div>
+                                )}
+
                             </div>
                         </Col>
                     </Row>
                 </Container>
-                {!isDesktop && acceptedCookies && <BottomNav>
+                {location.booking_type == "booking" && !isDesktop && acceptedCookies && <BottomNav>
                     <Elements stripe={stripePromise}>
                         <BookingWithNoSSR locationSlug={location.slug} prices={location.prices} />
                     </Elements>

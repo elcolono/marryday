@@ -53,8 +53,8 @@ class LocationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Location
-        fields = ('slug', 'title', 'address', 'city',
-                  'lat', 'lng', 'images', 'description', 'prices', 'public_phone', 'opening_hours')
+        fields = ('slug', 'booking_type', 'title', 'address', 'street_number', 'city',
+                  'lat', 'lng', 'images', 'description', 'prices', 'public_phone', 'opening_hours', 'website')
 
 
 # Bookings

@@ -121,7 +121,7 @@ class Location(models.Model):
     meeting_hour_price = models.DecimalField(
         decimal_places=2, blank=True, null=True, max_digits=10)
     public_phone = models.CharField(max_length=150, null=True)
-    website = models.CharField(max_length=150, blank=True, null=True)
+    website = models.URLField(max_length=150, blank=True, null=True)
     utc_offset = models.IntegerField(null=True)
 
     def clean(self):

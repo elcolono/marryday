@@ -45,10 +45,11 @@ class LocationAdmin(admin.ModelAdmin):
     search_fields = ('title', 'address')
     list_display = ('title', 'address', 'lat', 'lng',)
     list_filter = ('title', 'address')
-    inlines = [OpeningHoursInline, RentObjectInline, LocationImageInline, ForwardingContactsInline]
+    inlines = [OpeningHoursInline, RentObjectInline,
+               LocationImageInline, ForwardingContactsInline]
     fieldsets = fieldsets = (
         ('General', {
-            'fields': ('is_active', 'booking_type', 'title', 'address', 'street_number', 'city', 'public_phone', 'lat', 'lng', 'description', 'slug')
+            'fields': ('is_active', 'booking_type', 'title', 'address', 'street_number', 'city', 'public_phone', 'lat', 'lng', 'description', 'website', 'slug')
         }),
         ('Pricing', {
             'fields': ('phone_hour_price', 'desktop_hour_price', 'meeting_hour_price',)
