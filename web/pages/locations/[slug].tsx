@@ -79,7 +79,7 @@ const LocationDetail = (props) => {
                                     <i className="fa-map-marker-alt fa mr-1" />
                                     &nbsp;{location.address && location.address} {location.street_number && location.street_number}, {location.city.postcode && location.city.postcode} {location.city.title && location.city.title}
                                 </p>
-                                {location.title && <h1> MoWo {location.title}</h1>}
+                                {location.title && <h1>{location.title}</h1>}
                                 {/* <div className="text-muted text-uppercase mb-4">
                                     MoWo Original
                                 </div> */}

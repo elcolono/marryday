@@ -40,7 +40,7 @@ const CardRoom = (props) => {
         <div className="w-100">
           <CardTitle tag="h6">
             <Link href={`/locations/${data.slug}`}>
-              <a className="text-decoration-none text-dark">MoWo {data.title}</a>
+              <a className="text-decoration-none text-dark">{data.title}</a>
             </Link>
           </CardTitle>
           {/* <CardSubtitle>
