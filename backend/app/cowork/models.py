@@ -200,7 +200,7 @@ class Booking(models.Model):
 
 
 class Image(models.Model):
-    def update_filename(self, instance, filename):
+    def update_filename(instance, filename):
         pass
 
     uuid = models.UUIDField(
@@ -216,7 +216,7 @@ class Image(models.Model):
 
 
 class LocationImage(Image):
-    def update_filename(self, instance, filename):
+    def update_filename(instance, filename):
         ext = filename.split('.')[-1]
         return f"locations/{instance.location_id}/{instance.title}.{ext}"
     image = models.FileField(upload_to=update_filename)
@@ -225,7 +225,7 @@ class LocationImage(Image):
 
 
 class CityImage(Image):
-    def update_filename(self, instance, filename):
+    def update_filename(instance, filename):
         ext = filename.split('.')[-1]
         return f"cities/{instance.city_id}/{instance.title}.{ext}"
     image = models.FileField(upload_to=update_filename)
