@@ -7,6 +7,7 @@ export interface Location {
     city: string,
     lat: number,
     lng: number,
+    booking_type: string,
 }
 
 export interface Booking {

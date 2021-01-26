@@ -30,7 +30,7 @@ class CitySerializer(serializers.ModelSerializer):
 class OpeningHoursSerializer(serializers.ModelSerializer):
     class Meta:
         model = OpeningHours
-        fields = ('weekday', 'from_hour', 'to_hour',)
+        fields = ('weekday', 'from_hour', 'to_hour', 'open_24',)
 
 
 # Locations

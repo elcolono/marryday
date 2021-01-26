@@ -85,14 +85,15 @@ WEEKDAYS = [
 class OpeningHours(models.Model):
 
     weekday = models.IntegerField(choices=WEEKDAYS)
-    from_hour = models.TimeField()
-    to_hour = models.TimeField()
+    from_hour = models.TimeField(blank=True, null=True)
+    to_hour = models.TimeField(blank=True, null=True)
+    open_24 = models.BooleanField(default=False)
     location = models.ForeignKey(
         'cowork.Location', related_name="opening_hours", on_delete=models.CASCADE)
 
     class Meta:
         ordering = ('weekday', 'from_hour')
-        unique_together = ('location', 'weekday', 'from_hour', 'to_hour')
+        # unique_together = ('location', 'weekday', 'from_hour', 'to_hour')
 
     def __unicode__(self):
         return u'%s: %s - %s' % (self.get_weekday_display(),
@@ -151,9 +152,9 @@ class Location(models.Model):
             raise ValidationError(
                 'Please insert at least 3 Location Images before activation.')
 
-        if(self.is_active is True and self.rent_objects.count() <= 0):
-            raise ValidationError(
-                'Please create at least 1 Rentobject before activation.')
+        # if(self.is_active is True and self.rent_objects.count() <= 0):
+        #     raise ValidationError(
+        #         'Please create at least 1 Rentobject before activation.')
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)

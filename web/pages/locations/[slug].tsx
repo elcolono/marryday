@@ -61,7 +61,7 @@ const LocationDetail = (props) => {
 
 
     const renderOpeningHours = (openingHours) => {
-        return isEmpty(openingHours) && <div>Geschlossen</div> || map(openingHours, (el, i) => <div key={i}>{join(split(el.from_hour, ':', 2), ':')} - {join(split(el.to_hour, ':', 2), ':')} </div>)
+        return isEmpty(openingHours) && <div>Geschlossen</div> || map(openingHours, (el, i) => el.open_24 ? <div key={i}>24 Stunden</div> : <div key={i}>{join(split(el.from_hour, ':', 2), ':')} - {join(split(el.to_hour, ':', 2), ':')} </div>)
 
     }
 

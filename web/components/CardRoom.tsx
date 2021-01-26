@@ -48,16 +48,27 @@ const CardRoom = (props) => {
           </CardSubtitle> */}
           <CardSubtitle className="d-flex mb-3">
             <p className="flex-grow-1 mb-0 text-muted text-sm">
-              {data.address}
+              {data.address} {data.street_number}
             </p>
             {/* <p className="flex-shrink-1 mb-0 card-stars text-xs text-right">
               <Stars stars={data.stars} />
             </p> */}
           </CardSubtitle>
-          <CardText className="text-muted">
+          {data.booking_type == "booking" && <CardText className="text-muted">
             <span className="h4 text-primary">€ {data.prices.desktop_hour && data.prices.desktop_hour.toFixed(2)}</span>
             &nbsp;/ Stunde
-          </CardText>
+          </CardText>}
+          {data.booking_type == "linking" && <CardText className="text-muted">
+            <ul className="list-unstyled text-muted mb-0">
+              {data.amenities.filter(el => el.value).map((amenity) => (
+                <li key={amenity.type} className="d-inline">
+                  <i
+                    className={`fa fa-${amenity.icon} text-secondary w-1rem mr-3 text-center d-inline`}
+                  />
+                </li>
+              ))}
+            </ul>
+          </CardText>}
         </div>
       </CardBody>
     </Card>
