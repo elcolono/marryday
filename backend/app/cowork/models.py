@@ -25,6 +25,9 @@ class Country(models.Model):
     title = models.CharField(max_length=150, unique=True)
     slug = models.CharField(max_length=150, blank=True, null=True)
 
+    class Meta:
+        verbose_name_plural = "Countries"
+
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)
         super().save(*args, **kwargs)  # Call the "real" save() method.
@@ -33,10 +36,12 @@ class Country(models.Model):
         return self.title
 
 
-class State(models.Model):
+class Province(models.Model):
     is_active = models.BooleanField(default=False)
     title = models.CharField(max_length=150, unique=True)
     slug = models.CharField(max_length=150, blank=True, null=True)
+    country = models.ForeignKey(
+        'cowork.Country', related_name="country_states", on_delete=models.CASCADE, null=True)
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)
@@ -48,12 +53,34 @@ class State(models.Model):
 
 class City(models.Model):
     is_active = models.BooleanField(default=False)
-    title = models.CharField(max_length=150, unique=True)
-    postcode = models.CharField(max_length=50)
+    title = models.CharField(max_length=150)
+    postcode = models.CharField(max_length=50, unique=True)
     slug = models.CharField(max_length=150, blank=True, null=True)
+    province = models.ForeignKey(
+        'cowork.Province', related_name="province_localities", on_delete=models.CASCADE, null=True)
 
     class Meta:
         verbose_name_plural = "Cities"
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.title)
+        super().save(*args, **kwargs)  # Call the "real" save() method.
+
+    def __str__(self):
+        return self.title
+
+
+class District(models.Model):
+    is_active = models.BooleanField(default=False)
+    title = models.CharField(max_length=150)
+    postcode = models.CharField(
+        max_length=50, unique=True, null=True, blank=True)
+    slug = models.CharField(max_length=150, blank=True, null=True)
+    locality = models.ForeignKey(
+        'cowork.City', related_name="locality_districts", on_delete=models.CASCADE, null=True)
+
+    class Meta:
+        verbose_name_plural = "Districts"
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)
@@ -105,12 +132,14 @@ class Location(models.Model):
     title = models.CharField(max_length=150, unique=True, null=True)
     address = models.CharField(max_length=150)
     street_number = models.CharField(max_length=150, null=True)
+    district = models.ForeignKey(
+        District, related_name="district_locations", on_delete=models.PROTECT, null=True, blank=True)
     city = models.ForeignKey(
         City, related_name="locations", on_delete=models.PROTECT, null=True)
-    state = models.ForeignKey(
-        State, related_name="locations", on_delete=models.PROTECT, null=True)
+    province = models.ForeignKey(
+        Province, related_name="province_locations", on_delete=models.PROTECT, null=True)
     country = models.ForeignKey(
-        Country, related_name="locations", on_delete=models.PROTECT, null=True)
+        Country, related_name="country_locations", on_delete=models.PROTECT, null=True)
     lat = models.DecimalField(decimal_places=4, max_digits=10, null=True)
     lng = models.DecimalField(decimal_places=4, max_digits=10, null=True)
     booking_type = models.CharField(

@@ -10,7 +10,7 @@ from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from ..models import RentObject, Location, Booking, City, State, Country
+from ..models import RentObject, Location, Booking, City, Province, Country
 from .serializers.common import (
     RentObjectSerializer, BookingCreateSerializer, BookingRetrieveSerializer, LocationSerializer, CitySerializer)
 from dateutil.parser import parse
@@ -498,6 +498,6 @@ class GoolgePlacesAPIViewSet(APIView):
             if "photos" in doc:
                 reviews = doc['photos']
 
-            city = City.objects.get_or_create(title=city, postcode=postcode)
+            city, created = City.objects.get_or_create(title=city, postcode=postal_code)
             state = State.objects.get_or_create(title=state)
             country = Country.objects.get_or_create(title=country)

@@ -77,7 +77,7 @@ const LocationDetail = (props) => {
                             <div className="text-block">
                                 <p className="text-primary">
                                     <i className="fa-map-marker-alt fa mr-1" />
-                                    &nbsp;{location.address && location.address} {location.street_number && location.street_number}, {location.city.postcode && location.city.postcode} {location.city.title && location.city.title}
+                                    &nbsp;{location.address && location.address} {location.street_number && location.street_number}, {location.district?.postcode && location.district?.postcode || location.city.postcode && location.city.postcode} {location.city.title && location.city.title}{location.district?.title && ", " + location.district?.title}
                                 </p>
                                 {location.title && <h1>{location.title}</h1>}
                                 {/* <div className="text-muted text-uppercase mb-4">

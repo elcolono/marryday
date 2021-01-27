@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from ...models import RentObject, Booking, Location, LocationImage, CityImage, Image, City, OpeningHours
+from ...models import RentObject, Booking, Location, LocationImage, CityImage, Image, City, District, OpeningHours
 
 
 # Images
@@ -26,6 +26,13 @@ class CitySerializer(serializers.ModelSerializer):
         fields = ('id', 'title', 'postcode', 'slug', 'images',)
 
 
+# Districts
+class DistrictSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = District
+        fields = ('id', 'title', 'postcode')
+
+
 # Opening hours
 class OpeningHoursSerializer(serializers.ModelSerializer):
     class Meta:
@@ -40,6 +47,7 @@ class LocationSerializer(serializers.ModelSerializer):
 
     images = LocationImageSerializer(many=True)
     city = CitySerializer()
+    district = DistrictSerializer()
     prices = serializers.SerializerMethodField()
     amenities = serializers.SerializerMethodField()
     opening_hours = OpeningHoursSerializer(many=True)
@@ -70,7 +78,7 @@ class LocationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Location
-        fields = ('slug', 'booking_type', 'title', 'address', 'street_number', 'city',
+        fields = ('slug', 'booking_type', 'title', 'address', 'street_number', 'city', 'district',
                   'lat', 'lng', 'images', 'description', 'prices', 'public_phone', 'opening_hours',
                   'website', 'amenities',)
 

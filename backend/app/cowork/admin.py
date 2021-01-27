@@ -2,7 +2,7 @@
 Admin Settings
 """
 from django.contrib import admin
-from .models import Location, RentObject, Booking, LocationImage, CityImage, City, ForwardingContact, OpeningHours
+from .models import Location, RentObject, Booking, LocationImage, CityImage, District, City, Province, Country, ForwardingContact, OpeningHours
 # Register your models here.
 
 
@@ -34,11 +34,29 @@ class OpeningHoursInline(admin.TabularInline):
     model = OpeningHours
 
 
+class DistrictAdmin(admin.ModelAdmin):
+    search_fields = ('is_active', 'title', 'locality')
+    list_display = ('is_active', 'title', 'locality')
+    list_filter = ('is_active', 'title', 'locality')
+
+
 class CityAdmin(admin.ModelAdmin):
-    search_fields = ('title', 'postcode')
-    list_display = ('title', 'postcode')
-    list_filter = ('title', 'postcode')
+    search_fields = ('is_active', 'title', 'province')
+    list_display = ('is_active', 'title', 'province')
+    list_filter = ('is_active', 'title', 'province')
     inlines = [CityImageInline]
+
+
+class ProvinceAdmin(admin.ModelAdmin):
+    search_fields = ('is_active', 'title', 'country')
+    list_display = ('is_active', 'title', 'country')
+    list_filter = ('is_active', 'title', 'country')
+
+
+class CountryAdmin(admin.ModelAdmin):
+    search_fields = ('is_active', 'title')
+    list_display = ('is_active', 'title')
+    list_filter = ('is_active', 'title')
 
 
 class LocationAdmin(admin.ModelAdmin):
@@ -49,7 +67,7 @@ class LocationAdmin(admin.ModelAdmin):
                LocationImageInline, ForwardingContactsInline]
     fieldsets = fieldsets = (
         ('General', {
-            'fields': ('is_active', 'booking_type', 'title', 'address', 'street_number', 'city', 'public_phone', 'lat', 'lng', 'description', 'website', 'slug')
+            'fields': ('is_active', 'booking_type', 'title', 'address', 'street_number', 'district', 'city', 'province', 'country', 'public_phone', 'lat', 'lng', 'description', 'website', 'slug')
         }),
         ('Amenities', {
             'fields': ('wifi', 'printer', 'air_condition', 'coffee', 'locker', 'shower')
@@ -80,4 +98,7 @@ class BookingAdmin(admin.ModelAdmin):
 admin.site.register(Location, LocationAdmin)
 admin.site.register(RentObject, RentObjectAdmin)
 admin.site.register(Booking, BookingAdmin)
+admin.site.register(Province, ProvinceAdmin)
 admin.site.register(City, CityAdmin)
+admin.site.register(Country, CountryAdmin)
+admin.site.register(District, DistrictAdmin)
