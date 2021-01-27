@@ -246,6 +246,13 @@ class Image(models.Model):
 
 
 class LocationImage(Image):
+    def validate_image(fieldfile_obj):
+        filesize = fieldfile_obj.file.size
+        megabyte_limit = 5.0
+        if filesize > megabyte_limit*1024*1024:
+            raise ValidationError("Max file size is %sMB" %
+                                  str(megabyte_limit))
+
     def update_filename(instance, filename):
         ext = filename.split('.')[-1]
         return f"locations/{instance.location_id}/{instance.title}.{ext}"
@@ -255,6 +262,13 @@ class LocationImage(Image):
 
 
 class CityImage(Image):
+    def validate_image(fieldfile_obj):
+        filesize = fieldfile_obj.file.size
+        megabyte_limit = 5.0
+        if filesize > megabyte_limit*1024*1024:
+            raise ValidationError("Max file size is %sMB" %
+                                  str(megabyte_limit))
+
     def update_filename(instance, filename):
         ext = filename.split('.')[-1]
         return f"cities/{instance.city_id}/{instance.title}.{ext}"
