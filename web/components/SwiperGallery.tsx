@@ -1,6 +1,5 @@
-import React from "react"
-
 import Image from "./CustomImage"
+import React from "react"
 
 import ReactIdSwiper from "react-id-swiper"
 import Lightbox from "react-image-lightbox"
@@ -20,29 +19,30 @@ const SwiperGallery = (props) => {
     onClick(index)
   }, [])
 
-  React.useEffect(() => {
-    const firstSlide = document.querySelector(".swiper-slide-prev")
-    const lastSlide = document.querySelector(".swiper-slide-duplicate-next")
+  // TODO: WITH THIS CODE AND ERROR OCCURS IF MORE THAN 3 IMAGES
+  // React.useEffect(() => {
+  //   const firstSlide = document.querySelector(".swiper-slide-prev")
+  //   const lastSlide = document.querySelector(".swiper-slide-duplicate-next")
 
-    firstSlide.addEventListener("click", () => edgeSlidesClick(data.length - 1))
-    firstSlide.previousSibling.addEventListener("click", () =>
-      edgeSlidesClick(data.length - 2)
-    )
-    lastSlide.addEventListener("click", () => edgeSlidesClick(1))
-    lastSlide.previousSibling.addEventListener("click", () =>
-      edgeSlidesClick(0)
-    )
-    // return () => {
-    //   firstSlide.removeEventListener("click", () => edgeSlidesClick())
-    //   firstSlide.previousSibling.removeEventListener("click", () =>
-    //     edgeSlidesClick()
-    //   )
-    //   lastSlide.addEventListener("click", () => edgeSlidesClick())
-    //   lastSlide.previousSibling.addEventListener("click", () =>
-    //     edgeSlidesClick()
-    //   )
-    // }
-  }, [edgeSlidesClick])
+  //   firstSlide.addEventListener("click", () => edgeSlidesClick(data.length - 1))
+  //   firstSlide.previousSibling.addEventListener("click", () =>
+  //     edgeSlidesClick(data.length - 2)
+  //   )
+  //   lastSlide.addEventListener("click", () => edgeSlidesClick(1))
+  //   lastSlide.previousSibling.addEventListener("click", () =>
+  //     edgeSlidesClick(0)
+  //   )
+  //   return () => {
+  //     firstSlide.removeEventListener("click", () => edgeSlidesClick())
+  //     firstSlide.previousSibling.removeEventListener("click", () =>
+  //       edgeSlidesClick()
+  //     )
+  //     lastSlide.addEventListener("click", () => edgeSlidesClick())
+  //     lastSlide.previousSibling.addEventListener("click", () =>
+  //       edgeSlidesClick()
+  //     )
+  //   }
+  // }, [edgeSlidesClick])
 
   const params = {
     slidesPerView: 3,
