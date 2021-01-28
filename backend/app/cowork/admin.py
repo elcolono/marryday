@@ -41,9 +41,9 @@ class DistrictAdmin(admin.ModelAdmin):
 
 
 class CityAdmin(admin.ModelAdmin):
-    search_fields = ('is_active', 'title', 'province')
-    list_display = ('is_active', 'title', 'province')
-    list_filter = ('is_active', 'title', 'province')
+    search_fields = ('is_active', 'title', 'postcode', 'province')
+    list_display = ('is_active', 'title', 'postcode', 'province')
+    list_filter = ('is_active', 'title', 'postcode', 'province')
     inlines = [CityImageInline]
 
 
@@ -67,7 +67,16 @@ class LocationAdmin(admin.ModelAdmin):
                LocationImageInline, ForwardingContactsInline]
     fieldsets = fieldsets = (
         ('General', {
-            'fields': ('is_active', 'booking_type', 'title', 'address', 'street_number', 'district', 'city', 'province', 'country', 'public_phone', 'lat', 'lng', 'description', 'website', 'slug')
+            'fields': ('is_active', 'booking_type', 'title', 'lat', 'lng', 'description', 'website', 'slug')
+        }),
+        ('Contact', {
+            'fields': ('address', 'street_number', 'district', 'city', 'province', 'country', 'formatted_address','public_phone', 'formatted_phone_number')
+        }),
+        ('Geometry', {
+            'fields': ('geometry', 'utc_offset',)
+        }),
+        ('Opening Hours', {
+            'fields': ('opening_hour_periods',)
         }),
         ('Amenities', {
             'fields': ('wifi', 'printer', 'air_condition', 'coffee', 'locker', 'shower')

@@ -10,7 +10,7 @@ from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from ..models import RentObject, Location, Booking, City, Province, Country
+from ..models import RentObject, Location, Booking, City, Province, Country, District, LocationImage
 from .serializers.common import (
     RentObjectSerializer, BookingCreateSerializer, BookingRetrieveSerializer, LocationSerializer, CitySerializer)
 from dateutil.parser import parse
@@ -456,25 +456,27 @@ class GoolgePlacesAPIViewSet(APIView):
 
         search_locations = request.data
         for location in search_locations:
+
             detail_location = gmaps.place(place_id=location['place_id'])
             doc = detail_location['result']
 
-            title = doc['name']
+            if "name" in doc:
+                title = doc['name']
 
             for address_component in doc['address_components']:
                 # {"long_name": "9", "short_name": "9", "types": ["street_number"]}
                 if "street_number" in address_component['types']:
                     street_number = address_component['long_name']
                 if "route" in address_component['types']:
-                    route = address_component['long_name']
+                    address = address_component['long_name']
                 if "sublocality" in address_component['types']:
-                    sublocality = address_component['long_name']
+                    district = address_component['long_name']
                 if "locality" in address_component['types']:
                     locality = address_component['long_name']
                 if "administrative_area_level_2" in address_component['types']:
-                    city = address_component['long_name']
+                    locality = address_component['long_name']
                 if "administrative_area_level_1" in address_component['types']:
-                    state = address_component['long_name']
+                    province = address_component['long_name']
                 if "country" in address_component['types']:
                     country = address_component['long_name']
                 if "postal_code" in address_component['types']:
@@ -485,19 +487,66 @@ class GoolgePlacesAPIViewSet(APIView):
             if "geometry" in doc:
                 geometry = doc['geometry']
             if "opening_hours" in doc:
-                opening_hours = doc['opening_hours']
+                opening_hour_periods = doc['opening_hours']['periods']
             if "reviews" in doc:
                 reviews = doc['reviews']
-
+            if "phone" in doc:
+                public_phone = doc['phone']
+            if "formatted_phone_number" in doc:
+                formatted_phone_number = doc['formatted_phone_number']
+            if "formatted_address" in doc:
+                formatted_address = doc['formatted_address']
             if "place_id" in doc:
                 google_place_id = doc['place_id']
             if "utc_offset" in doc:
-                opening_hours = doc['utc_offset']
+                utc_offset = doc['utc_offset']
             if "website" in doc:
-                reviews = doc['website']
+                website = doc['website']
+            if "international_phone_number" in doc:
+                public_phone = doc['international_phone_number']
             if "photos" in doc:
-                reviews = doc['photos']
+                google_photos = doc['photos']
 
-            city, created = City.objects.get_or_create(title=city, postcode=postal_code)
-            state = State.objects.get_or_create(title=state)
-            country = Country.objects.get_or_create(title=country)
+            ######################## Validate and Create District, Locality, Province, Country ########################
+
+            country, created = Country.objects.get_or_create(title=country)
+            province, created = Province.objects.get_or_create(
+                title=province, country=country)
+            locality, created = City.objects.get_or_create(
+                title=locality, postcode=postal_code, province=province)
+            district, created = District.objects.get_or_create(
+                title=district, postcode=postal_code, locality=locality)
+
+            ######################## Validate and Save Location ########################
+            new_location = Location(title=title, country=country, province=province, district=district, city=locality,
+                                    address=address, street_number=street_number, geometry=geometry, public_phone=public_phone, formatted_address=formatted_address,
+                                    formatted_phone_number=formatted_phone_number, website=website, utc_offset=utc_offset,
+                                    business_status=business_status, opening_hour_periods=opening_hour_periods, google_place_id=google_place_id)
+            if not new_location:
+                Response("Could not create new location",
+                         status=status.HTTP_400_BAD_REQUEST)
+
+            new_location.clean()
+            # new_location.save()
+
+            ######################## Validate and Save Location Images ########################
+            from django.core.files import File
+
+            for index, item in enumerate(google_photos):
+                google_place_photo = gmaps.places_photo(
+                    max_width=item['width'], max_height=item['height'], photo_reference=item['photo_reference'])
+                # location_image = LocationImage(image=File(google_place_photo),
+                #                                title=f'cowork-{locality.title}-{title}-{index}', location=new_location)
+                # location_image.clean()
+                # location_image.save()
+
+                location_image = LocationImage()
+
+                location_image.image.save(
+                    f'cowork-{locality.title}-{title}-{index}', google_place_photo)
+
+                location_image.save()
+
+            ######################## Response ########################
+            new_location_serializer = LocationSerializer(new_location)
+            return Response(data=new_location_serializer.data, status=status.HTTP_201_CREATED)

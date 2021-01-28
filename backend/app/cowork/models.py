@@ -140,8 +140,12 @@ class Location(models.Model):
         Province, related_name="province_locations", on_delete=models.PROTECT, null=True)
     country = models.ForeignKey(
         Country, related_name="country_locations", on_delete=models.PROTECT, null=True)
-    lat = models.DecimalField(decimal_places=4, max_digits=10, null=True)
-    lng = models.DecimalField(decimal_places=4, max_digits=10, null=True)
+    formatted_address = models.CharField(max_length=1000, null=True)
+    lat = models.DecimalField(
+        decimal_places=4, max_digits=10, null=True, blank=True)
+    lng = models.DecimalField(
+        decimal_places=4, max_digits=10, null=True, blank=True)
+    geometry = models.JSONField(null=True)
     booking_type = models.CharField(
         max_length=150, choices=BOOKING_TYPES, default="linking")
     slug = models.CharField(max_length=150, blank=True, null=True)
@@ -153,8 +157,12 @@ class Location(models.Model):
     meeting_hour_price = models.DecimalField(
         decimal_places=2, blank=True, null=True, max_digits=10)
     public_phone = models.CharField(max_length=150, null=True)
+    formatted_phone_number = models.CharField(max_length=150, null=True)
     website = models.URLField(max_length=150, blank=True, null=True)
     utc_offset = models.IntegerField(null=True)
+    business_status = models.CharField(max_length=150, null=True)
+    google_place_id = models.CharField(max_length=150, null=True, unique=True)
+    opening_hour_periods = models.JSONField(null=True)
     wifi = models.BooleanField(default=False)
     printer = models.BooleanField(default=False)
     air_condition = models.BooleanField(default=False)
