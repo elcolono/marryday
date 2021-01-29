@@ -36,12 +36,27 @@ class Country(models.Model):
         return self.title
 
 
-class Province(models.Model):
+class State(models.Model):
     is_active = models.BooleanField(default=False)
     title = models.CharField(max_length=150, unique=True)
     slug = models.CharField(max_length=150, blank=True, null=True)
     country = models.ForeignKey(
         'cowork.Country', related_name="country_states", on_delete=models.CASCADE, null=True)
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.title)
+        super().save(*args, **kwargs)  # Call the "real" save() method.
+
+    def __str__(self):
+        return self.title
+
+
+class Province(models.Model):
+    is_active = models.BooleanField(default=False)
+    title = models.CharField(max_length=150, unique=True)
+    slug = models.CharField(max_length=150, blank=True, null=True)
+    state = models.ForeignKey(
+        'cowork.State', related_name="state_provinces", on_delete=models.CASCADE, null=True)
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)
@@ -138,15 +153,20 @@ class Location(models.Model):
         City, related_name="locations", on_delete=models.PROTECT, null=True)
     province = models.ForeignKey(
         Province, related_name="province_locations", on_delete=models.PROTECT, null=True)
+    state = models.ForeignKey(
+        State, related_name="state_locations", on_delete=models.PROTECT, null=True)
     country = models.ForeignKey(
         Country, related_name="country_locations", on_delete=models.PROTECT, null=True)
     formatted_address = models.CharField(max_length=1000, null=True)
+    vicinity = models.CharField(max_length=1000, null=True)
     lat = models.DecimalField(
         decimal_places=4, max_digits=10, null=True, blank=True)
     lng = models.DecimalField(
         decimal_places=4, max_digits=10, null=True, blank=True)
     geometry = models.JSONField(null=True)
     reviews = models.JSONField(null=True)
+    rating = models.FloatField(null=True)
+    user_ratings_total = models.IntegerField(null=True)
     booking_type = models.CharField(
         max_length=150, choices=BOOKING_TYPES, default="linking")
     slug = models.CharField(max_length=150, blank=True, null=True)
@@ -270,7 +290,7 @@ class LocationImage(Image):
 
     image = models.FileField(upload_to=update_filename)
     location = models.ForeignKey(
-        Location, related_name="images", on_delete=models.PROTECT)
+        Location, related_name="images", on_delete=models.CASCADE)
     google_photo_reference = models.CharField(
         max_length=500, null=True, blank=True)
 

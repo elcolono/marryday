@@ -10,7 +10,7 @@ from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from ..models import RentObject, Location, Booking, City, Province, Country, District, LocationImage
+from ..models import RentObject, Location, Booking, City, Province, State, Country, District, LocationImage
 from .serializers.common import (
     RentObjectSerializer, BookingCreateSerializer, BookingRetrieveSerializer, LocationSerializer, CitySerializer)
 from dateutil.parser import parse
@@ -445,20 +445,26 @@ class GoolgePlacesAPIViewSet(APIView):
 
     def post(self, request):
         from django.core.files import File
-
+        import os
         api_key = 'AIzaSyDFbdovhyx9DCYJIO4Jt0_ppwgXxWvM5ek'
-        retrieved_detail_location = request.data
+        search_location = request.data
 
-        # place_id = search_location['place_id']
-        # detail_location_url = ('https://maps.googleapis.com/maps/api/place/details/json'
-        #                        '?place_id=%s'
-        #                        '&key=%s') % (place_id, api_key)
+        place_id = search_location.get('place_id')
+        detail_location_url = ('https://maps.googleapis.com/maps/api/place/details/json'
+                               '?place_id=%s'
+                               '&key=%s') % (place_id, api_key)
 
-        # retrieved_detail_location = requests.get(detail_location_url)
-        doc = retrieved_detail_location['result']
+        retrieved_detail_location = requests.get(detail_location_url)
+        doc = json.loads(retrieved_detail_location.content).get('result')
 
-        if "name" in doc:
-            title = doc['name']
+        street_number = None
+        address = None
+        district = None
+        locality = None
+        province = None
+        state = None
+        country = None
+        postal_code = None
 
         for address_component in doc['address_components']:
             # {"long_name": "9", "short_name": "9", "types": ["street_number"]}
@@ -471,59 +477,59 @@ class GoolgePlacesAPIViewSet(APIView):
             if "locality" in address_component['types']:
                 locality = address_component['long_name']
             if "administrative_area_level_2" in address_component['types']:
-                locality = address_component['long_name']
-            if "administrative_area_level_1" in address_component['types']:
                 province = address_component['long_name']
+            if "administrative_area_level_1" in address_component['types']:
+                state = address_component['long_name']
             if "country" in address_component['types']:
                 country = address_component['long_name']
             if "postal_code" in address_component['types']:
                 postal_code = address_component['long_name']
 
-        if "business_status" in doc:
-            business_status = doc['business_status']
-        if "geometry" in doc:
-            geometry = doc['geometry']
-        if "opening_hours" in doc:
-            opening_hour_periods = doc['opening_hours']['periods']
-        if "reviews" in doc:
-            reviews = doc['reviews']
-        if "phone" in doc:
-            public_phone = doc['phone']
-        if "formatted_phone_number" in doc:
-            formatted_phone_number = doc['formatted_phone_number']
-        if "formatted_address" in doc:
-            formatted_address = doc['formatted_address']
-        if "place_id" in doc:
-            google_place_id = doc['place_id']
-        if "plus_code" in doc:
-            google_plus_code = doc['plus_code']
-        if "reference" in doc:
-            google_reference = doc['reference']
-        if "utc_offset" in doc:
-            utc_offset = doc['utc_offset']
-        if "website" in doc:
-            website = doc['website']
-        if "international_phone_number" in doc:
-            public_phone = doc['international_phone_number']
-        if "photos" in doc:
-            google_photos = doc['photos']
+        title = doc.get('name')
+        business_status = doc.get('business_status')
+
+        formatted_address = doc.get('formatted_address')
+        vicinity = doc.get('vicinity')
+        formatted_phone_number = doc.get('formatted_phone_number')
+        public_phone = doc.get('international_phone_number')
+        website = doc.get('website')
+
+        geometry = doc.get('geometry')
+
+        opening_hour_periods = doc.get('opening_hours').get('periods')
+        reviews = doc.get('reviews')
+        rating = doc.get('rating')
+        user_ratings_total = doc.get('user_ratings_total')
+
+        google_place_id = doc.get('place_id')
+        google_reference = doc.get('reference')
+        google_plus_code = doc.get('plus_code')
+
+        utc_offset = doc.get('utc_offset')
+        google_photos = doc.get('photos')
 
         ######################## Validate and Create District, Locality, Province, Country ########################
-
-        country, created = Country.objects.get_or_create(title=country)
-        province, created = Province.objects.get_or_create(
-            title=province, country=country)
-        locality, created = City.objects.get_or_create(
-            title=locality, postcode=postal_code, province=province)
-        district, created = District.objects.get_or_create(
-            title=district, postcode=postal_code, locality=locality)
+        if country is not None:
+            country, created = Country.objects.get_or_create(title=country)
+        if state is not None:
+            state, created = State.objects.get_or_create(
+                title=state, country=country)
+        if province is not None:
+            province, created = Province.objects.get_or_create(
+                title=province, state=state)
+        if locality is not None:
+            locality, created = City.objects.get_or_create(
+                title=locality, postcode=postal_code, province=province)
+        if district is not None:
+            district, created = District.objects.get_or_create(
+                title=district, postcode=postal_code, locality=locality)
 
         ######################## Validate and Save Location ########################
-        new_location = Location(title=title, country=country, province=province, district=district, city=locality,
+        new_location = Location(title=title, country=country, state=state, province=province, district=district, city=locality,
                                 address=address, street_number=street_number, geometry=geometry, public_phone=public_phone, formatted_address=formatted_address,
-                                formatted_phone_number=formatted_phone_number, website=website, utc_offset=utc_offset,
+                                vicinity=vicinity, formatted_phone_number=formatted_phone_number, website=website, utc_offset=utc_offset,
                                 business_status=business_status, opening_hour_periods=opening_hour_periods, google_place_id=google_place_id, google_reference=google_reference,
-                                reviews=reviews, google_plus_code=google_plus_code)
+                                reviews=reviews, rating=rating, user_ratings_total=user_ratings_total, google_plus_code=google_plus_code)
         if not new_location:
             Response("Could not create new location",
                      status=status.HTTP_400_BAD_REQUEST)
@@ -534,7 +540,8 @@ class GoolgePlacesAPIViewSet(APIView):
         ######################## Validate and Save Location Images ########################
 
         for index, item in enumerate(google_photos):
-
+            if index >= 20:
+                break
             photo_reference = item['photo_reference']
             max_width = item['width']
             max_height = item['height']
@@ -555,6 +562,8 @@ class GoolgePlacesAPIViewSet(APIView):
                 title=f'cowork-{locality.slug}-{new_location.slug}-{index}', location=new_location, google_photo_reference=photo_reference)
             location_image.image.save(
                 f'cowork-{locality.slug}-{new_location.slug}-{index}' + '.jpg', django_file, save=True)
+            os.remove(
+                item['photo_reference'] + '.jpg')
             location_image.save()
 
         ######################## Response ########################

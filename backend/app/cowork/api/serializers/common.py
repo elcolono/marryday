@@ -80,7 +80,7 @@ class LocationSerializer(serializers.ModelSerializer):
         model = Location
         fields = ('slug', 'booking_type', 'title', 'address', 'street_number', 'city', 'district',
                   'lat', 'lng', 'images', 'description', 'prices', 'public_phone', 'opening_hours',
-                  'website', 'amenities',)
+                  'website', 'amenities', 'geometry', 'reviews',)
 
 
 # Bookings

@@ -2,7 +2,7 @@
 Admin Settings
 """
 from django.contrib import admin
-from .models import Location, RentObject, Booking, LocationImage, CityImage, District, City, Province, Country, ForwardingContact, OpeningHours
+from .models import Location, RentObject, Booking, LocationImage, CityImage, District, City, Province, State, Country, ForwardingContact, OpeningHours
 # Register your models here.
 
 
@@ -48,7 +48,12 @@ class CityAdmin(admin.ModelAdmin):
 
 
 class ProvinceAdmin(admin.ModelAdmin):
-    search_fields = ('is_active', 'title', 'country')
+    search_fields = ('is_active', 'title', 'state')
+    list_display = ('is_active', 'title', 'state')
+    list_filter = ('is_active', 'title', 'state')
+
+class StateAdmin(admin.ModelAdmin):
+    search_fields = ('is_active', 'title', 'Province')
     list_display = ('is_active', 'title', 'country')
     list_filter = ('is_active', 'title', 'country')
 
@@ -70,7 +75,7 @@ class LocationAdmin(admin.ModelAdmin):
             'fields': ('is_active', 'booking_type', 'title', 'lat', 'lng', 'description', 'website', 'slug')
         }),
         ('Contact', {
-            'fields': ('address', 'street_number', 'district', 'city', 'province', 'country', 'formatted_address','public_phone', 'formatted_phone_number')
+            'fields': ('address', 'street_number', 'district', 'city', 'province', 'country', 'formatted_address', 'public_phone', 'formatted_phone_number')
         }),
         ('Geometry', {
             'fields': ('geometry', 'utc_offset',)
@@ -83,6 +88,9 @@ class LocationAdmin(admin.ModelAdmin):
         }),
         ('Pricing', {
             'fields': ('phone_hour_price', 'desktop_hour_price', 'meeting_hour_price',)
+        }),
+        ('Reviews', {
+            'fields': ('reviews',)
         }),
         # ('Advanced options', {
         # 'classes': ('wide', 'extrapretty', 'collapse',),
@@ -112,3 +120,4 @@ admin.site.register(Province, ProvinceAdmin)
 admin.site.register(City, CityAdmin)
 admin.site.register(Country, CountryAdmin)
 admin.site.register(District, DistrictAdmin)
+admin.site.register(State, StateAdmin)
