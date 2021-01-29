@@ -105,6 +105,7 @@ class BookingAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Location, LocationAdmin)
+admin.site.register(LocationImage, LocationImageAdmin)
 admin.site.register(RentObject, RentObjectAdmin)
 admin.site.register(Booking, BookingAdmin)
 admin.site.register(Province, ProvinceAdmin)

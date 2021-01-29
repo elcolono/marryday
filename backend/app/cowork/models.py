@@ -146,6 +146,7 @@ class Location(models.Model):
     lng = models.DecimalField(
         decimal_places=4, max_digits=10, null=True, blank=True)
     geometry = models.JSONField(null=True)
+    reviews = models.JSONField(null=True)
     booking_type = models.CharField(
         max_length=150, choices=BOOKING_TYPES, default="linking")
     slug = models.CharField(max_length=150, blank=True, null=True)
@@ -162,6 +163,8 @@ class Location(models.Model):
     utc_offset = models.IntegerField(null=True)
     business_status = models.CharField(max_length=150, null=True)
     google_place_id = models.CharField(max_length=150, null=True, unique=True)
+    google_reference = models.CharField(max_length=150, null=True, unique=True)
+    google_plus_code = models.JSONField(null=True)
     opening_hour_periods = models.JSONField(null=True)
     wifi = models.BooleanField(default=False)
     printer = models.BooleanField(default=False)
@@ -246,7 +249,7 @@ class Image(models.Model):
     )
     is_thumbnail = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
-    title = models.CharField(max_length=100)
+    title = models.CharField(max_length=500)
     # image = models.FileField(upload_to=update_filename)
 
     class Meta:
@@ -264,9 +267,12 @@ class LocationImage(Image):
     def update_filename(instance, filename):
         ext = filename.split('.')[-1]
         return f"locations/{instance.location_id}/{instance.title}.{ext}"
+
     image = models.FileField(upload_to=update_filename)
     location = models.ForeignKey(
         Location, related_name="images", on_delete=models.PROTECT)
+    google_photo_reference = models.CharField(
+        max_length=500, null=True, blank=True)
 
 
 class CityImage(Image):

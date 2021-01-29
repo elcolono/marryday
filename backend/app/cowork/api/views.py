@@ -444,109 +444,119 @@ class GoolgePlacesAPIViewSet(APIView):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def post(self, request):
-        gmaps = googlemaps.Client(
-            key='AIzaSyBmWeP4Qc9OTKNHCYbeVtjAhBULx8xsNiQ')
-        # search_locations = gmaps.places(
-        #     query="cowork", location=("48.2082", "16.3738"), radius=1)
+        from django.core.files import File
 
-        # Get all data
+        api_key = 'AIzaSyDFbdovhyx9DCYJIO4Jt0_ppwgXxWvM5ek'
+        retrieved_detail_location = request.data
 
-        # Check country
-        # If it does not exist create it
+        # place_id = search_location['place_id']
+        # detail_location_url = ('https://maps.googleapis.com/maps/api/place/details/json'
+        #                        '?place_id=%s'
+        #                        '&key=%s') % (place_id, api_key)
 
-        search_locations = request.data
-        for location in search_locations:
+        # retrieved_detail_location = requests.get(detail_location_url)
+        doc = retrieved_detail_location['result']
 
-            detail_location = gmaps.place(place_id=location['place_id'])
-            doc = detail_location['result']
+        if "name" in doc:
+            title = doc['name']
 
-            if "name" in doc:
-                title = doc['name']
+        for address_component in doc['address_components']:
+            # {"long_name": "9", "short_name": "9", "types": ["street_number"]}
+            if "street_number" in address_component['types']:
+                street_number = address_component['long_name']
+            if "route" in address_component['types']:
+                address = address_component['long_name']
+            if "sublocality" in address_component['types']:
+                district = address_component['long_name']
+            if "locality" in address_component['types']:
+                locality = address_component['long_name']
+            if "administrative_area_level_2" in address_component['types']:
+                locality = address_component['long_name']
+            if "administrative_area_level_1" in address_component['types']:
+                province = address_component['long_name']
+            if "country" in address_component['types']:
+                country = address_component['long_name']
+            if "postal_code" in address_component['types']:
+                postal_code = address_component['long_name']
 
-            for address_component in doc['address_components']:
-                # {"long_name": "9", "short_name": "9", "types": ["street_number"]}
-                if "street_number" in address_component['types']:
-                    street_number = address_component['long_name']
-                if "route" in address_component['types']:
-                    address = address_component['long_name']
-                if "sublocality" in address_component['types']:
-                    district = address_component['long_name']
-                if "locality" in address_component['types']:
-                    locality = address_component['long_name']
-                if "administrative_area_level_2" in address_component['types']:
-                    locality = address_component['long_name']
-                if "administrative_area_level_1" in address_component['types']:
-                    province = address_component['long_name']
-                if "country" in address_component['types']:
-                    country = address_component['long_name']
-                if "postal_code" in address_component['types']:
-                    postal_code = address_component['long_name']
+        if "business_status" in doc:
+            business_status = doc['business_status']
+        if "geometry" in doc:
+            geometry = doc['geometry']
+        if "opening_hours" in doc:
+            opening_hour_periods = doc['opening_hours']['periods']
+        if "reviews" in doc:
+            reviews = doc['reviews']
+        if "phone" in doc:
+            public_phone = doc['phone']
+        if "formatted_phone_number" in doc:
+            formatted_phone_number = doc['formatted_phone_number']
+        if "formatted_address" in doc:
+            formatted_address = doc['formatted_address']
+        if "place_id" in doc:
+            google_place_id = doc['place_id']
+        if "plus_code" in doc:
+            google_plus_code = doc['plus_code']
+        if "reference" in doc:
+            google_reference = doc['reference']
+        if "utc_offset" in doc:
+            utc_offset = doc['utc_offset']
+        if "website" in doc:
+            website = doc['website']
+        if "international_phone_number" in doc:
+            public_phone = doc['international_phone_number']
+        if "photos" in doc:
+            google_photos = doc['photos']
 
-            if "business_status" in doc:
-                business_status = doc['business_status']
-            if "geometry" in doc:
-                geometry = doc['geometry']
-            if "opening_hours" in doc:
-                opening_hour_periods = doc['opening_hours']['periods']
-            if "reviews" in doc:
-                reviews = doc['reviews']
-            if "phone" in doc:
-                public_phone = doc['phone']
-            if "formatted_phone_number" in doc:
-                formatted_phone_number = doc['formatted_phone_number']
-            if "formatted_address" in doc:
-                formatted_address = doc['formatted_address']
-            if "place_id" in doc:
-                google_place_id = doc['place_id']
-            if "utc_offset" in doc:
-                utc_offset = doc['utc_offset']
-            if "website" in doc:
-                website = doc['website']
-            if "international_phone_number" in doc:
-                public_phone = doc['international_phone_number']
-            if "photos" in doc:
-                google_photos = doc['photos']
+        ######################## Validate and Create District, Locality, Province, Country ########################
 
-            ######################## Validate and Create District, Locality, Province, Country ########################
+        country, created = Country.objects.get_or_create(title=country)
+        province, created = Province.objects.get_or_create(
+            title=province, country=country)
+        locality, created = City.objects.get_or_create(
+            title=locality, postcode=postal_code, province=province)
+        district, created = District.objects.get_or_create(
+            title=district, postcode=postal_code, locality=locality)
 
-            country, created = Country.objects.get_or_create(title=country)
-            province, created = Province.objects.get_or_create(
-                title=province, country=country)
-            locality, created = City.objects.get_or_create(
-                title=locality, postcode=postal_code, province=province)
-            district, created = District.objects.get_or_create(
-                title=district, postcode=postal_code, locality=locality)
+        ######################## Validate and Save Location ########################
+        new_location = Location(title=title, country=country, province=province, district=district, city=locality,
+                                address=address, street_number=street_number, geometry=geometry, public_phone=public_phone, formatted_address=formatted_address,
+                                formatted_phone_number=formatted_phone_number, website=website, utc_offset=utc_offset,
+                                business_status=business_status, opening_hour_periods=opening_hour_periods, google_place_id=google_place_id, google_reference=google_reference,
+                                reviews=reviews, google_plus_code=google_plus_code)
+        if not new_location:
+            Response("Could not create new location",
+                     status=status.HTTP_400_BAD_REQUEST)
 
-            ######################## Validate and Save Location ########################
-            new_location = Location(title=title, country=country, province=province, district=district, city=locality,
-                                    address=address, street_number=street_number, geometry=geometry, public_phone=public_phone, formatted_address=formatted_address,
-                                    formatted_phone_number=formatted_phone_number, website=website, utc_offset=utc_offset,
-                                    business_status=business_status, opening_hour_periods=opening_hour_periods, google_place_id=google_place_id)
-            if not new_location:
-                Response("Could not create new location",
-                         status=status.HTTP_400_BAD_REQUEST)
+        new_location.clean()
+        new_location.save()
 
-            new_location.clean()
-            # new_location.save()
+        ######################## Validate and Save Location Images ########################
 
-            ######################## Validate and Save Location Images ########################
-            from django.core.files import File
+        for index, item in enumerate(google_photos):
 
-            for index, item in enumerate(google_photos):
-                google_place_photo = gmaps.places_photo(
-                    max_width=item['width'], max_height=item['height'], photo_reference=item['photo_reference'])
-                # location_image = LocationImage(image=File(google_place_photo),
-                #                                title=f'cowork-{locality.title}-{title}-{index}', location=new_location)
-                # location_image.clean()
-                # location_image.save()
+            photo_reference = item['photo_reference']
+            max_width = item['width']
+            max_height = item['height']
+            city_image_url = ('https://maps.googleapis.com/maps/api/place/photo'
+                              '?maxwidth=%s'
+                              '&maxheight=%s'
+                              '&photoreference=%s'
+                              '&key=%s') % (max_width, max_height, photo_reference, api_key)
 
-                location_image = LocationImage()
+            retrieved_image = requests.get(city_image_url)
+            with open(item['photo_reference'] + '.jpg', 'wb') as f:
+                f.write(retrieved_image.content)
 
-                location_image.image.save(
-                    f'cowork-{locality.title}-{title}-{index}', google_place_photo)
+            reopen = open(item['photo_reference'] + '.jpg', 'rb')
+            django_file = File(reopen)
 
-                location_image.save()
+            location_image = LocationImage(
+                title=f'cowork-{locality.slug}-{new_location.slug}-{index}', location=new_location, google_photo_reference=photo_reference)
+            location_image.image.save(
+                f'cowork-{locality.slug}-{new_location.slug}-{index}' + '.jpg', django_file, save=True)
+            location_image.save()
 
-            ######################## Response ########################
-            new_location_serializer = LocationSerializer(new_location)
-            return Response(data=new_location_serializer.data, status=status.HTTP_201_CREATED)
+        ######################## Response ########################
+        new_location_serializer = LocationSerializer(new_location)
+        return Response(data=new_location_serializer.data, status=status.HTTP_201_CREATED)
