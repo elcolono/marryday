@@ -497,8 +497,11 @@ class GoolgePlacesAPIViewSet(APIView):
             website = doc.get('website')
 
             geometry = doc.get('geometry')
-
-            opening_hour_periods = doc.get('opening_hours').get('periods')
+            try:
+                opening_hour_periods = doc.get('opening_hours').get('periods')
+            except AttributeError:
+                opening_hour_periods = None
+                pass
             reviews = doc.get('reviews')
             rating = doc.get('rating')
             user_ratings_total = doc.get('user_ratings_total')
