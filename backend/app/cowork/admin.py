@@ -66,9 +66,9 @@ class CountryAdmin(admin.ModelAdmin):
 
 
 class LocationAdmin(admin.ModelAdmin):
-    search_fields = ('title', 'address')
-    list_display = ('title', 'address', 'lat', 'lng',)
-    list_filter = ('title', 'address')
+    search_fields = ('is_active', 'title', 'address', 'province', 'state',)
+    list_display = ('is_active', 'title', 'address', 'province', 'state',)
+    list_filter = ('is_active', 'title', 'address', 'province', 'state',)
     inlines = [OpeningHoursInline, RentObjectInline,
                LocationImageInline, ForwardingContactsInline]
     fieldsets = fieldsets = (
