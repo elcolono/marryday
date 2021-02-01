@@ -35,40 +35,43 @@ class OpeningHoursInline(admin.TabularInline):
 
 
 class DistrictAdmin(admin.ModelAdmin):
-    search_fields = ('is_active', 'title', 'locality')
-    list_display = ('is_active', 'title', 'locality')
-    list_filter = ('is_active', 'title', 'locality')
+    search_fields = ('title', 'is_active', 'locality')
+    list_display = ('title', 'is_active', 'locality')
+    list_filter = ('title', 'is_active',  'locality')
 
 
 class CityAdmin(admin.ModelAdmin):
-    search_fields = ('is_active', 'title', 'postcode', 'province')
-    list_display = ('is_active', 'title', 'postcode', 'province')
-    list_filter = ('is_active', 'title', 'postcode', 'province')
+    search_fields = ('title', 'is_active',  'postcode', 'province')
+    list_display = ('title', 'is_active', 'postcode', 'province')
+    list_filter = ('title', 'is_active', 'postcode', 'province')
     inlines = [CityImageInline]
 
 
 class ProvinceAdmin(admin.ModelAdmin):
-    search_fields = ('is_active', 'title', 'state')
-    list_display = ('is_active', 'title', 'state')
-    list_filter = ('is_active', 'title', 'state')
+    search_fields = ('title', 'is_active', 'state')
+    list_display = ('title', 'is_active', 'state')
+    list_filter = ('title', 'is_active',  'state')
 
 
 class StateAdmin(admin.ModelAdmin):
-    search_fields = ('is_active', 'title', 'Province')
-    list_display = ('is_active', 'title', 'country')
-    list_filter = ('is_active', 'title', 'country')
+    search_fields = ('title', 'is_active',  'Province')
+    list_display = ('title', 'is_active',  'country')
+    list_filter = ('title', 'is_active',  'country')
 
 
 class CountryAdmin(admin.ModelAdmin):
-    search_fields = ('is_active', 'title')
-    list_display = ('is_active', 'title')
-    list_filter = ('is_active', 'title')
+    search_fields = ('title', 'is_active')
+    list_display = ('title', 'is_active')
+    list_filter = ('title', 'is_active')
 
 
 class LocationAdmin(admin.ModelAdmin):
-    search_fields = ('is_active', 'title', 'address', 'province', 'state',)
-    list_display = ('is_active', 'title', 'address', 'province', 'state',)
-    list_filter = ('is_active', 'title', 'address', 'province', 'state',)
+    search_fields = ('title', 'is_active',  'address',
+                     'province', 'city', 'state',)
+    list_display = ('title', 'is_active',  'address',
+                    'province', 'city', 'state',)
+    list_filter = ('title', 'is_active',  'address',
+                   'province', 'city', 'state',)
     inlines = [OpeningHoursInline, RentObjectInline,
                LocationImageInline, ForwardingContactsInline]
     fieldsets = fieldsets = (

@@ -527,7 +527,7 @@ class GoolgePlacesAPIViewSet(APIView):
                     title=locality, postcode=postal_code, province=province)
             if district is not None:
                 district, created = District.objects.get_or_create(
-                    title=district, postcode=postal_code, locality=locality)
+                    title=district, locality=locality)
 
             ######################## Validate and Save Location ########################
             new_location = Location(title=title, country=country, state=state, province=province, district=district, city=locality,
@@ -581,5 +581,9 @@ class GoolgePlacesAPIViewSet(APIView):
             new_location_serializer = LocationSerializer(new_location)
         except Exception as e:
             new_location.delete()
+            country.delete()
+            province.delete()
+            locality.delete()
+            district.delete()
             return JsonResponse({'error': str(e)})
         return Response(data=new_location_serializer.data, status=status.HTTP_201_CREATED)

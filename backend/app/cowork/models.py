@@ -88,8 +88,8 @@ class City(models.Model):
 class District(models.Model):
     is_active = models.BooleanField(default=False)
     title = models.CharField(max_length=150)
-    postcode = models.CharField(
-        max_length=50, unique=True, null=True, blank=True)
+    # postcode = models.CharField(
+    #     max_length=50, unique=True, null=True, blank=True)
     slug = models.CharField(max_length=150, blank=True, null=True)
     locality = models.ForeignKey(
         'cowork.City', related_name="locality_districts", on_delete=models.CASCADE, null=True)
