@@ -30,7 +30,7 @@ class CitySerializer(serializers.ModelSerializer):
 class DistrictSerializer(serializers.ModelSerializer):
     class Meta:
         model = District
-        fields = ('id', 'title', 'postcode')
+        fields = ('id', 'title')
 
 
 # Opening hours
