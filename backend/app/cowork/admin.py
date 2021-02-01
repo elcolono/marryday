@@ -52,6 +52,7 @@ class ProvinceAdmin(admin.ModelAdmin):
     list_display = ('is_active', 'title', 'state')
     list_filter = ('is_active', 'title', 'state')
 
+
 class StateAdmin(admin.ModelAdmin):
     search_fields = ('is_active', 'title', 'Province')
     list_display = ('is_active', 'title', 'country')
@@ -84,7 +85,7 @@ class LocationAdmin(admin.ModelAdmin):
             'fields': ('opening_hour_periods',)
         }),
         ('Amenities', {
-            'fields': ('wifi', 'printer', 'air_condition', 'coffee', 'locker', 'shower')
+            'fields': ('wifi', 'printer', 'plotter', 'air_condition', 'coffee', 'kitchen', 'locker', 'shower', 'parking', 'open_24_7', 'relaxation_area',)
         }),
         ('Pricing', {
             'fields': ('phone_hour_price', 'desktop_hour_price', 'meeting_hour_price',)

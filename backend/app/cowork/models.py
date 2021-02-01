@@ -188,10 +188,15 @@ class Location(models.Model):
     opening_hour_periods = models.JSONField(null=True)
     wifi = models.BooleanField(default=False)
     printer = models.BooleanField(default=False)
+    plotter = models.BooleanField(default=False)
     air_condition = models.BooleanField(default=False)
     coffee = models.BooleanField(default=False)
+    kitchen = models.BooleanField(default=False)
     locker = models.BooleanField(default=False)
     shower = models.BooleanField(default=False)
+    parking = models.BooleanField(default=False)
+    open_24_7 = models.BooleanField(default=False)
+    relaxation_area = models.BooleanField(default=False)
 
     def clean(self):
         rent_objects = self.rent_objects.all()

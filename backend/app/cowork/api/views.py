@@ -449,6 +449,7 @@ class GoolgePlacesAPIViewSet(APIView):
         api_key = 'AIzaSyDFbdovhyx9DCYJIO4Jt0_ppwgXxWvM5ek'
         search_location = request.data
 
+        thumbnail_photo = search_location.get('thumbnail_photo')
         place_id = search_location.get('place_id')
         detail_location_url = ('https://maps.googleapis.com/maps/api/place/details/json'
                                '?place_id=%s'
@@ -539,12 +540,15 @@ class GoolgePlacesAPIViewSet(APIView):
 
         ######################## Validate and Save Location Images ########################
 
+        if thumbnail_photo is not None:
+            google_photos.insert(0, thumbnail_photo)
+
         for index, item in enumerate(google_photos):
             if index >= 20:
                 break
             photo_reference = item['photo_reference']
-            max_width = item['width']
-            max_height = item['height']
+            max_width = item.get('width')
+            max_height = item.get('height')
             city_image_url = ('https://maps.googleapis.com/maps/api/place/photo'
                               '?maxwidth=%s'
                               '&maxheight=%s'
@@ -564,6 +568,8 @@ class GoolgePlacesAPIViewSet(APIView):
                 f'cowork-{locality.slug}-{new_location.slug}-{index}' + '.jpg', django_file, save=True)
             os.remove(
                 item['photo_reference'] + '.jpg')
+            if index == 0 and thumbnail_photo is not None:
+                location_image.is_thumbnail = True
             location_image.save()
 
         ######################## Response ########################
