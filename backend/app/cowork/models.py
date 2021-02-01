@@ -145,7 +145,7 @@ class OpeningHours(models.Model):
 class Location(models.Model):
     is_active = models.BooleanField(default=False)
     title = models.CharField(max_length=150, unique=True, null=True)
-    address = models.CharField(max_length=150)
+    address = models.CharField(max_length=150, null=True)
     street_number = models.CharField(max_length=150, null=True)
     district = models.ForeignKey(
         District, related_name="district_locations", on_delete=models.PROTECT, null=True, blank=True)
