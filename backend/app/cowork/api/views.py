@@ -547,34 +547,35 @@ class GoolgePlacesAPIViewSet(APIView):
             if thumbnail_photo is not None:
                 google_photos.insert(0, thumbnail_photo)
 
-            for index, item in enumerate(google_photos):
-                if index >= 20:
-                    break
-                photo_reference = item['photo_reference']
-                max_width = item.get('width')
-                max_height = item.get('height')
-                city_image_url = ('https://maps.googleapis.com/maps/api/place/photo'
-                                  '?maxwidth=%s'
-                                  '&maxheight=%s'
-                                  '&photoreference=%s'
-                                  '&key=%s') % (max_width, max_height, photo_reference, api_key)
+            if google_photos is not None:
+                for index, item in enumerate(google_photos):
+                    if index >= 20:
+                        break
+                    photo_reference = item['photo_reference']
+                    max_width = item.get('width')
+                    max_height = item.get('height')
+                    city_image_url = ('https://maps.googleapis.com/maps/api/place/photo'
+                                      '?maxwidth=%s'
+                                      '&maxheight=%s'
+                                      '&photoreference=%s'
+                                      '&key=%s') % (max_width, max_height, photo_reference, api_key)
 
-                retrieved_image = requests.get(city_image_url)
-                with open(item['photo_reference'] + '.jpg', 'wb') as f:
-                    f.write(retrieved_image.content)
+                    retrieved_image = requests.get(city_image_url)
+                    with open(item['photo_reference'] + '.jpg', 'wb') as f:
+                        f.write(retrieved_image.content)
 
-                reopen = open(item['photo_reference'] + '.jpg', 'rb')
-                django_file = File(reopen)
+                    reopen = open(item['photo_reference'] + '.jpg', 'rb')
+                    django_file = File(reopen)
 
-                location_image = LocationImage(
-                    title=f'cowork-{locality.slug}-{new_location.slug}-{index}', location=new_location, google_photo_reference=photo_reference)
-                location_image.image.save(
-                    f'cowork-{locality.slug}-{new_location.slug}-{index}' + '.jpg', django_file, save=True)
-                os.remove(
-                    item['photo_reference'] + '.jpg')
-                if index == 0 and thumbnail_photo is not None:
-                    location_image.is_thumbnail = True
-                location_image.save()
+                    location_image = LocationImage(
+                        title=f'cowork-{locality.slug}-{new_location.slug}-{index}', location=new_location, google_photo_reference=photo_reference)
+                    location_image.image.save(
+                        f'cowork-{locality.slug}-{new_location.slug}-{index}' + '.jpg', django_file, save=True)
+                    os.remove(
+                        item['photo_reference'] + '.jpg')
+                    if index == 0 and thumbnail_photo is not None:
+                        location_image.is_thumbnail = True
+                    location_image.save()
 
             ######################## Response ########################
             new_location_serializer = LocationSerializer(new_location)
