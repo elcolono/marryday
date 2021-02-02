@@ -144,7 +144,7 @@ class OpeningHours(models.Model):
 
 class Location(models.Model):
     is_active = models.BooleanField(default=False)
-    title = models.CharField(max_length=150, unique=True, null=True)
+    title = models.CharField(max_length=150, null=True)
     address = models.CharField(max_length=150, null=True)
     street_number = models.CharField(max_length=150, null=True)
     district = models.ForeignKey(
@@ -163,13 +163,13 @@ class Location(models.Model):
         decimal_places=4, max_digits=10, null=True, blank=True)
     lng = models.DecimalField(
         decimal_places=4, max_digits=10, null=True, blank=True)
-    geometry = models.JSONField(null=True)
-    reviews = models.JSONField(null=True)
-    rating = models.FloatField(null=True)
+    geometry = models.JSONField(null=True, blank=True)
+    reviews = models.JSONField(null=True, blank=True)
+    rating = models.FloatField(null=True, blank=True)
     user_ratings_total = models.IntegerField(null=True)
     booking_type = models.CharField(
         max_length=150, choices=BOOKING_TYPES, default="linking")
-    slug = models.CharField(max_length=150, blank=True, null=True)
+    slug = models.CharField(max_length=150, blank=True, null=True, unique=True)
     description = HTMLField(null=True, blank=True)
     phone_hour_price = models.DecimalField(
         decimal_places=2, blank=True, null=True, max_digits=10)
@@ -184,8 +184,8 @@ class Location(models.Model):
     business_status = models.CharField(max_length=150, null=True)
     google_place_id = models.CharField(max_length=150, null=True, unique=True)
     google_reference = models.CharField(max_length=150, null=True, unique=True)
-    google_plus_code = models.JSONField(null=True)
-    opening_hour_periods = models.JSONField(null=True)
+    google_plus_code = models.JSONField(null=True, blank=True)
+    opening_hour_periods = models.JSONField(null=True, blank=True)
     # Amenities
     wifi = models.BooleanField(default=False)
     printer = models.BooleanField(default=False)
@@ -206,12 +206,18 @@ class Location(models.Model):
     # Month
     fixdesk_month_price = models.DecimalField(
         decimal_places=2, blank=True, null=True, max_digits=10, verbose_name="Fixdesk price (net)")
-    fixdesk_month_onrequest = models.BooleanField(default=False, verbose_name="on request")
-    fixdesk_month_storage = models.BooleanField(default=False, verbose_name="storage")
-    fixdesk_month_wifi = models.BooleanField(default=False, verbose_name="wifi")
-    fixdesk_month_scan = models.BooleanField(default=False, verbose_name="scan")
-    fixdesk_month_print = models.BooleanField(default=False, verbose_name="print")
-    fixdesk_month_meetingroom = models.BooleanField(default=False, verbose_name="meetingroom")
+    fixdesk_month_onrequest = models.BooleanField(
+        default=False, verbose_name="on request")
+    fixdesk_month_storage = models.BooleanField(
+        default=False, verbose_name="storage")
+    fixdesk_month_wifi = models.BooleanField(
+        default=False, verbose_name="wifi")
+    fixdesk_month_scan = models.BooleanField(
+        default=False, verbose_name="scan")
+    fixdesk_month_print = models.BooleanField(
+        default=False, verbose_name="print")
+    fixdesk_month_meetingroom = models.BooleanField(
+        default=False, verbose_name="meetingroom")
     # Week
     # fixdesk_week_price = models.DecimalField(
     #     decimal_places=2, blank=True, null=True, max_digits=10)
@@ -230,35 +236,51 @@ class Location(models.Model):
     # fixdesk_day_scan = models.BooleanField(default=False)
     # fixdesk_day_print = models.BooleanField(default=False)
     # fixdesk_day_meetingroom = models.BooleanField(default=False)
-    ## Flex desk
+    # Flex desk
     # Month
     flexdesk_month_price = models.DecimalField(
         decimal_places=2, blank=True, null=True, max_digits=10, verbose_name="Flexdesk price (net)")
-    flexdesk_month_onrequest = models.BooleanField(default=False, verbose_name="on request")
-    flexdesk_month_storage = models.BooleanField(default=False, verbose_name="storage")
-    flexdesk_month_wifi = models.BooleanField(default=False, verbose_name="wifi")
-    flexdesk_month_scan = models.BooleanField(default=False, verbose_name="scan")
-    flexdesk_month_print = models.BooleanField(default=False, verbose_name="print")
-    flexdesk_month_meetingroom = models.BooleanField(default=False, verbose_name="meetingroom")
+    flexdesk_month_onrequest = models.BooleanField(
+        default=False, verbose_name="on request")
+    flexdesk_month_storage = models.BooleanField(
+        default=False, verbose_name="storage")
+    flexdesk_month_wifi = models.BooleanField(
+        default=False, verbose_name="wifi")
+    flexdesk_month_scan = models.BooleanField(
+        default=False, verbose_name="scan")
+    flexdesk_month_print = models.BooleanField(
+        default=False, verbose_name="print")
+    flexdesk_month_meetingroom = models.BooleanField(
+        default=False, verbose_name="meetingroom")
     # Day
     flexdesk_day_price = models.DecimalField(
         decimal_places=2, blank=True, null=True, max_digits=10, verbose_name="Flexdesk day-price (net)")
-    flexdesk_day_onrequest = models.BooleanField(default=False, verbose_name="on request")
-    flexdesk_day_storage = models.BooleanField(default=False, verbose_name="storage")
+    flexdesk_day_onrequest = models.BooleanField(
+        default=False, verbose_name="on request")
+    flexdesk_day_storage = models.BooleanField(
+        default=False, verbose_name="storage")
     flexdesk_day_wifi = models.BooleanField(default=False, verbose_name="wifi")
     flexdesk_day_scan = models.BooleanField(default=False, verbose_name="scan")
-    flexdesk_day_print = models.BooleanField(default=False, verbose_name="print")
-    flexdesk_day_meetingroom = models.BooleanField(default=False, verbose_name="meetingroom")
+    flexdesk_day_print = models.BooleanField(
+        default=False, verbose_name="print")
+    flexdesk_day_meetingroom = models.BooleanField(
+        default=False, verbose_name="meetingroom")
     # Hour
     flexdesk_hour_price = models.DecimalField(
         decimal_places=2, blank=True, null=True, max_digits=10, verbose_name="Flexdesk hour-price (net)")
-    flexdesk_hour_onrequest = models.BooleanField(default=False, verbose_name="on request")
-    flexdesk_hour_storage = models.BooleanField(default=False, verbose_name="storage")
-    flexdesk_hour_wifi = models.BooleanField(default=False, verbose_name="wifi")
-    flexdesk_hour_scan = models.BooleanField(default=False, verbose_name="scan")
-    flexdesk_hour_print = models.BooleanField(default=False, verbose_name="print")
-    flexdesk_hour_meetingroom = models.BooleanField(default=False, verbose_name="meetingroom")
-    ### Meeting
+    flexdesk_hour_onrequest = models.BooleanField(
+        default=False, verbose_name="on request")
+    flexdesk_hour_storage = models.BooleanField(
+        default=False, verbose_name="storage")
+    flexdesk_hour_wifi = models.BooleanField(
+        default=False, verbose_name="wifi")
+    flexdesk_hour_scan = models.BooleanField(
+        default=False, verbose_name="scan")
+    flexdesk_hour_print = models.BooleanField(
+        default=False, verbose_name="print")
+    flexdesk_hour_meetingroom = models.BooleanField(
+        default=False, verbose_name="meetingroom")
+    # Meeting
     meetingroom_hour_price = models.DecimalField(
         decimal_places=2, blank=True, null=True, max_digits=10)
     meetingroom_day_price = models.DecimalField(
@@ -288,7 +310,8 @@ class Location(models.Model):
         #         'Please create at least 1 Rentobject before activation.')
 
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.title)
+        if self.slug is None:
+            self.slug = slugify(self.title)
         super().save(*args, **kwargs)  # Call the "real" save() method.
 
     # def clean(self):
