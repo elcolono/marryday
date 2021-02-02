@@ -81,7 +81,7 @@ class LocationAdmin(admin.ModelAdmin):
             'fields': ('business_status', 'google_reference', 'google_plus_code',)
         }),
         ('Contact', {
-            'fields': ('address', 'street_number', 'district', 'city', 'province', 'country', 'formatted_address', 'vicinity', 'public_phone', 'formatted_phone_number', 'website')
+            'fields': ('address', 'street_number', 'district', 'city', 'province', 'country', 'formatted_address', 'vicinity', 'public_phone', 'formatted_phone_number', 'public_email', 'website')
         }),
         ('Geometry', {
             'fields': ('geometry',)

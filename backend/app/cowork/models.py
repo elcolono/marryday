@@ -143,8 +143,11 @@ class OpeningHours(models.Model):
 
 
 class Location(models.Model):
+    # General
     is_active = models.BooleanField(default=False)
     title = models.CharField(max_length=150, null=True)
+
+    # Contact
     address = models.CharField(max_length=150, null=True)
     street_number = models.CharField(max_length=150, null=True)
     district = models.ForeignKey(
@@ -158,6 +161,8 @@ class Location(models.Model):
     country = models.ForeignKey(
         Country, related_name="country_locations", on_delete=models.PROTECT, null=True)
     formatted_address = models.CharField(max_length=1000, null=True)
+    public_email = models.EmailField(null=True, blank=True)
+
     vicinity = models.CharField(max_length=1000, null=True)
     lat = models.DecimalField(
         decimal_places=4, max_digits=10, null=True, blank=True)
@@ -202,7 +207,8 @@ class Location(models.Model):
     air_condition = models.BooleanField(default=False)
     shower = models.BooleanField(default=False)
     relaxation_area = models.BooleanField(default=False)
-    events_workshops = models.BooleanField(default=False, verbose_name="events & workshops")
+    events_workshops = models.BooleanField(
+        default=False, verbose_name="events & workshops")
     #
     #
     #  Offers
