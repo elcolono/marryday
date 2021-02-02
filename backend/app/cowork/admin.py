@@ -87,6 +87,13 @@ class LocationAdmin(admin.ModelAdmin):
         ('Opening Hours', {
             'fields': ('opening_hour_periods',)
         }),
+        ('Offers', {
+            'fields': (('fixdesk_month_price', 'fixdesk_month_onrequest', 'fixdesk_month_storage', 'fixdesk_month_wifi', 'fixdesk_month_scan', 'fixdesk_month_print', 'fixdesk_month_meetingroom',),
+                       ('flexdesk_month_price', 'flexdesk_month_onrequest', 'flexdesk_month_storage', 'flexdesk_month_wifi', 'flexdesk_month_scan', 'flexdesk_month_print', 'flexdesk_month_meetingroom',),
+                       ('flexdesk_day_price', 'flexdesk_day_onrequest', 'flexdesk_day_storage', 'flexdesk_day_wifi', 'flexdesk_day_scan', 'flexdesk_day_print', 'flexdesk_day_meetingroom',),
+                       ('flexdesk_hour_price', 'flexdesk_hour_onrequest', 'flexdesk_hour_storage', 'flexdesk_hour_wifi', 'flexdesk_hour_scan', 'flexdesk_hour_print', 'flexdesk_hour_meetingroom',),
+                       ('meetingroom_hour_price', 'meetingroom_day_price',))
+        }),
         ('Amenities', {
             'fields': ('wifi', 'printer', 'plotter', 'air_condition', 'coffee', 'kitchen', 'locker', 'shower', 'parking', 'open_24_7', 'relaxation_area',)
         }),
