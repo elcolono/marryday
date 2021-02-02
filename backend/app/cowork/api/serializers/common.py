@@ -62,7 +62,7 @@ class LocationSerializer(serializers.ModelSerializer):
             {'type': 'coffee', 'label': 'Kaffee',
                 'value': obj.coffee, 'icon': 'coffee'},
             {'type': 'locker', 'label': 'Schrank',
-                'value': obj.locker, 'icon': 'lock'},
+                'value': obj.storage, 'icon': 'lock'},
             {'type': 'shower',  'label': 'Dusche',
                 'value': obj.shower, 'icon': 'shower'}
         ]
