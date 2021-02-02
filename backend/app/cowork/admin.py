@@ -72,41 +72,59 @@ class LocationAdmin(admin.ModelAdmin):
                     'province', 'city', 'state',)
     list_filter = ('title', 'is_active',  'address',
                    'province', 'city', 'state',)
-    inlines = [OpeningHoursInline, RentObjectInline,
-               LocationImageInline, ForwardingContactsInline]
+    inlines = [LocationImageInline]
     fieldsets = fieldsets = (
         ('General', {
-            'fields': ('is_active', 'booking_type', 'title', 'lat', 'lng', 'description', 'website', 'slug')
+            'fields': ('is_active', 'booking_type', 'title', 'slug', 'description')
+        }),
+        ('Google Places', {
+            'fields': ('business_status', 'google_reference', 'google_plus_code',)
         }),
         ('Contact', {
-            'fields': ('address', 'street_number', 'district', 'city', 'province', 'country', 'formatted_address', 'public_phone', 'formatted_phone_number')
+            'fields': ('address', 'street_number', 'district', 'city', 'province', 'country', 'formatted_address', 'vicinity', 'public_phone', 'formatted_phone_number', 'website')
         }),
         ('Geometry', {
-            'fields': ('geometry', 'utc_offset',)
+            'fields': ('geometry',)
         }),
         ('Opening Hours', {
-            'fields': ('opening_hour_periods',)
+            'fields': ('opening_hour_periods', 'utc_offset',)
         }),
         ('Offers', {
-            'fields': (('fixdesk_month_price', 'fixdesk_month_onrequest', 'fixdesk_month_storage', 'fixdesk_month_wifi', 'fixdesk_month_scan', 'fixdesk_month_print', 'fixdesk_month_meetingroom',),
-                       ('flexdesk_month_price', 'flexdesk_month_onrequest', 'flexdesk_month_storage', 'flexdesk_month_wifi', 'flexdesk_month_scan', 'flexdesk_month_print', 'flexdesk_month_meetingroom',),
-                       ('flexdesk_day_price', 'flexdesk_day_onrequest', 'flexdesk_day_storage', 'flexdesk_day_wifi', 'flexdesk_day_scan', 'flexdesk_day_print', 'flexdesk_day_meetingroom',),
-                       ('flexdesk_hour_price', 'flexdesk_hour_onrequest', 'flexdesk_hour_storage', 'flexdesk_hour_wifi', 'flexdesk_hour_scan', 'flexdesk_hour_print', 'flexdesk_hour_meetingroom',),
-                       ('meetingroom_hour_price', 'meetingroom_day_price',))
+            'fields': (
+                ('fixdesk_month_price', 'fixdesk_month_contract_duration', 'fixdesk_month_onrequest', 'fixdesk_month_wifi', 'fixdesk_month_parking', 'fixdesk_month_access24_7',
+                 'fixdesk_month_meetingroom', 'fixdesk_month_printer', 'fixdesk_month_coffee', 'fixdesk_month_storage',),
+
+                ('flexdesk_month_price', 'flexdesk_month_contract_duration', 'flexdesk_month_onrequest', 'flexdesk_month_wifi', 'flexdesk_month_parking', 'flexdesk_month_access24_7',
+                 'flexdesk_month_meetingroom', 'flexdesk_month_printer', 'flexdesk_month_coffee', 'flexdesk_month_storage',),
+
+                ('flexdesk_day_price', 'flexdesk_day_contract_duration', 'flexdesk_day_onrequest', 'flexdesk_day_wifi', 'flexdesk_day_parking', 'flexdesk_day_access24_7',
+                 'flexdesk_day_meetingroom', 'flexdesk_day_printer', 'flexdesk_day_coffee', 'flexdesk_day_storage',),
+
+                ('flexdesk_hour_price', 'flexdesk_hour_contract_duration', 'flexdesk_hour_onrequest', 'flexdesk_hour_wifi', 'flexdesk_hour_parking', 'flexdesk_hour_access24_7',
+                 'flexdesk_hour_meetingroom', 'flexdesk_hour_printer', 'flexdesk_hour_coffee', 'flexdesk_hour_storage',),
+
+                ('privatespace_month_price', 'privatespace_month_contract_duration', 'privatespace_month_onrequest', 'privatespace_month_wifi', 'privatespace_month_parking', 'privatespace_month_access24_7',
+                 'privatespace_month_meetingroom', 'privatespace_month_printer', 'privatespace_month_coffee', 'privatespace_month_storage',),
+
+                ('meetingroom_hour_price'),
+
+                ('meetingroom_day_price',),
+            )
         }),
         ('Amenities', {
-            'fields': ('wifi', 'printer', 'plotter', 'air_condition', 'coffee', 'kitchen', 'locker', 'shower', 'parking', 'open_24_7', 'relaxation_area',)
+            'fields': (
+                ('wifi', 'parking', 'access24_7', 'meeting_room',
+                 'printer', 'coffee', 'storage',),
+                ('office_address', 'plotter', 'air_condition',
+                 'shower', 'relaxation_area',)
+            )
         }),
-        ('Pricing', {
-            'fields': ('phone_hour_price', 'desktop_hour_price', 'meeting_hour_price',)
-        }),
-        ('Reviews', {
-            'fields': ('reviews',)
-        }),
-        # ('Advanced options', {
-        # 'classes': ('wide', 'extrapretty', 'collapse',),
-        #     'fields': ('registration_required', 'template_name'),
+        # ('Pricing', {
+        #     'fields': ('phone_hour_price', 'desktop_hour_price', 'meeting_hour_price',)
         # }),
+        ('Reviews', {
+            'fields': ('reviews', 'rating', 'user_ratings_total')
+        }),
     )
 
 

@@ -568,9 +568,9 @@ class GoolgePlacesAPIViewSet(APIView):
                     django_file = File(reopen)
 
                     location_image = LocationImage(
-                        title=f'cowork-{locality.slug}-{new_location.slug}-{index}', location=new_location, google_photo_reference=photo_reference)
+                        title=f'coworking-{locality.slug}-{new_location.slug}-{index}', location=new_location, google_photo_reference=photo_reference)
                     location_image.image.save(
-                        f'cowork-{locality.slug}-{new_location.slug}-{index}' + '.jpg', django_file, save=True)
+                        f'coworking-{locality.slug}-{new_location.slug}-{index}' + '.jpg', django_file, save=True)
                     os.remove(
                         item['photo_reference'] + '.jpg')
                     if index == 0 and thumbnail_photo is not None:
