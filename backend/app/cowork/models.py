@@ -202,7 +202,7 @@ class Location(models.Model):
     air_condition = models.BooleanField(default=False)
     shower = models.BooleanField(default=False)
     relaxation_area = models.BooleanField(default=False)
-    
+    events_workshops = models.BooleanField(default=False, verbose_name="events & workshops")
     #
     #
     #  Offers
@@ -232,7 +232,8 @@ class Location(models.Model):
         default=False, verbose_name="coffee")
     fixdesk_month_storage = models.BooleanField(
         default=False, verbose_name="storage")
-
+    fixdesk_month_office_address = models.BooleanField(
+        default=False, verbose_name="office address")
     #
     #  Flex desk
     #
@@ -257,10 +258,12 @@ class Location(models.Model):
         default=False, verbose_name="coffee")
     flexdesk_month_storage = models.BooleanField(
         default=False, verbose_name="storage")
+    flexdesk_month_office_address = models.BooleanField(
+        default=False, verbose_name="office address")
 
     # Day
     flexdesk_day_price = models.DecimalField(
-        decimal_places=2, blank=True, null=True, max_digits=10, verbose_name="Flexdesk month-price (net)")
+        decimal_places=2, blank=True, null=True, max_digits=10, verbose_name="Flexdesk day-price (net)")
     flexdesk_day_contract_duration = models.IntegerField(
         blank=True, null=True, verbose_name="contract duration (month)")
     flexdesk_day_onrequest = models.BooleanField(
@@ -279,10 +282,12 @@ class Location(models.Model):
         default=False, verbose_name="coffee")
     flexdesk_day_storage = models.BooleanField(
         default=False, verbose_name="storage")
+    flexdesk_day_office_address = models.BooleanField(
+        default=False, verbose_name="office address")
 
     # Hour
     flexdesk_hour_price = models.DecimalField(
-        decimal_places=2, blank=True, null=True, max_digits=10, verbose_name="Flexdesk month-price (net)")
+        decimal_places=2, blank=True, null=True, max_digits=10, verbose_name="Flexdesk hour-price (net)")
     flexdesk_hour_contract_duration = models.IntegerField(
         blank=True, null=True, verbose_name="contract duration (month)")
     flexdesk_hour_onrequest = models.BooleanField(
@@ -301,6 +306,8 @@ class Location(models.Model):
         default=False, verbose_name="coffee")
     flexdesk_hour_storage = models.BooleanField(
         default=False, verbose_name="storage")
+    flexdesk_hour_office_address = models.BooleanField(
+        default=False, verbose_name="office address")
 
     #
     #  Private Space
@@ -326,12 +333,18 @@ class Location(models.Model):
         default=False, verbose_name="coffee")
     privatespace_month_storage = models.BooleanField(
         default=False, verbose_name="storage")
+    privatespace_month_office_address = models.BooleanField(
+        default=False, verbose_name="office address")
 
     # Meeting
     meetingroom_day_price = models.DecimalField(
         decimal_places=2, blank=True, null=True, max_digits=10, verbose_name="meetingroom day-price (net)",)
     meetingroom_hour_price = models.DecimalField(
         decimal_places=2, blank=True, null=True, max_digits=10, verbose_name="meetingroom hour-price (net)",)
+    meetingroom_onrequest = models.BooleanField(
+        default=False, verbose_name="on request")
+    meetingroom_multimedia = models.BooleanField(
+        default=False, verbose_name="multimedia")
 
     def clean(self):
         rent_objects = self.rent_objects.all()
