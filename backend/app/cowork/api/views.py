@@ -580,10 +580,7 @@ class GoolgePlacesAPIViewSet(APIView):
             ######################## Response ########################
             new_location_serializer = LocationSerializer(new_location)
         except Exception as e:
-            new_location.delete()
-            country.delete()
-            province.delete()
-            locality.delete()
-            district.delete()
+            if new_location is not None:
+                new_location.delete()
             return JsonResponse({'error': str(e)})
-        return Response(data=new_location_serializer.data, status=status.HTTP_201_CREATED)
+        return Response("Successfully created location", status=status.HTTP_201_CREATED)
