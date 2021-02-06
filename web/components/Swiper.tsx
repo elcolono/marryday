@@ -1,6 +1,6 @@
 import React from "react"
 
-import CardRoom from "./CardRoom"
+import CardRoom from "./CardLocation"
 import ReactIdSwiper from "react-id-swiper"
 
 const Swiper = (props) => {

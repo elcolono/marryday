@@ -12,13 +12,13 @@ import {
 import Image from "./CustomImage"
 import Icon from "./Icon"
 
-const CardRoom = (props) => {
+const CardLocation = (props) => {
   const data = props.data
   return (
     <Card className="h-100 border-0 shadow">
       <div className="card-img-top overflow-hidden gradient-overlay">
         <Image
-          src={data.images[0].image}
+          src={data.preview_image.image}
           width={1350}
           height={900}
           alt={data.title}
@@ -75,4 +75,4 @@ const CardRoom = (props) => {
   )
 }
 
-export default CardRoom
+export default CardLocation

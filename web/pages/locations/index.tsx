@@ -8,7 +8,7 @@ import {
 } from "reactstrap"
 
 import Map from "../../components/Map"
-import CardRoom from "../../components/CardRoom"
+import CardLocation from "../../components/CardLocation"
 
 import { GetServerSideProps } from "next"
 import { fetchAPIwithSSR } from "../../lib/api"
@@ -39,7 +39,7 @@ const Category2Rooms = (props) => {
                     onMouseEnter={() => onCardEnter(location.slug)}
                     onMouseLeave={() => onCardLeave()}
                   >
-                    <CardRoom data={location} />
+                    <CardLocation data={location} />
                   </Col>
                 ))}
             </Row>
