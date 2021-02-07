@@ -44,7 +44,7 @@ const LocationSlider = (props) => {
                     loop
                 />}
                 <div className="text-center mt-5">
-                    <Link href="/locations">
+                    <Link href="/coworking">
                         <a className="btn btn-outline-primary">Alle Standorte</a>
                     </Link>
                 </div>

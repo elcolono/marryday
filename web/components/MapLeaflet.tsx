@@ -111,7 +111,7 @@ const MapLeaflet = (props) => {
                   <div className="text">
                     {data.slug && data.title && (
                       <h6>
-                        <Link href={`/locations/${data.slug}`}>
+                        <Link href={`/coworking/${data.slug}`}>
                           <a>{data.title}</a>
                         </Link>
                       </h6>

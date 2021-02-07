@@ -193,7 +193,7 @@ const Header = (props) => {
               <NavItem className="mt-3 mt-lg-0 ml-lg-3 d-lg-none d-xl-inline-block">
                 <ActiveLink
                   activeClassName="active"
-                  href={`/locations`}
+                  href={`/coworking`}
                   passHref
                 >
                   <a

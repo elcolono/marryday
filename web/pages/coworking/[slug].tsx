@@ -10,7 +10,6 @@ import {
     CardHeader,
     CardBody,
     CardFooter,
-    Table
 } from "reactstrap"
 
 import SwiperGallery from "../../components/SwiperGallery"
@@ -25,12 +24,8 @@ import { fetchAPIwithSSR } from "../../lib/api";
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from "@stripe/stripe-js/pure";
 
-import filter from 'lodash/filter'
-import map from 'lodash/map'
-import isEmpty from 'lodash/isEmpty'
-import split from 'lodash/split'
-import join from 'lodash/join'
 import { getCookieConsentValue } from "react-cookie-consent";
+import OpeningHoursTable from "../../components/OpeningHoursTable"
 
 const LocationDetail = (props) => {
     const { location } = props
@@ -49,21 +44,6 @@ const LocationDetail = (props) => {
         ssr: false
     });
 
-    const WEEKDAYS = [
-        "Montag",
-        "Dienstag",
-        "Mittwoch",
-        "Donnerstag",
-        "Freitag",
-        "Samstag",
-        "Sonntag",
-    ]
-
-
-    const renderOpeningHours = (openingHours) => {
-        return isEmpty(openingHours) && <div>Geschlossen</div> || map(openingHours, (el, i) => el.open_24 ? <div key={i}>24 Stunden</div> : <div key={i}>{join(split(el.from_hour, ':', 2), ':')} - {join(split(el.to_hour, ':', 2), ':')} </div>)
-
-    }
 
     return (
         <React.Fragment>
@@ -77,7 +57,7 @@ const LocationDetail = (props) => {
                             <div className="text-block">
                                 <p className="text-primary">
                                     <i className="fa-map-marker-alt fa mr-1" />
-                                    &nbsp;{location.address && location.address} {location.street_number && location.street_number}, {location.district?.postcode && location.district?.postcode || location.city.postcode && location.city.postcode} {location.city.title && location.city.title}{location.district?.title && ", " + location.district?.title}
+                                    &nbsp;{location.formatted_address}
                                 </p>
                                 {location.title && <h1>{location.title}</h1>}
                                 {/* <div className="text-muted text-uppercase mb-4">
@@ -121,40 +101,21 @@ const LocationDetail = (props) => {
                             </div>
 
 
-                            {location.opening_hours && location.booking_type == "booking" && (
+                            {location.opening_hour_periods && location.booking_type == "booking" && (
                                 <div className="text-block">
                                     <h3 className="mb-4">Öffnungszeiten</h3>
-                                    <Table className="text-sm mb-0">
-                                        <tbody>
-                                            {map(WEEKDAYS, (item, index) => (
-                                                <tr key={index}>
-                                                    <th
-                                                        className={`pl-0 ${index === 0 ? "border-0" : ""
-                                                            }`}
-                                                    >
-                                                        {item}
-                                                    </th>
-                                                    <td
-                                                        className={`pr-0 text-right ${index === 0 ? "border-0" : ""
-                                                            }`}
-                                                    >
-                                                        {renderOpeningHours(map(filter(location.opening_hours, { 'weekday': index + 1 })))}
-                                                    </td>
-                                                </tr>
-                                            ))}
-                                        </tbody>
-                                    </Table>
+                                    <OpeningHoursTable openingHours={location.opening_hour_periods} />
                                 </div>
                             )}
 
-                            {location.lat && location.lng && (
+                            {location.geometry && (
                                 <div className="text-block">
                                     <h3 className="mb-4">Karte</h3>
                                     <div className="map-wrapper-300 mb-3">
                                         <Map
                                             className="h-100"
-                                            markerPosition={[location.lat, location.lng]}
-                                            center={[location.lat, location.lng]}
+                                            markerPosition={[location.geometry.location.lat, location.geometry.location.lng]}
+                                            center={[location.geometry.location.lat, location.geometry.location.lng]}
                                             // circlePosition={[location.lat, location.lng]}
                                             // circleRadius={500}
                                             zoom={14}
@@ -206,7 +167,7 @@ const LocationDetail = (props) => {
                                     </React.Fragment>
                                 }
 
-                                {location.booking_type == "linking" && location.opening_hours && (
+                                {location.booking_type == "linking" && location.opening_hour_periods && (
                                     <div className="text-block">
                                         <CardHeader className="bg-gray-100 py-4 border-0">
                                             <Media className="align-items-center">
@@ -223,26 +184,7 @@ const LocationDetail = (props) => {
                                             </Media>
                                         </CardHeader>
                                         <CardBody>
-                                            <Table className="text-sm mb-0">
-                                                <tbody>
-                                                    {map(WEEKDAYS, (item, index) => (
-                                                        <tr key={index}>
-                                                            <th
-                                                                className={`pl-0 ${index === 0 ? "border-0" : ""
-                                                                    }`}
-                                                            >
-                                                                {item}
-                                                            </th>
-                                                            <td
-                                                                className={`pr-0 text-right ${index === 0 ? "border-0" : ""
-                                                                    }`}
-                                                            >
-                                                                {renderOpeningHours(map(filter(location.opening_hours, { 'weekday': index + 1 })))}
-                                                            </td>
-                                                        </tr>
-                                                    ))}
-                                                </tbody>
-                                            </Table>
+                                            <OpeningHoursTable openingHours={location.opening_hour_periods} />
                                             <div className="text-center mt-4">
                                                 <Button target="_blank" href={location.website} color="primary" block>
                                                     {/* <i className="far fa-paper-plane mr-2" /> */}
