@@ -27,7 +27,7 @@ const CardLocation = (props) => {
           className="img-fluid"
           sizes="(max-width:576px) 100vw, (max-width:991px) 50vw, (max-width:1199px) 30vw, 250px"
         />
-        <Link href={`/locations/${data.slug}`}>
+        <Link href={`/coworking/${data.slug}`}>
           <a className="tile-link" />
         </Link>
         <div className="card-img-overlay-top text-right">
@@ -39,7 +39,7 @@ const CardLocation = (props) => {
       <CardBody className="d-flex align-items-center">
         <div className="w-100">
           <CardTitle tag="h6">
-            <Link href={`/locations/${data.slug}`}>
+            <Link href={`/coworking/${data.slug}`}>
               <a className="text-decoration-none text-dark">{data.title}</a>
             </Link>
           </CardTitle>
@@ -48,7 +48,7 @@ const CardLocation = (props) => {
           </CardSubtitle> */}
           <CardSubtitle className="d-flex mb-3">
             <p className="flex-grow-1 mb-0 text-muted text-sm">
-              {data.address} {data.street_number}
+              {data.vicinity}
             </p>
             {/* <p className="flex-shrink-1 mb-0 card-stars text-xs text-right">
               <Stars stars={data.stars} />
