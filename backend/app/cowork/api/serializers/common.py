@@ -7,14 +7,14 @@ class CityImageSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CityImage
-        fields = '__all__'
+        fields = ('title', 'image',)
 
 
 class LocationImageSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = LocationImage
-        fields = '__all__'
+        fields = ('title', 'image',)
 
 
 # Cities
@@ -41,16 +41,10 @@ class OpeningHoursSerializer(serializers.ModelSerializer):
 
 
 # Locations
+class LocationListSerializer(serializers.ModelSerializer):
 
-
-class LocationSerializer(serializers.ModelSerializer):
-
-    images = LocationImageSerializer(many=True)
-    city = CitySerializer()
-    district = DistrictSerializer()
-    prices = serializers.SerializerMethodField()
     amenities = serializers.SerializerMethodField()
-    opening_hours = OpeningHoursSerializer(many=True)
+    preview_image = LocationImageSerializer()
 
     def get_amenities(self, obj):
         data = [
@@ -68,25 +62,52 @@ class LocationSerializer(serializers.ModelSerializer):
         ]
         return data
 
-    def get_prices(self, obj):
-        data = {
-            'phone_hour': obj.phone_hour_price,
-            'desktop_hour': obj.desktop_hour_price,
-            'meeting_hour': obj.meeting_hour_price,
-        }
+    class Meta:
+        model = Location
+        fields = ('title', 'slug', 'booking_type', 'vicinity', 'geometry',
+                  'rating', 'amenities', 'preview_image',)
+
+
+class LocationRetrieveSerializer(serializers.ModelSerializer):
+
+    images = LocationImageSerializer(many=True)
+    # prices = serializers.SerializerMethodField()
+    amenities = serializers.SerializerMethodField()
+
+    def get_amenities(self, obj):
+        data = [
+            {'type': 'wifi', 'label': 'Wifi', 'value': obj.wifi, 'icon': 'wifi'},
+            {'type': 'printer', 'label': 'Drucker',
+                'value': obj.printer, 'icon': 'print'},
+            {'type': 'air_condition',  'label': 'Klimaanlage',
+                'value': obj.air_condition, 'icon': 'fan'},
+            {'type': 'coffee', 'label': 'Kaffee',
+                'value': obj.coffee, 'icon': 'coffee'},
+            {'type': 'locker', 'label': 'Schrank',
+                'value': obj.storage, 'icon': 'lock'},
+            {'type': 'shower',  'label': 'Dusche',
+                'value': obj.shower, 'icon': 'shower'}
+        ]
         return data
+
+    # def get_prices(self, obj):
+    #     data = {
+    #         'phone_hour': obj.phone_hour_price,
+    #         'desktop_hour': obj.desktop_hour_price,
+    #         'meeting_hour': obj.meeting_hour_price,
+    #     }
+    #     return data
 
     class Meta:
         model = Location
-        fields = ('slug', 'booking_type', 'title', 'address', 'street_number', 'city', 'district',
-                  'lat', 'lng', 'images', 'description', 'prices', 'public_phone', 'opening_hours',
-                  'website', 'amenities', 'geometry', 'reviews',)
+        fields = ('title', 'slug', 'booking_type', 'description', 'vicinity', 'formatted_address', 'opening_hour_periods', 'geometry',
+                  'rating', 'amenities', 'website', 'images',)
 
 
 # Bookings
 class BookingRetrieveSerializer(serializers.ModelSerializer):
     rent_object = serializers.StringRelatedField()
-    location = LocationSerializer()
+    location = LocationRetrieveSerializer()
 
     class Meta:
         model = Booking

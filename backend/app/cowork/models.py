@@ -19,6 +19,12 @@ BOOKING_TYPES = (
     ('booking', 'Booking')
 )
 
+OFFER_TYPES = (
+    ('excluded', 'Excluded'),
+    ('included', 'Included'),
+    ('upcharge', 'Upcharge')
+)
+
 
 class Country(models.Model):
     is_active = models.BooleanField(default=False)
@@ -146,8 +152,12 @@ class Location(models.Model):
     # General
     is_active = models.BooleanField(default=False)
     title = models.CharField(max_length=150, null=True)
+    slug = models.CharField(max_length=150, blank=True, null=True, unique=True)
+    description = HTMLField(null=True, blank=True)
 
     # Contact
+    vicinity = models.CharField(max_length=1000, null=True)
+    formatted_address = models.CharField(max_length=1000, null=True)
     address = models.CharField(max_length=150, null=True)
     street_number = models.CharField(max_length=150, null=True)
     district = models.ForeignKey(
@@ -160,37 +170,44 @@ class Location(models.Model):
         State, related_name="state_locations", on_delete=models.PROTECT, null=True)
     country = models.ForeignKey(
         Country, related_name="country_locations", on_delete=models.PROTECT, null=True)
-    formatted_address = models.CharField(max_length=1000, null=True)
     public_email = models.EmailField(null=True, blank=True)
+    public_phone = models.CharField(max_length=150, null=True)
+    formatted_phone_number = models.CharField(max_length=150, null=True)
+    website = models.URLField(max_length=150, blank=True, null=True)
 
-    vicinity = models.CharField(max_length=1000, null=True)
+    # Geometry
     lat = models.DecimalField(
         decimal_places=4, max_digits=10, null=True, blank=True)
     lng = models.DecimalField(
         decimal_places=4, max_digits=10, null=True, blank=True)
     geometry = models.JSONField(null=True, blank=True)
+    utc_offset = models.IntegerField(null=True)
+
+    # Reviews
     reviews = models.JSONField(null=True, blank=True)
     rating = models.FloatField(null=True, blank=True)
     user_ratings_total = models.IntegerField(null=True, blank=True)
+
+    # Booking
     booking_type = models.CharField(
         max_length=150, choices=BOOKING_TYPES, default="linking")
-    slug = models.CharField(max_length=150, blank=True, null=True, unique=True)
-    description = HTMLField(null=True, blank=True)
     phone_hour_price = models.DecimalField(
         decimal_places=2, blank=True, null=True, max_digits=10)
     desktop_hour_price = models.DecimalField(
         decimal_places=2, blank=True, null=True, max_digits=10)
     meeting_hour_price = models.DecimalField(
         decimal_places=2, blank=True, null=True, max_digits=10)
-    public_phone = models.CharField(max_length=150, null=True)
-    formatted_phone_number = models.CharField(max_length=150, null=True)
-    website = models.URLField(max_length=150, blank=True, null=True)
-    utc_offset = models.IntegerField(null=True)
+
+    # Google Details
     business_status = models.CharField(max_length=150, null=True)
     google_place_id = models.CharField(max_length=150, null=True, unique=True)
     google_reference = models.CharField(max_length=150, null=True, unique=True)
     google_plus_code = models.JSONField(null=True, blank=True)
     opening_hour_periods = models.JSONField(null=True, blank=True)
+
+    # Images
+    preview_image = models.OneToOneField(
+        'cowork.LocationImage', on_delete=models.CASCADE, related_name='location_preview_image', null=True, blank=True)
 
     # Amenities
     wifi = models.BooleanField(default=False)
@@ -218,28 +235,28 @@ class Location(models.Model):
     #  Fix desk
     #
     # Month
-    fixdesk_month_price = models.DecimalField(
-        decimal_places=2, blank=True, null=True, max_digits=10, verbose_name="Fixdesk month-price (net)")
-    fixdesk_month_contract_duration = models.IntegerField(
-        blank=True, null=True, verbose_name="contract duration (month)")
-    fixdesk_month_onrequest = models.BooleanField(
-        default=False, verbose_name="on request")
-    fixdesk_month_wifi = models.BooleanField(
-        default=False, verbose_name="wifi")
-    fixdesk_month_parking = models.BooleanField(
-        default=False, verbose_name="parking")
-    fixdesk_month_access24_7 = models.BooleanField(
-        default=False, verbose_name="access 24/7")
-    fixdesk_month_meetingroom = models.BooleanField(
-        default=False, verbose_name="meetingroom")
-    fixdesk_month_printer = models.BooleanField(
-        default=False, verbose_name="printer")
-    fixdesk_month_coffee = models.BooleanField(
-        default=False, verbose_name="coffee")
-    fixdesk_month_storage = models.BooleanField(
-        default=False, verbose_name="storage")
-    fixdesk_month_office_address = models.BooleanField(
-        default=False, verbose_name="office address")
+    # fixdesk_month_price = models.DecimalField(
+    #     decimal_places=2, blank=True, null=True, max_digits=10, verbose_name="Fixdesk month-price (net)")
+    # fixdesk_month_contract_duration = models.IntegerField(
+    #     blank=True, null=True, verbose_name="contract duration (month)")
+    # fixdesk_month_onrequest = models.BooleanField(
+    #     default=False, verbose_name="price on request")
+    # fixdesk_month_wifi = models.CharField(
+    #     max_length=10, default="excluded", choices=OFFER_TYPES, verbose_name="wifi")
+    # fixdesk_month_parking = models.CharField(
+    #     max_length=10, default="excluded", choices=OFFER_TYPES, verbose_name="parking")
+    # fixdesk_month_access24_7 = models.CharField(
+    #     max_length=10, default="excluded", choices=OFFER_TYPES, verbose_name="access 24/7")
+    # fixdesk_month_meetingroom = models.CharField(
+    #     max_length=10, default="excluded", choices=OFFER_TYPES, verbose_name="meetingroom")
+    # fixdesk_month_printer = models.CharField(
+    #     max_length=10, default="excluded", choices=OFFER_TYPES, verbose_name="printer")
+    # fixdesk_month_coffee = models.CharField(
+    #     max_length=10, default="excluded", choices=OFFER_TYPES, verbose_name="coffee")
+    # fixdesk_month_storage = models.CharField(
+    #     max_length=10, default="excluded", choices=OFFER_TYPES, verbose_name="storage")
+    # fixdesk_month_office_address = models.CharField(
+    #     max_length=10, default="excluded", choices=OFFER_TYPES, verbose_name="office address")
     #
     #  Flex desk
     #
@@ -376,6 +393,11 @@ class Location(models.Model):
         #         'Please create at least 1 Rentobject before activation.')
 
     def save(self, *args, **kwargs):
+        location_images = self.images.all()
+        for image in location_images:
+            if image.is_thumbnail:
+                self.preview_image = image
+
         if self.slug is None:
             self.slug = slugify(self.title)
         super().save(*args, **kwargs)  # Call the "real" save() method.
@@ -395,7 +417,7 @@ class RentObject(models.Model):
     title = models.CharField(max_length=150)
     type = models.CharField(max_length=150, choices=RENT_OBJECT_TYPES)
     location = models.ForeignKey(
-        Location, related_name="rent_objects", on_delete=models.PROTECT)
+        Location, related_name="rent_objects", on_delete=models.CASCADE)
 
     # def clean(self):
     #     location = self.location_set.get()
@@ -410,7 +432,7 @@ class Booking(models.Model):
     uuid = models.UUIDField(
         primary_key=True, default=uuid.uuid4, unique=True, editable=False)
     user = models.ForeignKey(
-        'accounts.User', related_name="bookings", on_delete=models.PROTECT, null=True, blank=True)
+        'accounts.User', related_name="bookings", on_delete=models.CASCADE, null=True, blank=True)
     location = models.ForeignKey(
         Location, related_name="location_bookings", on_delete=models.PROTECT, null=True)
     rent_object = models.ForeignKey(

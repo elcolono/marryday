@@ -12,7 +12,7 @@ from rest_framework.views import APIView
 
 from ..models import RentObject, Location, Booking, City, Province, State, Country, District, LocationImage
 from .serializers.common import (
-    RentObjectSerializer, BookingCreateSerializer, BookingRetrieveSerializer, LocationSerializer, CitySerializer)
+    RentObjectSerializer, BookingCreateSerializer, BookingRetrieveSerializer, LocationListSerializer, LocationRetrieveSerializer, CitySerializer)
 from dateutil.parser import parse
 from django.db.models import Prefetch
 from datetime import timedelta
@@ -220,12 +220,12 @@ class BookingCreateView(generics.CreateAPIView):
 # Locations
 class LocationListView(generics.ListAPIView):
     queryset = Location.objects.filter(is_active=True)
-    serializer_class = LocationSerializer
+    serializer_class = LocationListSerializer
 
 
 class LocationRetrieveView(generics.RetrieveAPIView):
     queryset = Location.objects.all()
-    serializer_class = LocationSerializer
+    serializer_class = LocationRetrieveSerializer
     lookup_field = 'slug'
 
 
@@ -576,9 +576,7 @@ class GoolgePlacesAPIViewSet(APIView):
                     if index == 0 and thumbnail_photo is not None:
                         location_image.is_thumbnail = True
                     location_image.save()
-
             ######################## Response ########################
-            new_location_serializer = LocationSerializer(new_location)
         except Exception as e:
             if new_location is not None:
                 new_location.delete()

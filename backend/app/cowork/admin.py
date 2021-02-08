@@ -66,6 +66,7 @@ class CountryAdmin(admin.ModelAdmin):
 
 
 class LocationAdmin(admin.ModelAdmin):
+    readonly_fields = ('preview_image',)
     search_fields = ('title', 'is_active',  'address',
                      'province', 'city', 'state',)
     list_display = ('title', 'is_active',  'address',
@@ -75,7 +76,7 @@ class LocationAdmin(admin.ModelAdmin):
     inlines = [LocationImageInline]
     fieldsets = fieldsets = (
         ('General', {
-            'fields': ('is_active', 'booking_type', 'title', 'slug', 'description')
+            'fields': ('is_active', 'booking_type', 'title', 'slug', 'description', 'preview_image')
         }),
         ('Google Places', {
             'fields': ('business_status', 'google_reference', 'google_plus_code',)
@@ -89,10 +90,13 @@ class LocationAdmin(admin.ModelAdmin):
         ('Opening Hours', {
             'fields': ('opening_hour_periods', 'utc_offset',)
         }),
+        # ('Fixdesk', {
+        #     'classes': ('collapse',),
+        #     'fields': ('fixdesk_month_price', 'fixdesk_month_contract_duration', 'fixdesk_month_onrequest', 'fixdesk_month_wifi', 'fixdesk_month_parking', 'fixdesk_month_access24_7',
+        #                'fixdesk_month_meetingroom', 'fixdesk_month_printer', 'fixdesk_month_coffee', 'fixdesk_month_storage', 'fixdesk_month_office_address', )
+        # }),
         ('Offers', {
             'fields': (
-                ('fixdesk_month_price', 'fixdesk_month_contract_duration', 'fixdesk_month_onrequest', 'fixdesk_month_wifi', 'fixdesk_month_parking', 'fixdesk_month_access24_7',
-                 'fixdesk_month_meetingroom', 'fixdesk_month_printer', 'fixdesk_month_coffee', 'fixdesk_month_storage', 'fixdesk_month_office_address', ),
 
                 ('flexdesk_month_price', 'flexdesk_month_contract_duration', 'flexdesk_month_onrequest', 'flexdesk_month_wifi', 'flexdesk_month_parking', 'flexdesk_month_access24_7',
                  'flexdesk_month_meetingroom', 'flexdesk_month_printer', 'flexdesk_month_coffee', 'flexdesk_month_storage', 'flexdesk_month_office_address',),
@@ -114,7 +118,7 @@ class LocationAdmin(admin.ModelAdmin):
         ('Amenities', {
             'fields': (
                 ('wifi', 'parking', 'access24_7', 'meeting_room',
-                 'printer', 'coffee', 'storage', 'office_address', 'events_workshops' ),
+                 'printer', 'coffee', 'storage', 'office_address', 'events_workshops'),
                 ('plotter', 'air_condition',
                  'shower', 'relaxation_area',)
             )
