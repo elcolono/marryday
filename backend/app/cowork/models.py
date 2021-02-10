@@ -434,9 +434,9 @@ class Booking(models.Model):
     user = models.ForeignKey(
         'accounts.User', related_name="bookings", on_delete=models.CASCADE, null=True, blank=True)
     location = models.ForeignKey(
-        Location, related_name="location_bookings", on_delete=models.PROTECT, null=True)
+        Location, related_name="location_bookings", on_delete=models.CASCADE, null=True)
     rent_object = models.ForeignKey(
-        RentObject, related_name="rent_object_bookings", on_delete=models.PROTECT, null=True)
+        RentObject, related_name="rent_object_bookings", on_delete=models.CASCADE, null=True)
     start = models.DateTimeField()
     end = models.DateTimeField()
     # payment_intent_id = models.CharField(max_length=50, blank=True)
