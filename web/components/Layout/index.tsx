@@ -12,7 +12,6 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const Layout = (pageProps) => {
-  const { seo_title, search_description } = pageProps.page.meta;
   const headerProps = {
     nav: {
       classes: pageProps.nav && pageProps.nav.classes,
@@ -24,7 +23,6 @@ const Layout = (pageProps) => {
     loggedUser: pageProps.loggedUser,
     headerClasses: pageProps.headerClasses,
     mainMenus: pageProps.mainMenus,
-    meta: pageProps.page.meta,
     flatMenus: pageProps.flatMenus,
     themeSettings: pageProps.themeSettings,
   }
@@ -40,8 +38,8 @@ const Layout = (pageProps) => {
       {/* Google Fonts - preload & async load to avoid render blocking */}
       <GoogleFonts href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:ital,wght@0,300;0,400;0,700;1,400&display=swap" />
       <Head>
-        <title>{seo_title}</title>
-        <meta name="description" content={search_description}></meta>
+        <title>{pageProps.title}</title>
+        <meta name="description" content={pageProps.searchDescription}></meta>
         <link rel="icon" href="/favicon.png" />
         <script dangerouslySetInnerHTML={{
           __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':

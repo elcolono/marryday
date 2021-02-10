@@ -40,11 +40,12 @@ export default function Index(pageProps) {
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   const settings = (await fetchAPIwithSSR('/api/page/home', { method: 'GET', req: req })) ?? []
-  const page = (await fetchAPIwithSSR('/api/v2/pages/?type=home.HomePage&fields=seo_text,content,seo_title,search_description', { method: 'GET', req: req })) ?? []
+  const pageData = (await fetchAPIwithSSR('/api/v2/pages/?type=home.HomePage&fields=seo_text,content,seo_title,search_description', { method: 'GET', req: req })) ?? []
   // const user = (await fetchAPIwithSSR('/api/v1/rest-auth/user/', { method: 'GET', req: req })) ?? null
+  const page = pageData.items[0]
   return {
     props: {
-      page: page.items[0],
+      page: page,
       themeSettings: settings.theme_settings,
       mainMenus: settings.main_menus,
       flatMenus: settings.flat_menus,
@@ -54,7 +55,8 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
         classes: "shadow",
         color: "white",
       },
-      title: "Home",
+      title: page.meta.seo_title,
+      searchDescription: page.meta.search_description,
     },
   }
 }
