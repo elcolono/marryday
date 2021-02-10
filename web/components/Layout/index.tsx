@@ -23,6 +23,7 @@ const Layout = (pageProps) => {
     loggedUser: pageProps.loggedUser,
     headerClasses: pageProps.headerClasses,
     mainMenus: pageProps.mainMenus,
+    meta: pageProps.page.meta,
     flatMenus: pageProps.flatMenus,
     themeSettings: pageProps.themeSettings,
   }
@@ -38,7 +39,8 @@ const Layout = (pageProps) => {
       {/* Google Fonts - preload & async load to avoid render blocking */}
       <GoogleFonts href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:ital,wght@0,300;0,400;0,700;1,400&display=swap" />
       <Head>
-        <title>{pageProps.title} - MoWo Spaces</title>
+        <title>{headerProps.meta.seo_title}</title>
+        <meta name="description" content={headerProps.meta.search_description}></meta>
         <link rel="icon" href="/favicon.png" />
       </Head>
       <NextNProgress color="#4E66F8" options={{ showSpinner: false }} />

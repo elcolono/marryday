@@ -40,7 +40,7 @@ export default function Index(pageProps) {
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   const settings = (await fetchAPIwithSSR('/api/page/home', { method: 'GET', req: req })) ?? []
-  const page = (await fetchAPIwithSSR('/api/v2/pages/?type=home.HomePage&fields=seo_text,content', { method: 'GET', req: req })) ?? []
+  const page = (await fetchAPIwithSSR('/api/v2/pages/?type=home.HomePage&fields=seo_text,content,seo_title,search_description', { method: 'GET', req: req })) ?? []
   // const user = (await fetchAPIwithSSR('/api/v1/rest-auth/user/', { method: 'GET', req: req })) ?? null
   return {
     props: {
