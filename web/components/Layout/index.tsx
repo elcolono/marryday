@@ -12,6 +12,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const Layout = (pageProps) => {
+  const { seo_title, search_description } = pageProps.page.meta;
   const headerProps = {
     nav: {
       classes: pageProps.nav && pageProps.nav.classes,
@@ -39,9 +40,15 @@ const Layout = (pageProps) => {
       {/* Google Fonts - preload & async load to avoid render blocking */}
       <GoogleFonts href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:ital,wght@0,300;0,400;0,700;1,400&display=swap" />
       <Head>
-        <title>{headerProps.meta.seo_title}</title>
-        <meta name="description" content={headerProps.meta.search_description}></meta>
+        <title>{seo_title}</title>
+        <meta name="description" content={search_description}></meta>
         <link rel="icon" href="/favicon.png" />
+        <script dangerouslySetInnerHTML={{
+          __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+            'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+          })(window,document,'script','dataLayer','GTM-M89NBZK');`}} />
       </Head>
       <NextNProgress color="#4E66F8" options={{ showSpinner: false }} />
       {!pageProps.hideHeader && <Header {...headerProps} />}
@@ -70,6 +77,11 @@ const Layout = (pageProps) => {
         Diese Website verwendet Cookies – nähere Informationen dazu und zu Ihren Rechten als Benutzer finden Sie in unserer Datenschutzerklärung am Ende der Seite.<br />
         Klicken Sie auf „Ich stimme zu“, um Cookies zu akzeptieren und direkt unsere Website besuchen zu können.
       </CookieConsent>
+      <noscript dangerouslySetInnerHTML={{
+        __html: `<iframe src="https://www.googletagmanager.com/ns.html?id=GTM-M89NBZK"
+        height="0" width="0" style="display:none;visibility:hidden"></iframe>`,
+      }}
+      />
     </div>
   )
 }
