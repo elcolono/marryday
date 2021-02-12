@@ -21,7 +21,7 @@ def increment_invoice_number():
 class Payment(models.Model):
     uuid = models.UUIDField(
         primary_key=True, default=uuid.uuid4, unique=True, editable=False)
-    booking = models.ForeignKey('cowork.Booking', on_delete=models.PROTECT,)
+    booking = models.ForeignKey('cowork.Booking', on_delete=models.CASCADE,)
     invoice_no = models.CharField(
         max_length=500, default=increment_invoice_number, null=True, blank=True)
     payment_intent_id = models.CharField(max_length=50, blank=True)
