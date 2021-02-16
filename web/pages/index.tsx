@@ -1,6 +1,7 @@
 import React from 'react'
 import { fetchAPIwithSSR } from '../lib/api'
 import HeroSection from '../components/Section/HeroSection'
+import HeroLocationSearchSection from '../components/Section/HeroLocationSearchSection'
 import ContentSection from '../components/Section/Content'
 import CounterSection from '../components/Section/counter-section'
 import CTASection from '../components/Section/Cta'
@@ -26,6 +27,7 @@ export default function Index(pageProps) {
         if (section.type == 'location_slider_section_block') return <LocationSlider key={i} data={section.value} />
         if (section.type == 'city_gallery_section_block') return <CityGallery key={i} data={section.value} />
         if (section.type == 'hero_section_block') return <HeroSection key={i} data={section.value} />
+        if (section.type == 'hero_location_search_section_block') return <HeroLocationSearchSection key={i} data={section.value} />
         if (section.type == 'content_section_block') return <ContentSection key={i} data={section.value} />
         if (section.type == 'counter_section_block') return <CounterSection key={i} data={section.value} />
         if (section.type == 'cta_section_block') return <CTASection key={i} data={section.value} />

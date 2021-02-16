@@ -5,7 +5,7 @@ from wagtail.core.models import Page
 from wagtail.core.fields import StreamField, RichTextField
 from wagtail.api import APIField
 
-from .blocks import (PageHeadingSectionBlock, MapSectionBlock, HeroSectionBlock, LogoCloudBlock, ServiceSectionBlock,
+from .blocks import (PageHeadingSectionBlock, MapSectionBlock, HeroSectionBlock, HeroLocationSearchSectionBlock, LogoCloudBlock, ServiceSectionBlock,
                      FeatureSectionBlock, CounterSectionBlock, TeamSectionBlock, CTASection, PricingSectionBlock, ContactSectionBlock,
                      ContentSectionBlock, TestimonialSectionBlock, HTMLSectionBlock, PortfolioSectionBlock, ComingSoonSectionBlock,
                      FAQSectionBlock, LoginSectionBlock, BookingSectionBlock, LocationSliderBlock, CityGalleryBlock)
@@ -24,6 +24,7 @@ class FlexPage(Page):
         [
             ('page_heading_section_block', PageHeadingSectionBlock()),
             ('map_section_block', MapSectionBlock()),
+            ('hero_location_search_section_block', HeroLocationSearchSectionBlock()),
             ('hero_section_block', HeroSectionBlock()),
             ('location_slider_section_block', LocationSliderBlock()),
             ('city_gallery_section_block', CityGalleryBlock()),

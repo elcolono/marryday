@@ -225,6 +225,34 @@ class ContentSectionBlock(blocks.StructBlock):
 
 
 # Hero Section Block
+class HeroLocationSearchSectionBlock(blocks.StructBlock):
+    """ Section Base Block - Ued by each section """
+    heading = blocks.CharBlock(
+        required=False,
+        max_length=80,
+        label='Feature',
+        default='Super Awesome Feature',
+    )
+    subheading = blocks.CharBlock(
+        required=False,
+        max_length=100,
+        label='Subheading',
+        default='Super Awesome Hero Subheading',
+    )
+    show_searchbar = blocks.BooleanBlock(
+        default=True,
+        required=False
+    )
+    image = APIImageChooserBlock(
+        required=True,
+    )
+
+    class Meta:
+        """ Meta data """
+        label = 'Hero Location Search Section'
+
+
+# Hero Section Block
 class HeroSectionBlock(blocks.StructBlock):
     """ Section Base Block - Ued by each section """
     heading = blocks.CharBlock(
