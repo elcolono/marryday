@@ -17,7 +17,7 @@ const CardPoster = (props) => {
                 layout="fill"
                 className="bg-image"
                 alt={data.title}
-                loading="eager"
+                loading="lazy"
                 sizes="(max-width: 576px) 100vw, 530px"
             />
             <CardBody className="card-body overlay-content">

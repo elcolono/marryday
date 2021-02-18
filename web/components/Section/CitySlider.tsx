@@ -21,7 +21,7 @@ const CitySlider = (props) => {
     }, [])
 
     return (
-        <section className={`py-6 ${props.greyBackground ? "bg-gray-100" : ""}`}>
+        <section className={`py-6 ${data.grey_background ? "bg-gray-100" : ""}`}>
             <Container>
                 <Row className="mb-5">
                     <Col md="8">
@@ -49,7 +49,7 @@ const CitySlider = (props) => {
                         perView={1}
                         spaceBetween={20}
                         imgCards
-                        loop
+                        loop={data.loop_slides}
                         roundLengths
                         md={2}
                         lg={4}

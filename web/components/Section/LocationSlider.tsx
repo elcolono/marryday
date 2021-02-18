@@ -56,7 +56,7 @@ const LocationSlider = (props) => {
                     xl={4}
                     data={locations}
                     cards
-                    loop
+                    loop={data.loop_slides}
                 />}
                 {/* <div className="text-center mt-5">
                     <Link href="/coworking">

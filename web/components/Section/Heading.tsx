@@ -23,7 +23,7 @@ export default function HeadingSection({ data, title }) {
                     src={data.image.url}
                     alt={data.image.title}
                     className="bg-image"
-                    loading="eager"
+                    loading="lazy"
                     layout="fill"
                 />
             )}

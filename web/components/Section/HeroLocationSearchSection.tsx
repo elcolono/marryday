@@ -22,9 +22,8 @@ function HeroLocationSearchSection({ data }) {
                 src={data.image.url}
                 alt={data.image.title}
                 className="bg-image"
-                loading="eager"
+                loading="lazy"
                 layout="fill"
-                priority={true}
             />
             <Container className="py-6 py-md-7 text-white z-index-20">
                 <Row>

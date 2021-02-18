@@ -17,9 +17,8 @@ const HeroSection = ({ data }) => {
                 src={data.image.url}
                 alt="test"
                 className="bg-image"
-                loading="eager"
+                loading="lazy"
                 layout="fill"
-                priority={true}
             />
             <Container>
                 <Row>

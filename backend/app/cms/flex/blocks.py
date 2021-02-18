@@ -75,6 +75,14 @@ class CityGalleryBlock(blocks.StructBlock):
 # Location Slider Block
 class CitySliderBlock(blocks.StructBlock):
     """ Service Section Block """
+    grey_background = blocks.BooleanBlock(
+        default=True,
+        required=False
+    )
+    loop_slides = blocks.BooleanBlock(
+        default=True,
+        required=False
+    )
     heading = blocks.CharBlock(
         required=False,
         max_length=100,
@@ -105,6 +113,10 @@ class CitySliderBlock(blocks.StructBlock):
 class LocationSliderBlock(blocks.StructBlock):
     """ Service Section Block """
     grey_background = blocks.BooleanBlock(
+        default=True,
+        required=False
+    )
+    loop_slides = blocks.BooleanBlock(
         default=True,
         required=False
     )
