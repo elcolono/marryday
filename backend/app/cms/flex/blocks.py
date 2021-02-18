@@ -104,6 +104,10 @@ class CitySliderBlock(blocks.StructBlock):
 
 class LocationSliderBlock(blocks.StructBlock):
     """ Service Section Block """
+    grey_background = blocks.BooleanBlock(
+        default=True,
+        required=False
+    )
     heading = blocks.CharBlock(
         required=False,
         max_length=100,
@@ -115,6 +119,13 @@ class LocationSliderBlock(blocks.StructBlock):
         max_length=100,
         label="Subheading",
         default='Super Awesome Subheading',
+    )
+    button_link = APIPageChooserBlock(
+        required=False,
+    )
+    button_text = blocks.CharBlock(
+        required=False,
+        max_length=80,
     )
 
     class Meta:
@@ -554,13 +565,16 @@ class CTASection(blocks.StructBlock):
         label='Description',
         default='The thing we do is better than any other similar thing and this hero panel will convince you of that, just by having a glorious background image.',
     )
-    button = blocks.CharBlock(
+    button_text = blocks.CharBlock(
         required=False,
         max_length=20,
         label='Button text',
         default='Get in touch',
     )
-    button_link = blocks.URLBlock(required=False, label='Button Link')
+    # button_link = blocks.URLBlock(required=False, label='Button Link')
+    button_href = APIPageChooserBlock(
+        required=False,
+    )
 
     class Meta:
         """ meta data """
