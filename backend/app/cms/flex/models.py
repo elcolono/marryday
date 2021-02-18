@@ -8,7 +8,7 @@ from wagtail.api import APIField
 from .blocks import (PageHeadingSectionBlock, MapSectionBlock, HeroSectionBlock, HeroLocationSearchSectionBlock, LogoCloudBlock, ServiceSectionBlock,
                      FeatureSectionBlock, CounterSectionBlock, TeamSectionBlock, CTASection, PricingSectionBlock, ContactSectionBlock,
                      ContentSectionBlock, TestimonialSectionBlock, HTMLSectionBlock, PortfolioSectionBlock, ComingSoonSectionBlock,
-                     FAQSectionBlock, LoginSectionBlock, BookingSectionBlock, LocationSliderBlock, CityGalleryBlock)
+                     FAQSectionBlock, LoginSectionBlock, BookingSectionBlock, LocationSliderBlock, CityGalleryBlock, CitySliderBlock)
 
 
 # Create your models here.
@@ -28,6 +28,7 @@ class FlexPage(Page):
             ('hero_section_block', HeroSectionBlock()),
             ('location_slider_section_block', LocationSliderBlock()),
             ('city_gallery_section_block', CityGalleryBlock()),
+            ('city_slider_section_block', CitySliderBlock()),
             ('logo_cloud_block', LogoCloudBlock()),
             ('service_section_block', ServiceSectionBlock()),
             ('feature_section_block', FeatureSectionBlock()),

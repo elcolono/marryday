@@ -41,6 +41,7 @@ class DistrictAdmin(admin.ModelAdmin):
 
 
 class CityAdmin(admin.ModelAdmin):
+    readonly_fields = ('preview_image',)
     search_fields = ('title', 'is_active',  'postcode', 'province')
     list_display = ('title', 'is_active', 'postcode', 'province')
     list_filter = ('title', 'is_active', 'postcode', 'province')

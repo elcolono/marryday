@@ -1,7 +1,8 @@
 import React from "react"
 
-import CardRoom from "./CardLocation"
+import CardLocation from "./CardLocation"
 import ReactIdSwiper from "react-id-swiper"
+import CardPoster from "./CardPoster"
 
 const Swiper = (props) => {
   const breakpoints = []
@@ -69,11 +70,14 @@ const Swiper = (props) => {
   }
   return props.data ? (
     <ReactIdSwiper {...params}>
-      {props.data.map((location, index) =>
+      {props.data.map((element, index) =>
         <div key={index} className="h-auto px-2">
+          {props.imgCards && <CardPoster data={element} eager />}
+          {props.cards && (
             <div className="w-100 h-100 hover-animate">
-              <CardRoom data={location} eager />
+              <CardLocation data={element} eager />
             </div>
+          )}
         </div>)}
     </ReactIdSwiper>
   ) : (

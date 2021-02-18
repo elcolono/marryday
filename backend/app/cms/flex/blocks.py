@@ -73,6 +73,35 @@ class CityGalleryBlock(blocks.StructBlock):
 
 
 # Location Slider Block
+class CitySliderBlock(blocks.StructBlock):
+    """ Service Section Block """
+    heading = blocks.CharBlock(
+        required=False,
+        max_length=100,
+        label="Heading",
+        default='Super Awesome Hero Heading',
+    )
+    subheading = blocks.CharBlock(
+        required=False,
+        max_length=100,
+        label="Subheading",
+        default='Super Awesome Subheading',
+    )
+    button_link = APIPageChooserBlock(
+        required=False,
+    )
+    button_text = blocks.CharBlock(
+        required=False,
+        max_length=80,
+    )
+
+    class Meta:
+        """ meta data """
+        label = 'City Slider'
+
+# Location Slider Block
+
+
 class LocationSliderBlock(blocks.StructBlock):
     """ Service Section Block """
     heading = blocks.CharBlock(

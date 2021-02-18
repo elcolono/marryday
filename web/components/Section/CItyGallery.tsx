@@ -51,7 +51,7 @@ const CityGallery = (props) => {
                             >
                                 {/* Loading eager set for IE compatibility */}
                                 <Image
-                                    src={city.images[0].image}
+                                    src={city.preview_image.image}
                                     alt={city.title}
                                     layout="fill"
                                     className="bg-image"

@@ -19,11 +19,11 @@ class LocationImageSerializer(serializers.ModelSerializer):
 
 # Cities
 class CitySerializer(serializers.ModelSerializer):
-    images = CityImageSerializer(many=True)
+    preview_image = CityImageSerializer()
 
     class Meta:
         model = City
-        fields = ('id', 'title', 'postcode', 'slug', 'images',)
+        fields = ('id', 'title', 'postcode', 'slug', 'preview_image',)
 
 
 # Districts

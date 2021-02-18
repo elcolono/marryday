@@ -79,11 +79,18 @@ class City(models.Model):
     slug = models.CharField(max_length=150, blank=True, null=True)
     province = models.ForeignKey(
         'cowork.Province', related_name="province_localities", on_delete=models.CASCADE, null=True)
+    preview_image = models.OneToOneField(
+        'cowork.CityImage', on_delete=models.CASCADE, related_name='city_preview_image', null=True, blank=True)
 
     class Meta:
         verbose_name_plural = "Cities"
 
     def save(self, *args, **kwargs):
+        city_images = self.images.all()
+        for image in city_images:
+            if image.is_thumbnail:
+                self.preview_image = image
+
         self.slug = slugify(self.title)
         super().save(*args, **kwargs)  # Call the "real" save() method.
 
