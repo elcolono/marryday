@@ -1,6 +1,5 @@
 import React from "react"
 import Link from "next/link"
-import Router from "next/router"
 import {
   Collapse,
   Navbar,
@@ -32,33 +31,6 @@ const Header = (props) => {
     size.width < 991 && setCollapsed(!collapsed)
     // setParentName(parent)
   }
-
-  // highlight not only active dropdown item, but also its parent, i.e. dropdown toggle
-  // const highlightDropdownParent = () => {
-  //   menu.map((item) => {
-  //     item.dropdown &&
-  //       item.dropdown.map((dropdownLink) => {
-  //         dropdownLink.link &&
-  //           dropdownLink.link === Router.route &&
-  //           setParentName(item.title)
-  //         dropdownLink.links &&
-  //           dropdownLink.links.map(
-  //             (link) => link.link === Router.route && setParentName(item.title)
-  //           )
-  //       })
-  //     item.megamenu &&
-  //       item.megamenu.map((megamenuColumn) =>
-  //         megamenuColumn.map((megamenuBlock) =>
-  //           megamenuBlock.links.map((dropdownLink) => {
-  //             if (dropdownLink.link === Router.route) {
-  //               props
-  //             }
-  //           })
-  //         )
-  //       )
-  //     item.link === Router.route && setParentName(item.title)
-  //   })
-  // }
 
   // React.useEffect(highlightDropdownParent, [])
   return (

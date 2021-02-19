@@ -12,12 +12,7 @@ import Image from "../CustomImage"
 
 function HeroLocationSearchSection({ data }) {
     return (
-        <section
-            className="hero-home"
-            style={{
-                backgroundImage: `url(content/img/photo/${data.swiperPoster})`,
-            }}
-        >
+        <section className="hero-home" >
             <Image
                 src={data.image.url}
                 alt={data.image.title}
