@@ -17,6 +17,10 @@ import CitySlider from '../components/Section/CitySlider';
 
 import { GetServerSideProps } from 'next'
 
+export const config = {
+  unstable_runtimeJS: false,
+};
+
 export default function Index(pageProps) {
 
   const { page } = pageProps;

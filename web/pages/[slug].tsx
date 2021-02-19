@@ -13,6 +13,10 @@ import FAQSection from '../components/Section/Faq'
 import LoginSection from '../components/Section/Login'
 import { GetServerSideProps } from 'next'
 
+export const config = {
+  unstable_runtimeJS: false,
+};
+
 export default function SubPage(pageProps) {
 
   const { page } = pageProps;
