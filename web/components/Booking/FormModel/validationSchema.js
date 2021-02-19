@@ -1,19 +1,13 @@
 import * as Yup from 'yup';
-import moment from 'moment';
 import checkoutFormModel from './bookingFormModel';
 const {
     formField: {
-        objectType,
         rentObject,
-        firstName,
-        lastName,
         email,
         emptyCard,
         completeCard
     }
 } = checkoutFormModel;
-
-const visaRegEx = /^(?:4[0-9]{12}(?:[0-9]{3})?)$/;
 
 export default [
     Yup.object().shape({

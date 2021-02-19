@@ -21,7 +21,7 @@ services:
       context: ./web
       dockerfile: Dockerfile
       args:
-        BASE_URL: "http://backend:8000"
+        BASE_URL: "https://testing.mowo.space"
         BASE_SERVER_URL: "https://testing.mowo.space"
 
   nginx:

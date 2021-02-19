@@ -5,7 +5,7 @@ import endOfWeek from "date-fns/endOfWeek";
 import React, { useState } from "react";
 import startOfWeek from "date-fns/startOfWeek";
 import isWithinInterval from "date-fns/isWithinInterval";
-import { DatePicker, MuiPickersUtilsProvider, DatePickerProps } from "@material-ui/pickers";
+import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import { createStyles } from "@material-ui/styles";
 // this guy required only on the docs site to work with dynamic date library
 import { makeJSDateObject } from '../helpers/utils';

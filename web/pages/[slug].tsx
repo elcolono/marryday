@@ -1,21 +1,21 @@
 import React from 'react'
 import { fetchAPIwithSSR } from '../lib/api'
-import HeroSection from '../components/Section/HeroSection'
-import ContentSection from '../components/Section/Content'
-import CounterSection from '../components/Section/counter-section'
-import CTASection from '../components/Section/Cta'
-import ServiceSection from '../components/Section/Services'
-import TeamSection from '../components/Section/team-section'
-import HeadingSection from '../components/Section/Heading'
-import PricingSection from '../components/Section/Pricing'
-import ContactSection from '../components/Section/Contact'
-import FAQSection from '../components/Section/Faq'
-import LoginSection from '../components/Section/Login'
-import { GetServerSideProps } from 'next'
+import HeroLocationSearchSection from '../components/Section/HeroLocationSearchSection';
+import CitySlider from '../components/Section/CitySlider';
+import HeroSection from '../components/Section/HeroSection';
+import ContentSection from '../components/Section/Content';
+import CounterSection from '../components/Section/counter-section';
+import CTASection from '../components/Section/Cta';
+import ServiceSection from '../components/Section/Services';
+import TeamSection from '../components/Section/team-section';
+import HeadingSection from '../components/Section/Heading';
+import ComingSoonSection from '../components/Section/ComingSoon';
+import FAQSection from '../components/Section/Faq';
+import MapSection from '../components/Section/Map';
+import LocationSlider from '../components/Section/LocationSlider';
+import CityGallery from '../components/Section/CItyGallery';
 
-export const config = {
-  unstable_runtimeJS: false,
-};
+import { GetStaticProps, GetStaticPaths } from 'next'
 
 export default function SubPage(pageProps) {
 
@@ -23,27 +23,31 @@ export default function SubPage(pageProps) {
   return (
     <React.Fragment>
       {page.content.map((section, i) => {
+        if (section.type == 'hero_location_search_section_block') return <HeroLocationSearchSection key={i} data={section.value} />
+        if (section.type == 'city_slider_section_block') return <CitySlider key={i} data={section.value} />
         if (section.type == 'page_heading_section_block') return <HeadingSection key={i} title={page.title} data={section.value} />
+        if (section.type == 'map_section_block') return <MapSection key={i} data={section.value} />
+        if (section.type == 'location_slider_section_block') return <LocationSlider key={i} data={section.value} />
+        if (section.type == 'city_gallery_section_block') return <CityGallery key={i} data={section.value} />
         if (section.type == 'hero_section_block') return <HeroSection key={i} data={section.value} />
         if (section.type == 'content_section_block') return <ContentSection key={i} data={section.value} />
         if (section.type == 'counter_section_block') return <CounterSection key={i} data={section.value} />
         if (section.type == 'cta_section_block') return <CTASection key={i} data={section.value} />
         if (section.type == 'service_section_block') return <ServiceSection key={i} data={section.value} />
         if (section.type == 'team_section_block') return <TeamSection key={i} data={section.value} />
-        if (section.type == 'pricing_section_block') return <PricingSection key={i} data={section.value} />
-        if (section.type == 'contact_section_block') return <ContactSection key={i} title={page.title} data={section.value} />
+        if (section.type == 'comingsoon_section_block') return <ComingSoonSection key={i} data={section.value} />
         if (section.type == 'faq_section_block') return <FAQSection key={i} data={section.value} />
-        if (section.type == 'login_section_block') return <LoginSection key={i} data={section.value} />
       })}
     </React.Fragment>
   )
 }
 
-export const getServerSideProps: GetServerSideProps = async ({ params, req }) => {
-  const settings = (await fetchAPIwithSSR('/api/page/home', { method: 'GET', req: req })) ?? []
-  const page = (await fetchAPIwithSSR(`/api/v2/pages/find/?html_path=${params.slug}`, { method: 'GET', req: req })) ?? []
-  // const user = (await fetchAPIwithSSR('/api/v1/rest-auth/user/', { method: 'GET', req: req })) ?? null
+export const getStaticProps: GetStaticProps = async ({ params }) => {
+  const settings = (await fetchAPIwithSSR('/api/page/home', { method: 'GET' })) ?? []
+  const page = (await fetchAPIwithSSR(`/api/v2/pages/find/?html_path=${params.slug}`, { method: 'GET' })) ?? []
+
   return {
+    revalidate: 1,
     props: {
       page: page,
       themeSettings: settings.theme_settings,
@@ -57,5 +61,17 @@ export const getServerSideProps: GetServerSideProps = async ({ params, req }) =>
       },
       title: page.title,
     },
+  }
+}
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  return {
+    paths: [
+      { params: { slug: 'co-working' } },
+      // { params: { slug: 'faqs' } },
+      { params: { slug: 'pricing' } },
+      { params: { slug: 'contact' } },
+    ],
+    fallback: false
   }
 }

@@ -88,7 +88,6 @@ export default class ApiService {
     };
 }
 
-
 export async function fetchAPIwithSSR(url, { method = 'GET', req = undefined } = {}) {
     const res = await fetch(API_URL + url, {
         method: method,
@@ -106,11 +105,6 @@ export async function fetchAPIwithSSR(url, { method = 'GET', req = undefined } =
     }
     return json
 }
-
-
-
-
-
 
 export async function fetchAPI(url, { method = "GET", body = {} } = {}) {
     const res = await fetch(process.env.CLIENT_API_URL + url, {
