@@ -16,12 +16,14 @@ const webpackConfig = {
         return config
     },
 }
+
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
-    enabled: process.env.ANALYZE === 'true',
+  enabled: process.env.ANALYZE === 'true',
 })
-module.exports = withBundleAnalyzer({})
+
 module.exports = withPlugins(
     [
+        [withBundleAnalyzer],
         [
             reactSvg,
             {
