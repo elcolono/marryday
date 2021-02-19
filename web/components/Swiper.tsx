@@ -72,10 +72,10 @@ const Swiper = (props) => {
     <ReactIdSwiper {...params}>
       {props.data.map((element, index) =>
         <div key={index} className="h-auto px-2">
-          {props.imgCards && <CardPoster data={element} eager />}
+          {props.imgCards && <CardPoster data={element} />}
           {props.cards && (
             <div className="w-100 h-100 hover-animate">
-              <CardLocation data={element} eager />
+              <CardLocation data={element} />
             </div>
           )}
         </div>)}

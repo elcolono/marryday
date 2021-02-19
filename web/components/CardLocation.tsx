@@ -23,7 +23,7 @@ const CardLocation = (props) => {
           height={900}
           alt={data.title}
           layout="responsive"
-          loading={props.eager ? "eager" : "lazy"}
+          loading="lazy"
           className="img-fluid"
           sizes="(max-width:576px) 100vw, (max-width:991px) 50vw, (max-width:1199px) 30vw, 250px"
         />
