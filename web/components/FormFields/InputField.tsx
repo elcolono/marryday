@@ -1,7 +1,7 @@
 import React from 'react';
-import { at } from 'lodash';
+import at from 'lodash/at';
 import { useField } from 'formik';
-import { Input, Label, FormFeedback } from 'reactstrap';
+import { Input, FormFeedback } from 'reactstrap';
 
 export default function InputField(props) {
   const { errorText, ...rest } = props;
@@ -25,13 +25,5 @@ export default function InputField(props) {
       />
       <FormFeedback>{_renderHelperText()}</FormFeedback>
     </React.Fragment>
-
-    // <TextField
-    //   type="text"
-    //   error={meta.touched && meta.error && true}
-    //   helperText={_renderHelperText()}
-    //   {...field}
-    //   {...rest}
-    // />
   );
 }

@@ -2,7 +2,7 @@ import React from "react"
 import Layout from "../components/Layout"
 import objectFitImages from "object-fit-images"
 
-import "@fortawesome/fontawesome-free/css/all.min.css"
+// import "@fortawesome/fontawesome-free/css/all.min.css"
 
 import "../scss/style.default.scss"
 

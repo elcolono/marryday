@@ -1,10 +1,7 @@
 
 import React from 'react';
-import PropTypes from 'prop-types';
-import { at } from 'lodash';
 import { useField } from 'formik';
-import Select, { Option, ReactSelectProps } from "react-select";
-import { FormFeedback } from 'reactstrap';
+import Select, { Option } from "react-select";
 
 
 function SelectField(props) {
