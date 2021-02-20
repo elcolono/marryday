@@ -1,9 +1,9 @@
 // const API_URL = process.env.BASE_URL || 'http://127.0.0.1:8000'
 // const API_TOKEN = process.env.DATOCMS_API_TOKEN
 import Axios from 'axios';
-import { API_URL } from './constants'
-import Cookies from 'js-cookie'
-import { getCookieFromReq } from '../helpers/utils'
+import { API_URL } from './constants';
+import Cookies from 'js-cookie';
+import getCookieFromReq from '../utils/cookieFromReq';
 
 const setAuthHeader = (req = undefined) => {
     const token = req ? getCookieFromReq(req) : Cookies.get('token');

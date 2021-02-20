@@ -19,13 +19,11 @@ const CardLocation = (props) => {
       <div className="card-img-top overflow-hidden gradient-overlay">
         <Image
           src={data.preview_image.image}
-          width={1350}
-          height={900}
           alt={data.title}
-          layout="responsive"
-          loading="lazy"
           className="img-fluid"
-          sizes="(max-width:576px) 100vw, (max-width:991px) 50vw, (max-width:1199px) 30vw, 250px"
+          layout="responsive"
+          width={250}
+          height={170}
         />
         <Link href={`/coworking/${data.slug}`}>
           <a className="tile-link" />

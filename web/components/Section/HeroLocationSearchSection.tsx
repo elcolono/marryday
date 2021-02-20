@@ -1,7 +1,5 @@
 import React from "react"
-
-import SearchBar from "../SearchBar"
-
+import dynamic from "next/dynamic";
 import {
     Container,
     Row,
@@ -10,15 +8,21 @@ import {
 
 import Image from "../CustomImage"
 
+const SearchBar = dynamic(() => import("../SearchBar"));
+
 function HeroLocationSearchSection({ data }) {
     return (
         <section className="hero-home" >
             <Image
-                src={data.image.url}
-                alt={data.image.title}
-                className="bg-image"
-                loading="lazy"
-                layout="fill"
+               width={1350}
+               height={900}
+               src={data.image.url}
+               alt={data.image.title}
+               className="bg-image"
+            //    loading="eager"
+               layout="fill"
+            //    sizes="(max-width:991px) 50vw, 240px"
+               priority
             />
             <Container className="py-6 py-md-7 text-white z-index-20">
                 <Row>

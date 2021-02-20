@@ -8,7 +8,7 @@ const CardPoster = (props) => {
     const data = props.data
     return (
         <Card className="card-poster gradient-overlay hover-animate mb-4 mb-lg-0">
-            <Link href={`/coworking/${data.slug}`}>
+            <Link href={`/pricing`}>
                 <a className="tile-link" />
             </Link>
             {/* Loading eager set for IE compatibility */}
@@ -17,8 +17,9 @@ const CardPoster = (props) => {
                 layout="fill"
                 className="bg-image"
                 alt={data.title}
-                loading="lazy"
-                sizes="(max-width: 576px) 100vw, 530px"
+                width={200}
+                height={350}
+                priority
             />
             <CardBody className="card-body overlay-content">
                 <CardTitle tag="h6" className="card-title text-shadow text-uppercase">

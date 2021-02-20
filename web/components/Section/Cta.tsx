@@ -10,11 +10,14 @@ export default function CTASection({ data }) {
         <section className="py-7 position-relative dark-overlay">
             {/* Loading eager set for IE compatibility */}
             <Image
+                width={1350}
+                height={900}
                 src={data.image.url}
                 alt={data.image.title}
                 className="bg-image"
-                loading="lazy"
+                loading="eager"
                 layout="fill"
+                sizes="(max-width:991px) 50vw, 240px"
             />
             <Container>
                 <div className="overlay-content text-white py-lg-5">
@@ -24,9 +27,11 @@ export default function CTASection({ data }) {
                     <h3 className="mb-5">
                         {data.description}
                     </h3>
-                    <Link href={data.button_href.slug}>
-                        <Button color="light">{data.button_text}</Button>
-                    </Link>
+                    {data.button_href && (
+                        <Link href={data.button_href.slug}>
+                            <Button color="light">{data.button_text}</Button>
+                        </Link>
+                    )}
                 </div>
             </Container>
         </section>

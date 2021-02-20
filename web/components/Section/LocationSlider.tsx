@@ -1,26 +1,11 @@
-import React from "react"
-import Link from "next/link"
-import { Container, Row, Col } from "reactstrap"
-
-import Swiper from "../Swiper"
-
-// import data from "../data/lastminute.json"
-// import geoJSON from "../data/rooms-geojson.json"
-import ApiService from "../../lib/api"
+import React from "react";
+import Link from "next/link";
+import { Container, Row, Col } from "reactstrap";
+import Swiper from "../Swiper";
 
 const LocationSlider = (props) => {
 
-    const { data } = props;
-
-    const [locations, setLocations] = React.useState(null)
-
-    React.useEffect(() => {
-        ApiService.fetchLocations().then(response => {
-            setLocations(response.data);
-        }).catch(error => {
-            console.log(error)
-        })
-    }, [])
+    const { data, locations } = props;
 
     return (
         <section className={`py-6 ${data.grey_background ? "bg-gray-100" : ""}`}>

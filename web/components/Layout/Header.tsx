@@ -1,5 +1,5 @@
-import React from "react"
-import Link from "next/link"
+import React from "react";
+import Link from "next/link";
 import {
   Collapse,
   Navbar,
@@ -12,23 +12,21 @@ import {
   Label,
   Input,
   Button,
-} from "reactstrap"
-
-import UseWindowSize from "../../hooks/UseWindowSize"
-import ActiveLink from "../ActiveLink"
+} from "reactstrap";
+import { faBars, faSearch, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import ActiveLink from "../ActiveLink";
 
 const Header = (props) => {
   const [collapsed, setCollapsed] = React.useState(false)
-  const [dropdownOpen, setDropdownOpen] = React.useState({})
   const [searchFocus, setSearchFocus] = React.useState(false)
 
-  const size = UseWindowSize()
   const onFocus = () => setSearchFocus(!searchFocus)
   const { mainMenus } = props
 
 
   const onLinkClick = (parent) => {
-    size.width < 991 && setCollapsed(!collapsed)
+    setCollapsed(!collapsed)
     // setParentName(parent)
   }
 
@@ -60,7 +58,7 @@ const Header = (props) => {
             </Link>
 
             {/* search form */}
-            <Form id="search" className="form-inline d-none d-sm-flex">
+            {/* <Form id="search" className="form-inline d-none d-sm-flex">
               <div
                 className={`input-label-absolute input-label-absolute-left input-reset input-expand ml-lg-2 ml-xl-3 ${searchFocus ? "focus" : ""
                   }`}
@@ -82,7 +80,7 @@ const Header = (props) => {
                   <i className="fas fa-times"></i>
                 </button>
               </div>
-            </Form>
+            </Form> */}
           </div>
 
           {/* mobile navbar */}
@@ -90,7 +88,7 @@ const Header = (props) => {
             onClick={() => setCollapsed(!collapsed)}
             className="navbar-toggler-right"
           >
-            <i className="fa fa-bars"></i>
+            <FontAwesomeIcon icon={faBars} />
           </NavbarToggler>
           <Collapse isOpen={collapsed} navbar>
             {/* mobile search form */}
@@ -103,8 +101,7 @@ const Header = (props) => {
                   }`}
               >
                 <Label for="searchcollapsed_search" className="label-absolute">
-                  <i className="fa fa-search"></i>
-
+                  <FontAwesomeIcon icon={faSearch} />
                   <span className="sr-only">What are you looking for?</span>
                 </Label>
                 <Input
@@ -122,7 +119,7 @@ const Header = (props) => {
                   color="deoco"
                   className="btn-reset"
                 >
-                  <i className="fas fa-times"></i>
+                  <FontAwesomeIcon icon={faTimes} />
                 </Button>
               </div>
             </Form>
@@ -165,7 +162,7 @@ const Header = (props) => {
               <NavItem className="mt-3 mt-lg-0 ml-lg-3 d-lg-none d-xl-inline-block">
                 <ActiveLink
                   activeClassName="active"
-                  href={`/coworking`}
+                  href={`/`}
                   passHref
                 >
                   <a
@@ -184,4 +181,4 @@ const Header = (props) => {
   )
 }
 
-export default Header
+export default Header;

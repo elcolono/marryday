@@ -20,9 +20,7 @@ export default function FAQSection({ data }) {
                         ))}
                     </Row>
                 </div>
-
             </Container>
         </section>
-
     )
 }

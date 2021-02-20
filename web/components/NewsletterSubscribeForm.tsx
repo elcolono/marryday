@@ -1,6 +1,6 @@
 import { Formik } from 'formik'
 import * as Yup from 'yup'
-import ApiService from '../lib/api';
+import addSubscriber from '../api/addSubscriber';
 import { toast } from 'react-toastify';
 import { Form, Input, Button, Spinner } from "reactstrap"
 
@@ -14,7 +14,7 @@ const NewsletterSubscribeForm = () => (
         })}
         onSubmit={(values, { setSubmitting, setStatus }) => {
 
-            ApiService.addSubscriber({
+            addSubscriber({
                 email: values['email'],
             })
                 .then(response => {

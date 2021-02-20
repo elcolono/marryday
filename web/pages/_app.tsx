@@ -1,16 +1,14 @@
-import React from "react"
-import Layout from "../components/Layout"
-import objectFitImages from "object-fit-images"
+import React from "react";
+import Layout from "../components/Layout";
 
-// import "@fortawesome/fontawesome-free/css/all.min.css"
+import "../scss/style.default.scss";
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faCoffee } from '@fortawesome/free-solid-svg-icons';
 
-import "../scss/style.default.scss"
+
+library.add(faCoffee);
 
 const App = ({ Component, pageProps }) => {
-  React.useEffect(() => {
-    objectFitImages()
-  }, [])
-
   return (
     <Layout {...pageProps}>
       <Component {...pageProps} />
@@ -19,4 +17,4 @@ const App = ({ Component, pageProps }) => {
 }
 
 // This default export is required in a new `pages/_app.js` file.
-export default App
+export default App;

@@ -1,7 +1,9 @@
-import React from "react"
-import Link from "next/link"
-import { Container, Row, Col } from "reactstrap"
-import NewsletterSubscribeForm from "../NewsletterSubscribeForm"
+import React from "react";
+import dynamic from "next/dynamic";
+import Link from "next/link";
+import { Container, Row, Col } from "reactstrap";
+
+const NewsletterSubscribeForm = dynamic(() => import("../NewsletterSubscribeForm"));
 
 const Footer = ({ flatMenus }) => {
   return (
@@ -10,7 +12,6 @@ const Footer = ({ flatMenus }) => {
 
         <Container>
           <Row>
-            {/* {JSON.stringify(flatMenus)} */}
             {flatMenus &&
               flatMenus.map((menu) => {
                 if (menu.handle == "social") return <Col

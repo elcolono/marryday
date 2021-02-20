@@ -1,25 +1,10 @@
-import React from "react"
-import Link from "next/link"
-import { Container, Row, Col } from "reactstrap"
-
-import Swiper from "../Swiper"
-
-import ApiService from "../../lib/api"
+import React from "react";
+import Link from "next/link";
+import { Container, Row, Col } from "reactstrap";
+import Swiper from "../Swiper";
 
 const CitySlider = (props) => {
-
-    const { data } = props;
-
-    const [cities, setCities] = React.useState(null)
-
-    React.useEffect(() => {
-        ApiService.fetchCities().then(response => {
-            setCities(response.data);
-        }).catch(error => {
-            console.log(error)
-        })
-    }, [])
-
+    const { data, cities } = props;
     return (
         <section className={`py-6 ${data.grey_background ? "bg-gray-100" : ""}`}>
             <Container>
@@ -43,7 +28,6 @@ const CitySlider = (props) => {
                     </Col>
                 </Row>
                 {cities && (
-                    // <div>{JSON.stringify(cities)}</div>
                     <Swiper
                         className="guides-slider mx-n2 pt-3 pb-5"
                         perView={1}
@@ -57,7 +41,6 @@ const CitySlider = (props) => {
                         data={cities}
                     />
                 )}
-
             </Container>
         </section>
     )

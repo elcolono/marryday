@@ -1,15 +1,16 @@
-import React from "react"
-import Head from "next/head"
-import NextNProgress from "../NextNProgress"
-import GoogleFonts from "next-google-fonts"
+import React from "react";
+import dynamic from "next/dynamic";
+import Head from "next/head";
+import GoogleFonts from "next-google-fonts";
 
-import Header from "./Header"
-import Footer from "./Footer"
-import SvgIcons from "../SvgIcons"
-
+import Header from "./Header";
+import Footer from "./Footer";
 import CookieConsent from "react-cookie-consent";
 import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+// import 'react-toastify/dist/ReactToastify.css';
+// Import FontAwesome Icons
+
+const NextNProgress = dynamic(() => import("../NextNProgress"));
 
 const Layout = (pageProps) => {
   const headerProps = {
@@ -36,52 +37,13 @@ const Layout = (pageProps) => {
       className={pageProps.className}
     >
       {/* Google Fonts - preload & async load to avoid render blocking */}
-      <GoogleFonts href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:ital,wght@0,300;0,400;0,700;1,400&display=swap" />
-      <Head>
-        <title>{pageProps.title}</title>
-        <meta name="description" content={pageProps.searchDescription}></meta>
-        <link rel="icon" href="/favicon.png" />
-        <script dangerouslySetInnerHTML={{
-          __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-            'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-          })(window,document,'script','dataLayer','GTM-M89NBZK');`}} />
-      </Head>
-      <NextNProgress color="#4E66F8" options={{ showSpinner: false }} />
-      {!pageProps.hideHeader && <Header {...headerProps} />}
+      {/* <GoogleFonts href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:ital,wght@0,300;0,400;0,700;1,400&display=swap" /> */}
+      <Header {...headerProps} />
+      <NextNProgress startPosition={0.3} stopDelayMs={200} height={3} color="#4E66F8" options={{ showSpinner: false }} />
       <main>{pageProps.children}</main>
-      <ToastContainer position="bottom-right" />
-      {!pageProps.hideFooter && <Footer {...footerProps} />}
-      <SvgIcons />
-      <CookieConsent
-        // Set cookie Consent True / false
-        // Additionally set cookie consent settings 
-        buttonText={"Ich stimme zu"}
-        style={{
-          background: "#f48300",
-          zIndex: "1050"
-        }}
-        buttonStyle={{
-          margin: "15px",
-          padding: "15px",
-          color: "#ffffff",
-          border: '1px solid #ffffff',
-          fontSize: "15px",
-          borderRadius: "50px",
-          background: "#f48300",
-        }}
-      >
-        Diese Website verwendet Cookies – nähere Informationen dazu und zu Ihren Rechten als Benutzer finden Sie in unserer Datenschutzerklärung am Ende der Seite.<br />
-        Klicken Sie auf „Ich stimme zu“, um Cookies zu akzeptieren und direkt unsere Website besuchen zu können.
-      </CookieConsent>
-      <noscript dangerouslySetInnerHTML={{
-        __html: `<iframe src="https://www.googletagmanager.com/ns.html?id=GTM-M89NBZK"
-        height="0" width="0" style="display:none;visibility:hidden"></iframe>`,
-      }}
-      />
+      <Footer {...footerProps} />
     </div>
   )
 }
 
-export default Layout
+export default Layout;

@@ -50,7 +50,7 @@ services:
       args:
         # Set as env during image building for next.config.js
         # Pass argument during build - in the dockerfile this argument is set to env variables BUT NOT SET LATER AS CONTAINER ENV
-        BASE_URL: "http://backend:8000" 
+        BASE_URL: http://backend:8000
         BASE_SERVER_URL: "http://127.0.0.1"
     expose:
       - "3000"
@@ -63,6 +63,7 @@ services:
     ports:
       - "80:80"
     volumes:
+      - /statics/backend/static_files:/statics/backend/static_files/
       - letsencrypt:/etc/letsencrypt
       - ./nginx/local:/etc/nginx/conf.d
     depends_on:

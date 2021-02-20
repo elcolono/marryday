@@ -8,7 +8,7 @@ import isWithinInterval from "date-fns/isWithinInterval";
 import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import { createStyles } from "@material-ui/styles";
 // this guy required only on the docs site to work with dynamic date library
-import { makeJSDateObject } from '../helpers/utils';
+import makeJSDateObject from '../utils/makeDateObject';
 import { IconButton, withStyles } from "@material-ui/core";
 import DateFnsUtils from '@date-io/date-fns'; // choose your lib
 import { Button } from "reactstrap";
