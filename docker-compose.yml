@@ -63,8 +63,6 @@ services:
     ports:
       - "80:80"
     volumes:
-      - /statics/backend/static_files:/statics/backend/static_files/
-      - /statics/backend/media_files:/statics/backend/media_files/
       - letsencrypt:/etc/letsencrypt
       - ./nginx/local:/etc/nginx/conf.d
     depends_on:
