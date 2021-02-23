@@ -10,19 +10,15 @@ import Image from "../CustomImage"
 
 const SearchBar = dynamic(() => import("../SearchBar"));
 
-function HeroLocationSearchSection({ data }) {
+function HeroLocationSearchSection({ data, cities }) {
     return (
         <section className="hero-home" >
             <Image
-               width={1350}
-               height={900}
-               src={data.image.url}
-               alt={data.image.title}
-               className="bg-image"
-            //    loading="eager"
-               layout="fill"
-            //    sizes="(max-width:991px) 50vw, 240px"
-               priority
+                src={data.image.url}
+                alt={data.image.title}
+                className="bg-image"
+                layout="fill"
+                priority
             />
             <Container className="py-6 py-md-7 text-white z-index-20">
                 <Row>
@@ -37,13 +33,11 @@ function HeroLocationSearchSection({ data }) {
                                 </h1>
                             </div>
                         )}
-                        {data.show_searchbar && (
-                            <SearchBar
-                                options={data.searchOptions}
-                                className="mt-5 p-3 p-lg-1 pl-lg-4"
-                                btnClassName="rounded-xl"
-                            />
-                        )}
+                        <SearchBar
+                            options={cities}
+                            className="mt-5 p-3 p-lg-1 pl-lg-4"
+                            btnClassName="rounded-xl"
+                        />
                     </Col>
                 </Row>
             </Container>

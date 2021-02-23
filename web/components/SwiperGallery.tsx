@@ -80,7 +80,7 @@ const SwiperGallery = (props) => {
               height={900}
               layout="responsive"
               alt={item.alt}
-              loading="lazy"
+              loading="eager"
               className="img-fluid img-gallery"
               sizes="35vw"
               onClick={() => onClick(index)}

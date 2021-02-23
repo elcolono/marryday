@@ -10,8 +10,6 @@ export default function CTASection({ data }) {
         <section className="py-7 position-relative dark-overlay">
             {/* Loading eager set for IE compatibility */}
             <Image
-                width={1350}
-                height={900}
                 src={data.image.url}
                 alt={data.image.title}
                 className="bg-image"

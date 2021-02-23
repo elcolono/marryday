@@ -3,6 +3,7 @@ import React from "react"
 import { Row, Col, Form, Input, Label, Button } from "reactstrap"
 
 import Select from "react-select"
+import Link from "next/link"
 
 const SearchBar = (props) => {
     const customSelectStyles = {
@@ -21,26 +22,33 @@ const SearchBar = (props) => {
         }),
     }
 
+    const bookingTypes = [
+        { label: "Meeting", value: 'meeting' },
+        { label: "Arbeiten", value: 'work' },
+    ]
+
     return (
         <div className={`search-bar ${props.className}`}>
             <Form>
                 <Row>
+                    {/* {JSON.stringify(props)} */}
                     <Col
                         lg="6"
                         md={props.halfInputs ? "6" : "12"}
                         className="d-flex align-items-center form-group"
                     >
                         <div className="input-label-absolute input-label-absolute-right w-100">
-                            <Label for="location" className="label-absolute">
-                                <i className="fa fa-crosshairs" />
-                                <span className="sr-only">City</span>
-                            </Label>
-                            <Input
-                                type="text"
-                                name="location"
-                                placeholder="Location"
-                                id="location"
-                                className="border-0 shadow-0"
+                            <Select
+                                id="reactselect"
+                                options={props.options}
+                                // value={this.state.selectedFilter.subTag}
+                                // onChange={this.setSubTag}
+                                placeholder="Stadt"
+                                className="selectpicker"
+                                classNamePrefix="selectpicker"
+                                styles={customSelectStyles}
+                                getOptionLabel={(option) => option.title}
+                                getOptionValue={(option) => option.slug}
                             />
                         </div>
                     </Col>
@@ -51,7 +59,9 @@ const SearchBar = (props) => {
                     >
                         <Select
                             id="reactselect"
-                            options={props.options}
+                            options={bookingTypes}
+                            value={bookingTypes.filter(option => option.value == 'work')}
+                            // onChange={this.setSubTag}
                             placeholder="Categories"
                             className="selectpicker"
                             classNamePrefix="selectpicker"
@@ -59,14 +69,16 @@ const SearchBar = (props) => {
                         />
                     </Col>
                     <Col lg="2" className={props.btnMb ? `mb-${props.btnMb}` : ``}>
-                        <Button
-                            type="submit"
-                            color="primary"
-                            className={`btn-block h-100 ${props.btnClassName ? props.btnClassName : ""
-                                }`}
-                        >
-                            Suchen
-            </Button>
+                        <Link href={'/coworking'}>
+                            <Button
+                                type="submit"
+                                color="primary"
+                                className={`btn-block h-100 ${props.btnClassName ? props.btnClassName : ""
+                                    }`}
+                            >
+                                Suchen
+                        </Button>
+                        </Link>
                     </Col>
                 </Row>
             </Form>
@@ -74,4 +86,4 @@ const SearchBar = (props) => {
     )
 }
 
-export default SearchBar
+export default SearchBar;
