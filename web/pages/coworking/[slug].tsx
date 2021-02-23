@@ -23,8 +23,8 @@ import { fetchAPIwithSSR } from "../../lib/api";
 
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from "@stripe/stripe-js/pure";
+import Cookies from 'js-cookie';
 
-import { getCookieConsentValue } from "react-cookie-consent";
 import OpeningHoursTable from "../../components/OpeningHoursTable"
 
 const LocationDetail = (props) => {
@@ -36,7 +36,7 @@ const LocationDetail = (props) => {
     const [acceptedCookies, setAcceptedCookies] = React.useState(undefined)
 
     React.useEffect(() => {
-        setAcceptedCookies(getCookieConsentValue())
+        setAcceptedCookies(Cookies.get('CookieConsent'))
         setIsDesktop(window.innerWidth > 991)
     })
 

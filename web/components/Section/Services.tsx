@@ -5,7 +5,7 @@ import {
     Row,
     Col,
 } from "reactstrap"
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import Icon from "../Icon"
 
 export default function ServiceSection({ data }) {
     return (
@@ -28,8 +28,10 @@ export default function ServiceSection({ data }) {
                             <div className="px-0 px-lg-3">
                                 {data.layout == "service_with_icon" && (
                                     <div className="icon-rounded bg-primary-light mb-3">
-                                        <FontAwesomeIcon className={"text-primary w-2rem h-2rem"} icon="coffee" />
-                                    </div>
+                                        <Icon
+                                            icon={service.icon}
+                                            className="text-primary w-2rem h-2rem"
+                                        />                                    </div>
                                 )}
                                 {data.layout == "service_with_image" && (
                                     <div className="icon-image-rounded mb-4 bg-primary-light">

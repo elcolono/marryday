@@ -13,7 +13,6 @@ import {
   Input,
   Button,
 } from "reactstrap";
-import { faBars, faSearch, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import ActiveLink from "../ActiveLink";
 
@@ -58,7 +57,7 @@ const Header = (props) => {
             </Link>
 
             {/* search form */}
-            {/* <Form id="search" className="form-inline d-none d-sm-flex">
+            <Form id="search" className="form-inline d-none d-sm-flex">
               <div
                 className={`input-label-absolute input-label-absolute-left input-reset input-expand ml-lg-2 ml-xl-3 ${searchFocus ? "focus" : ""
                   }`}
@@ -80,7 +79,7 @@ const Header = (props) => {
                   <i className="fas fa-times"></i>
                 </button>
               </div>
-            </Form> */}
+            </Form>
           </div>
 
           {/* mobile navbar */}
@@ -88,7 +87,7 @@ const Header = (props) => {
             onClick={() => setCollapsed(!collapsed)}
             className="navbar-toggler-right"
           >
-            <FontAwesomeIcon icon={faBars} />
+            <FontAwesomeIcon width={18} icon="bars" />
           </NavbarToggler>
           <Collapse isOpen={collapsed} navbar>
             {/* mobile search form */}
@@ -101,7 +100,7 @@ const Header = (props) => {
                   }`}
               >
                 <Label for="searchcollapsed_search" className="label-absolute">
-                  <FontAwesomeIcon icon={faSearch} />
+                  <FontAwesomeIcon width={15} icon="search" />
                   <span className="sr-only">What are you looking for?</span>
                 </Label>
                 <Input
@@ -119,7 +118,7 @@ const Header = (props) => {
                   color="deoco"
                   className="btn-reset"
                 >
-                  <FontAwesomeIcon icon={faTimes} />
+                  <FontAwesomeIcon width={15} icon="times" />
                 </Button>
               </div>
             </Form>
@@ -162,7 +161,7 @@ const Header = (props) => {
               <NavItem className="mt-3 mt-lg-0 ml-lg-3 d-lg-none d-xl-inline-block">
                 <ActiveLink
                   activeClassName="active"
-                  href={`/`}
+                  href={`/coworking`}
                   passHref
                 >
                   <a

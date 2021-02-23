@@ -1,0 +1,10 @@
+$primary:  #f48300;
+
+.container {
+    width: 100%;
+    position: fixed;
+    bottom: 0px;
+    z-index: 9999;
+    background: $primary;
+    padding: 3rem;
+  }

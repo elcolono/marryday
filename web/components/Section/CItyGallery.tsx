@@ -56,7 +56,6 @@ const CityGallery = (props) => {
                                     layout="fill"
                                     className="bg-image"
                                     loading="lazy"
-                                // alt="Hero image"
                                 />
                                 <div className="p-3 p-sm-5 text-white z-index-20">
                                     <h4 className="h2">{city.title}</h4>

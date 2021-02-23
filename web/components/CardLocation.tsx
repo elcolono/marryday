@@ -11,6 +11,7 @@ import {
 
 import Image from "./CustomImage"
 import Icon from "./Icon"
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const CardLocation = (props) => {
   const data = props.data
@@ -60,9 +61,7 @@ const CardLocation = (props) => {
             <ul className="list-unstyled text-muted mb-0">
               {data.amenities.filter(el => el.value).map((amenity) => (
                 <li key={amenity.type} className="d-inline">
-                  <i
-                    className={`fa fa-${amenity.icon} text-secondary w-1rem mr-3 text-center d-inline`}
-                  />
+                  <FontAwesomeIcon width={18} className={'text-secondary w-1rem mr-3 text-center d-inline'} icon={amenity.icon} />
                 </li>
               ))}
             </ul>

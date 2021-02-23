@@ -2,6 +2,7 @@ import React from "react";
 import Link from "next/link";
 import { Container, Row, Col } from "reactstrap";
 import Swiper from "../Swiper";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const CitySlider = (props) => {
     const { data, cities } = props;
@@ -17,14 +18,12 @@ const CitySlider = (props) => {
                         md="4"
                         className="d-lg-flex align-items-center justify-content-end"
                     >
-                        {data.button_link && (
-                            <Link href={data.button_link.slug}>
-                                <a className="text-muted text-sm">
-                                    {data.button_text}
-                                    <i className="fas fa-angle-double-right ml-2" />
-                                </a>
-                            </Link>
-                        )}
+                        <Link href={'/coworking'}>
+                            <a className="text-muted text-sm">
+                                Alle Locations
+                                <FontAwesomeIcon width={10} className={"ml-2"} icon="angle-double-right" />
+                            </a>
+                        </Link>
                     </Col>
                 </Row>
                 {cities && (
