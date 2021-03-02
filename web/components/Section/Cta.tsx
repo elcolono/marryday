@@ -13,9 +13,9 @@ export default function CTASection({ data }) {
                 src={data.image.url}
                 alt={data.image.title}
                 className="bg-image"
-                loading="eager"
+                loading="lazy"
                 layout="fill"
-                sizes="(max-width:991px) 50vw, 240px"
+                // sizes="(max-width:991px) 50vw, 240px"
             />
             <Container>
                 <div className="overlay-content text-white py-lg-5">

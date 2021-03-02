@@ -28,7 +28,7 @@ function HeroLocationSearchSection({ data, cities }) {
                                 <p className="subtitle letter-spacing-4 mb-2 text-secondary text-shadow">
                                     {data.subheading}
                                 </p>
-                                <h1 className="display-3 font-weight-bold text-shadow">
+                                <h1 className="display-4 font-weight-bold text-shadow">
                                     {data.heading}
                                 </h1>
                             </div>
