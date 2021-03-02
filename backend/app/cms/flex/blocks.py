@@ -615,11 +615,7 @@ class PricingSectionBlock(blocks.StructBlock):
         blocks.StructBlock([
             ("heading", blocks.CharBlock(required=True, max_length=100)),
             ("price", blocks.CharBlock(required=True, max_length=100)),
-            # ("type", blocks.ChoiceBlock(required=True, choices=(
-            #     ('hourly', 'Hourly'),
-            #     ('monthly', 'Monthly'),
-            #     ('unique', 'Unique')
-            # ))),
+            ("suffix", blocks.CharBlock(required=True, max_length=100)),
             ("description", blocks.RichTextBlock(
                 required=False,
                 max_length=400,

@@ -27,7 +27,7 @@ export default function PricingSection({ data }) {
                                         </h2>
                                         <p className="text-muted text-center">
                                             <span className="h1 text-dark">{column.price}</span>
-                                            <span className="ml-2">/ Stunde</span>
+                                            <span className="ml-2">{column.suffix}</span>
                                         </p>
                                         <hr />
                                         <div className="text-muted" dangerouslySetInnerHTML={{ __html: column.description }}></div>
