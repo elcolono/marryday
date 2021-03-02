@@ -8,6 +8,7 @@ import ContentSection from '../components/Section/Content';
 import PricingSection from '../components/Section/Pricing';
 import ContactSection from '../components/Section/Contact';
 import ServiceSection from '../components/Section/Services';
+import CTASection from '../components/Section/Cta';
 
 export default function SubPage(pageProps) {
   const { page } = pageProps;
@@ -19,6 +20,8 @@ export default function SubPage(pageProps) {
         if (section.type == 'pricing_section_block') return <PricingSection key={i} data={section.value} />
         if (section.type == 'contact_section_block') return <ContactSection key={i} title={page.title} data={section.value} />
         if (section.type == 'service_section_block') return <ServiceSection key={i} data={section.value} />
+        if (section.type == 'cta_section_block') return <CTASection key={i} data={section.value} />
+
       }) ?? <div>Noch Keine Daten</div>}
     </React.Fragment>
   )

@@ -6,11 +6,12 @@ import {
     Col,
 } from "reactstrap"
 import Icon from "../Icon"
+import Image from "../CustomImage"
 
 export default function ServiceSection({ data }) {
     return (
 
-        <section className="py-6 bg-gray-100">
+        <section className={`py-6 ${data.grey_background ? "bg-gray-100" : ""}`}>
             <Container>
                 <div className="text-center pb-lg-4">
                     {data.subheading && <p className="subtitle text-secondary">
@@ -34,8 +35,16 @@ export default function ServiceSection({ data }) {
                                         />                                    </div>
                                 )}
                                 {data.layout == "service_with_image" && (
-                                    <div className="icon-image-rounded mb-4 bg-primary-light">
-                                        <img src={service.image.url} alt=""></img>
+                                    <div className="icon-image-rounded mb-4 bg-primary-light position-relative">
+                                        <Image
+                                            src={service.image.url}
+                                            className="bg-image"
+                                            loading="lazy"
+                                            layout="fill"
+                                            alt={service.title}
+                                            sizes="(max-width:576px) 100vw, 350px"
+                                            quality="100"
+                                        />
                                     </div>
                                 )}
                                 <h3 className="h5">{service.heading}</h3>

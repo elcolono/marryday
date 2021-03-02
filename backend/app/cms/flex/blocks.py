@@ -398,6 +398,10 @@ class LogoCloudBlock(blocks.StructBlock):
 
 class ServiceSectionBlock(blocks.StructBlock):
     """ Service Section Block """
+    grey_background = blocks.BooleanBlock(
+        default=True,
+        required=False
+    )
     heading = blocks.CharBlock(
         required=True,
         max_length=100,
