@@ -124,9 +124,9 @@ class LocationAdmin(admin.ModelAdmin):
                  'shower', 'relaxation_area',)
             )
         }),
-        # ('Pricing', {
-        #     'fields': ('phone_hour_price', 'desktop_hour_price', 'meeting_hour_price',)
-        # }),
+        ('Pricing', {
+            'fields': ('phone_hour_price', 'desktop_hour_price', 'meeting_hour_price',)
+        }),
         ('Reviews', {
             'fields': ('reviews', 'rating', 'user_ratings_total')
         }),

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import addHours from 'date-fns/addHours'
 import subHours from 'date-fns/subHours'
@@ -16,6 +16,7 @@ import { endOfDay, startOfDay } from 'date-fns'
 import { Button } from 'reactstrap'
 
 import { useFormikContext } from 'formik';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const now = new Date()
 const nearestHour = roundToNearestMinutes(now, { nearestTo: 30 })
@@ -119,11 +120,6 @@ const TimeRangeSlider = ({
         const ti = [addHours(timelineInterval[0], 13), addHours(timelineInterval[0], 15)]
         // Set formik values
         setFieldValue("timeInterval", ti);
-        // console.log(disabledIntervals.map(dti => {
-        //     const overlaps = areIntervalsOverlapping({ start: dti[0], end: dti[1] }, { start: ti[0], end: ti[1] })
-        //     if (overlaps) return true
-        // }))
-
     }
 
     const onChangeTimeInterval = (ti) => {
@@ -155,7 +151,7 @@ const TimeRangeSlider = ({
                     color="items"
                     className="btn-items-increase m-1"
                     onClick={() => clearSelectedTimeInterval()}
-                ><i className="fa fa-times"></i></Button>
+                ><FontAwesomeIcon width={10} className={'d-flex mx-auto'} icon={'times'} /></Button>
             </div>
 
             <Draggable
@@ -186,19 +182,16 @@ const TimeRangeSlider = ({
                     color="items"
                     className="btn-items-increase m-1"
                     onClick={() => decreaseTimeRangeIndex()}
-                ><i className="fa fa-chevron-left"></i></Button>
+                ><FontAwesomeIcon width={10} className={'d-flex mx-auto'} icon={'chevron-left'} /></Button>
+
+
                 <Button
                     disabled={isLoading}
                     color="items"
                     className="btn-items-increase m-1"
                     onClick={() => increaseTimeRangeIndex()}
-                ><i className="fa fa-chevron-right"></i></Button>
+                ><FontAwesomeIcon width={10} className={'d-flex mx-auto'} icon={'chevron-right'} /></Button>
             </div>
-
-            {/* 
-            <div>x: {timelinePosition}</div>
-            <div>start: {format(selectedInterval[0], "yyyy-MM-dd'T'HH:mm:ss.SSSxxx")}</div>
-            <div>end: {format(selectedInterval[1], "yyyy-MM-dd'T'HH:mm:ss.SSSxxx")}</div> */}
 
         </React.Fragment>
     )

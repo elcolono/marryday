@@ -53,10 +53,10 @@ const CardLocation = (props) => {
               <Stars stars={data.stars} />
             </p> */}
           </CardSubtitle>
-          {data.booking_type == "booking" && <CardText className="text-muted">
+          {/* {data.booking_type == "booking" && <CardText className="text-muted">
             <span className="h4 text-primary">€ {data.prices.desktop_hour && data.prices.desktop_hour.toFixed(2)}</span>
             &nbsp;/ Stunde
-          </CardText>}
+          </CardText>} */}
           {data.booking_type == "linking" && <CardText className="text-muted">
             <ul className="list-unstyled text-muted mb-0">
               {data.amenities.filter(el => el.value).map((amenity) => (

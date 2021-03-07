@@ -82,7 +82,7 @@ const UserBooking = (props) => {
                             <Row>
                                 <Col xs="sm">
                                     <h6>Address</h6>
-                                    <p className="text-muted">{booking.location.address}, {booking.location.city.postcode} {booking.location.city.title}</p>
+                                    <p className="text-muted">{booking.location.formatted_address}</p>
                                 </Col>
 
                                 <Col xs="sm">
@@ -106,8 +106,8 @@ const UserBooking = (props) => {
                     <Col lg="5" xl="7" className="map-side-lg px-lg-0">
                         <Map
                             className="map-full shadow-left"
-                            center={[booking.location.lat, booking.location.lng]}
-                            markerPosition={[booking.location.lat, booking.location.lng]}
+                            center={[booking.location.geometry.location.lat, booking.location.geometry.location.lng]}
+                            markerPosition={[booking.location.geometry.location.lat, booking.location.geometry.location.lng]}
                             zoom={18}
                             scrollWheelZoom={false}
                             geoJSON={false}

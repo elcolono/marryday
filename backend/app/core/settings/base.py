@@ -80,8 +80,8 @@ INSTALLED_APPS = [
     'rest_auth',
     'allauth',
     'allauth.account',
+    'allauth.socialaccount',
     'rest_auth.registration',
-
 ]
 
 MIDDLEWARE = [
@@ -235,6 +235,7 @@ ACCOUNT_EMAIL_CONFIRMATION_ANONYMOUS_REDIRECT_URL = '/?verification=1'
 ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = '/?verification=1'
 
 SITE_ID = 1
+ACCOUNT_ADAPTER = 'accounts.allauth.AccountAdapter'
 
 
 # EMAIL SETTINGS
@@ -242,7 +243,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.world4you.com'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 25
-EMAIL_HOST_USER = 'andreas@mowo.space'
+EMAIL_HOST_USER = DEFAULT_FROM_EMAIL = 'andreas@mowo.space'
 # EMAIL_HOST_PASSWORD = '!Andi_89'
 EMAIL_HOST_PASSWORD = 'z7La=Vz7=N'
 

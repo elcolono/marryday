@@ -26,6 +26,7 @@ import { loadStripe } from "@stripe/stripe-js/pure";
 import Cookies from 'js-cookie';
 
 import OpeningHoursTable from "../../components/OpeningHoursTable"
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const LocationDetail = (props) => {
     const { location } = props
@@ -73,9 +74,7 @@ const LocationDetail = (props) => {
                                         <ul className="list-unstyled text-muted">
                                             {location.amenities.slice(0, 3).map((amenity) => (
                                                 <li key={amenity.type} className="mb-2">
-                                                    <i
-                                                        className={`fa fa-${amenity.icon} text-secondary w-1rem mr-3 text-center`}
-                                                    />
+                                                    <FontAwesomeIcon width={10} className={'text-secondary w-1rem mr-3 text-center'} icon={amenity.icon} />
                                                     <span className="text-sm">
                                                         {!amenity.value && <del>{amenity.label}</del> || amenity.label}
                                                     </span>
@@ -87,9 +86,7 @@ const LocationDetail = (props) => {
                                         <ul className="list-unstyled text-muted">
                                             {location.amenities.slice(3, 6).map((amenity) => (
                                                 <li key={amenity.type} className="mb-2">
-                                                    <i
-                                                        className={`fa fa-${amenity.icon} text-secondary w-1rem mr-3 text-center`}
-                                                    />
+                                                    <FontAwesomeIcon width={10} className={'text-secondary w-1rem mr-3 text-center'} icon={amenity.icon} />
                                                     <span className="text-sm">
                                                         {!amenity.value && <del>{amenity.label}</del> || amenity.label}
                                                     </span>

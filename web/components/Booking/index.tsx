@@ -4,15 +4,12 @@ import {
     Spinner
 } from 'reactstrap'
 import ProgressBar from '../ProgressBar';
-import differenceInMinutes from 'date-fns/differenceInMinutes';
 
 import { Formik, Form } from 'formik';
 import { toast } from 'react-toastify';
 
-// import AddressForm from './AddressForm';
 import BookingForm from './BookingForm';
 import PaymentForm from './PaymentForm';
-import ReviewOrder from './ReviewOrder';
 import CheckoutSuccess from './CheckoutSuccess';
 
 import validationSchema from './FormModel/validationSchema';
@@ -46,8 +43,6 @@ export default function CheckoutPage({ locationSlug, prices }) {
                 return <BookingForm formField={formField} locationSlug={locationSlug} prices={prices} />;
             case 1:
                 return <PaymentForm formField={formField} prices={prices} />;
-            // case 2:
-            //     return <ReviewOrder />;
             default:
                 return <div>Not Found</div>;
         }
@@ -134,7 +129,6 @@ export default function CheckoutPage({ locationSlug, prices }) {
                                         </div>
                                     </div>
                                     {/* <pre>{JSON.stringify(values, null, 4)}</pre> */}
-
                                 </Form>
                             )}
                         </Formik>

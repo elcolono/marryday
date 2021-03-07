@@ -12,7 +12,7 @@ import makeJSDateObject from '../utils/makeDateObject';
 import { IconButton, withStyles } from "@material-ui/core";
 import DateFnsUtils from '@date-io/date-fns'; // choose your lib
 import { Button } from "reactstrap";
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 // TODO: Datepicker gehört und Weekday GRId gehören getrennt
 
@@ -60,7 +60,9 @@ const CustomElements = ({ classes, selectedDate, handleWeekChange }) => {
         color="items"
         className="btn-items-increase"
         onClick={() => setOpen(isOpen => !isOpen)}
-      ><i className="fa fa-calendar"></i></Button>
+      >
+        <FontAwesomeIcon width={12} className={'d-flex mx-auto'} icon={'calendar'} />
+      </Button>
 
       <DatePicker
         open={open}

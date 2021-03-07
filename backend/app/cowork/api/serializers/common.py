@@ -71,7 +71,7 @@ class LocationListSerializer(serializers.ModelSerializer):
 class LocationRetrieveSerializer(serializers.ModelSerializer):
 
     images = LocationImageSerializer(many=True)
-    # prices = serializers.SerializerMethodField()
+    prices = serializers.SerializerMethodField()
     amenities = serializers.SerializerMethodField()
 
     def get_amenities(self, obj):
@@ -90,18 +90,18 @@ class LocationRetrieveSerializer(serializers.ModelSerializer):
         ]
         return data
 
-    # def get_prices(self, obj):
-    #     data = {
-    #         'phone_hour': obj.phone_hour_price,
-    #         'desktop_hour': obj.desktop_hour_price,
-    #         'meeting_hour': obj.meeting_hour_price,
-    #     }
-    #     return data
+    def get_prices(self, obj):
+        data = {
+            'phone_hour': obj.phone_hour_price,
+            'desktop_hour': obj.desktop_hour_price,
+            'meeting_hour': obj.meeting_hour_price,
+        }
+        return data
 
     class Meta:
         model = Location
         fields = ('title', 'slug', 'booking_type', 'description', 'vicinity', 'formatted_address', 'opening_hour_periods', 'geometry',
-                  'rating', 'amenities', 'website', 'images',)
+                  'rating', 'amenities', 'website', 'images', 'prices')
 
 
 # Bookings
