@@ -30,7 +30,7 @@ export default function Dashboard() {
 export const getServerSideProps: GetServerSideProps = async ({ params, req, res, }) => {
     const user = (await fetchAPIwithSSR('/api/v1/rest-auth/user/', { method: 'GET', req: req })) ?? []
     if (user.email === undefined) {
-        res.setHeader("location", "/signin");
+        res.setHeader("location", "/login");
         res.statusCode = 302;
         res.end();
         return { props: {} }
