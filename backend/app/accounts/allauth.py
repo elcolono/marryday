@@ -6,6 +6,6 @@ class AccountAdapter(DefaultAccountAdapter):
 
     def get_email_confirmation_redirect_url(self, request):
         if settings.DEBUG:
-            return 'http://localhost:3002/signin?verification=1'
+            return 'http://localhost:3002/login?verification=1'
         else:
-            return '/signin?verification=1'
+            return '/login?verification=1'

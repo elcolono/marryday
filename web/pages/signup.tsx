@@ -12,6 +12,7 @@ import {
   Form,
   Label,
   FormGroup,
+  Spinner,
 } from "reactstrap"
 import Image from "../components/CustomImage"
 import Icon from "../components/Icon"
@@ -21,7 +22,8 @@ import { InputField } from '../components/FormFields';
 
 import * as Yup from 'yup'
 import fetchAPI from "../utils/fetchAPI";
-import { toast } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 export default function Signup(pageProps) {
@@ -30,6 +32,7 @@ export default function Signup(pageProps) {
 
   return (
     <>
+      <ToastContainer />
       {page ?
         <Container fluid className="px-3">
           <Row className="min-vh-100">
@@ -78,8 +81,10 @@ export default function Signup(pageProps) {
                       toast.success("Glückwunsch! Ihre Registrierung war erfolgreich. Bitte bestätigen Sie noch Ihren Bestätigungslink.");
                       setSubmitting(false);
                     }).catch(error => {
-                      console.log(error)
-                      toast.error(`${error.response.data}`);
+                      for (var prop in error) {
+                        const errorMessage = error[prop][0];
+                        toast.error(errorMessage);
+                      }
                       setSubmitting(false);
                     })
                   }}
@@ -158,8 +163,8 @@ export default function Signup(pageProps) {
                         size="lg"
                         color="primary"
                         block>
-                        Sign up
-              </Button>
+                        {isSubmitting ? <Spinner size="sm" /> : "Registrieren"}
+                      </Button>
                     </Form>
                   )}
 
@@ -170,8 +175,6 @@ export default function Signup(pageProps) {
                   <a href="#">Terms and Conditions</a> and{" "}
                   <a href="#">Privacy Policy</a>.
             </p>
-
-
                 <Link href="/">
                   <a className="close-absolute mr-md-5 mr-xl-6 pt-5">
                     <Icon icon="close-1" className="w-3rem h-3rem" />

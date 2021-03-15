@@ -8,10 +8,8 @@ async function fetchAPI(url, { method = "GET", body = undefined } = {}) {
         body
     })
     const json = await res.json()
-
-    if (json.errors) {
-        console.error(json.errors)
-        throw new Error('Failed to fetch API')
+    if (!res.ok) {
+        throw json;
     }
     return json
 }

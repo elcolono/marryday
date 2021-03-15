@@ -14,6 +14,7 @@ import {
   Form,
   Label,
   FormGroup,
+  Spinner,
 } from "reactstrap"
 import Image from "../components/CustomImage"
 import Icon from "../components/Icon"
@@ -23,8 +24,8 @@ import { InputField } from '../components/FormFields';
 
 import * as Yup from 'yup'
 import fetchAPI from "../utils/fetchAPI";
-import { toast } from 'react-toastify';
-
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function Login(pageProps) {
 
@@ -32,6 +33,7 @@ export default function Login(pageProps) {
 
   return (
     <>
+      <ToastContainer />
       {page ?
         <Container fluid className="px-3">
           <Row className="min-vh-100">
@@ -66,10 +68,13 @@ export default function Login(pageProps) {
                       Cookies.set('token', response.key);
                       localStorage.setItem('user', response.user);
                       Router.push('/dashboard');
+                      toast.success("Hallo, Willkommen zurück");
                       setSubmitting(false);
                     }).catch(error => {
-                      console.log(error)
-                      toast.error(`${error.response.data}`);
+                      for (var prop in error) {
+                        const errorMessage = error[prop][0];
+                        toast.error(errorMessage);
+                      }
                       setSubmitting(false);
                     })
                   }}
@@ -110,7 +115,7 @@ export default function Login(pageProps) {
                         size="lg"
                         color="primary"
                         block>
-                        Anmelden
+                        {isSubmitting ? <Spinner size="sm" /> : "Anmelden"}
           </Button>
                     </Form>
                   )}
