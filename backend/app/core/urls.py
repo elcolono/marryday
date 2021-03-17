@@ -26,6 +26,8 @@ urlpatterns = [
     url(r'^api/v1/account/', include('allauth.urls')),
     url(r'^api/v1/accounts-rest/registration/account-confirm-email/(?P<key>.+)/$',
         confirm_email, name='account_confirm_email'),
+    url(r'^api/v1/accounts/', include("accounts.api.urls")),
+    url(r'^api/v1/profiles/', include("profiles.api.urls")),
 
     url(r'^api/v1/cowork/', include("cowork.api.urls")),
     url(r'^api/v1/payments/', include('payments.api.urls')),

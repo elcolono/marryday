@@ -29,9 +29,8 @@ class Company(models.Model):
     def __str__(self):
         return f"{self.user.email}"
 
+
 # Locations
-
-
 class Location(models.Model):
     company = models.ForeignKey('profiles.Company', on_delete=models.CASCADE)
     title = models.CharField(max_length=100)

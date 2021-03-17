@@ -67,7 +67,7 @@ export default function Login(pageProps) {
                     fetchAPI('/api/v1/rest-auth/login/', { method: 'POST', body: JSON.stringify(data) }).then(response => {
                       Cookies.set('token', response.key);
                       localStorage.setItem('user', response.user);
-                      Router.push('/user-account');
+                      Router.push('/account');
                       toast.success("Hallo, Willkommen zurück");
                       setSubmitting(false);
                     }).catch(error => {

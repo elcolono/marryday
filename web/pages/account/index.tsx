@@ -1,7 +1,7 @@
 import React from "react"
 import Link from "next/link"
 
-import fetchAPIwithSSR from '../utils/fetchAPIwithSSR';
+import fetchAPIwithSSR from '../../utils/fetchAPIwithSSR';
 import { GetServerSideProps } from 'next';
 
 import {
@@ -15,54 +15,12 @@ import {
     Breadcrumb,
     BreadcrumbItem,
 } from "reactstrap"
-import Icon from "../components/Icon";
+import Icon from "../../components/Icon";
 
 
-export default function UserAccount() {
+export default function UserAccount(pageProps) {
 
-
-    const data = {
-        "title": "Your account",
-        "subtitle": "Manage your account and settings here.",
-        "cards": [
-            {
-                "title": "Personal info",
-                "link": "#",
-                "icon": "identity-1",
-                "content": "Provide personal details and how we can reach you"
-            },
-            {
-                "title": "Login & security",
-                "link": "#",
-                "icon": "password-1",
-                "content": "Update your password and secure your account"
-            },
-            {
-                "title": "Payments & payouts",
-                "link": "#",
-                "icon": "pay-by-card-1",
-                "content": "Review payments, payouts, coupons, gift cards, and taxes"
-            },
-            {
-                "title": "Notifications",
-                "link": "#",
-                "icon": "chat-app-1",
-                "content": "Choose notification preferences and how you want to be contacted"
-            },
-            {
-                "title": "Privacy & sharing",
-                "link": "#",
-                "icon": "diary-1",
-                "content": "Control connected apps, what you share, and who sees it"
-            },
-            {
-                "title": "Global preferences",
-                "link": "#",
-                "icon": "mix-1",
-                "content": "Set your default language, currency, and timezone"
-            }
-        ]
-    }
+    const { page } = pageProps;
 
     return (
         <section className="py-5">
@@ -73,14 +31,15 @@ export default function UserAccount() {
                             <a>Home</a>
                         </Link>
                     </BreadcrumbItem>
-                    <BreadcrumbItem active>Account</BreadcrumbItem>
+                    <BreadcrumbItem active>{page.title}</BreadcrumbItem>
                 </Breadcrumb>
 
-                <h1 className="hero-heading mb-0">Dein Konto</h1>
-                <p className="text-muted mb-5">Verwalten hier dein Konto und deine Einstellungen.</p>
+                <h1 className="hero-heading mb-0">{page.heading}</h1>
+                <p className="text-muted mb-5">{page.description}</p>
                 <Row>
-                    {data.cards.map((card) => (
-                        <Col xs="6" md="4" className="mb-30px" key={card.title}>
+                    {page.cards.map((cardProps) => {
+                        const card = cardProps.value;
+                        return <Col xs="6" md="4" className="mb-30px" key={card.title}>
                             <Card className="h-100 border-0 shadow hover-animate">
                                 <CardBody>
                                     <div className="icon-rounded bg-secondary-light mb-3">
@@ -90,7 +49,7 @@ export default function UserAccount() {
                                         />
                                     </div>
                                     <CardTitle className="mb-3" tag="h5">
-                                        <Link href={card.link}>
+                                        <Link href={`${page.meta.slug}/${card.link.slug}`}>
                                             <a className="text-decoration-none text-dark stretched-link">
                                                 {card.title}
                                             </a>
@@ -102,7 +61,7 @@ export default function UserAccount() {
                                 </CardBody>
                             </Card>
                         </Col>
-                    ))}
+                    })}
                 </Row>
             </Container>
         </section>
@@ -111,28 +70,32 @@ export default function UserAccount() {
 
 
 export const getServerSideProps: GetServerSideProps = async ({ params, req, res, }) => {
-    const user = (await fetchAPIwithSSR('/api/v1/rest-auth/user/', { method: 'GET', req: req })) ?? []
-    if (user.email === undefined) {
+    const loggedUser = (await fetchAPIwithSSR('/api/v1/rest-auth/user/', { method: 'GET', req: req })) ?? []
+    if (loggedUser.email === undefined) {
         res.setHeader("location", "/login");
         res.statusCode = 302;
         res.end();
         return { props: {} }
     }
     const settings = (await fetchAPIwithSSR('/api/page/home', { method: 'GET', req: req })) ?? []
+    const pageData = await fetchAPIwithSSR('/api/v2/pages/?type=home.UserAccount&fields=seo_title,search_description,heading,description,cards', { method: 'GET' });
+    const page = pageData?.items[0] ?? null;
 
     return {
         props: {
-            user,
+            page,
+            loggedUser,
             themeSettings: settings.theme_settings,
             mainMenus: settings.main_menus,
             flatMenus: settings.flat_menus,
-            // user,
             nav: {
                 light: true,
                 classes: "shadow",
                 color: "white",
             },
-            title: "Buchungsbestätigung",
+            title: page?.meta.seo_title ?? null,
         },
     }
 }
+
+

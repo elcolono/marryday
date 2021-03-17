@@ -1,9 +1,12 @@
-from .serializers.common import CompanySerializer, CandidateSerializer
-from ..models import Company, Candidate
+from .serializers.common import CompanySerializer, VisitorSerializer
+from ..models import Company, Visitor
+from .permissions import IsUpdateCompany
 
-from rest_framework import status, generics, permissions, filters
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
+from rest_framework import status, generics, permissions, filters
+
 from django_filters.rest_framework import DjangoFilterBackend
 
 
@@ -11,8 +14,6 @@ from django_filters.rest_framework import DjangoFilterBackend
 class UserCompanyListView(generics.ListAPIView):
     queryset = Company.objects.all()
     serializer_class = CompanySerializer
-    permission_classes = [permissions.IsAuthenticated]
-
 
     def get_queryset(self):
         """
@@ -24,32 +25,29 @@ class UserCompanyListView(generics.ListAPIView):
 
 
 # Company
-class CompanyListView(generics.ListCreateAPIView):
-    queryset = Company.objects.all()
-    serializer_class = CompanySerializer
-    filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['user',]
-
-
-class CompanyView(generics.RetrieveUpdateDestroyAPIView):
+class CompanyView(generics.RetrieveUpdateAPIView):
+    permission_classes = [IsAuthenticated, IsUpdateCompany]
     serializer_class = CompanySerializer
     queryset = Company.objects.all()
 
-# Candidate
-class CandidateListView(generics.ListCreateAPIView):
-    queryset = Candidate.objects.all()
-    serializer_class = CandidateSerializer
+
+# Visitor
+class VisitorListView(generics.ListCreateAPIView):
+    queryset = Visitor.objects.all()
+    serializer_class = VisitorSerializer
 
 
-class CandidateView(generics.RetrieveUpdateDestroyAPIView):
-    serializer_class = CandidateSerializer
-    queryset = Candidate.objects.all()
+class VisitorView(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = VisitorSerializer
+    queryset = Visitor.objects.all()
 
 
-# @api_view(['POST'])
-# def company_create(request):
-#   serializer = CompanySerializer(data=request.data)
-#   if serializer.is_valid():
-#     serializer.save()
-#     return Response(serializer.data, status = status.HTTP_201_CREATED)
-#   return Response(serializer.errors , status= status.HTTP_400_BAD_REQUEST)
+
+
+# Company
+# class CompanyListView(generics.ListCreateAPIView):
+#     permission_classes = [IsAuthenticated]
+#     queryset = Company.objects.all()
+#     serializer_class = CompanySerializer
+#     filter_backends = [DjangoFilterBackend]
+#     filterset_fields = ['user', ]

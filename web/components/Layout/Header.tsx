@@ -15,13 +15,14 @@ import {
 } from "reactstrap";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import ActiveLink from "../ActiveLink";
+import MenuDropdown from "../MenuDropdown";
 
 const Header = (props) => {
   const [collapsed, setCollapsed] = React.useState(false)
   const [searchFocus, setSearchFocus] = React.useState(false)
 
   const onFocus = () => setSearchFocus(!searchFocus)
-  const { mainMenus } = props
+  const { mainMenus, loggedUser } = props
 
 
   const onLinkClick = (parent) => {
@@ -146,32 +147,58 @@ const Header = (props) => {
                       </ActiveLink>
                     )
                   ) : (
-                      <ActiveLink
-                        activeClassName="active"
-                        href={`/${item.link_page.slug}`}
-                        passHref
-                      >
-                        <NavLink onClick={() => onLinkClick(item.title)}>
-                          {item.link_text}
-                        </NavLink>
-                      </ActiveLink>
-                    )}
+                    <ActiveLink
+                      activeClassName="active"
+                      href={`/${item.link_page.slug}`}
+                      passHref
+                    >
+                      <NavLink onClick={() => onLinkClick(item.title)}>
+                        {item.link_text}
+                      </NavLink>
+                    </ActiveLink>
+                  )}
                 </NavItem>)}
+              {props.loggedUser ?
+                <MenuDropdown item={{
+                  "img": loggedUser.img,
+                  "type": "avatar",
+                  "title": "AS",
+                  "dropdown": [
+                    {
+                      "title": "Booking process - 4 pages",
+                      "link": "/user-booking-1"
+                    },
+                    {
+                      "title": "Bookings — grid view",
+                      "link": "/user-grid"
+                    },
+                    {
+                      "title": "Booking detail",
+                      "link": "/user-booking-detail"
+                    },
+                    {
+                      "title": "Sign out",
+                      "link": "/login",
+                      "divider": true
+                    }
+                  ]
 
-              <NavItem className="mt-3 mt-lg-0 ml-lg-3 d-lg-none d-xl-inline-block">
-                <ActiveLink
-                  activeClassName="active"
-                  href={`/coworking`}
-                  passHref
-                >
-                  <a
-                    className="btn btn-primary"
-                    onClick={() => onLinkClick('locations')}
+                }} /> :
+                <NavItem className="mt-3 mt-lg-0 ml-lg-3 d-lg-none d-xl-inline-block">
+                  <ActiveLink
+                    activeClassName="active"
+                    href={`/coworking`}
+                    passHref
                   >
-                    Location finden
+                    <a
+                      className="btn btn-primary"
+                      onClick={() => onLinkClick('locations')}
+                    >
+                      Location finden
                   </a>
-                </ActiveLink>
-              </NavItem>
+                  </ActiveLink>
+                </NavItem>
+              }
             </Nav>
           </Collapse>
         </Container>

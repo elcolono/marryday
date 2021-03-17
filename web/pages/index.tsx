@@ -36,7 +36,7 @@ export const getStaticProps: GetStaticProps = async () => {
   const page = pageData?.items[0] ?? null;
 
   return {
-    revalidate: 10,
+    revalidate: 1,
     props: {
       locations: locations,
       cities: cities,
