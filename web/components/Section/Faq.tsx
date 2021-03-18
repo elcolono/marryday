@@ -5,7 +5,7 @@ import { Container, Row, Col } from "reactstrap"
 
 export default function FAQSection({ data }) {
     return (
-        <section className="py-6">
+        <section className={`${data.padding_top && 'pt-6'} ${data.padding_bottom && 'pb-6'}`}>
             <Container>
                 <div className="py-4">
                     <h2 className="mb-5 text-primary">{data.heading}</h2>

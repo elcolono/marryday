@@ -72,11 +72,12 @@ const MapLeaflet = (props) => {
             <Marker
               key={data.slug}
               icon={icon}
-              opacity={0}
-              position={[
-                data.geometry.location.lat,
-                data.geometry.location.lng,
-              ]}
+              // opacity={0}
+              position={
+                [
+                  data.geometry.location.lat,
+                  data.geometry.location.lng
+                ]}
               onMouseOver={() => {
                 setHover(data.slug)
               }}
@@ -84,18 +85,19 @@ const MapLeaflet = (props) => {
                 setHover(false)
               }}
             >
-              <Tooltip
-                permanent={true}
-                interactive={true}
-                direction="top"
-                className={`map-custom-tooltip ${hover === data.slug || props.hoverCard === data.slug
-                  ? "active"
-                  : ""
-                  }`}
-              >
-                {data.title}
-              </Tooltip>
-
+              {hover === data.slug || props.hoverCard === data.slug &&
+                <Tooltip
+                  permanent={true}
+                  interactive={true}
+                  direction="top"
+                  className={`map-custom-tooltip ${hover === data.slug || props.hoverCard === data.slug
+                    ? "active"
+                    : ""
+                    }`}
+                >
+                  {data.title}
+                </Tooltip>
+              }
               <Popup className="map-custom-popup" maxWidth="600" minWidth="200">
                 <div className="popup-rental">
                   {data.preview_image ? (
@@ -106,8 +108,8 @@ const MapLeaflet = (props) => {
                       }}
                     />
                   ) : (
-                      <div className="image" />
-                    )}
+                    <div className="image" />
+                  )}
                   <div className="text">
                     {data.slug && data.title && (
                       <h6>
@@ -128,20 +130,24 @@ const MapLeaflet = (props) => {
             </Marker>
           )
         })}
-      {props.markerPosition && (
-        <Marker position={props.markerPosition} icon={icon} />
-      )}
-      {props.circlePosition && (
-        <Circle
-          center={props.circlePosition}
-          color={"#4E66F8"}
-          fillColor={"#8798fa"}
-          opacity={0.5}
-          radius={props.circleRadius}
-          weight={2}
-        />
-      )}
-    </Map>
+      {
+        props.markerPosition && (
+          <Marker position={props.markerPosition} icon={icon} />
+        )
+      }
+      {
+        props.circlePosition && (
+          <Circle
+            center={props.circlePosition}
+            color={"#4E66F8"}
+            fillColor={"#8798fa"}
+            opacity={0.5}
+            radius={props.circleRadius}
+            weight={2}
+          />
+        )
+      }
+    </Map >
   )
 }
 

@@ -1,7 +1,7 @@
 from django.conf import settings
 import stripe
 from rest_framework import status
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 
 from payments.models import Payment
@@ -11,8 +11,9 @@ from rest_framework import generics, permissions, status
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
-
 # Payment
+
+
 class PaymentRetrieveView(generics.RetrieveAPIView):
     queryset = Payment.objects.all()
     serializer_class = PaymentSerializer
@@ -29,6 +30,53 @@ def test_payment(request):
     )
 
     return Response(status=status.HTTP_200_OK, data=test_payment_intent)
+
+
+@api_view(['POST'])
+@permission_classes([permissions.IsAuthenticated])
+def create_stripe_customer(request):
+    data = request.data
+    email = data['email']
+    extra_msg = ''
+    # checking if customer with provided email already exists
+    customer_data = stripe.Customer.list(email=email).data
+
+    if len(customer_data) == 0:
+        # creating customer
+        customer = stripe.Customer.create()
+    else:
+        customer = customer_data[0]
+        extra_msg = "Customer already existed."
+
+    return Response(status=status.HTTP_200_OK, data={'message': 'Success', 'data': {'customer_id': customer.id, 'extra_msg': extra_msg}})
+
+
+@api_view(['GET'])
+@permission_classes([permissions.IsAuthenticated])
+def retrieve_stripe_customer(request):
+    data = request.data
+    stripe_id = data['id']
+    extra_msg = ''
+    # checking if customer with provided email already exists
+    customer_data = stripe.Customer.retrieve(stripe_id)
+
+    return Response(status=status.HTTP_200_OK, data={'message': 'Success', 'data': {'customer': customer_data, 'extra_msg': extra_msg}})
+
+
+@api_view(['PUT'])
+@permission_classes([permissions.IsAuthenticated])
+def update_stripe_customer(request):
+    data = request.data
+    stripe_id = data['id']
+    email = data['email']
+    extra_msg = ''
+    # checking if customer with provided email already exists
+    customer_data = stripe.Customer.modify(
+        stripe_id,
+        email=email
+    )
+
+    return Response(status=status.HTTP_200_OK, data={'message': 'Success', 'data': {'customer': customer_data, 'extra_msg': extra_msg}})
 
 
 @api_view(['POST'])

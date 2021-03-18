@@ -199,6 +199,8 @@ class FAQSectionBlock(blocks.StructBlock):
         label='Heading',
         default='Super Awesome Section',
     )
+    padding_top = blocks.BooleanBlock(default=True, required=False)
+    padding_bottom = blocks.BooleanBlock(default=True, required=False)
     faqs = blocks.ListBlock(
         blocks.StructBlock([
             ("heading", blocks.CharBlock(required=True, max_length=1000)),
@@ -274,6 +276,49 @@ class ContentSectionBlock(blocks.StructBlock):
     class Meta:
         """ Meta data """
         label = 'Content Section'
+
+
+# Text With Image
+class TextWithImageSectionBlock(blocks.StructBlock):
+    """ Section Base Block - Ued by each section """
+    layout = blocks.ChoiceBlock(
+        default='text_left',
+        choices=(
+            ('text_left', 'Text left'),
+            ('text_right', 'Text right')
+        )
+    )
+    grey_background = blocks.BooleanBlock(
+        default=True,
+        required=False
+    )
+    heading = blocks.CharBlock(
+        required=False,
+        max_length=80,
+        label='Feature',
+        default='Super Awesome Feature',
+    )
+    subheading = blocks.CharBlock(
+        required=False,
+        max_length=100,
+        label='Subheading',
+        default='Super Awesome Hero Subheading',
+    )
+    description = blocks.TextBlock(
+        required=False,
+        max_length=400,
+        label='Description',
+        default='The thing we do is better than any other similar thing and this hero panel will convince you of that, just by having a glorious background image.',
+    )
+    image = APIImageChooserBlock(
+        required=True,
+    )
+    image_width = blocks.IntegerBlock()
+    image_height = blocks.IntegerBlock()
+
+    class Meta:
+        """ Meta data """
+        label = 'Text With Image Section'
 
 
 # Hero Section Block

@@ -1,7 +1,14 @@
+import stripe
 from django.db import models
 import uuid
 
 # Create your models here.
+
+PAYMENT_ACCOUNT_USER_ROLES = (
+    ('admin', 'Admin'),
+    ('editor', 'Editor'),
+    ('viewer', 'Viewer')
+)
 
 
 def increment_invoice_number():
@@ -16,6 +23,19 @@ def increment_invoice_number():
         "0" + str(new_invoice_int)
     new_invoice_no = '21-' + str(formatted)
     return new_invoice_no
+
+
+class PaymentAccountUser(models.Model):
+    user = models.ForeignKey('accounts.User', on_delete=models.CASCADE)
+    payment_account = models.ForeignKey(
+        'payments.PaymentAccount', on_delete=models.CASCADE)
+    role = models.CharField(choices=PAYMENT_ACCOUNT_USER_ROLES, max_length=100)
+
+
+class PaymentAccount(models.Model):
+    users = models.ManyToManyField(
+        'accounts.User', through='PaymentAccountUser')
+    stripe = models.CharField(max_length=100)
 
 
 class Payment(models.Model):

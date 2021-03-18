@@ -154,6 +154,8 @@
     background-color: #fff;
     font-family: $font-family-base;
     font-weight: bold;
+    position: absolute;
+    bottom: 15px;
 
     &.active {
         color: #fff;
