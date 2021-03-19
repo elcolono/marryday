@@ -5,7 +5,7 @@ import Image from "../CustomImage"
 
 export default function TextWithImage({ data }) {
     return (
-        <section className={`py-6 ${data.grey_background && 'bg-gray-100'}`}>
+        <section className={`${data.padding_top && 'pt-6'} ${data.padding_bottom && 'pb-6'} ${data.grey_background && 'bg-gray-100'}`}>
             <Container>
                 <Row className="d-flex">
                     <Col lg="6" className={`text-center text-lg-left m-auto ${data.layout == 'text_right' && 'order-2'}`}>

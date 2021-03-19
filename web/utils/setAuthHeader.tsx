@@ -11,7 +11,9 @@ function setAuthHeader(req = undefined) {
             'Content-Type': 'application/json',
         };
     }
-    return undefined
+    return {
+        'Content-Type': 'application/json',
+    }
 }
 
 export default setAuthHeader;

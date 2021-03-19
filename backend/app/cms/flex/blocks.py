@@ -288,6 +288,8 @@ class TextWithImageSectionBlock(blocks.StructBlock):
             ('text_right', 'Text right')
         )
     )
+    padding_top = blocks.BooleanBlock(default=True, required=False)
+    padding_bottom = blocks.BooleanBlock(default=True, required=False)
     grey_background = blocks.BooleanBlock(
         default=True,
         required=False

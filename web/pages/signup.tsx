@@ -36,6 +36,20 @@ export default function Signup(pageProps) {
       {page ?
         <Container fluid className="px-3">
           <Row className="min-vh-100">
+            <Col md="4" lg="6" xl="7" className="d-none d-md-block">
+              <div className="bg-cover h-100 mr-n3">
+                {page.image &&
+                  <Image
+                    src={page.image.meta.download_url}
+                    alt={page.image.title}
+                    className="bg-image"
+                    loading="eager"
+                    layout="fill"
+                    priority={true}
+                  />
+                }
+              </div>
+            </Col>
             <Col md="8" lg="6" xl="5" className="d-flex align-items-center">
               <div className="w-100 py-5 px-md-5 px-xl-6 position-relative">
                 <div className="mb-4">
@@ -180,20 +194,6 @@ export default function Signup(pageProps) {
                     <Icon icon="close-1" className="w-3rem h-3rem" />
                   </a>
                 </Link>
-              </div>
-            </Col>
-            <Col md="4" lg="6" xl="7" className="d-none d-md-block">
-              <div className="bg-cover h-100 mr-n3">
-                {page.image &&
-                  <Image
-                    src={page.image.meta.download_url}
-                    alt={page.image.title}
-                    className="bg-image"
-                    loading="eager"
-                    layout="fill"
-                    priority={true}
-                  />
-                }
               </div>
             </Col>
           </Row>

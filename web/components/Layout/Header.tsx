@@ -64,7 +64,7 @@ const Header = (props) => {
                   }`}
               >
                 <Label for="search_search" className="label-absolute">
-                  <i className="fa fa-search"></i>
+                  <FontAwesomeIcon width={13} icon="search" />
                   <span className="sr-only">What are you looking for?</span>
                 </Label>
                 <Input
@@ -77,7 +77,7 @@ const Header = (props) => {
                   onBlur={() => setTimeout(() => onFocus(), 333)}
                 />
                 <button type="reset" className="btn btn-sm btn-reset">
-                  <i className="fas fa-times"></i>
+                  <FontAwesomeIcon width={13} icon="times" />
                 </button>
               </div>
             </Form>
