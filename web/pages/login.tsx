@@ -64,7 +64,7 @@ export default function Login(pageProps) {
                       "email": values.email,
                       "password": values.password,
                     }
-                    fetchAPI('/api/v1/rest-auth/login/', { method: 'POST', body: JSON.stringify(data) }).then(response => {
+                    fetchAPI('/api/v1/rest-auth/login/', { method: 'POST', body: data }).then(response => {
                       Cookies.set('token', response.key);
                       localStorage.setItem('user', response.user);
                       Router.push('/account');
@@ -116,7 +116,7 @@ export default function Login(pageProps) {
                         color="primary"
                         block>
                         {isSubmitting ? <Spinner size="sm" /> : "Anmelden"}
-          </Button>
+                      </Button>
                     </Form>
                   )}
 

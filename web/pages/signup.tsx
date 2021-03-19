@@ -77,7 +77,7 @@ export default function Signup(pageProps) {
                       "is_company": true,
                       "is_visitor": false
                     }
-                    fetchAPI('/api/v1/rest-auth/registration/', { method: 'POST', body: JSON.stringify(data) }).then(response => {
+                    fetchAPI('/api/v1/rest-auth/registration/', { method: 'POST', body: data }).then(response => {
                       toast.success("Glückwunsch! Ihre Registrierung war erfolgreich. Bitte bestätigen Sie noch Ihren Bestätigungslink.");
                       setSubmitting(false);
                     }).catch(error => {
