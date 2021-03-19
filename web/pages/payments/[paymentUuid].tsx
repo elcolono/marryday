@@ -17,9 +17,8 @@ import {
   CardFooter,
 } from "reactstrap"
 
-import data from "../../data/user-invoice.json"
 import { GetServerSideProps } from "next"
-import ApiService, { fetchAPIwithSSR } from "../../lib/api"
+import { fetchAPIwithSSR } from "../../lib/api"
 import Decimal from 'decimal.js';
 
 

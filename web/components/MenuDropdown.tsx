@@ -17,7 +17,7 @@ export default function MenuDropdown(props) {
 
     const [collapsed, setCollapsed] = React.useState(false)
     const [dropdownOpen, setDropdownOpen] = React.useState({})
-    const [dropdownAnimate, setDropdownAnimate] = React.useState(false)
+    const [dropdownAnimate, setDropdownAnimate] = React.useState({})
     const [parentName, setParentName] = React.useState(false)
 
     const size = UseWindowSize()
