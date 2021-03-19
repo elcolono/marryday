@@ -10,12 +10,9 @@ from .models import PaymentAccount, PaymentAccountUser
 
 
 @receiver(post_save, sender=User)
-def create_payment_account(sender, instance, created):
-    """
-    Creates an PaymentAccount
-    """
+def create_payment_account(sender, instance, created, **kwargs):
     if created and instance.is_company:
-        email = instance['email']
+        email = instance.email
         # checking if customer with provided email already exists
         customer_data = stripe.Customer.list(email=email).data
 
@@ -26,6 +23,6 @@ def create_payment_account(sender, instance, created):
             customer = customer_data[0]
 
         payment_account = PaymentAccount.objects.create(stripe=customer.id)
-        payment_account_user = PaymentAccountUser.objects.create(
-            user=instance, payment_account=payment_account)
+        payment_account_user = PaymentAccountUser(
+            user=instance, payment_account=payment_account, role='admin')
         payment_account_user.save()

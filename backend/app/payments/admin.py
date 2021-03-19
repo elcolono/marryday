@@ -1,6 +1,15 @@
 from django.contrib import admin
-from .models import Payment
+from .models import Payment, PaymentAccount, PaymentAccountUser
 # Register your models here.
+
+
+class PaymentAccountInline(admin.TabularInline):
+    model = PaymentAccountUser
+
+
+class PaymentAccountAdmin(admin.ModelAdmin):
+    fields = ('stripe',)
+    inlines = (PaymentAccountInline,)
 
 
 class PaymentAdmin(admin.ModelAdmin):
@@ -10,8 +19,10 @@ class PaymentAdmin(admin.ModelAdmin):
                     'amount', 'invoice_date',)
     list_filter = ('invoice_no',
                    'amount', 'invoice_date',)
-    fields = ('booking', 'invoice_no',  'amount', 'invoice_date', 'created_at', 'updated_at',)
+    fields = ('booking', 'invoice_no',  'amount',
+              'invoice_date', 'created_at', 'updated_at',)
     readonly_fields = ('invoice_date', 'created_at', 'updated_at',)
 
 
 admin.site.register(Payment, PaymentAdmin)
+admin.site.register(PaymentAccount, PaymentAccountAdmin)
