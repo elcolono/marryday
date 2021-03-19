@@ -1,11 +1,11 @@
 import { API_URL } from '../lib/constants';
 import setAuthHeader from './setAuthHeader';
 
-async function fetchAPIwithSSR(url, { method = 'GET', req = undefined } = {}) {
+async function fetchAPIwithSSR(url, { method = 'GET', req = undefined, token = undefined } = {}) {
     try {
         const res = await fetch(API_URL + url, {
             method: method,
-            headers: setAuthHeader(req)
+            headers: setAuthHeader(token)
         })
         const json = await res.json()
 

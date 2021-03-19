@@ -16,6 +16,7 @@ import {
     BreadcrumbItem,
 } from "reactstrap"
 import Icon from "../../components/Icon";
+import getToken from "../../utils/getToken";
 
 
 export default function UserAccount(pageProps) {
@@ -69,14 +70,17 @@ export default function UserAccount(pageProps) {
 }
 
 
-export const getServerSideProps: GetServerSideProps = async ({ params, req, res, }) => {
-    const loggedUser = (await fetchAPIwithSSR('/api/v1/rest-auth/user/', { method: 'GET', req: req })) ?? []
+export const getServerSideProps: GetServerSideProps = async ({ req, res, }) => {
+
+    const token = getToken(req);
+    const loggedUser = (await fetchAPIwithSSR('/api/v1/rest-auth/user/', { method: 'GET', req: req, token: token })) ?? []
     if (loggedUser.email === undefined) {
         res.setHeader("location", "/login");
         res.statusCode = 302;
         res.end();
         return { props: {} }
     }
+    
     const settings = (await fetchAPIwithSSR('/api/page/home', { method: 'GET', req: req })) ?? []
     const pageData = await fetchAPIwithSSR('/api/v2/pages/?type=home.UserAccount&fields=seo_title,search_description,heading,description,cards', { method: 'GET' });
     const page = pageData?.items[0] ?? null;

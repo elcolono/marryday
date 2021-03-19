@@ -296,19 +296,19 @@ class TextWithImageSectionBlock(blocks.StructBlock):
     )
     heading = blocks.CharBlock(
         required=False,
-        max_length=80,
+        max_length=500,
         label='Feature',
         default='Super Awesome Feature',
     )
     subheading = blocks.CharBlock(
         required=False,
-        max_length=100,
+        max_length=500,
         label='Subheading',
         default='Super Awesome Hero Subheading',
     )
     description = blocks.TextBlock(
         required=False,
-        max_length=400,
+        max_length=1500,
         label='Description',
         default='The thing we do is better than any other similar thing and this hero panel will convince you of that, just by having a glorious background image.',
     )
