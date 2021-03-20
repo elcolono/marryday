@@ -307,8 +307,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res, }) => {
     }
 
     const settings = (await fetchAPIwithSSR('/api/page/home', { method: 'GET', req: req })) ?? []
-    const pageData = await fetchAPIwithSSR('/api/v2/pages/?type=home.UserAccountProfile&fields=seo_title,search_description,heading,description', { method: 'GET' });
-    const page = pageData?.items[0] ?? {};
+    const page = await fetchAPIwithSSR('/api/v2/pages/find/?html_path=account/profile', { method: 'GET' });
 
     return {
         props: {

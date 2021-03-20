@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'payments',
     'cms.home',
     'cms.flex',
+    'cms.user_account',
     'cms.theme',
     'cms.rest',
     'cms.blog',
