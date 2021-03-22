@@ -32,15 +32,15 @@ import 'react-toastify/dist/ReactToastify.css';
 import getToken from "../../utils/getToken";
 
 
-export default function UserPersonal(pageProps) {
+export default function UserPayment(pageProps) {
 
     const { page } = pageProps;
 
-    const [profileCollapse, setProfileCollapse] = React.useState(false)
-    const [accountCollapse, setAccountCollapse] = React.useState(false)
+    const [bankaccountCollapse, setBankaccountCollapse] = React.useState(false)
+    const [creditcardCollapse, setCreditcardCollapse] = React.useState(false)
 
     const [user, setUser] = React.useState(pageProps.loggedUser)
-    const [company, setCompany] = React.useState(pageProps.companies[0])
+    const [paymentAccounts, setCompany] = React.useState(pageProps.paymentAccounts[0])
 
     return (
         <>
@@ -64,17 +64,17 @@ export default function UserPersonal(pageProps) {
                     <p className="text-muted mb-5">{page.description && page.description}</p>
                     <Row>
                         <Col lg="7">
-                            {company &&
+                            {user &&
                                 <div className="text-block">
                                     <Row className="mb-3">
                                         <Col sm="9">
-                                            <h5>Dein Profil</h5>
+                                            <h5>Dein Bankkonto</h5>
                                         </Col>
                                         <Col sm="3" className="text-right">
                                             <Button
                                                 color="link"
                                                 className="pl-0 text-primary collapsed"
-                                                onClick={() => setProfileCollapse(!profileCollapse)}
+                                                onClick={() => setBankaccountCollapse(!bankaccountCollapse)}
                                             >
                                                 Bearbeiten
                                             </Button>
@@ -83,31 +83,38 @@ export default function UserPersonal(pageProps) {
                                     <Media className="text-sm text-muted">
                                         <i className="fa fa-address-book fa-fw mr-2" />
                                         <Media body className="mt-n1">
-                                            {company.company_name}
+                                            {user.first_name} {user.last_name}
+                                            <br />
+                                            {user.email}
                                         </Media>
                                     </Media>
-                                    <Collapse isOpen={profileCollapse}>
+                                    <Collapse isOpen={bankaccountCollapse}>
                                         <Formik
                                             enableReinitialize={true}
-                                            initialValues={company}
+                                            initialValues={user}
                                             validationSchema={Yup.object({
-                                                company_name: Yup.string()
+                                                card_name: Yup.string()
+                                                    .required('Erforderlich'),
+                                                card_number: Yup.string()
                                                     .required('Erforderlich')
-                                                    .min(2, 'Company name is too short - should be 2 chars minimum.'),
+                                                    .min(2, 'Firstname is too short - should be 2 chars minimum.'),
+                                                last_name: Yup.string()
+                                                    .required('Erforderlich')
+                                                    .min(2, 'Lastname is too short - should be 2 chars minimum.')
                                             })}
                                             onSubmit={(values, { setSubmitting }) => {
                                                 const token = getToken();
-                                                fetchAPI(`/api/v1/profiles/company/${company.id}/`, { method: 'PUT', body: values, token: token }).then(response => {
-                                                    toast.success("Erfolgreich gespeichert");
-                                                    setCompany(response);
-                                                    setSubmitting(false);
-                                                }).catch(error => {
-                                                    for (var prop in error) {
-                                                        const errorMessage = error[prop][0];
-                                                        toast.error(errorMessage);
-                                                    }
-                                                    setSubmitting(false);
-                                                })
+                                                // fetchAPI(`/api/v1/accounts/user/${user.id}/`, { method: 'PUT', body: values, token: token }).then(response => {
+                                                //     toast.success("Erfolgreich gespeichert");
+                                                //     setUser(response);
+                                                //     setSubmitting(false);
+                                                // }).catch(error => {
+                                                //     for (var prop in error) {
+                                                //         const errorMessage = error[prop][0];
+                                                //         toast.error(errorMessage);
+                                                //     }
+                                                //     setSubmitting(false);
+                                                // })
                                             }}>
                                             {({
                                                 handleSubmit,
@@ -117,18 +124,32 @@ export default function UserPersonal(pageProps) {
                                                     <Row className="pt-4">
 
                                                         <Col md="6" className="form-group">
-                                                            <Label for="first_name" className="form-label">
-                                                                Firmenname
-                                                        </Label>
+                                                            <Label for="card_name" className="form-label">
+                                                                Kontoname
+                                                            </Label>
                                                             <InputField
-                                                                name="company_name"
-                                                                id="company_name"
+                                                                name="card_name"
+                                                                id="card_name"
                                                                 type="text"
-                                                                placeholder="Google"
+                                                                placeholder="Max Mustermann"
                                                                 autoComplete="off"
                                                                 required
                                                             />
                                                         </Col>
+                                                        <Col md="6" className="form-group">
+                                                            <Label for="card_number" className="form-label">
+                                                                Kontonummer
+                                                            </Label>
+                                                            <InputField
+                                                                name="card_number"
+                                                                id="card_number"
+                                                                type="number"
+                                                                placeholder="AT34252345234"
+                                                                autoComplete="off"
+                                                                required
+                                                            />
+                                                        </Col>
+
                                                     </Row>
                                                     <Button
                                                         disabled={isSubmitting}
@@ -147,13 +168,13 @@ export default function UserPersonal(pageProps) {
                                 <div className="text-block">
                                     <Row className="mb-3">
                                         <Col sm="9">
-                                            <h5>Dein Konto</h5>
+                                            <h5>Deine Kreditkarte</h5>
                                         </Col>
                                         <Col sm="3" className="text-right">
                                             <Button
                                                 color="link"
                                                 className="pl-0 text-primary collapsed"
-                                                onClick={() => setAccountCollapse(!accountCollapse)}
+                                                onClick={() => setCreditcardCollapse(!creditcardCollapse)}
                                             >
                                                 Bearbeiten
                                             </Button>
@@ -167,15 +188,14 @@ export default function UserPersonal(pageProps) {
                                             {user.email}
                                         </Media>
                                     </Media>
-                                    <Collapse isOpen={accountCollapse}>
+                                    <Collapse isOpen={creditcardCollapse}>
                                         <Formik
                                             enableReinitialize={true}
                                             initialValues={user}
                                             validationSchema={Yup.object({
-                                                email: Yup.string()
-                                                    .email('Ungültige Email Adresse')
+                                                card_name: Yup.string()
                                                     .required('Erforderlich'),
-                                                first_name: Yup.string()
+                                                card_number: Yup.string()
                                                     .required('Erforderlich')
                                                     .min(2, 'Firstname is too short - should be 2 chars minimum.'),
                                                 last_name: Yup.string()
@@ -184,17 +204,17 @@ export default function UserPersonal(pageProps) {
                                             })}
                                             onSubmit={(values, { setSubmitting }) => {
                                                 const token = getToken();
-                                                fetchAPI(`/api/v1/accounts/user/${user.id}/`, { method: 'PUT', body: values, token: token }).then(response => {
-                                                    toast.success("Erfolgreich gespeichert");
-                                                    setUser(response);
-                                                    setSubmitting(false);
-                                                }).catch(error => {
-                                                    for (var prop in error) {
-                                                        const errorMessage = error[prop][0];
-                                                        toast.error(errorMessage);
-                                                    }
-                                                    setSubmitting(false);
-                                                })
+                                                // fetchAPI(`/api/v1/accounts/user/${user.id}/`, { method: 'PUT', body: values, token: token }).then(response => {
+                                                //     toast.success("Erfolgreich gespeichert");
+                                                //     setUser(response);
+                                                //     setSubmitting(false);
+                                                // }).catch(error => {
+                                                //     for (var prop in error) {
+                                                //         const errorMessage = error[prop][0];
+                                                //         toast.error(errorMessage);
+                                                //     }
+                                                //     setSubmitting(false);
+                                                // })
                                             }}>
                                             {({
                                                 handleSubmit,
@@ -204,41 +224,64 @@ export default function UserPersonal(pageProps) {
                                                     <Row className="pt-4">
 
                                                         <Col md="6" className="form-group">
-                                                            <Label for="first_name" className="form-label">
-                                                                Vorname
+                                                            <Label for="card_name" className="form-label">
+                                                                Kartenname
                                                             </Label>
                                                             <InputField
-                                                                name="first_name"
-                                                                id="first_name"
+                                                                name="card_name"
+                                                                id="card_name"
                                                                 type="text"
-                                                                placeholder="Max"
+                                                                placeholder="Max Mustermann"
                                                                 autoComplete="off"
                                                                 required
                                                             />
                                                         </Col>
                                                         <Col md="6" className="form-group">
-                                                            <Label for="last_name" className="form-label">
-                                                                Nachname
+                                                            <Label for="card_number" className="form-label">
+                                                                Kartennummer
                                                             </Label>
                                                             <InputField
-                                                                name="last_name"
-                                                                id="last_name"
-                                                                type="text"
-                                                                placeholder="Mustermann"
+                                                                name="card_number"
+                                                                id="card_number"
+                                                                type="number"
+                                                                placeholder="AT34252345234"
                                                                 autoComplete="off"
                                                                 required
                                                             />
                                                         </Col>
-                                                        <Col md="6" className="form-group">
-                                                            <Label for="email" className="form-label">
-                                                                Email Adresse
+                                                        <Col md="4" className="form-group">
+                                                            <Label for="expiry-date" className="form-label">
+                                                                Expery Date
                                                             </Label>
                                                             <InputField
-                                                                name="email"
-                                                                id="email"
-                                                                type="email"
-                                                                placeholder="name@address.com"
-                                                                autoComplete="off"
+                                                                name="expiry-date"
+                                                                id="expiry-date"
+                                                                type="text"
+                                                                placeholder="123"
+                                                                required
+                                                            />
+                                                        </Col>
+                                                        <Col md="4" className="form-group">
+                                                            <Label for="cvv" className="form-label">
+                                                                CVC/CVV
+                                                            </Label>
+                                                            <InputField
+                                                                name="cvv"
+                                                                id="cvv"
+                                                                type="text"
+                                                                placeholder="MM/YY"
+                                                                required
+                                                            />
+                                                        </Col>
+                                                        <Col md="4" className="form-group">
+                                                            <Label for="zip" className="form-label">
+                                                                ZIP
+                                                            </Label>
+                                                            <InputField
+                                                                name="zip"
+                                                                id="zip"
+                                                                type="text"
+                                                                placeholder="123"
                                                                 required
                                                             />
                                                         </Col>
@@ -298,7 +341,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res, }) => {
 
     const token = getToken(req);
     const loggedUser = await fetchAPIwithSSR('/api/v1/rest-auth/user/', { method: 'GET', req: req, token: token }) ?? {}
-    const companies = await fetchAPIwithSSR('/api/v1/profiles/usercompanies/', { method: 'GET', req: req, token: token }) ?? {}
+    const paymentAccounts = await fetchAPIwithSSR('/api/v1/payments/user-payment-accounts/', { method: 'GET', req: req, token: token }) ?? {}
     if (loggedUser.email === undefined) {
         res.setHeader("location", "/login");
         res.statusCode = 302;
@@ -307,14 +350,14 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res, }) => {
     }
 
     const settings = (await fetchAPIwithSSR('/api/page/home', { method: 'GET', req: req })) ?? []
-    const pageData = await fetchAPIwithSSR('/api/v2/pages/?type=user_account.AccountProfilePage&fields=seo_title,search_description,heading,description', { method: 'GET' });
+    const pageData = await fetchAPIwithSSR('/api/v2/pages/?type=user_account.AccountPaymentPage&fields=seo_title,search_description,heading,description', { method: 'GET' });
     const page = pageData?.items[0] ?? null;
 
     return {
         props: {
             page,
             loggedUser,
-            companies,
+            paymentAccounts,
             themeSettings: settings.theme_settings,
             mainMenus: settings.main_menus,
             flatMenus: settings.flat_menus,

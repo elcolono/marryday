@@ -14,6 +14,7 @@ import {
     CardTitle,
     Breadcrumb,
     BreadcrumbItem,
+    Badge,
 } from "reactstrap"
 import Icon from "../../components/Icon";
 import getToken from "../../utils/getToken";
@@ -38,26 +39,30 @@ export default function UserAccount(pageProps) {
                 <h1 className="hero-heading mb-0">{page.heading}</h1>
                 <p className="text-muted mb-5">{page.description}</p>
                 <Row>
-                    {page.childs.map((child) => {
-                        
-                        return <Col xs="6" md="4" className="mb-30px" key={child.title}>
+                    {page.cards.map((cardProps) => {
+                        const card = cardProps.value;
+                        return <Col xs="6" md="4" className="mb-30px" key={card.title}>
                             <Card className="h-100 border-0 shadow hover-animate">
                                 <CardBody>
                                     <div className="icon-rounded bg-secondary-light mb-3">
                                         <Icon
-                                            icon={child.icon}
+                                            icon={card.icon}
                                             className="text-secondary w-2rem h-2rem"
                                         />
                                     </div>
                                     <CardTitle className="mb-3" tag="h5">
-                                        <Link href={`${page.meta.slug}/${child.slug}`}>
+                                        <Link href={`${page.meta.slug}/${card.link && card.link.slug}`}>
                                             <a className="text-decoration-none text-dark stretched-link">
-                                                {child.title}
+                                                {card.title}
                                             </a>
                                         </Link>
+                                        {" "}
+                                        {card.coming_soon &&
+                                            <Badge color="success">Coming soon</Badge>
+                                        }
                                     </CardTitle>
                                     <CardText className="text-muted text-sm">
-                                        {child.short_description}
+                                        {card.content}
                                     </CardText>
                                 </CardBody>
                             </Card>
@@ -80,9 +85,9 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res, }) => {
         res.end();
         return { props: {} }
     }
-    
+
     const settings = (await fetchAPIwithSSR('/api/page/home', { method: 'GET', req: req })) ?? []
-    const pageData = await fetchAPIwithSSR('/api/v2/pages/?type=user_account.AccountIndexPage&fields=seo_title,search_description,heading,description,childs', { method: 'GET' });
+    const pageData = await fetchAPIwithSSR('/api/v2/pages/?type=user_account.AccountIndexPage&fields=seo_title,search_description,heading,description,cards', { method: 'GET' });
     const page = pageData?.items[0] ?? null;
 
     return {

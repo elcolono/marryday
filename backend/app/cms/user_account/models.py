@@ -42,7 +42,23 @@ class AccountIndexPage(MetadataPageMixin, Page):
     heading = models.CharField(max_length=255)
     description = models.TextField(max_length=1055)
 
-    subpage_types = ['user_account.AccountPage']
+    cards = StreamField(
+        [
+            ('card', blocks.StructBlock([
+                ("coming_soon", blocks.BooleanBlock(
+                    default=False, required=False)),
+                ("title", blocks.CharBlock(required=True, max_length=100)),
+                ("link", APIPageChooserBlock()),
+                ("icon", blocks.CharBlock(required=True, max_length=100)),
+                ("content", blocks.TextBlock(required=True, max_length=500)),
+            ]))
+        ],
+        null=True,
+        blank=True,
+    )
+
+    subpage_types = ['user_account.AccountPage',
+                     'user_account.AccountProfilePage', 'user_account.AccountPaymentPage']
     parent_page_types = ['home.HomePage']
     max_count = 1
 
@@ -51,6 +67,7 @@ class AccountIndexPage(MetadataPageMixin, Page):
     content_panels = Page.content_panels + [
         FieldPanel('heading', classname="full"),
         FieldPanel('description', classname="full"),
+        StreamFieldPanel('cards'),
     ]
 
     # under content_panels:
@@ -58,8 +75,9 @@ class AccountIndexPage(MetadataPageMixin, Page):
     api_fields = [
         APIField('heading'),
         APIField('description'),
-        APIField('childs', serializer=AccountChildPageSerializer(
-            source='get_child_pages'))
+        APIField('cards'),
+        # APIField('childs', serializer=AccountChildPageSerializer(
+        #     source='get_child_pages'))
     ]
 
     def get_child_pages(self):
@@ -93,5 +111,51 @@ class AccountPage(MetadataPageMixin, Page):
         APIField('heading'),
         APIField('icon'),
         APIField('short_description'),
+        APIField('description'),
+    ]
+
+
+class AccountProfilePage(MetadataPageMixin, Page):
+
+    heading = models.CharField(max_length=255)
+    description = models.TextField(max_length=1055, null=True)
+
+    subpage_types = []
+    parent_page_types = ['user_account.AccountIndexPage']
+
+    # Editor panels configuration
+
+    content_panels = Page.content_panels + [
+        FieldPanel('heading', classname="full"),
+        FieldPanel('description', classname="full"),
+    ]
+
+    # under content_panels:
+
+    api_fields = [
+        APIField('heading'),
+        APIField('description'),
+    ]
+
+
+class AccountPaymentPage(MetadataPageMixin, Page):
+
+    heading = models.CharField(max_length=255)
+    description = models.TextField(max_length=1055, null=True)
+
+    subpage_types = []
+    parent_page_types = ['user_account.AccountIndexPage']
+
+    # Editor panels configuration
+
+    content_panels = Page.content_panels + [
+        FieldPanel('heading', classname="full"),
+        FieldPanel('description', classname="full"),
+    ]
+
+    # under content_panels:
+
+    api_fields = [
+        APIField('heading'),
         APIField('description'),
     ]

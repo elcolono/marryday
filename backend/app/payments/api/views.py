@@ -1,35 +1,45 @@
 from django.conf import settings
 import stripe
-from rest_framework import status
+
+from rest_framework import generics, permissions, status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 
-from payments.models import Payment
-from .serializers.common import PaymentSerializer
-from rest_framework import generics, permissions, status
+from payments.models import Payment, PaymentAccount
+from .serializers.common import PaymentSerializer, PaymentAccountSerializer
 
+from .permissions import IsUpdatePaymentAccount
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
-# Payment
 
+# Stripe Customer
+class UserPaymentAccounts(generics.ListAPIView):
+    serializer_class = PaymentAccountSerializer
 
-class PaymentRetrieveView(generics.RetrieveAPIView):
-    queryset = Payment.objects.all()
-    serializer_class = PaymentSerializer
-    lookup_field = 'uuid'
+    def get_queryset(self):
+        user = self.request.user
+        payment_accounts = PaymentAccount.objects.filter(paymentaccountuser__user=user)
+        return payment_accounts
+
 
 
 @api_view(['POST'])
-def test_payment(request):
-    test_payment_intent = stripe.PaymentIntent.create(
-        amount=1000,
-        currency='pln',
-        payment_method_types=['card'],
-        receipt_email='test@example.com',
-    )
+@permission_classes([permissions.IsAuthenticated, IsUpdatePaymentAccount])
+def create_setup_intent(request):
+    try:
+        data = request.data
+        customer_id = data['stripe_customer_id']
+        source = data['source']
 
-    return Response(status=status.HTTP_200_OK, data=test_payment_intent)
+        setup_intent = stripe.SetupIntent.create(
+            payment_method_types=['sepa_debit'],
+            customer=customer_id,
+        )
+    except Exception as e:
+        return Response({'error': str(e)})
+    return Response(status=status.HTTP_200_OK, data={"message": "Success", "data": setup_intent})
+
 
 
 @api_view(['POST'])
@@ -79,6 +89,46 @@ def update_stripe_customer(request):
     return Response(status=status.HTTP_200_OK, data={'message': 'Success', 'data': {'customer': customer_data, 'extra_msg': extra_msg}})
 
 
+# Stripe Bank Account
+@api_view(['POST'])
+@permission_classes([permissions.IsAuthenticated, IsUpdatePaymentAccount])
+def create_bank_account(request):
+    try:
+        data = request.data
+        customer_id = data['stripe_customer_id']
+        source = data['source']
+
+        bank_account = stripe.Customer.create_source(
+            customer_id,
+            source=source,
+        )
+    except Exception as e:
+        return Response({'error': str(e)})
+    return Response(status=status.HTTP_200_OK, data={"message": "Success", "data": bank_account})
+
+
+# Payment
+
+
+class PaymentRetrieveView(generics.RetrieveAPIView):
+    queryset = Payment.objects.all()
+    serializer_class = PaymentSerializer
+    lookup_field = 'uuid'
+
+
+@api_view(['POST'])
+def test_payment(request):
+    test_payment_intent = stripe.PaymentIntent.create(
+        amount=1000,
+        currency='pln',
+        payment_method_types=['card'],
+        receipt_email='test@example.com',
+    )
+
+    return Response(status=status.HTTP_200_OK, data=test_payment_intent)
+
+
+# Payment Intent
 @api_view(['POST'])
 def confirm_payment_intent(request):
     data = request.data
