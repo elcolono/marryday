@@ -1,3 +1,4 @@
+"""docstring"""
 from django.conf import settings
 import stripe
 
@@ -46,9 +47,13 @@ class UserPaymentAccounts(generics.ListCreateAPIView):
         return payment_accounts
 
 
-@ api_view(['POST'])
-@ permission_classes([permissions.IsAuthenticated])
+# Stripe Accounts
+@api_view(['POST'])
+@permission_classes([permissions.IsAuthenticated])
 def create_custom_account(request):
+    """
+    Create stripe custom account
+    """
     country_code = request.data['country']
     account = stripe.Account.create(
         country=country_code,
@@ -66,8 +71,8 @@ def create_custom_account(request):
 
 
 # Stripe Customer
-@ api_view(['POST'])
-@ permission_classes([permissions.IsAuthenticated])
+@api_view(['POST'])
+@permission_classes([permissions.IsAuthenticated])
 def create_stripe_customer(request):
     data = request.data
     email = data['email']
@@ -85,8 +90,8 @@ def create_stripe_customer(request):
     return Response(status=status.HTTP_200_OK, data={'message': 'Success', 'data': {'customer_id': customer.id, 'extra_msg': extra_msg}})
 
 
-@ api_view(['GET'])
-@ permission_classes([permissions.IsAuthenticated])
+@api_view(['GET'])
+@permission_classes([permissions.IsAuthenticated])
 def retrieve_stripe_customer(request):
     data = request.data
     stripe_id = data['id']
@@ -97,8 +102,8 @@ def retrieve_stripe_customer(request):
     return Response(status=status.HTTP_200_OK, data={'message': 'Success', 'data': {'customer': customer_data, 'extra_msg': extra_msg}})
 
 
-@ api_view(['POST'])
-@ permission_classes([permissions.IsAuthenticated])
+@api_view(['POST'])
+@permission_classes([permissions.IsAuthenticated])
 def retrieve_stripe_customer_payment_methods(request):
     data = request.data
     stripe_id = data['id']
@@ -110,8 +115,8 @@ def retrieve_stripe_customer_payment_methods(request):
     return Response(status=status.HTTP_200_OK, data={'message': 'Success', 'data': {'customer': customer_payment_methods}})
 
 
-@ api_view(['PUT'])
-@ permission_classes([permissions.IsAuthenticated])
+@api_view(['PUT'])
+@permission_classes([permissions.IsAuthenticated])
 def update_stripe_customer(request):
     data = request.data
     stripe_id = data['id']
@@ -127,8 +132,8 @@ def update_stripe_customer(request):
 
 
 # Stripe Bank Account
-@ api_view(['POST'])
-@ permission_classes([permissions.IsAuthenticated, IsUpdatePaymentAccount])
+@api_view(['POST'])
+@permission_classes([permissions.IsAuthenticated, IsUpdatePaymentAccount])
 def receive_setup_intent_client_secret(request):
     try:
         data = request.data
@@ -152,7 +157,7 @@ class PaymentRetrieveView(generics.RetrieveAPIView):
     lookup_field = 'uuid'
 
 
-@ api_view(['POST'])
+@api_view(['POST'])
 def test_payment(request):
     test_payment_intent = stripe.PaymentIntent.create(
         amount=1000,
@@ -165,7 +170,7 @@ def test_payment(request):
 
 
 # Payment Intent
-@ api_view(['POST'])
+@api_view(['POST'])
 def confirm_payment_intent(request):
     data = request.data
     payment_intent_id = data['payment_intent_id']
@@ -175,7 +180,7 @@ def confirm_payment_intent(request):
     return Response(status=status.HTTP_200_OK, data={"message": "Success"})
 
 
-@ api_view(['POST'])
+@api_view(['POST'])
 def retrieve_payment_intent(request):
     try:
         data = request.data
@@ -186,7 +191,7 @@ def retrieve_payment_intent(request):
     return Response(status=status.HTTP_200_OK, data={"message": "Success", "data": paymnet_intent})
 
 
-@ api_view(['POST'])
+@api_view(['POST'])
 def retrieve_invoice(request):
     try:
         data = request.data
@@ -197,7 +202,7 @@ def retrieve_invoice(request):
     return Response(status=status.HTTP_200_OK, data={"message": "Success", "data": invoice})
 
 
-@ api_view(['POST'])
+@api_view(['POST'])
 def save_stripe_info(request):
     data = request.data
     email = data['email']
