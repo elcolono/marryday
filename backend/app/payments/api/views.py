@@ -5,7 +5,7 @@ from rest_framework import generics, permissions, status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 
-from payments.models import Payment, PaymentAccount
+from payments.models import Payment, PaymentAccount, PaymentAccountUser
 from .serializers.common import PaymentSerializer, PaymentAccountSerializer
 
 from .permissions import IsUpdatePaymentAccount
@@ -13,37 +13,61 @@ from .permissions import IsUpdatePaymentAccount
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
 
-# Stripe Customer
-class UserPaymentAccounts(generics.ListAPIView):
+class UserPaymentAccounts(generics.ListCreateAPIView):
     serializer_class = PaymentAccountSerializer
+
+    def create(self, request, *args, **kwargs):
+        try:
+            user = request.user
+            account = stripe.Account.create(
+                type='custom',
+                capabilities={
+                    'card_payments': {
+                        'requested': True,
+                    },
+                    'transfers': {
+                        'requested': True,
+                    },
+                },
+            )
+            payment_account = PaymentAccount.objects.create(
+                stripe_account=account.id)
+            payment_account_user = PaymentAccountUser(
+                user=user, payment_account=payment_account, role='admin')
+            payment_account_user.save()
+            return Response(data=payment_account_user)
+        except Exception as e:
+            return Response(status=status.HTTP_400_BAD_REQUEST, data={'message': str(e)})
 
     def get_queryset(self):
         user = self.request.user
-        payment_accounts = PaymentAccount.objects.filter(paymentaccountuser__user=user)
+        payment_accounts = PaymentAccount.objects.filter(
+            paymentaccountuser__user=user)
         return payment_accounts
 
 
+@ api_view(['POST'])
+@ permission_classes([permissions.IsAuthenticated])
+def create_custom_account(request):
+    country_code = request.data['country']
+    account = stripe.Account.create(
+        country=country_code,
+        type='custom',
+        capabilities={
+            'card_payments': {
+                'requested': True,
+            },
+            'transfers': {
+                'requested': True,
+            },
+        },
+    )
+    return Response(status=status.HTTP_200_OK, data={'message': 'Success', 'data': {'account': account}})
 
-@api_view(['POST'])
-@permission_classes([permissions.IsAuthenticated, IsUpdatePaymentAccount])
-def create_setup_intent(request):
-    try:
-        data = request.data
-        customer_id = data['stripe_customer_id']
-        source = data['source']
 
-        setup_intent = stripe.SetupIntent.create(
-            payment_method_types=['sepa_debit'],
-            customer=customer_id,
-        )
-    except Exception as e:
-        return Response({'error': str(e)})
-    return Response(status=status.HTTP_200_OK, data={"message": "Success", "data": setup_intent})
-
-
-
-@api_view(['POST'])
-@permission_classes([permissions.IsAuthenticated])
+# Stripe Customer
+@ api_view(['POST'])
+@ permission_classes([permissions.IsAuthenticated])
 def create_stripe_customer(request):
     data = request.data
     email = data['email']
@@ -61,8 +85,8 @@ def create_stripe_customer(request):
     return Response(status=status.HTTP_200_OK, data={'message': 'Success', 'data': {'customer_id': customer.id, 'extra_msg': extra_msg}})
 
 
-@api_view(['GET'])
-@permission_classes([permissions.IsAuthenticated])
+@ api_view(['GET'])
+@ permission_classes([permissions.IsAuthenticated])
 def retrieve_stripe_customer(request):
     data = request.data
     stripe_id = data['id']
@@ -73,8 +97,21 @@ def retrieve_stripe_customer(request):
     return Response(status=status.HTTP_200_OK, data={'message': 'Success', 'data': {'customer': customer_data, 'extra_msg': extra_msg}})
 
 
-@api_view(['PUT'])
-@permission_classes([permissions.IsAuthenticated])
+@ api_view(['POST'])
+@ permission_classes([permissions.IsAuthenticated])
+def retrieve_stripe_customer_payment_methods(request):
+    data = request.data
+    stripe_id = data['id']
+    customer_payment_methods = stripe.PaymentMethod.list(
+        customer=stripe_id,
+        type="sepa_debit"
+    )
+
+    return Response(status=status.HTTP_200_OK, data={'message': 'Success', 'data': {'customer': customer_payment_methods}})
+
+
+@ api_view(['PUT'])
+@ permission_classes([permissions.IsAuthenticated])
 def update_stripe_customer(request):
     data = request.data
     stripe_id = data['id']
@@ -90,33 +127,32 @@ def update_stripe_customer(request):
 
 
 # Stripe Bank Account
-@api_view(['POST'])
-@permission_classes([permissions.IsAuthenticated, IsUpdatePaymentAccount])
-def create_bank_account(request):
+@ api_view(['POST'])
+@ permission_classes([permissions.IsAuthenticated, IsUpdatePaymentAccount])
+def receive_setup_intent_client_secret(request):
     try:
         data = request.data
         customer_id = data['stripe_customer_id']
-        source = data['source']
 
-        bank_account = stripe.Customer.create_source(
-            customer_id,
-            source=source,
+        setup_intent = stripe.SetupIntent.create(
+            payment_method_types=['sepa_debit'],
+            customer=customer_id
         )
+
+        client_secret = setup_intent.client_secret
     except Exception as e:
         return Response({'error': str(e)})
-    return Response(status=status.HTTP_200_OK, data={"message": "Success", "data": bank_account})
+    return Response(status=status.HTTP_200_OK, data={"message": "Success", "data": client_secret})
 
 
 # Payment
-
-
 class PaymentRetrieveView(generics.RetrieveAPIView):
     queryset = Payment.objects.all()
     serializer_class = PaymentSerializer
     lookup_field = 'uuid'
 
 
-@api_view(['POST'])
+@ api_view(['POST'])
 def test_payment(request):
     test_payment_intent = stripe.PaymentIntent.create(
         amount=1000,
@@ -129,7 +165,7 @@ def test_payment(request):
 
 
 # Payment Intent
-@api_view(['POST'])
+@ api_view(['POST'])
 def confirm_payment_intent(request):
     data = request.data
     payment_intent_id = data['payment_intent_id']
@@ -139,7 +175,7 @@ def confirm_payment_intent(request):
     return Response(status=status.HTTP_200_OK, data={"message": "Success"})
 
 
-@api_view(['POST'])
+@ api_view(['POST'])
 def retrieve_payment_intent(request):
     try:
         data = request.data
@@ -150,7 +186,7 @@ def retrieve_payment_intent(request):
     return Response(status=status.HTTP_200_OK, data={"message": "Success", "data": paymnet_intent})
 
 
-@api_view(['POST'])
+@ api_view(['POST'])
 def retrieve_invoice(request):
     try:
         data = request.data
@@ -161,7 +197,7 @@ def retrieve_invoice(request):
     return Response(status=status.HTTP_200_OK, data={"message": "Success", "data": invoice})
 
 
-@api_view(['POST'])
+@ api_view(['POST'])
 def save_stripe_info(request):
     data = request.data
     email = data['email']

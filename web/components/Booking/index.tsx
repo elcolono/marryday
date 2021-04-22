@@ -128,7 +128,6 @@ export default function CheckoutPage({ locationSlug, prices }) {
                                             </Button>
                                         </div>
                                     </div>
-                                    {/* <pre>{JSON.stringify(values, null, 4)}</pre> */}
                                 </Form>
                             )}
                         </Formik>

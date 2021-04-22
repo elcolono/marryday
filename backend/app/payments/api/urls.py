@@ -10,11 +10,18 @@ urlpatterns = [
     # Cites
     url(r'^test-payment/$', views.test_payment),
 
+    # Payment Account
+    url(r'^accounts/$', views.UserPaymentAccounts.as_view()),
+
     # Stripe Customer
-    url(r'^user-payment-accounts/$', views.UserPaymentAccounts.as_view()),
-    url(r'^create-bank-account/$', views.create_bank_account),
+
+    url(r'^receive-setup-intent-client-secret/$',
+        views.receive_setup_intent_client_secret),
     url(r'^create-stripe-customer/$', views.create_stripe_customer),
     url(r'^retrieve-stripe-customer/$', views.retrieve_stripe_customer),
+    url(r'^retrieve_stripe_customer_payment_methods/$',
+        views.retrieve_stripe_customer_payment_methods),
+
     url(r'^update-stripe-customer/$', views.update_stripe_customer),
 
     # Stripe Payment

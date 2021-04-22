@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect } from 'react';
 import Link from "next/link"
 
 import fetchAPIwithSSR from '../../utils/fetchAPIwithSSR';
@@ -26,21 +26,41 @@ import { InputField } from "../../components/FormFields";
 import { Formik } from "formik";
 
 import * as Yup from 'yup'
-import fetchAPI from "../../utils/fetchAPI";
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+
+import fetchAPI from "../../utils/fetchAPI";
 import getToken from "../../utils/getToken";
+
+import { Elements } from '@stripe/react-stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
+
+import PaymentSetupForm from "../../components/Account/PaymentSetupForm";
+
+const stripePromise = loadStripe('pk_test_51I47k4IpxsSLqlNa6T7HoFrFVoxyEalH5VROqKLV1DvZTBMV2WWWS4anN5fdWwqtdPIXaJU3VKR3bwmYhQliv3Or00c3rJIp2Q', { locale: 'de' });
 
 
 export default function UserPayment(pageProps) {
 
-    const { page } = pageProps;
+    const { page, loggedUser, paymentAccounts } = pageProps;
 
     const [bankaccountCollapse, setBankaccountCollapse] = React.useState(false)
     const [creditcardCollapse, setCreditcardCollapse] = React.useState(false)
 
-    const [user, setUser] = React.useState(pageProps.loggedUser)
-    const [paymentAccounts, setCompany] = React.useState(pageProps.paymentAccounts[0])
+    const [bankAccount, setBankAccount] = React.useState(undefined)
+
+    useEffect(() => {
+        if (paymentAccounts.length !== 0) {
+            const token = getToken();
+            const body = {
+                "id": paymentAccounts[0].stripe
+            }
+            fetchAPI("/api/v1/payments/retrieve_stripe_customer_payment_methods/", { method: 'POST', body, token: token }).then((response) => {
+                setBankAccount(response.data.customer.data[0]);
+            });
+        }
+    }, [])
+
 
     return (
         <>
@@ -64,7 +84,7 @@ export default function UserPayment(pageProps) {
                     <p className="text-muted mb-5">{page.description && page.description}</p>
                     <Row>
                         <Col lg="7">
-                            {user &&
+                            {loggedUser &&
                                 <div className="text-block">
                                     <Row className="mb-3">
                                         <Col sm="9">
@@ -83,88 +103,25 @@ export default function UserPayment(pageProps) {
                                     <Media className="text-sm text-muted">
                                         <i className="fa fa-address-book fa-fw mr-2" />
                                         <Media body className="mt-n1">
-                                            {user.first_name} {user.last_name}
-                                            <br />
-                                            {user.email}
+                                            {bankAccount ?
+                                                <>
+                                                    {bankAccount.billing_details.name} <br />
+                                                    ******************{bankAccount.sepa_debit.last4}
+                                                </>
+                                                :
+                                                <Spinner />
+
+                                            }
                                         </Media>
                                     </Media>
                                     <Collapse isOpen={bankaccountCollapse}>
-                                        <Formik
-                                            enableReinitialize={true}
-                                            initialValues={user}
-                                            validationSchema={Yup.object({
-                                                card_name: Yup.string()
-                                                    .required('Erforderlich'),
-                                                card_number: Yup.string()
-                                                    .required('Erforderlich')
-                                                    .min(2, 'Firstname is too short - should be 2 chars minimum.'),
-                                                last_name: Yup.string()
-                                                    .required('Erforderlich')
-                                                    .min(2, 'Lastname is too short - should be 2 chars minimum.')
-                                            })}
-                                            onSubmit={(values, { setSubmitting }) => {
-                                                const token = getToken();
-                                                // fetchAPI(`/api/v1/accounts/user/${user.id}/`, { method: 'PUT', body: values, token: token }).then(response => {
-                                                //     toast.success("Erfolgreich gespeichert");
-                                                //     setUser(response);
-                                                //     setSubmitting(false);
-                                                // }).catch(error => {
-                                                //     for (var prop in error) {
-                                                //         const errorMessage = error[prop][0];
-                                                //         toast.error(errorMessage);
-                                                //     }
-                                                //     setSubmitting(false);
-                                                // })
-                                            }}>
-                                            {({
-                                                handleSubmit,
-                                                isSubmitting,
-                                            }) => (
-                                                <Form onSubmit={handleSubmit}>
-                                                    <Row className="pt-4">
-
-                                                        <Col md="6" className="form-group">
-                                                            <Label for="card_name" className="form-label">
-                                                                Kontoname
-                                                            </Label>
-                                                            <InputField
-                                                                name="card_name"
-                                                                id="card_name"
-                                                                type="text"
-                                                                placeholder="Max Mustermann"
-                                                                autoComplete="off"
-                                                                required
-                                                            />
-                                                        </Col>
-                                                        <Col md="6" className="form-group">
-                                                            <Label for="card_number" className="form-label">
-                                                                Kontonummer
-                                                            </Label>
-                                                            <InputField
-                                                                name="card_number"
-                                                                id="card_number"
-                                                                type="number"
-                                                                placeholder="AT34252345234"
-                                                                autoComplete="off"
-                                                                required
-                                                            />
-                                                        </Col>
-
-                                                    </Row>
-                                                    <Button
-                                                        disabled={isSubmitting}
-                                                        type="submit"
-                                                        color="outline-primary"
-                                                        className=" mb-4">
-                                                        {isSubmitting ? <Spinner size="sm" /> : "Speichern"}
-                                                    </Button>
-                                                </Form>
-                                            )}
-                                        </Formik>
+                                        <Elements stripe={stripePromise}>
+                                            <PaymentSetupForm user={loggedUser} paymentAccounts={paymentAccounts} />
+                                        </Elements>
                                     </Collapse>
                                 </div>
                             }
-                            {user &&
+                            {loggedUser &&
                                 <div className="text-block">
                                     <Row className="mb-3">
                                         <Col sm="9">
@@ -183,15 +140,15 @@ export default function UserPayment(pageProps) {
                                     <Media className="text-sm text-muted">
                                         <i className="fa fa-address-book fa-fw mr-2" />
                                         <Media body className="mt-n1">
-                                            {user.first_name} {user.last_name}
+                                            {loggedUser.first_name} {loggedUser.last_name}
                                             <br />
-                                            {user.email}
+                                            {loggedUser.email}
                                         </Media>
                                     </Media>
                                     <Collapse isOpen={creditcardCollapse}>
                                         <Formik
                                             enableReinitialize={true}
-                                            initialValues={user}
+                                            initialValues={loggedUser}
                                             validationSchema={Yup.object({
                                                 card_name: Yup.string()
                                                     .required('Erforderlich'),
@@ -341,7 +298,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res, }) => {
 
     const token = getToken(req);
     const loggedUser = await fetchAPIwithSSR('/api/v1/rest-auth/user/', { method: 'GET', req: req, token: token }) ?? {}
-    const paymentAccounts = await fetchAPIwithSSR('/api/v1/payments/user-payment-accounts/', { method: 'GET', req: req, token: token }) ?? {}
+    const paymentAccounts = await fetchAPIwithSSR('/api/v1/payments/user-payment-accounts/', { method: 'GET', req: req, token: token }) ?? []
     if (loggedUser.email === undefined) {
         res.setHeader("location", "/login");
         res.statusCode = 302;

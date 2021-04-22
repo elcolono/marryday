@@ -35,7 +35,8 @@ class PaymentAccountUser(models.Model):
 class PaymentAccount(models.Model):
     users = models.ManyToManyField(
         'accounts.User', through='PaymentAccountUser')
-    stripe = models.CharField(max_length=100)
+    stripe_customer = models.CharField(max_length=100, null=True, blank=True)
+    stripe_account = models.CharField(max_length=100, null=True, blank=True)
 
 
 class Payment(models.Model):
