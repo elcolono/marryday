@@ -1,8 +1,8 @@
-import stripe
-from django.db import models
+"""
+Module Payment models
+"""
 import uuid
-
-# Create your models here.
+from django.db import models
 
 PAYMENT_ACCOUNT_USER_ROLES = (
     ('admin', 'Admin'),
@@ -26,6 +26,10 @@ def increment_invoice_number():
 
 
 class PaymentAccountUser(models.Model):
+    """
+    PaymentAccountUser Model
+    Defines the attributes of the many-to-many join table
+    """
     user = models.ForeignKey('accounts.User', on_delete=models.CASCADE)
     payment_account = models.ForeignKey(
         'payments.PaymentAccount', on_delete=models.CASCADE)
@@ -33,6 +37,10 @@ class PaymentAccountUser(models.Model):
 
 
 class PaymentAccount(models.Model):
+    """
+    PaymentAccount Model
+    Defines the attributes of a Payment Account
+    """
     users = models.ManyToManyField(
         'accounts.User', through='PaymentAccountUser')
     stripe_customer = models.CharField(max_length=100, null=True, blank=True)
@@ -40,6 +48,10 @@ class PaymentAccount(models.Model):
 
 
 class Payment(models.Model):
+    """
+    Payment Model
+    Defines the attributes of a Payment
+    """
     uuid = models.UUIDField(
         primary_key=True, default=uuid.uuid4, unique=True, editable=False)
     booking = models.ForeignKey('cowork.Booking', on_delete=models.CASCADE,)

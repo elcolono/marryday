@@ -1,4 +1,4 @@
-"""docstring"""
+""" Payment API Views """
 from django.conf import settings
 import stripe
 
@@ -6,12 +6,87 @@ from rest_framework import generics, permissions, status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 
+from accounts.models import User
+
 from payments.models import Payment, PaymentAccount, PaymentAccountUser
 from .serializers.common import PaymentSerializer, PaymentAccountSerializer
 
 from .permissions import IsUpdatePaymentAccount
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
+
+
+@api_view(['GET', 'DELETE', 'PUT'])
+@permission_classes([permissions.IsAuthenticated])
+def get_delete_update_payment_account(request, pk):
+    try:
+        payment_account = PaymentAccount.objects.get(pk=pk)
+        authorized_users = payment_account.users.filter(
+            paymentaccountuser__user=request.user)
+        if not authorized_users:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
+    except PaymentAccount.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    # get details of a singe payment account
+    if request.method == 'GET':
+        serializer = PaymentAccountSerializer(payment_account)
+        return Response(serializer.data)
+
+    # delete a singe payment account
+    if request.method == 'DELETE':
+        return Response({})
+
+    # update details of a payment account
+    if request.method == 'PUT':
+        return Response({})
+
+
+@api_view(['GET', 'POST'])
+@permission_classes([permissions.IsAuthenticated])
+def list_create_payment_accounts(request):
+
+    # get all payment acounts
+    if request.method == 'GET':
+        payment_accounts = PaymentAccount.objects.filter(
+            paymentaccountuser__user=request.user)
+        serializer = PaymentAccountSerializer(payment_accounts, many=True)
+        return Response(serializer.data)
+
+    # insert a new payment account record
+    if request.method == 'POSt':
+        return Response({})
+
+
+# LEGACY
+@api_view(['POST'])
+@permission_classes([permissions.IsAuthenticated])
+def create_stripe_custom_account(request):
+    """
+    Create stripe custom account
+    Although a simple API call creates a Custom account, there are three steps to consider for each account you create:
+    Properly identify the country to use.
+    Create the account.
+    Move onto the identity verification process.
+    """
+    try:
+        country_code = request.data['country']
+        account = stripe.Account.create(
+            country=country_code,
+            type='custom',
+            capabilities={
+                'card_payments': {
+                    'requested': True,
+                },
+                'transfers': {
+                    'requested': True,
+                },
+            },
+        )
+    except Exception as e:
+        return Response(status=status.HTTP_400_BAD_REQUEST, data={'message': str(e)})
+
+    return Response(status=status.HTTP_200_OK, data={'message': 'Success', 'data': {'account': account}})
 
 
 class UserPaymentAccounts(generics.ListCreateAPIView):
@@ -45,29 +120,6 @@ class UserPaymentAccounts(generics.ListCreateAPIView):
         payment_accounts = PaymentAccount.objects.filter(
             paymentaccountuser__user=user)
         return payment_accounts
-
-
-# Stripe Accounts
-@api_view(['POST'])
-@permission_classes([permissions.IsAuthenticated])
-def create_custom_account(request):
-    """
-    Create stripe custom account
-    """
-    country_code = request.data['country']
-    account = stripe.Account.create(
-        country=country_code,
-        type='custom',
-        capabilities={
-            'card_payments': {
-                'requested': True,
-            },
-            'transfers': {
-                'requested': True,
-            },
-        },
-    )
-    return Response(status=status.HTTP_200_OK, data={'message': 'Success', 'data': {'account': account}})
 
 
 # Stripe Customer

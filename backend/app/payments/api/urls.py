@@ -1,12 +1,19 @@
-"""
-high level support for doing this and that.
-"""
+""" Payment URLs """
 from django.urls import path
 from django.conf.urls import url
 from payments.api import views
 
 
 urlpatterns = [
+
+    url(r'^payment-account/(?P<pk>[0-9]+)$', views.get_delete_update_payment_account,
+        name='get_delete_update_payment_account'),
+    url(r'^payment-accounts/$', views.list_create_payment_accounts,
+        name='list_create_payment_accounts'),
+
+
+
+    # LEGACY
     # Payment
     path('payment/<uuid>', views.PaymentRetrieveView.as_view(),
          name='retrieve-payment'),
@@ -16,7 +23,7 @@ urlpatterns = [
     url(r'^accounts/$', views.UserPaymentAccounts.as_view(), name='accounts'),
 
     # Stripe Account
-    url(r'^create-custom-account', views.create_custom_account,
+    url(r'^create-custom-account', views.create_stripe_custom_account,
         name='create-custom-account'),
 
     # Stripe Customer
