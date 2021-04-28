@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from "next/link"
 
 import fetchAPIwithSSR from '../../utils/fetchAPIwithSSR';
@@ -24,7 +24,6 @@ import {
 import Icon from "../../components/Icon"
 import { InputField } from "../../components/FormFields";
 import { Formik } from "formik";
-
 import * as Yup from 'yup'
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -32,35 +31,45 @@ import 'react-toastify/dist/ReactToastify.css';
 import fetchAPI from "../../utils/fetchAPI";
 import getToken from "../../utils/getToken";
 
-import { Elements } from '@stripe/react-stripe-js';
-import { loadStripe } from '@stripe/stripe-js';
-
-import PaymentSetupForm from "../../components/Account/PaymentSetupForm";
-
-const stripePromise = loadStripe('pk_test_51I47k4IpxsSLqlNa6T7HoFrFVoxyEalH5VROqKLV1DvZTBMV2WWWS4anN5fdWwqtdPIXaJU3VKR3bwmYhQliv3Or00c3rJIp2Q', { locale: 'de' });
-
 
 export default function UserPayment(pageProps) {
 
     const { page, loggedUser, paymentAccounts } = pageProps;
+    const paymentAccount = paymentAccounts ? paymentAccounts[0] : null;
 
-    const [bankaccountCollapse, setBankaccountCollapse] = React.useState(false)
-    const [creditcardCollapse, setCreditcardCollapse] = React.useState(false)
+    const [isLoading, setIsLoading] = useState(false);
+    const [creditcardCollapse, setCreditcardCollapse] = useState(false)
 
-    const [bankAccount, setBankAccount] = React.useState(undefined)
 
     useEffect(() => {
-        if (paymentAccounts.length !== 0) {
-            const token = getToken();
-            const body = {
-                "id": paymentAccounts[0].stripe
-            }
-            fetchAPI("/api/v1/payments/retrieve_stripe_customer_payment_methods/", { method: 'POST', body, token: token }).then((response) => {
-                setBankAccount(response.data.customer.data[0]);
-            });
-        }
+        console.log(loggedUser)
     }, [])
 
+    const create_stripe_account_and_open_onboarding_link = async () => {
+        setIsLoading(true);
+        const token = getToken();
+        const body = {
+            "payment_account_pk": paymentAccount.id,
+            "country": 'at'
+        }
+
+        if (!paymentAccount.stripe_account) {
+            try {
+                await fetchAPI("/api/v1/payments/create-stripe-account/", { method: 'POST', body, token: token });
+            } catch (error) {
+                toast.error(error.message);
+            }
+        }
+        try {
+            let response = await fetchAPI("/api/v1/payments/create-account-links/", { method: 'POST', body, token: token });
+            const newWindow = window.open(response.data.account_links.url, '_blank', 'noopener,noreferrer')
+            if (newWindow) newWindow.opener = null;
+        } catch (error) {
+            const errorMessage = error.message.length <= 50 ? error.message : "Ups, something went wrong";
+            toast.error(errorMessage);
+        }
+        setIsLoading(false);
+    }
 
     return (
         <>
@@ -84,44 +93,24 @@ export default function UserPayment(pageProps) {
                     <p className="text-muted mb-5">{page.description && page.description}</p>
                     <Row>
                         <Col lg="7">
-                            {loggedUser &&
+                            {loggedUser.is_company &&
                                 <div className="text-block">
                                     <Row className="mb-3">
                                         <Col sm="9">
                                             <h5>Dein Bankkonto</h5>
                                         </Col>
-                                        <Col sm="3" className="text-right">
-                                            <Button
-                                                color="link"
-                                                className="pl-0 text-primary collapsed"
-                                                onClick={() => setBankaccountCollapse(!bankaccountCollapse)}
-                                            >
-                                                Bearbeiten
-                                            </Button>
-                                        </Col>
                                     </Row>
-                                    <Media className="text-sm text-muted">
-                                        <i className="fa fa-address-book fa-fw mr-2" />
-                                        <Media body className="mt-n1">
-                                            {bankAccount ?
-                                                <>
-                                                    {bankAccount.billing_details.name} <br />
-                                                    ******************{bankAccount.sepa_debit.last4}
-                                                </>
-                                                :
-                                                <Spinner />
-
-                                            }
-                                        </Media>
-                                    </Media>
-                                    <Collapse isOpen={bankaccountCollapse}>
-                                        <Elements stripe={stripePromise}>
-                                            <PaymentSetupForm user={loggedUser} paymentAccounts={paymentAccounts} />
-                                        </Elements>
-                                    </Collapse>
+                                    <div className="text-sm text-muted">
+                                        <p>
+                                            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+                                        </p>
+                                        <Button disabled={isLoading} onClick={create_stripe_account_and_open_onboarding_link} color="primary" className="mr-4">
+                                            {isLoading && (<Spinner size='sm' />)} Konto {paymentAccount.stripe_account ? 'bearbeiten' : 'anlegen'}
+                                        </Button>
+                                    </div>
                                 </div>
                             }
-                            {loggedUser &&
+                            {loggedUser.is_visitor &&
                                 <div className="text-block">
                                     <Row className="mb-3">
                                         <Col sm="9">
@@ -298,7 +287,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res, }) => {
 
     const token = getToken(req);
     const loggedUser = await fetchAPIwithSSR('/api/v1/rest-auth/user/', { method: 'GET', req: req, token: token }) ?? {}
-    const paymentAccounts = await fetchAPIwithSSR('/api/v1/payments/user-payment-accounts/', { method: 'GET', req: req, token: token }) ?? []
+    const paymentAccounts = await fetchAPIwithSSR('/api/v1/payments/payment-accounts/', { method: 'GET', req: req, token: token }) ?? []
     if (loggedUser.email === undefined) {
         res.setHeader("location", "/login");
         res.statusCode = 302;
