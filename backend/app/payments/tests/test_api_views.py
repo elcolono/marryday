@@ -1,6 +1,7 @@
 """
 Testing Payment API Views
 """
+import stripe
 from datetime import datetime
 from django.utils import timezone
 
@@ -11,7 +12,7 @@ from rest_framework.authtoken.models import Token
 from rest_framework import status
 from rest_framework.test import force_authenticate, APIRequestFactory, APIClient
 
-from payments.api.views import list_create_payment_accounts, get_delete_update_payment_account, PaymentRetrieveView, UserPaymentAccounts
+from payments.api.views import list_create_payment_accounts, get_delete_update_payment_account, PaymentRetrieveView, create_stripe_account
 from payments.models import PaymentAccount, PaymentAccountUser, Payment
 from payments.api.serializers.common import PaymentAccountSerializer
 from cowork.models import Booking
@@ -25,7 +26,6 @@ class GetAllPaymentAccountsTest(TestCase):
             email='user@test.com',
             password='secret'
         )
-        self.factory = APIRequestFactory()
         self.client = APIClient()
         self.payment_account = PaymentAccount.objects.create(
             stripe_account='stripe-account-1',
@@ -102,38 +102,100 @@ class GetSinglePaymentAccountTest(TestCase):
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
 
-class PaymentViewsTest(TestCase):
+class CreateStripeCustomAccountTests(TestCase):
 
     def setUp(self):
+        self.client = APIClient()
         self.user = User.objects.create_user(
             email='user@test.com',
             password='secret'
         )
-        self.factory = APIRequestFactory()
-        self.retrieve_payment_url = reverse('retrieve-payment', args=['uuid'])
-        self.accounts_url = reverse('accounts')
-        self.booking = Booking.objects.create(
-            start=datetime.now(tz=timezone.utc), end=datetime.now(tz=timezone.utc))
-        self.payment = Payment.objects.create(booking=self.booking)
+        self.unauthorized_user = User.objects.create_user(
+            email='user2@test.com',
+            password='secret'
+        )
+        self.payment_account = PaymentAccount.objects.create(
+            stripe_account='',
+            stripe_customer=''
+        )
+        self.invalid_payment_account = PaymentAccount.objects.create(
+            stripe_account='existing-id-123',
+            stripe_customer=''
+        )
+        self.payment_account_user = PaymentAccountUser.objects.create(
+            payment_account=self.payment_account,
+            user=self.user,
+            role='admin'
+        )
 
-    def test_retrieve_payment_details_GET(self):
-        factory = self.factory
-        view = PaymentRetrieveView.as_view()
+    def test_create_stripe_account_with_invalid_payment_account(self):
+        self.client.force_authenticate(user=self.user)
 
-        request = factory.get(self.retrieve_payment_url)
-        force_authenticate(request, user=self.user)
-        response = view(request, uuid=self.payment.uuid)
-        response.render()
+        response = self.client.post(
+            reverse('create_stripe_custom_account'), data={
+                'country': 'at',
+                'payment_account_pk': self.invalid_payment_account.pk,
+            })
 
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-    def test_payment_accounts_list_GET(self):
-        factory = self.factory
-        view = UserPaymentAccounts.as_view()
+    def test_create_stripe_account_with_unauthorized_user(self):
+        self.client.force_authenticate(user=self.unauthorized_user)
 
-        # Make an authenticated request to the view
-        request = factory.get(self.accounts_url)
-        force_authenticate(request, user=self.user)
-        response = view(request)
+        response = self.client.post(
+            reverse('create_stripe_custom_account'), data={
+                'country': 'at',
+                'payment_account_pk': self.payment_account.pk,
+            })
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
-        self.assertEqual(response.status_code, 200)
+    def test_create_stripe_custom_account_with_wrong_country_code(self):
+        self.client.force_authenticate(user=self.user)
+
+        response = self.client.post(
+            reverse('create_stripe_custom_account'), data={
+                'country': 'at34',
+                'payment_account_pk': self.payment_account.pk,
+            })
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_create_stripe_custom_account_contains_expected_fields(self):
+        self.client.force_authenticate(user=self.user)
+
+        response = self.client.post(
+            reverse('create_stripe_custom_account'), data={
+                'country': 'at',
+                'payment_account_pk': self.payment_account.pk,
+            })
+
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.client.delete(reverse('delete-stripe-account',
+                                   kwargs={'pk': response.data.id}))
+
+
+class CreateStripeCustomAccountLinks(TestCase):
+    def setUp(self):
+        self.client = APIClient()
+        self.user = User.objects.create_user(
+            email='user@test.com',
+            password='secret'
+        )
+        self.unauthorized_user = User.objects.create_user(
+            email='user2@test.com',
+            password='secret'
+        )
+        self.payment_account = PaymentAccount.objects.create(
+            stripe_account='',
+            stripe_customer=''
+        )
+        self.invalid_payment_account = PaymentAccount.objects.create(
+            stripe_account='existing-id-123',
+            stripe_customer=''
+        )
+
+    # def test_create_valid_stripe_account_links(self):
+    #     self.client.force_authenticate(user=self.user)
+
+    #     response = self.client.post(reverse('create_stripe_account_links'))
+    #     self.assertEqual(response.status_code, status.HTTP_200_OK)

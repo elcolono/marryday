@@ -25,10 +25,11 @@ def get_delete_update_payment_account(request, pk):
             paymentaccountuser__user=request.user)
         if not authorized_users:
             return Response(status=status.HTTP_401_UNAUTHORIZED)
+
     except PaymentAccount.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
-    # get details of a singe payment account
+    # get details of a single payment account
     if request.method == 'GET':
         serializer = PaymentAccountSerializer(payment_account)
         return Response(serializer.data)
@@ -58,19 +59,45 @@ def list_create_payment_accounts(request):
         return Response({})
 
 
-# LEGACY
+@api_view(['DELETE'])
+@permission_classes([permissions.IsAuthenticated])
+def delete_stripe_account(request, pk):
+    """ Delete stripe custom account """
+    payment_account = PaymentAccount.objects.get(stripe_account=pk)
+
+    if not payment_account:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    authorized_users = payment_account.users.filter(
+        paymentaccountuser__user=request.user)
+
+    if not authorized_users:
+        return Response(status=status.HTTP_401_UNAUTHORIZED)
+    try:
+        stripe.Account.delete(
+            payment_account.stripe_account
+        )
+    except Exception as e:
+        return Response(status=status.HTTP_400_BAD_REQUEST, data={'message': str(e)})
+    return Response(status=status.HTTP_200_OK)
+
+
 @api_view(['POST'])
 @permission_classes([permissions.IsAuthenticated])
-def create_stripe_custom_account(request):
-    """
-    Create stripe custom account
-    Although a simple API call creates a Custom account, there are three steps to consider for each account you create:
-    Properly identify the country to use.
-    Create the account.
-    Move onto the identity verification process.
-    """
+def create_stripe_account(request):
+    """ Create stripe custom account and update payment account with created account id """
+    payment_account_pk = request.data['payment_account_pk']
+    country_code = request.data['country']
+    payment_account = PaymentAccount.objects.get(pk=payment_account_pk)
+
+    if payment_account.stripe_account:
+        return Response(status=status.HTTP_400_BAD_REQUEST, data={'message': 'Stripe account already exists'})
+
+    authorized_users = payment_account.users.filter(
+        paymentaccountuser__user=request.user)
+    if not authorized_users:
+        return Response(status=status.HTTP_401_UNAUTHORIZED)
+
     try:
-        country_code = request.data['country']
         account = stripe.Account.create(
             country=country_code,
             type='custom',
@@ -83,46 +110,49 @@ def create_stripe_custom_account(request):
                 },
             },
         )
+    except stripe.error.InvalidRequestError as error_message:
+        return Response(status=status.HTTP_400_BAD_REQUEST, data={'message': str(error_message)})
+
+    serializer = PaymentAccountSerializer(
+        payment_account, data={'stripe_account': account.id})
+    if not serializer.is_valid():
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    serializer.save()
+    return Response(account, status=status.HTTP_204_NO_CONTENT)
+
+
+@api_view(['POST'])
+@permission_classes([permissions.IsAuthenticated])
+def create_stripe_account_links(request):
+    try:
+        payment_account_pk = request.data['payment_account_pk']
+        payment_account = PaymentAccount.objects.get(pk=payment_account_pk)
+
+        if not payment_account.stripe_account:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+        authorized_users = payment_account.users.filter(
+            paymentaccountuser__user=request.user)
+
+        if not authorized_users:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
+
+        account_links = stripe.AccountLink.create(
+            account=payment_account.stripe_account,
+            refresh_url='https://example.com/reauth',
+            return_url='https://example.com/return',
+            type='account_onboarding',
+            collect='eventually_due',
+        )
     except Exception as e:
         return Response(status=status.HTTP_400_BAD_REQUEST, data={'message': str(e)})
 
-    return Response(status=status.HTTP_200_OK, data={'message': 'Success', 'data': {'account': account}})
-
-
-class UserPaymentAccounts(generics.ListCreateAPIView):
-    serializer_class = PaymentAccountSerializer
-
-    def create(self, request, *args, **kwargs):
-        try:
-            user = request.user
-            account = stripe.Account.create(
-                type='custom',
-                capabilities={
-                    'card_payments': {
-                        'requested': True,
-                    },
-                    'transfers': {
-                        'requested': True,
-                    },
-                },
-            )
-            payment_account = PaymentAccount.objects.create(
-                stripe_account=account.id)
-            payment_account_user = PaymentAccountUser(
-                user=user, payment_account=payment_account, role='admin')
-            payment_account_user.save()
-            return Response(data=payment_account_user)
-        except Exception as e:
-            return Response(status=status.HTTP_400_BAD_REQUEST, data={'message': str(e)})
-
-    def get_queryset(self):
-        user = self.request.user
-        payment_accounts = PaymentAccount.objects.filter(
-            paymentaccountuser__user=user)
-        return payment_accounts
-
+    return Response(status=status.HTTP_200_OK, data={'message': 'Success', 'data': {'account_links': account_links}})
 
 # Stripe Customer
+
+
 @api_view(['POST'])
 @permission_classes([permissions.IsAuthenticated])
 def create_stripe_customer(request):

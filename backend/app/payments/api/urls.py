@@ -5,26 +5,23 @@ from payments.api import views
 
 
 urlpatterns = [
+    url(r'^test-payment/$', views.test_payment),
 
     url(r'^payment-account/(?P<pk>[0-9]+)$', views.get_delete_update_payment_account,
         name='get_delete_update_payment_account'),
     url(r'^payment-accounts/$', views.list_create_payment_accounts,
         name='list_create_payment_accounts'),
-
-
+    url(r'^delete-stripe-account/(?P<pk>[0-9]+)$', views.delete_stripe_account,
+        name='delete-stripe-account'),
+    url(r'^create-stripe-account/$', views.create_stripe_account,
+        name='create_stripe_custom_account'),
+    url(r'^create-account-links/$', views.create_stripe_account_links,
+        name='create_stripe_account_links'),
 
     # LEGACY
     # Payment
     path('payment/<uuid>', views.PaymentRetrieveView.as_view(),
          name='retrieve-payment'),
-    url(r'^test-payment/$', views.test_payment),
-
-    # Payment Account
-    url(r'^accounts/$', views.UserPaymentAccounts.as_view(), name='accounts'),
-
-    # Stripe Account
-    url(r'^create-custom-account', views.create_stripe_custom_account,
-        name='create-custom-account'),
 
     # Stripe Customer
     url(r'^receive-setup-intent-client-secret',

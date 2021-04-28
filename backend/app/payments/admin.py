@@ -8,7 +8,7 @@ class PaymentAccountInline(admin.TabularInline):
 
 
 class PaymentAccountAdmin(admin.ModelAdmin):
-    fields = ('stripe',)
+    list_display = ('id', 'stripe_customer', 'stripe_account',)
     inlines = (PaymentAccountInline,)
 
 
