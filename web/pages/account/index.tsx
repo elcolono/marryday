@@ -14,6 +14,7 @@ import {
     CardTitle,
     Breadcrumb,
     BreadcrumbItem,
+    Badge,
 } from "reactstrap"
 import Icon from "../../components/Icon";
 import getToken from "../../utils/getToken";
@@ -50,11 +51,15 @@ export default function UserAccount(pageProps) {
                                         />
                                     </div>
                                     <CardTitle className="mb-3" tag="h5">
-                                        <Link href={`${page.meta.slug}/${card.link.slug}`}>
+                                        <Link href={`${page.meta.slug}/${card.link && card.link.slug}`}>
                                             <a className="text-decoration-none text-dark stretched-link">
                                                 {card.title}
                                             </a>
                                         </Link>
+                                        {" "}
+                                        {card.coming_soon &&
+                                            <Badge color="success">Coming soon</Badge>
+                                        }
                                     </CardTitle>
                                     <CardText className="text-muted text-sm">
                                         {card.content}
@@ -80,9 +85,9 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res, }) => {
         res.end();
         return { props: {} }
     }
-    
+
     const settings = (await fetchAPIwithSSR('/api/page/home', { method: 'GET', req: req })) ?? []
-    const pageData = await fetchAPIwithSSR('/api/v2/pages/?type=home.UserAccount&fields=seo_title,search_description,heading,description,cards', { method: 'GET' });
+    const pageData = await fetchAPIwithSSR('/api/v2/pages/?type=user_account.AccountIndexPage&fields=seo_title,search_description,heading,description,cards', { method: 'GET' });
     const page = pageData?.items[0] ?? null;
 
     return {

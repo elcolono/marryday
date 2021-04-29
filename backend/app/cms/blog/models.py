@@ -20,8 +20,24 @@ from wagtail.search import index
 from wagtail.snippets.models import register_snippet
 from wagtailmetadata.models import MetadataPageMixin
 
+from rest_framework.fields import Field
 
-# Create your models here.
+
+class BlogChildPageSerializer(Field):
+    def to_representation(self, child_pages):
+        return_posts = []
+        for child in child_pages:
+            post_dict = {
+                'id': child.id,
+                'title': child.title,
+                'slug': child.slug,
+            }
+            return_posts.append(post_dict)
+        return return_posts
+
+        # Create your models here.
+
+
 class BlogIndexPage(MetadataPageMixin, Page):
     intro = RichTextField(blank=True)
 
@@ -30,9 +46,14 @@ class BlogIndexPage(MetadataPageMixin, Page):
     ]
     api_fields = [
         APIField('intro'),
+        APIField('posts', serializer=BlogChildPageSerializer(
+            source='get_child_pages'))
     ]
     subpage_types = ['blog.BlogPage']
     parent_page_types = ['home.HomePage']
+
+    def get_child_pages(self):
+        return self.get_children().public().live()
 
 
 class BlogPageTag(TaggedItemBase):

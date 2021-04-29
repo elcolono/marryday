@@ -10,9 +10,10 @@ from rest_framework.authtoken.models import Token
 
 class UserSerializer(serializers.ModelSerializer):
 
-  class Meta:
-    model=User
-    fields = ('id', 'email', 'first_name', 'last_name',)
+    class Meta:
+        model = User
+        fields = ('id', 'email', 'first_name',
+                  'last_name', 'is_company', 'is_visitor',)
 
 
 class TokenSerializer(serializers.ModelSerializer):
@@ -31,10 +32,10 @@ class RegisterSerializer(serializers.Serializer):
     first_name = serializers.CharField(required=True, write_only=True)
     last_name = serializers.CharField(required=True, write_only=True)
     password1 = serializers.CharField(required=True, write_only=True)
-    password2 = serializers.CharField(required=True, write_only=True) # Doesnt has password2 field in User Model
+    # Doesnt has password2 field in User Model
+    password2 = serializers.CharField(required=True, write_only=True)
     is_company = serializers.BooleanField(required=True, write_only=True)
     is_visitor = serializers.BooleanField(required=True, write_only=True)
-
 
     def validate_email(self, email):
         email = get_adapter().clean_email(email)
@@ -56,11 +57,11 @@ class RegisterSerializer(serializers.Serializer):
     def save(self, request):
         print(self.validated_data)
         user = User(
-            email = self.validated_data['email'],
-            first_name = self.validated_data['first_name'],
-            last_name = self.validated_data['last_name'],
-            is_company = self.validated_data['is_company'],
-            is_visitor = self.validated_data['is_visitor'],
+            email=self.validated_data['email'],
+            first_name=self.validated_data['first_name'],
+            last_name=self.validated_data['last_name'],
+            is_company=self.validated_data['is_company'],
+            is_visitor=self.validated_data['is_visitor'],
         )
         user.set_password(self.validated_data['password1'])
         user.save()

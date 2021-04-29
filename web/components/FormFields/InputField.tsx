@@ -19,7 +19,7 @@ export default function InputField(props) {
       <Input
         invalid={meta.touched && meta.error && true}
         type="text"
-        helperText={_renderHelperText()}
+        helpertext={_renderHelperText()}
         {...field}
         {...rest}
       />

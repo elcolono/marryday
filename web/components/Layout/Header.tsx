@@ -165,16 +165,8 @@ const Header = (props) => {
                   "title": "AS",
                   "dropdown": [
                     {
-                      "title": "Booking process - 4 pages",
-                      "link": "/user-booking-1"
-                    },
-                    {
-                      "title": "Bookings — grid view",
-                      "link": "/user-grid"
-                    },
-                    {
-                      "title": "Booking detail",
-                      "link": "/user-booking-detail"
+                      "title": "Profil & Konto",
+                      "link": "/account/profile"
                     },
                     {
                       "title": "Sign out",
