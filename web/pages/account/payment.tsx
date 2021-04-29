@@ -101,11 +101,13 @@ export default function UserPayment(pageProps) {
                                         </Col>
                                     </Row>
                                     <div className="text-sm text-muted">
-                                        <p>
-                                            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
-                                        </p>
+                                        {page.stripe_account_description && (
+                                            <p>
+                                                {page.stripe_account_description}
+                                            </p>
+                                        )}
                                         <Button disabled={isLoading} onClick={create_stripe_account_and_open_onboarding_link} color="primary" className="mr-4">
-                                            {isLoading && (<Spinner size='sm' />)} Konto {paymentAccount.stripe_account ? 'bearbeiten' : 'anlegen'}
+                                            {isLoading && (<Spinner size='sm' />)} Stripe-Konto {paymentAccount.stripe_account ? 'bearbeiten' : 'anlegen'}
                                         </Button>
                                     </div>
                                 </div>
@@ -296,7 +298,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res, }) => {
     }
 
     const settings = (await fetchAPIwithSSR('/api/page/home', { method: 'GET', req: req })) ?? []
-    const pageData = await fetchAPIwithSSR('/api/v2/pages/?type=user_account.AccountPaymentPage&fields=seo_title,search_description,heading,description', { method: 'GET' });
+    const pageData = await fetchAPIwithSSR('/api/v2/pages/?type=user_account.AccountPaymentPage&fields=seo_title,search_description,heading,description,stripe_account_description', { method: 'GET' });
     const page = pageData?.items[0] ?? null;
 
     return {
