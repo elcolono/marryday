@@ -30,7 +30,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const LocationDetail = (props) => {
     const { location } = props
-    const stripePromise = loadStripe('pk_test_51I47k4IpxsSLqlNa6T7HoFrFVoxyEalH5VROqKLV1DvZTBMV2WWWS4anN5fdWwqtdPIXaJU3VKR3bwmYhQliv3Or00c3rJIp2Q', { locale: 'de' });
+    const stripePromise = loadStripe(process.env.STRIPE_PUBLISHABLE_KEY, { locale: 'de' });
 
 
     const [isDesktop, setIsDesktop] = React.useState(false)

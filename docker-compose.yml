@@ -52,6 +52,7 @@ services:
         # Pass argument during build - in the dockerfile this argument is set to env variables BUT NOT SET LATER AS CONTAINER ENV
         BASE_URL: http://backend:8000
         BASE_SERVER_URL: "http://127.0.0.1"
+        STRIPE_PUBLISHABLE_KEY: "pk_test_51I47k4IpxsSLqlNa6T7HoFrFVoxyEalH5VROqKLV1DvZTBMV2WWWS4anN5fdWwqtdPIXaJU3VKR3bwmYhQliv3Or00c3rJIp2Q"
     expose:
       - "3000"
     depends_on:

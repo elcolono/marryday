@@ -23,6 +23,7 @@ services:
       args:
         BASE_URL: "http://backend:8000"
         BASE_SERVER_URL: "https://www.mowo.space"
+        STRIPE_PUBLISHABLE_KEY: "pk_live_51I47k4IpxsSLqlNand4pmbwnCQd7Z9uARgt0NHEKdOZImSk3ZDPVq2bqDf5z7woQdemJNCMTdpjLsKHX8ffz8swz00JNgiWqSA"
 
   nginx:
     ports:
