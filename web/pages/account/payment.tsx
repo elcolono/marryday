@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect, useState } from 'react';
 import Link from "next/link"
 
 import fetchAPIwithSSR from '../../utils/fetchAPIwithSSR';
@@ -24,23 +24,52 @@ import {
 import Icon from "../../components/Icon"
 import { InputField } from "../../components/FormFields";
 import { Formik } from "formik";
-
 import * as Yup from 'yup'
-import fetchAPI from "../../utils/fetchAPI";
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+
+import fetchAPI from "../../utils/fetchAPI";
 import getToken from "../../utils/getToken";
 
 
 export default function UserPayment(pageProps) {
 
-    const { page } = pageProps;
+    const { page, loggedUser, paymentAccounts } = pageProps;
+    const paymentAccount = paymentAccounts ? paymentAccounts[0] : null;
 
-    const [bankaccountCollapse, setBankaccountCollapse] = React.useState(false)
-    const [creditcardCollapse, setCreditcardCollapse] = React.useState(false)
+    const [isLoading, setIsLoading] = useState(false);
+    const [creditcardCollapse, setCreditcardCollapse] = useState(false)
 
-    const [user, setUser] = React.useState(pageProps.loggedUser)
-    const [paymentAccounts, setCompany] = React.useState(pageProps.paymentAccounts[0])
+
+    useEffect(() => {
+        console.log(loggedUser)
+    }, [])
+
+    const create_stripe_account_and_open_onboarding_link = async () => {
+        setIsLoading(true);
+        const token = getToken();
+        const body = {
+            "payment_account_pk": paymentAccount.id,
+            "country": 'at'
+        }
+
+        if (!paymentAccount.stripe_account) {
+            try {
+                await fetchAPI("/api/v1/payments/create-stripe-account/", { method: 'POST', body, token: token });
+            } catch (error) {
+                toast.error(error.message);
+            }
+        }
+        try {
+            let response = await fetchAPI("/api/v1/payments/create-account-links/", { method: 'POST', body, token: token });
+            const newWindow = window.open(response.data.account_links.url, '_blank', 'noopener,noreferrer')
+            if (newWindow) newWindow.opener = null;
+        } catch (error) {
+            const errorMessage = error.message.length <= 50 ? error.message : "Ups, something went wrong";
+            toast.error(errorMessage);
+        }
+        setIsLoading(false);
+    }
 
     return (
         <>
@@ -64,107 +93,26 @@ export default function UserPayment(pageProps) {
                     <p className="text-muted mb-5">{page.description && page.description}</p>
                     <Row>
                         <Col lg="7">
-                            {user &&
+                            {loggedUser.is_company &&
                                 <div className="text-block">
                                     <Row className="mb-3">
                                         <Col sm="9">
                                             <h5>Dein Bankkonto</h5>
                                         </Col>
-                                        <Col sm="3" className="text-right">
-                                            <Button
-                                                color="link"
-                                                className="pl-0 text-primary collapsed"
-                                                onClick={() => setBankaccountCollapse(!bankaccountCollapse)}
-                                            >
-                                                Bearbeiten
-                                            </Button>
-                                        </Col>
                                     </Row>
-                                    <Media className="text-sm text-muted">
-                                        <i className="fa fa-address-book fa-fw mr-2" />
-                                        <Media body className="mt-n1">
-                                            {user.first_name} {user.last_name}
-                                            <br />
-                                            {user.email}
-                                        </Media>
-                                    </Media>
-                                    <Collapse isOpen={bankaccountCollapse}>
-                                        <Formik
-                                            enableReinitialize={true}
-                                            initialValues={user}
-                                            validationSchema={Yup.object({
-                                                card_name: Yup.string()
-                                                    .required('Erforderlich'),
-                                                card_number: Yup.string()
-                                                    .required('Erforderlich')
-                                                    .min(2, 'Firstname is too short - should be 2 chars minimum.'),
-                                                last_name: Yup.string()
-                                                    .required('Erforderlich')
-                                                    .min(2, 'Lastname is too short - should be 2 chars minimum.')
-                                            })}
-                                            onSubmit={(values, { setSubmitting }) => {
-                                                const token = getToken();
-                                                // fetchAPI(`/api/v1/accounts/user/${user.id}/`, { method: 'PUT', body: values, token: token }).then(response => {
-                                                //     toast.success("Erfolgreich gespeichert");
-                                                //     setUser(response);
-                                                //     setSubmitting(false);
-                                                // }).catch(error => {
-                                                //     for (var prop in error) {
-                                                //         const errorMessage = error[prop][0];
-                                                //         toast.error(errorMessage);
-                                                //     }
-                                                //     setSubmitting(false);
-                                                // })
-                                            }}>
-                                            {({
-                                                handleSubmit,
-                                                isSubmitting,
-                                            }) => (
-                                                <Form onSubmit={handleSubmit}>
-                                                    <Row className="pt-4">
-
-                                                        <Col md="6" className="form-group">
-                                                            <Label for="card_name" className="form-label">
-                                                                Kontoname
-                                                            </Label>
-                                                            <InputField
-                                                                name="card_name"
-                                                                id="card_name"
-                                                                type="text"
-                                                                placeholder="Max Mustermann"
-                                                                autoComplete="off"
-                                                                required
-                                                            />
-                                                        </Col>
-                                                        <Col md="6" className="form-group">
-                                                            <Label for="card_number" className="form-label">
-                                                                Kontonummer
-                                                            </Label>
-                                                            <InputField
-                                                                name="card_number"
-                                                                id="card_number"
-                                                                type="number"
-                                                                placeholder="AT34252345234"
-                                                                autoComplete="off"
-                                                                required
-                                                            />
-                                                        </Col>
-
-                                                    </Row>
-                                                    <Button
-                                                        disabled={isSubmitting}
-                                                        type="submit"
-                                                        color="outline-primary"
-                                                        className=" mb-4">
-                                                        {isSubmitting ? <Spinner size="sm" /> : "Speichern"}
-                                                    </Button>
-                                                </Form>
-                                            )}
-                                        </Formik>
-                                    </Collapse>
+                                    <div className="text-sm text-muted">
+                                        {page.stripe_account_description && (
+                                            <p>
+                                                {page.stripe_account_description}
+                                            </p>
+                                        )}
+                                        <Button disabled={isLoading} onClick={create_stripe_account_and_open_onboarding_link} color="primary" className="mr-4">
+                                            {isLoading && (<Spinner size='sm' />)} Stripe-Konto {paymentAccount.stripe_account ? 'bearbeiten' : 'anlegen'}
+                                        </Button>
+                                    </div>
                                 </div>
                             }
-                            {user &&
+                            {loggedUser.is_visitor &&
                                 <div className="text-block">
                                     <Row className="mb-3">
                                         <Col sm="9">
@@ -183,15 +131,15 @@ export default function UserPayment(pageProps) {
                                     <Media className="text-sm text-muted">
                                         <i className="fa fa-address-book fa-fw mr-2" />
                                         <Media body className="mt-n1">
-                                            {user.first_name} {user.last_name}
+                                            {loggedUser.first_name} {loggedUser.last_name}
                                             <br />
-                                            {user.email}
+                                            {loggedUser.email}
                                         </Media>
                                     </Media>
                                     <Collapse isOpen={creditcardCollapse}>
                                         <Formik
                                             enableReinitialize={true}
-                                            initialValues={user}
+                                            initialValues={loggedUser}
                                             validationSchema={Yup.object({
                                                 card_name: Yup.string()
                                                     .required('Erforderlich'),
@@ -341,7 +289,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res, }) => {
 
     const token = getToken(req);
     const loggedUser = await fetchAPIwithSSR('/api/v1/rest-auth/user/', { method: 'GET', req: req, token: token }) ?? {}
-    const paymentAccounts = await fetchAPIwithSSR('/api/v1/payments/user-payment-accounts/', { method: 'GET', req: req, token: token }) ?? {}
+    const paymentAccounts = await fetchAPIwithSSR('/api/v1/payments/payment-accounts/', { method: 'GET', req: req, token: token }) ?? []
     if (loggedUser.email === undefined) {
         res.setHeader("location", "/login");
         res.statusCode = 302;
@@ -350,7 +298,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res, }) => {
     }
 
     const settings = (await fetchAPIwithSSR('/api/page/home', { method: 'GET', req: req })) ?? []
-    const pageData = await fetchAPIwithSSR('/api/v2/pages/?type=user_account.AccountPaymentPage&fields=seo_title,search_description,heading,description', { method: 'GET' });
+    const pageData = await fetchAPIwithSSR('/api/v2/pages/?type=user_account.AccountPaymentPage&fields=seo_title,search_description,heading,description,stripe_account_description', { method: 'GET' });
     const page = pageData?.items[0] ?? null;
 
     return {

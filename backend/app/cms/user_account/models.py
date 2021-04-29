@@ -142,6 +142,8 @@ class AccountPaymentPage(MetadataPageMixin, Page):
 
     heading = models.CharField(max_length=255)
     description = models.TextField(max_length=1055, null=True)
+    stripe_account_description = models.TextField(
+        max_length=1055, null=True, blank=True)
 
     subpage_types = []
     parent_page_types = ['user_account.AccountIndexPage']
@@ -151,6 +153,7 @@ class AccountPaymentPage(MetadataPageMixin, Page):
     content_panels = Page.content_panels + [
         FieldPanel('heading', classname="full"),
         FieldPanel('description', classname="full"),
+        FieldPanel('stripe_account_description', classname="full")
     ]
 
     # under content_panels:
@@ -158,4 +161,5 @@ class AccountPaymentPage(MetadataPageMixin, Page):
     api_fields = [
         APIField('heading'),
         APIField('description'),
+        APIField('stripe_account_description'),
     ]

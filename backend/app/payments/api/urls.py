@@ -1,20 +1,36 @@
+""" Payment URLs """
 from django.urls import path
 from django.conf.urls import url
 from payments.api import views
 
 
 urlpatterns = [
-    # Cites
-    path("payment/<uuid>", views.PaymentRetrieveView.as_view(),
-         name="retrieve-payment"),
-    # Cites
     url(r'^test-payment/$', views.test_payment),
 
+    url(r'^payment-account/(?P<pk>[0-9]+)$', views.get_delete_update_payment_account,
+        name='get_delete_update_payment_account'),
+    url(r'^payment-accounts/$', views.list_create_payment_accounts,
+        name='list_create_payment_accounts'),
+    url(r'^delete-stripe-account/(?P<pk>[0-9]+)$', views.delete_stripe_account,
+        name='delete-stripe-account'),
+    url(r'^create-stripe-account/$', views.create_stripe_account,
+        name='create_stripe_custom_account'),
+    url(r'^create-account-links/$', views.create_stripe_account_links,
+        name='create_stripe_account_links'),
+
+    # LEGACY
+    # Payment
+    path('payment/<uuid>', views.PaymentRetrieveView.as_view(),
+         name='retrieve-payment'),
+
     # Stripe Customer
-    url(r'^user-payment-accounts/$', views.UserPaymentAccounts.as_view()),
-    url(r'^create-bank-account/$', views.create_bank_account),
+    url(r'^receive-setup-intent-client-secret',
+        views.receive_setup_intent_client_secret),
     url(r'^create-stripe-customer/$', views.create_stripe_customer),
     url(r'^retrieve-stripe-customer/$', views.retrieve_stripe_customer),
+    url(r'^retrieve_stripe_customer_payment_methods/$',
+        views.retrieve_stripe_customer_payment_methods),
+
     url(r'^update-stripe-customer/$', views.update_stripe_customer),
 
     # Stripe Payment

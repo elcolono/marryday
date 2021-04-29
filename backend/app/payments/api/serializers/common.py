@@ -17,4 +17,4 @@ class PaymentAccountSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = PaymentAccount
-        fields = '__all__'
+        fields = ['id', 'stripe_customer', 'stripe_account']
