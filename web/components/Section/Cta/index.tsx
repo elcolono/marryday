@@ -2,7 +2,7 @@ import React from "react"
 import styles from './Cta.module.scss';
 
 import Link from "next/link"
-import Image from "../CustomImage"
+import Image from "../../CustomImage"
 
 import { Container, Button } from "reactstrap"
 
@@ -38,6 +38,5 @@ export default function CTASection({
                 </div>
             </Container>
         </section>
-
     )
 }

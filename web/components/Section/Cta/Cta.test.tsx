@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDom from 'react-dom';
 
 import { render, screen, cleanup } from '@testing-library/react';
-import CTASection from './Cta';
+import CTASection from './index';
 
 afterEach(() => {
     cleanup();
