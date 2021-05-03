@@ -1,33 +1,38 @@
 import React from "react"
+import styles from './Cta.module.scss';
 
 import Link from "next/link"
 import Image from "../CustomImage"
 
 import { Container, Button } from "reactstrap"
 
-export default function CTASection({ data }) {
+export default function CTASection({
+    image,
+    heading,
+    description,
+    button_href,
+    button_text
+}) {
     return (
-        <section className="py-7 position-relative dark-overlay">
-            {/* Loading eager set for IE compatibility */}
+        <section data-testid='cta-section' className="py-7 position-relative dark-overlay">
             <Image
-                src={data.image.url}
-                alt={data.image.title}
+                src={image.url}
+                alt={image.title}
                 className="bg-image"
                 loading="lazy"
                 layout="fill"
-                // sizes="(max-width:991px) 50vw, 240px"
             />
             <Container>
                 <div className="overlay-content text-white py-lg-5">
                     <h2 className="display-3 font-weight-bold text-serif text-shadow">
-                        {data.heading}
+                        {heading}
                     </h2>
                     <h3 className="mb-5">
-                        {data.description}
+                        {description}
                     </h3>
-                    {data.button_href && (
-                        <Link href={data.button_href.slug}>
-                            <Button color="light">{data.button_text}</Button>
+                    {button_href && (
+                        <Link href={button_href.slug}>
+                            <Button color="light">{button_text}</Button>
                         </Link>
                     )}
                 </div>

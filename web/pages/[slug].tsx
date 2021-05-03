@@ -21,7 +21,7 @@ export default function SubPage(pageProps) {
         if (section.type == 'pricing_section_block') return <PricingSection key={i} data={section.value} />
         if (section.type == 'contact_section_block') return <ContactSection key={i} title={page.title} data={section.value} />
         if (section.type == 'service_section_block') return <ServiceSection key={i} data={section.value} />
-        if (section.type == 'cta_section_block') return <CTASection key={i} data={section.value} />
+        if (section.type == 'cta_section_block') return <CTASection key={i} {...section.value} />
         if (section.type == 'text_with_image_section_block') return <TextWithImage key={i} data={section.value} />
       }) ?? <div>Noch Keine Daten</div>}
     </React.Fragment>

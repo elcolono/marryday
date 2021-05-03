@@ -19,7 +19,7 @@ export default function Index(pageProps) {
         if (section.type == 'hero_location_search_section_block') return <HeroLocationSearchSection key={i} data={section.value} cities={cities} />
         if (section.type == 'city_slider_section_block') return <CitySlider key={i} data={section.value} cities={cities} />
         if (section.type == 'location_slider_section_block') { return <LocationSlider key={i} data={section.value} locations={locations} /> }
-        if (section.type == 'cta_section_block') return <CTASection key={i} data={section.value} />
+        if (section.type == 'cta_section_block') return <CTASection key={i} {...section.value} />
         if (section.type == 'service_section_block') return <ServiceSection key={i} data={section.value} />
         if (section.type == 'faq_section_block') return <FAQSection key={i} data={section.value} />
       }) ?? <div>Noch Keine Daten</div>}
