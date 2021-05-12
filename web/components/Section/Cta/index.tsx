@@ -15,13 +15,13 @@ export default function CTASection({
 }) {
     return (
         <section data-testid='cta-section' className="py-7 position-relative dark-overlay">
-            <Image
+            {image ? <Image
                 src={image.url}
                 alt={image.title}
                 className="bg-image"
                 loading="lazy"
                 layout="fill"
-            />
+            /> : null}
             <Container>
                 <div className="overlay-content text-white py-lg-5">
                     <h2 className="display-3 font-weight-bold text-serif text-shadow">

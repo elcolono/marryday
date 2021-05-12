@@ -1,8 +1,13 @@
 import React from 'react';
 import ReactDom from 'react-dom';
-
-import { render, screen, cleanup } from '@testing-library/react';
 import CTASection from './index';
+
+import Enzyme, { shallow, render as erender, mount } from 'enzyme';
+import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
+import toJson from 'enzyme-to-json';
+import { render, screen, cleanup } from '@testing-library/react';
+
+Enzyme.configure({ adapter: new Adapter() });
 
 afterEach(() => {
     cleanup();
@@ -20,6 +25,15 @@ const data = {
     button_href: { slug: "about-us" },
 };
 
+
+it('renders correctly enzyme', () => {
+    const wrapper = shallow(<CTASection {...data} />)
+
+    expect(toJson(wrapper)).toMatchSnapshot();
+})
+
+
+// Legacy
 it('should render cta-section component', () => {
     render(<CTASection {...data} />);
     const ctaSection = screen.getByTestId('cta-section');
