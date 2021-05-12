@@ -7,6 +7,11 @@ from wagtail.images.models import Image as WagtailImage
 from rest_framework import serializers
 
 
+class RichTextBlock(blocks.RichTextBlock):
+    def get_api_representation(self, value, context=None):
+        return "anything i want"
+
+
 class WagtailImageSerializer(serializers.ModelSerializer):
     # def __init__(self, width, *args, **kwargs):
     #     self.width = width
