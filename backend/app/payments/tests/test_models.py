@@ -1,9 +1,9 @@
-""" Testing Payment Models """
-from django.test import TestCase
-from django.db import models
-
+""" Test payment models """
 from accounts.models import User
-from payments.models import PaymentAccountUser, PaymentAccount, PAYMENT_ACCOUNT_USER_ROLES
+from django.db import models
+from django.test import TestCase
+from payments.models import (PAYMENT_ACCOUNT_USER_ROLES, PaymentAccount,
+                             PaymentAccountUser)
 
 
 class PaymentAccountUserModelTest(TestCase):

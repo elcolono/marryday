@@ -27,6 +27,18 @@
                 "<node_internals>/**"
             ],
             "port": 9229
+        },
+        {
+            "name": "Python: Django Debug Single Test",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/backend/app/manage.py",
+            "args": [
+                "test",
+                "--keepdb",
+                "accounts"
+            ],
+            "django": true,
         }
     ]
 }

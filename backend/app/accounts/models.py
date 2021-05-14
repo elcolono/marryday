@@ -7,7 +7,10 @@ from .managers import UserManager
 
 
 class User(AbstractUser):
-    """ Custom User Model which subclasses AbstractUser """
+    """
+    Custom User Model which subclasses AbstractUser
+    Defines the attributes of a User
+    """
     username = None
     email = models.EmailField(_('email address'), unique=True)
 
@@ -20,4 +23,4 @@ class User(AbstractUser):
     is_company = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.email
+        return f'{self.email}'
