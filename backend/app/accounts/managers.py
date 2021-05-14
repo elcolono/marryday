@@ -1,15 +1,25 @@
-"""
-https://krakensystems.co/blog/2020/custom-users-using-django-rest-framework
-"""
+""" Account managers """
 from django.contrib.auth.base_user import BaseUserManager
 from django.utils.translation import ugettext_lazy as _
 
 
 class UserManager(BaseUserManager):
     """
-    Custom user model manager where email is the unique identifiers
+    Custom UserManager, which inherits from BaseUserManager.
+
+    You can find the django default UserManager here:
+    /django/contrib/auth/models.py
+
+    Custom user model manager where email is the unique identifier
     for authentication instead of usernames.
+
+    Read 'Custom Manager' docs here:
+    https://docs.djangoproject.com/en/3.2/topics/db/managers/
+
+    Read 'Custom manager' tutorial here:
+    https://krakensystems.co/blog/2020/custom-users-using-django-rest-framework
     """
+
     def create_user(self, email, password, **extra_fields):
         """
         Create and save a User with the given email and password.
