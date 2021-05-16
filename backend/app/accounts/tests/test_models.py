@@ -5,7 +5,7 @@ from ..managers import UserManager
 from ..models import User
 
 
-class UserModelTest(TestCase):
+class TestUserModel(TestCase):
     """ Test module for User model """
 
     def setUp(self):
