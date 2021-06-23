@@ -1,11 +1,14 @@
 from django.db import models
+from rest_framework.fields import Field
+from rest_framework import serializers
 from wagtailmetadata.models import MetadataPageMixin
 
 from cms.flex.models import FlexPage
 
 from wagtail.core import blocks
 from wagtail.core.models import Page
-from wagtail.core.fields import StreamField
+from wagtail.core.fields import StreamField, RichTextField
+from wagtail.core.templatetags.wagtailcore_tags import richtext
 from wagtail.admin.edit_handlers import FieldPanel, StreamFieldPanel
 from wagtail.images.edit_handlers import ImageChooserPanel
 
@@ -20,6 +23,11 @@ class APIPageChooserBlock(blocks.PageChooserBlock):
             return {
                 'slug': value.slug,
             }
+
+
+class RichTextSerializedField(Field):
+    def to_representation(self, value):
+        return richtext(value)
 
 
 class HomePage(MetadataPageMixin, FlexPage):
@@ -70,7 +78,7 @@ class SignupPage(MetadataPageMixin, Page):
 
 class SigninPage(MetadataPageMixin, Page):
     heading = models.CharField(max_length=255)
-    description = models.TextField(max_length=1055)
+    description = RichTextField()
     image = models.ForeignKey(
         'wagtailimages.Image', on_delete=models.SET_NULL, related_name='+', null=True,
     )
@@ -90,7 +98,7 @@ class SigninPage(MetadataPageMixin, Page):
 
     api_fields = [
         APIField('heading'),
-        APIField('description'),
+        APIField('description', serializer=RichTextSerializedField()),
         APIField('image'),
     ]
 

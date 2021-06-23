@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from ...models import *
-from accounts.api.serializers.nested import UserSerializer
+from accounts.serializers.nested import UserSerializer
 
 # Company
 class CompanySerializer(serializers.ModelSerializer):

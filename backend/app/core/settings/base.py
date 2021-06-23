@@ -215,6 +215,7 @@ AUTH_USER_MODEL = 'accounts.User'
 REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': (
         'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
         # 'rest_framework.authentication.SessionAuthentication',
@@ -250,13 +251,13 @@ EMAIL_HOST_PASSWORD = 'z7La=Vz7=N'
 
 # instruct rest_auth to use custom UserSerializer
 REST_AUTH_SERIALIZERS = {
-    'USER_DETAILS_SERIALIZER': 'accounts.api.serializers.common.UserSerializer',
-    'TOKEN_SERIALIZER': 'accounts.api.serializers.common.TokenSerializer',
-    # 'LOGIN_SERIALIZER': 'accounts.api.serializers.common.LoginSerializer',
+    'USER_DETAILS_SERIALIZER': 'accounts.serializers.common.UserSerializer',
+    'TOKEN_SERIALIZER': 'accounts.serializers.common.TokenSerializer',
+    # 'LOGIN_SERIALIZER': 'accounts.serializers.common.LoginSerializer',
 }
 
 REST_AUTH_REGISTER_SERIALIZERS = {
-    'REGISTER_SERIALIZER': 'accounts.api.serializers.common.RegisterSerializer',
+    'REGISTER_SERIALIZER': 'accounts.serializers.common.RegisterSerializer',
 }
 
 # REST_USE_JWT = True

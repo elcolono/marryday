@@ -55,7 +55,6 @@ class RegisterSerializer(serializers.Serializer):
         return data
 
     def save(self, request):
-        print(self.validated_data)
         user = User(
             email=self.validated_data['email'],
             first_name=self.validated_data['first_name'],

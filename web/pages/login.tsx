@@ -55,9 +55,7 @@ export default function Login(pageProps) {
               <div className="w-100 py-5 px-md-5 px-xl-6 position-relative">
                 <div className="mb-4">
                   <h2>{page.heading && page.heading}</h2>
-                  <p className="text-muted">
-                    {page.description && page.description}
-                  </p>
+                  <div className="text-muted" dangerouslySetInnerHTML={{ __html: page.description && page.description }}></div>
                 </div>
                 <Formik
                   initialValues={{
@@ -134,6 +132,7 @@ export default function Login(pageProps) {
                   )}
 
                 </Formik>
+                <div><a href={"/"}>Forgot Password?</a></div>
                 <hr className="my-4" />
                 <p className="text-sm text-muted">
                   By signing up you agree to Directory's{" "}

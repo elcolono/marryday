@@ -1,36 +1,32 @@
 from allauth.account.views import confirm_email
-
 from django.conf import settings
-from django.conf.urls import include, url
+from django.conf.urls import url
+from django.urls import include, path
 from django.contrib import admin
-
+from search import views as search_views
 from wagtail.admin import urls as wagtailadmin_urls
+from wagtail.contrib.sitemaps.views import sitemap
 from wagtail.core import urls as wagtail_urls
 from wagtail.documents import urls as wagtaildocs_urls
 
-from core.views import robots_txt, notfound_page
+from core.views import notfound_page, robots_txt
 
-from search import views as search_views
-from wagtail.contrib.sitemaps.views import sitemap
 from .api import api_router
 
-
 urlpatterns = [
-    url(r'^django-admin/', admin.site.urls),
+    path('django-admin/', admin.site.urls),
+    path('admin/', include(wagtailadmin_urls)),
 
-    url(r'^admin/', include(wagtailadmin_urls)),
+    path('api/v1/accounts/', include("accounts.urls")),
+    path('api/v1/profiles/', include("profiles.api.urls")),
 
-    url(r'^api/v1/rest-auth/', include('rest_auth.urls')),
-    url(r'^api/v1/rest-auth/registration/',
-        include('rest_auth.registration.urls')),
+    path('api/v1/cowork/', include("cowork.api.urls")),
+    path('api/v1/payments/', include('payments.api.urls')),
+
     url(r'^api/v1/account/', include('allauth.urls')),
     url(r'^api/v1/accounts-rest/registration/account-confirm-email/(?P<key>.+)/$',
         confirm_email, name='account_confirm_email'),
-    url(r'^api/v1/accounts/', include("accounts.api.urls")),
-    url(r'^api/v1/profiles/', include("profiles.api.urls")),
 
-    url(r'^api/v1/cowork/', include("cowork.api.urls")),
-    url(r'^api/v1/payments/', include('payments.api.urls')),
 
     url(r'^documents/', include(wagtaildocs_urls)),
     url(r'^search/$', search_views.search, name='search'),
