@@ -31,8 +31,8 @@ export default function SubPage(pageProps) {
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const settings = await fetchAPIwithSSR('/api/page/home', { method: 'GET' });
   const page = await fetchAPIwithSSR(`/api/v2/pages/find/?html_path=${params.slug}`, { method: 'GET' });
-  const cities = await fetchAPIwithSSR('/api/v1/cowork/cities/', { method: 'GET' });
-  const locations = await fetchAPIwithSSR('/api/v1/cowork/locations/', { method: 'GET' });
+  const cities = await fetchAPIwithSSR('/api/v1/products/cities/', { method: 'GET' });
+  const locations = await fetchAPIwithSSR('/api/v1/products/locations/', { method: 'GET' });
 
   return {
     revalidate: 1,

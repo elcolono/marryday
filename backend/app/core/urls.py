@@ -18,10 +18,10 @@ urlpatterns = [
     path('admin/', include(wagtailadmin_urls)),
 
     path('api/v1/accounts/', include("accounts.urls")),
-    path('api/v1/profiles/', include("profiles.api.urls")),
+    path('api/v1/profiles/', include("profiles.urls")),
 
-    path('api/v1/cowork/', include("cowork.api.urls")),
-    path('api/v1/payments/', include('payments.api.urls')),
+    path('api/v1/products/', include("products.urls")),
+    path('api/v1/payments/', include('payments.urls')),
 
     url(r'^api/v1/account/', include('allauth.urls')),
     url(r'^api/v1/accounts-rest/registration/account-confirm-email/(?P<key>.+)/$',

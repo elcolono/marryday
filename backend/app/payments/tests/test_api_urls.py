@@ -3,7 +3,7 @@ Testing Payment API Urls
 """
 from django.test import SimpleTestCase
 from django.urls import reverse, resolve
-from payments.api.views import list_create_payment_accounts, PaymentRetrieveView
+from payments.views import list_create_payment_accounts, PaymentRetrieveView
 
 
 class TestAPIUrls(SimpleTestCase):

@@ -186,7 +186,7 @@ const Header = (props) => {
                       className="btn btn-primary"
                       onClick={() => onLinkClick('locations')}
                     >
-                      Location finden
+                      Vermieten
                   </a>
                   </ActiveLink>
                 </NavItem>

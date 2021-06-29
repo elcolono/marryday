@@ -30,8 +30,8 @@ export default function Index(pageProps) {
 export const getStaticProps: GetStaticProps = async () => {
   const settings = await fetchAPIwithSSR('/api/page/home', { method: 'GET' });
   const pageData = await fetchAPIwithSSR('/api/v2/pages/?type=home.HomePage&fields=seo_text,content,seo_title,search_description', { method: 'GET' });
-  const cities = await fetchAPIwithSSR('/api/v1/cowork/cities/', { method: 'GET' });
-  const locations = await fetchAPIwithSSR('/api/v1/cowork/locations/', { method: 'GET' });
+  const cities = await fetchAPIwithSSR('/api/v1/products/cities/', { method: 'GET' });
+  const locations = await fetchAPIwithSSR('/api/v1/products/locations/', { method: 'GET' });
 
   const page = pageData?.items[0] ?? null;
 
