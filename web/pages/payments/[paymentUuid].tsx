@@ -59,7 +59,7 @@ const UserInvoice = (props) => {
               </Button> */}
               <Button color="primary" className="mr-2" onClick={() => window.print()}>
                 <i className="fas fa-print mr-2" /> Drucken / Speichern
-            </Button>
+              </Button>
             </Col>
           </Row>
           <Card className="border-0 shadow shadow-print-0">
@@ -80,11 +80,11 @@ const UserInvoice = (props) => {
             <CardBody className="p-5 p-print-0">
               <Row className="mb-4">
                 <Col sm="6" className="pr-lg-3">
-                  <h2 className="h6 text-uppercase mb-4">Supplier</h2>
+                  <h2 className="h6 text-uppercase mb-4">Vendor</h2>
                   <h6 className="mb-1">MoWo Spaces GesbR</h6>
                   <p className="text-muted">
                     2344 Maria Enzersdorf
-                  <br />
+                    <br />
                     <strong>Austria</strong>
                   </p>
                 </Col>
@@ -125,17 +125,17 @@ const UserInvoice = (props) => {
                   <Row className="mb-2 mb-sm-1">
                     <Col sm="6" className="text-uppercase text-muted">
                       Payment method
-                  </Col>
+                    </Col>
                     <Col sm="6" className="text-sm-right">
                       Credit card
-                  </Col>
+                    </Col>
                   </Row>
                 </Col>
                 <Col md="6" className="pl-lg-4 text-sm">
                   <Row className="mb-2 mb-sm-1">
                     <Col sm="6" className="text-uppercase text-muted">
                       Issued on
-                  </Col>
+                    </Col>
                     <Col sm="6" className="text-sm-right">
                       {format(new Date(payment.invoice_date), 'MMM dd, yyyy')}
                     </Col>
@@ -143,7 +143,7 @@ const UserInvoice = (props) => {
                   <Row className="mb-2 mb-sm-1">
                     <Col sm="6" className="text-uppercase text-muted">
                       Due on
-                  </Col>
+                    </Col>
                     <Col sm="6" className="text-sm-right">
                       {format(new Date(payment.invoice_date), 'MMM dd, yyyy')}
                     </Col>
@@ -224,7 +224,7 @@ const UserInvoice = (props) => {
 export default UserInvoice
 
 export const getServerSideProps: GetServerSideProps = async ({ params, req }) => {
-  // const booking = (await fetchAPIwithSSR(`/api/v1/cowork/booking/${params.bookingId}`, { method: 'GET', req: req })) ?? []
+  // const booking = (await fetchAPIwithSSR(`/api/v1/products/booking/${params.bookingId}`, { method: 'GET', req: req })) ?? []
   const settings = (await fetchAPIwithSSR('/api/page/home', { method: 'GET', req: req })) ?? []
   const payment = (await fetchAPIwithSSR(`/api/v1/payments/payment/${params.paymentUuid}`, { method: 'GET', req: req })) ?? []
 

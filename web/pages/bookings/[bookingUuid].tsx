@@ -121,7 +121,7 @@ const UserBooking = (props) => {
 export default UserBooking
 
 export const getServerSideProps: GetServerSideProps = async ({ params, req }) => {
-    // const booking = (await fetchAPIwithSSR(`/api/v1/cowork/booking/${params.bookingId}`, { method: 'GET', req: req })) ?? []
+    // const booking = (await fetchAPIwithSSR(`/api/v1/products/booking/${params.bookingId}`, { method: 'GET', req: req })) ?? []
     const settings = (await fetchAPIwithSSR('/api/page/home', { method: 'GET', req: req })) ?? []
     const booking = (await fetchAPIwithSSR(`/api/v1/cowork/booking/${params.bookingUuid}`, { method: 'GET', req: req })) ?? []
 

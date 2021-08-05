@@ -63,7 +63,7 @@ export default Category2Rooms
 
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
-  const locations = (await fetchAPIwithSSR('/api/v1/cowork/locations/', { method: 'GET', req: req })) ?? []
+  const locations = (await fetchAPIwithSSR('/api/v1/products/locations/', { method: 'GET', req: req })) ?? []
   const settings = (await fetchAPIwithSSR('/api/page/home', { method: 'GET', req: req })) ?? []
   return {
     props: {

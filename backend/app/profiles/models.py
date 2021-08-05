@@ -16,12 +16,26 @@ class Visitor(models.Model):
         return f"{self.user.email}"
 
 
-# Companies
-class Company(models.Model):
+# Vendor
+class Vendor(models.Model):
     user = models.ForeignKey(
-        'accounts.User', related_name="companies", on_delete=models.CASCADE)
-    company_name = models.CharField(max_length=100)
+        'accounts.User', related_name="vendors", on_delete=models.CASCADE)
+    vendor_name = models.CharField(max_length=100)
     slug = models.SlugField(max_length=100, blank=True)
+
+    # Contact
+    address = models.CharField(max_length=150, null=True)
+    street_number = models.CharField(max_length=150, null=True)
+    city = models.ForeignKey(
+        'locations.City', related_name="locations", on_delete=models.PROTECT, null=True)
+    country = models.ForeignKey(
+        'locations.Country', related_name="country_locations", on_delete=models.PROTECT, null=True)
+    public_email = models.EmailField(null=True, blank=True)
+    public_phone = models.CharField(max_length=150, null=True)
+
+    # Geometry
+    geometry = models.JSONField(null=True, blank=True)
+    utc_offset = models.IntegerField(null=True)
 
     created_by = models.ForeignKey(
         'accounts.User', on_delete=models.CASCADE, editable=False)
@@ -29,7 +43,7 @@ class Company(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.company_name)
+        self.slug = slugify(self.vendor_name)
         super().save(*args, **kwargs)  # Call the "real" save() method.
 
     def __str__(self):
@@ -38,7 +52,7 @@ class Company(models.Model):
 
 # Locations
 class Location(models.Model):
-    company = models.ForeignKey('profiles.Company', on_delete=models.CASCADE)
+    vendor = models.ForeignKey('profiles.Vendor', on_delete=models.CASCADE)
     title = models.CharField(max_length=100)
     longitude = models.CharField(max_length=300)
     latitude = models.CharField(max_length=300)

@@ -7,6 +7,11 @@ from wagtail.images.models import Image as WagtailImage
 from rest_framework import serializers
 
 
+class RichTextBlock(blocks.RichTextBlock):
+    def get_api_representation(self, value, context=None):
+        return "anything i want"
+
+
 class WagtailImageSerializer(serializers.ModelSerializer):
     # def __init__(self, width, *args, **kwargs):
     #     self.width = width
@@ -51,7 +56,7 @@ class APIPageChooserBlock(blocks.PageChooserBlock):
             }
 
 
-# Location Slider Block
+# Product Slider Block
 class CityGalleryBlock(blocks.StructBlock):
     """ City Gallery Block"""
     heading = blocks.CharBlock(
@@ -72,7 +77,7 @@ class CityGalleryBlock(blocks.StructBlock):
         label = 'City Gallery Block'
 
 
-# Location Slider Block
+# Product Slider Block
 class CitySliderBlock(blocks.StructBlock):
     """ Service Section Block """
     grey_background = blocks.BooleanBlock(
@@ -107,7 +112,7 @@ class CitySliderBlock(blocks.StructBlock):
         """ meta data """
         label = 'City Slider'
 
-# Location Slider Block
+# Product Slider Block
 
 
 class LocationSliderBlock(blocks.StructBlock):
@@ -142,7 +147,7 @@ class LocationSliderBlock(blocks.StructBlock):
 
     class Meta:
         """ meta data """
-        label = 'Location Slider'
+        label = 'Product Slider'
 
 
 # Heading Section
@@ -348,7 +353,7 @@ class HeroLocationSearchSectionBlock(blocks.StructBlock):
 
     class Meta:
         """ Meta data """
-        label = 'Hero Location Search Section'
+        label = 'Hero Product Search Section'
 
 
 # Hero Section Block

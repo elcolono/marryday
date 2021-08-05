@@ -21,7 +21,7 @@ export default function SubPage(pageProps) {
         if (section.type == 'pricing_section_block') return <PricingSection key={i} data={section.value} />
         if (section.type == 'contact_section_block') return <ContactSection key={i} title={page.title} data={section.value} />
         if (section.type == 'service_section_block') return <ServiceSection key={i} data={section.value} />
-        if (section.type == 'cta_section_block') return <CTASection key={i} data={section.value} />
+        if (section.type == 'cta_section_block') return <CTASection key={i} {...section.value} />
         if (section.type == 'text_with_image_section_block') return <TextWithImage key={i} data={section.value} />
       }) ?? <div>Noch Keine Daten</div>}
     </React.Fragment>
@@ -31,8 +31,8 @@ export default function SubPage(pageProps) {
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const settings = await fetchAPIwithSSR('/api/page/home', { method: 'GET' });
   const page = await fetchAPIwithSSR(`/api/v2/pages/find/?html_path=${params.slug}`, { method: 'GET' });
-  const cities = await fetchAPIwithSSR('/api/v1/cowork/cities/', { method: 'GET' });
-  const locations = await fetchAPIwithSSR('/api/v1/cowork/locations/', { method: 'GET' });
+  const cities = await fetchAPIwithSSR('/api/v1/products/cities/', { method: 'GET' });
+  const locations = await fetchAPIwithSSR('/api/v1/products/locations/', { method: 'GET' });
 
   return {
     revalidate: 1,

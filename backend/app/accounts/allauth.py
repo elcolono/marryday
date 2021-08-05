@@ -1,8 +1,16 @@
-from allauth.account.adapter import DefaultAccountAdapter
+""" Allauth extensions """
+
 from django.conf import settings
+
+from allauth.account.adapter import DefaultAccountAdapter
 
 
 class AccountAdapter(DefaultAccountAdapter):
+    """Custom AccountAdapter is created and assigned in the core.settings: ACCOUNT_ADAPTER
+
+    Args:
+        DefaultAccountAdapter (class)
+    """
 
     def send_mail(self, template_prefix, email, context):
         if not settings.DEBUG:

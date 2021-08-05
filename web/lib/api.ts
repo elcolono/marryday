@@ -44,7 +44,7 @@ export default class ApiService {
     }
 
     static fetchCities() {
-        return api.get('/cowork/cities/')
+        return api.get('/products/cities/')
     }
 
     static fetchBooking({ bookingId }) {

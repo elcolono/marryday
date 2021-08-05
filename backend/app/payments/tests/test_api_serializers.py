@@ -1,7 +1,6 @@
 from django.test import TestCase
-
+from payments.serializers import PaymentAccountSerializer
 from payments.models import PaymentAccount
-from payments.api.serializers.common import PaymentAccountSerializer
 
 
 class PaymentAccountSerializerTest(TestCase):

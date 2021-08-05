@@ -1,21 +1,15 @@
 """
 Testing Payment API Views
 """
-import stripe
-from datetime import datetime
-from django.utils import timezone
 
 from django.test import TestCase
 from django.urls import reverse
 
-from rest_framework.authtoken.models import Token
 from rest_framework import status
-from rest_framework.test import force_authenticate, APIRequestFactory, APIClient
+from rest_framework.test import APIClient
 
-from payments.api.views import list_create_payment_accounts, get_delete_update_payment_account, PaymentRetrieveView, create_stripe_account
-from payments.models import PaymentAccount, PaymentAccountUser, Payment
-from payments.api.serializers.common import PaymentAccountSerializer
-from cowork.models import Booking
+from payments.models import PaymentAccount, PaymentAccountUser
+from payments.serializers import PaymentAccountSerializer
 from accounts.models import User
 
 
