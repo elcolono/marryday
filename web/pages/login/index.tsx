@@ -2,7 +2,7 @@ import React from "react"
 import Link from "next/link"
 import Router from "next/router";
 
-import fetchAPIwithSSR from '../utils/fetchAPIwithSSR';
+import fetchAPIwithSSR from '../../utils/fetchAPIwithSSR';
 import { GetStaticProps } from 'next';
 import Cookies from 'js-cookie';
 
@@ -16,18 +16,18 @@ import {
   FormGroup,
   Spinner,
 } from "reactstrap"
-import Image from "../components/CustomImage"
-import Icon from "../components/Icon"
+import Image from "../../components/CustomImage"
+import Icon from "../../components/Icon"
 
 import { Formik } from "formik";
-import { InputField } from '../components/FormFields';
+import { InputField } from '../../components/FormFields';
 
 import * as Yup from 'yup'
-import fetchAPI from "../utils/fetchAPI";
+import fetchAPI from "../../utils/fetchAPI";
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-export default function Login(pageProps) {
+export default function Index(pageProps) {
 
   const { page } = pageProps;
 

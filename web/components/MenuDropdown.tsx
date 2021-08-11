@@ -9,7 +9,6 @@ import {
 import ActiveLink from "./ActiveLink"
 import Image from "./CustomImage"
 import UseWindowSize from "../hooks/UseWindowSize"
-import Avatar from "@material-ui/core/Avatar"
 
 export default function MenuDropdown(props) {
 
@@ -59,7 +58,7 @@ export default function MenuDropdown(props) {
                                 layout="fixed"
                                 alt={item.title}
                             /> :
-                            <Avatar>O</Avatar>
+                            null
                         }
                     </div>
                 ) : (
