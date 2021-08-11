@@ -58,7 +58,7 @@ class AccountIndexPage(MetadataPageMixin, Page):
     )
 
     subpage_types = ['user_account.AccountPage',
-                     'user_account.AccountProfilePage', 'user_account.AccountPaymentPage']
+                     'user_account.AccountProfilePage', 'user_account.AccountPaymentPage', 'user_account.AccountProductsPage']
     parent_page_types = ['home.HomePage']
     max_count = 1
 
@@ -162,4 +162,27 @@ class AccountPaymentPage(MetadataPageMixin, Page):
         APIField('heading'),
         APIField('description'),
         APIField('stripe_account_description'),
+    ]
+
+
+class AccountProductsPage(MetadataPageMixin, Page):
+
+    heading = models.CharField(max_length=255)
+    description = models.TextField(max_length=1055, null=True)
+
+    subpage_types = []
+    parent_page_types = ['user_account.AccountIndexPage']
+
+    # Editor panels configuration
+
+    content_panels = Page.content_panels + [
+        FieldPanel('heading', classname="full"),
+        FieldPanel('description', classname="full"),
+    ]
+
+    # under content_panels:
+
+    api_fields = [
+        APIField('heading'),
+        APIField('description'),
     ]
