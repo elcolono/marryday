@@ -297,7 +297,7 @@ export default function UserPersonal(pageProps) {
 export const getServerSideProps: GetServerSideProps = async ({ req, res, }) => {
 
     const token = getToken(req);
-    const loggedUser = await fetchAPIwithSSR('/api/v1/rest-auth/user/', { method: 'GET', req: req, token: token }) ?? {}
+    const loggedUser = await fetchAPIwithSSR('/api/v1/accounts/auth/user/', { method: 'GET', req: req, token: token }) ?? {}
     const companies = await fetchAPIwithSSR('/api/v1/profiles/usercompanies/', { method: 'GET', req: req, token: token }) ?? {}
     if (loggedUser.email === undefined) {
         res.setHeader("location", "/login");

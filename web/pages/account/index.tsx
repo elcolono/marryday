@@ -78,7 +78,7 @@ export default function UserAccount(pageProps) {
 export const getServerSideProps: GetServerSideProps = async ({ req, res, }) => {
 
     const token = getToken(req);
-    const loggedUser = (await fetchAPIwithSSR('/api/v1/rest-auth/user/', { method: 'GET', req: req, token: token })) ?? []
+    const loggedUser = (await fetchAPIwithSSR('/api/v1/accounts/auth/user/', { method: 'GET', req: req, token: token })) ?? []
     if (loggedUser.email === undefined) {
         res.setHeader("location", "/login");
         res.statusCode = 302;

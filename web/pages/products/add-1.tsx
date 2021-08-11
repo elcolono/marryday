@@ -1,11 +1,12 @@
 import React from "react"
 
-import { Container } from "reactstrap"
+import { Container, FormGroup, Label } from "reactstrap"
 
 import ProgressBar from "../../components/ProgressBar"
 import ListingForm from "../..//components/ListingForm"
 import data from "../../api/mock/user-add.json"
-import { useFormikContext } from "formik"
+import { Form, Formik, useFormikContext } from "formik"
+import { InputField } from "../../components/FormFields"
 
 export async function getStaticProps() {
   return {
@@ -37,6 +38,32 @@ const UserAdd1 = () => {
             <span className="text-muted float-right">Step 1</span>
           </h1>
 
+          <Formik 
+            initialValues={{
+              title: "",
+              Description: ""
+            }}
+            onSubmit={() => {}}
+            >{({
+              handleSubmit,
+              isSubmitting,
+            }) => (
+              <Form onSubmit={handleSubmit}>
+                <FormGroup>
+                  <Label for="title" className="form-label">
+                    Title
+                  </Label>
+                  <InputField
+                    name="title"
+                    id="title"
+                    type="text"
+                    placeholder="Cooler Trailer"
+                    required
+                  />
+                </FormGroup>
+              </Form>
+            )}</Formik>
+        
           <ListingForm data={data[1]} nextStep="/products/add-2" />
         </Container>
       </section>

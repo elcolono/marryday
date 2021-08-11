@@ -1,14 +1,14 @@
 import React from "react"
 import Link from "next/link"
 
-import fetchAPIwithSSR from '../utils/fetchAPIwithSSR';
+import fetchAPIwithSSR from '../../utils/fetchAPIwithSSR';
 import { GetStaticProps } from 'next';
 
 import {
   Container,
   Button,
 } from "reactstrap"
-import Image from "../components/CustomImage"
+import Image from "../../components/CustomImage"
 
 export default function Page404(pageProps) {
 

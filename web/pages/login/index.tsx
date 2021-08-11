@@ -75,7 +75,7 @@ export default function Index(pageProps) {
                       "email": values.email,
                       "password": values.password,
                     }
-                    fetchAPI('/api/v1/rest-auth/login/', { method: 'POST', body: data }).then(response => {
+                    fetchAPI('/api/v1/accounts/auth/login/', { method: 'POST', body: data }).then(response => {
                       Cookies.set('token', response.key);
                       localStorage.setItem('user', response.user);
                       Router.push('/account');
