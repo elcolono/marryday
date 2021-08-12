@@ -186,3 +186,26 @@ class AccountProductsPage(MetadataPageMixin, Page):
         APIField('heading'),
         APIField('description'),
     ]
+
+
+class AccountAddProductPage(MetadataPageMixin, Page):
+
+    heading = models.CharField(max_length=255)
+    description = models.TextField(max_length=1055, null=True)
+
+    subpage_types = []
+    parent_page_types = ['user_account.AccountIndexPage']
+
+    # Editor panels configuration
+
+    content_panels = Page.content_panels + [
+        FieldPanel('heading', classname="full"),
+        FieldPanel('description', classname="full"),
+    ]
+
+    # under content_panels:
+
+    api_fields = [
+        APIField('heading'),
+        APIField('description'),
+    ]
