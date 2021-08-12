@@ -29,7 +29,6 @@ class ProductListCreateSerializer(serializers.ModelSerializer):
         fields = ('title', 'slug', 'description', 'geometry',
                   'rating', 'preview_image',)
 
-
 class ProductRetrieveSerializer(serializers.ModelSerializer):
     images = ProductImageRretrieveSerializer(many=True)
     prices = serializers.SerializerMethodField()

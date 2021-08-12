@@ -1,3 +1,5 @@
+import uuid
+
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.text import slugify
@@ -32,12 +34,18 @@ class ProductImage(Image):
 
 class Product(models.Model):
     # General
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     is_active = models.BooleanField(default=False)
-    title = models.CharField(max_length=150, null=True, unique=True)
     slug = models.CharField(max_length=150, blank=True, null=True, unique=True)
+
+    # Basics
+    title = models.CharField(max_length=150, null=True, unique=True)
     description = HTMLField(null=True, blank=True)
 
-    # Contact
+    # Details
+    details = models.JSONField(blank=True, null=True)
+
+    # Location
     address = models.CharField(max_length=150, null=True)
     street_number = models.CharField(max_length=150, null=True)
     public_email = models.EmailField(null=True, blank=True)

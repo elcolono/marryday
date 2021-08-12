@@ -7,6 +7,7 @@ import {
     FormGroup
 } from "reactstrap";
 import {InputField} from "../../../components/FormFields";
+import UploadField from "../../../components/FormFields/UploadField";
 
 
 export default function AddProductImageForm(props) {
@@ -22,24 +23,8 @@ export default function AddProductImageForm(props) {
                 </p>
             </Col>
             <Col lg="7" className="ml-auto">
-                <FormGroup className="mb-5">
-                    <Label className="form-label" for="condition">
-                        Zustand
-                    </Label>
-                    <InputField
-                        name="condition"
-                        id="condition"
-                        type="textarea"
-                        rows="5"
-                    />
-                    <small
-                        id="description"
-                        className="form-text text-muted mt-2"
-                    >
-                        The bedding was hardly able to cover it and seemed ready to slide off any moment. His many legs,
-                        pitifully thin compared with the size of the rest of him, waved about helplessly as he looked.
-                        'What's happened to me?' he thought. It wasn't a dream.
-                    </small>
+                <FormGroup>
+                    <UploadField />
                 </FormGroup>
             </Col>
 

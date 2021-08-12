@@ -4,7 +4,8 @@ import checkoutFormModel from './productFormModel';
 const {
     formField: {
         title,
-        description
+        description,
+        files
     }
 } = checkoutFormModel;
 
@@ -15,6 +16,7 @@ export default [
     }),
     Yup.object().shape({}),
     Yup.object().shape({
+        [files.name]: Yup.array().required(`${files.requiredErrorMsg}`)
         // [firstName.name]: Yup.string().required(`${firstName.requiredErrorMsg}`),
         // [lastName.name]: Yup.string().required(`${lastName.requiredErrorMsg}`),
         // [email.name]: Yup.string().required(`${email.requiredErrorMsg}`).email("Must be a valid email"),

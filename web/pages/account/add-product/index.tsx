@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import {GetServerSideProps} from 'next';
 import Link from "next/link";
-import {ToastContainer} from 'react-toastify';
+import {toast, ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {
     Breadcrumb,
@@ -18,6 +18,10 @@ import formInitialValues from '../products/FormModel/formInitialValues';
 import AddProductDetailsForm from "../components/DetailsForm";
 import AddProductImageForm from "../components/ImageForm";
 import ProgressBar from "../../../components/ProgressBar";
+import {CardElement} from "@stripe/react-stripe-js";
+import ApiService from "../../../lib/api";
+import addProduct from "../../../api/product/addProduct";
+import addProductImage from "../../../api/product/addProductImage";
 
 const steps = ['basics', 'details', 'images'];
 const {formId, formField} = bookingFormModel;
@@ -25,7 +29,7 @@ const {formId, formField} = bookingFormModel;
 export default function AccountAddProduct(pageProps) {
 
     const {page, loggedUser} = pageProps;
-    const [activeStep, setActiveStep] = useState(2);
+    const [activeStep, setActiveStep] = useState(0);
 
     const currentValidationSchema = validationSchema[activeStep];
     const isLastStep = activeStep === steps.length - 1;
@@ -43,9 +47,37 @@ export default function AccountAddProduct(pageProps) {
         }
     }
 
+    function _uploadImages(values, actions) {
+        values['files'].map(file => {
+            addProductImage("test_name", file, "1")
+                .then(response => {
+                    setActiveStep(activeStep + 1);
+                    toast.success("Product was created successful!");
+                    actions.setSubmitting(false);
+                }).catch(error => {
+                toast.error(`${error.response.data}`);
+                actions.setSubmitting(false);
+            })
+        })
+    }
+
+    function _submitForm(values, actions) {
+        addProduct({
+            title: values['title'],
+            description: values['description'],
+        })
+            .then(response => {
+                toast.success("Product was created successful!");
+                _uploadImages(values, actions);
+            }).catch(error => {
+            toast.error(`${error.response.data}`);
+            actions.setSubmitting(false);
+        })
+    }
+
     function _handleSubmit(values, actions) {
         if (isLastStep) {
-            console.log(values, actions);
+            _submitForm(values, actions);
         } else {
             console.log(activeStep)
             setActiveStep(activeStep + 1);
@@ -113,6 +145,7 @@ export default function AccountAddProduct(pageProps) {
                                                 </Button>
                                             </Col>
                                         </Row>
+                                        <div>{JSON.stringify(values)}</div>
 
                                     </Form>
                                 )}
