@@ -3,12 +3,12 @@ import fetchAPIwithSSR from '../utils/fetchAPIwithSSR';
 
 import { GetStaticProps } from 'next';
 
-import HeroLocationSearchSection from '../components/Section/HeroLocationSearchSection';
-import CitySlider from '../components/Section/CitySlider';
-import CTASection from '../components/Section/Cta';
-import ServiceSection from '../components/Section/Services';
-import FAQSection from '../components/Section/Faq';
-import LocationSlider from '../components/Section/LocationSlider';
+import HeroLocationSearchSection from './[slug]/components/HeroLocationSearchSection';
+import CitySlider from './[slug]/components/CitySlider';
+import CTASection from './[slug]/components/Cta';
+import ServiceSection from './[slug]/components/Services';
+import FAQSection from './[slug]/components/Faq';
+import LocationSlider from './[slug]/components/LocationSlider';
 
 export default function Index(pageProps) {
 

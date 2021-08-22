@@ -6,7 +6,7 @@ import {FormGroup, Row} from "reactstrap";
 const baseStyle = {
     flex: 1,
     display: 'flex',
-    flexDirection: 'column',
+    //flexDirection: 'column',
     alignItems: 'center',
     padding: '20px',
     borderWidth: 2,
@@ -36,14 +36,14 @@ export default function UploadField() {
 
     const onDrop = acceptedFiles => {
         const accumulatedFiles = [
-            ...values['files'],
+            ...values['images'],
             ...acceptedFiles.map((file) =>
                 Object.assign(file, {
                     preview: URL.createObjectURL(file),
                 })
             )
         ]
-        setFieldValue("files", accumulatedFiles)
+        setFieldValue("images", accumulatedFiles)
     }
 
     const {
@@ -75,7 +75,7 @@ export default function UploadField() {
                 <div {...getRootProps({style})}>
                     <input {...getInputProps()} />
                     <div className="dz-message text-muted">
-                        <p>Drop files here or click to upload.</p>
+                        <p>Drop images here or click to upload.</p>
                         <p>
                           <span className="note">
                             (This is just a demo dropzone. Selected files are{" "}
@@ -86,12 +86,12 @@ export default function UploadField() {
                 </div>
 
                 <Row className="mt-4">
-                    {values["files"] &&
-                    values["files"].map((file) => (
-                        <div key={file.name} className="col-lg-4">
+                    {values["images"] &&
+                    values["images"].map((file) => (
+                        <div key={file.title} className="col-lg-4">
                             <div>
                                 <img
-                                    src={file.preview}
+                                    src={file.image}
                                     className="img-fluid rounded shadow mb-4"
                                 />
                             </div>

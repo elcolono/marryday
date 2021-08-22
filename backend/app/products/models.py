@@ -34,22 +34,29 @@ class ProductImage(Image):
 
 class Product(models.Model):
     # General
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     is_active = models.BooleanField(default=False)
-    slug = models.CharField(max_length=150, blank=True, null=True, unique=True)
+    user = models.ForeignKey(
+        'accounts.User', related_name="products", on_delete=models.CASCADE, null=True, blank=True)
 
     # Basics
-    title = models.CharField(max_length=150, null=True, unique=True)
-    description = HTMLField(null=True, blank=True)
+    title = models.CharField(max_length=150, blank=True, default="", unique=True)
+    slug = models.CharField(max_length=150, blank=True, default="")
+    description = HTMLField(max_length=1000, blank=True, default="")
 
     # Details
     details = models.JSONField(blank=True, null=True)
 
+    # Contact
+    public_email = models.EmailField(max_length=150, blank=True, default="")
+    public_phone = models.CharField(max_length=150, blank=True, default="")
+
     # Location
-    address = models.CharField(max_length=150, null=True)
-    street_number = models.CharField(max_length=150, null=True)
-    public_email = models.EmailField(null=True, blank=True)
-    public_phone = models.CharField(max_length=150, null=True)
+    address = models.CharField(max_length=150, blank=True, default="")
+    street_number = models.CharField(max_length=150, blank=True, default="")
+    city = models.ForeignKey(
+        'locations.City', related_name="locations", on_delete=models.PROTECT, null=True, blank=True)
+    country = models.ForeignKey(
+        'locations.Country', related_name="country_locations", on_delete=models.PROTECT, null=True, blank=True)
 
     # Geometry
     geometry = models.JSONField(null=True, blank=True)
@@ -61,8 +68,7 @@ class Product(models.Model):
     user_ratings_total = models.IntegerField(null=True, blank=True)
 
     # Booking
-    day_price = models.DecimalField(
-        decimal_places=2, blank=True, null=True, max_digits=10)
+    day_price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
 
     # Images
     preview_image = models.OneToOneField(
@@ -74,18 +80,13 @@ class Product(models.Model):
     )
 
     def clean(self):
-        rent_objects = self.rent_objects.all()
-        if any(obj.type == 'phone' for obj in rent_objects) and not self.phone_hour_price:
-            raise ValidationError(
-                'You have created an "Phone" rent object so please insert a phone price.')
-
         if self.is_active is True and self.images.count() < 3:
             raise ValidationError(
                 'Please insert at least 3 Product Images before activation.')
 
     def save(self, *args, **kwargs):
-        location_images = self.images.all()
-        for image in location_images:
+        product_images = self.images.all()
+        for image in product_images:
             if image.is_thumbnail:
                 self.preview_image = image
 

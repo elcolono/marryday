@@ -1,8 +1,8 @@
 import React from "react"
 import Link from "next/link"
 
-import fetchAPIwithSSR from '../../utils/fetchAPIwithSSR';
-import { GetServerSideProps } from 'next';
+import fetchAPIWithSSR from '../../utils/fetchAPIwithSSR';
+import {GetServerSideProps} from 'next';
 
 import {
     Container,
@@ -19,10 +19,11 @@ import {
 import Icon from "../../components/Icon";
 import getToken from "../../utils/getToken";
 
+export const accountPath = '/account';
 
-export default function UserAccount(pageProps) {
+export default function Account(pageProps) {
 
-    const { page } = pageProps;
+    const {page} = pageProps;
 
     return (
         <section className="py-5">
@@ -58,7 +59,7 @@ export default function UserAccount(pageProps) {
                                         </Link>
                                         {" "}
                                         {card.coming_soon &&
-                                            <Badge color="success">Coming soon</Badge>
+                                        <Badge color="success">Coming soon</Badge>
                                         }
                                     </CardTitle>
                                     <CardText className="text-muted text-sm">
@@ -75,19 +76,23 @@ export default function UserAccount(pageProps) {
 }
 
 
-export const getServerSideProps: GetServerSideProps = async ({ req, res, }) => {
+export const getServerSideProps: GetServerSideProps = async ({req, res,}) => {
 
     const token = getToken(req);
-    const loggedUser = (await fetchAPIwithSSR('/api/v1/accounts/auth/user/', { method: 'GET', req: req, token: token })) ?? []
+    const loggedUser = (await fetchAPIWithSSR('/api/v1/accounts/auth/user/', {
+        method: 'GET',
+        req: req,
+        token: token
+    })) ?? []
     if (loggedUser.email === undefined) {
         res.setHeader("location", "/login");
         res.statusCode = 302;
         res.end();
-        return { props: {} }
+        return {props: {}}
     }
 
-    const settings = (await fetchAPIwithSSR('/api/page/home', { method: 'GET', req: req })) ?? []
-    const pageData = await fetchAPIwithSSR('/api/v2/pages/?type=user_account.AccountIndexPage&fields=seo_title,search_description,heading,description,cards', { method: 'GET' });
+    const settings = (await fetchAPIWithSSR('/api/page/home', {method: 'GET', req: req})) ?? []
+    const pageData = await fetchAPIWithSSR('/api/v2/pages/?type=user_account.AccountIndexPage&fields=seo_title,search_description,heading,description,cards', {method: 'GET'});
     const page = pageData?.items[0] ?? null;
 
     return {

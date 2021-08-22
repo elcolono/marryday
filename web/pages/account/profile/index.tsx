@@ -134,7 +134,7 @@ export default function UserPersonal(pageProps) {
                                                         disabled={isSubmitting}
                                                         type="submit"
                                                         color="outline-primary"
-                                                        className=" mb-4">
+                                                        className="mb-4">
                                                         {isSubmitting ? <Spinner size="sm" /> : "Speichern"}
                                                     </Button>
                                                 </Form>

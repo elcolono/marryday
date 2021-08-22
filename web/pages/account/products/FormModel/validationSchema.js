@@ -5,7 +5,7 @@ const {
     formField: {
         title,
         description,
-        files
+        images
     }
 } = checkoutFormModel;
 
@@ -16,7 +16,7 @@ export default [
     }),
     Yup.object().shape({}),
     Yup.object().shape({
-        [files.name]: Yup.array().required(`${files.requiredErrorMsg}`)
+        [images.name]: Yup.array().required(`${images.requiredErrorMsg}`)
         // [firstName.name]: Yup.string().required(`${firstName.requiredErrorMsg}`),
         // [lastName.name]: Yup.string().required(`${lastName.requiredErrorMsg}`),
         // [email.name]: Yup.string().required(`${email.requiredErrorMsg}`).email("Must be a valid email"),

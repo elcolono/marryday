@@ -1,28 +1,38 @@
-import { GetServerSideProps } from 'next';
+import {GetServerSideProps} from 'next';
 import Link from "next/link";
-import React from "react";
-import { ToastContainer } from 'react-toastify';
+import React, {useState} from "react";
+import {toast, ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {
     Breadcrumb,
-    BreadcrumbItem, Button, Card, CardBody, CardHeader, Col, Container, Media, Row
+    BreadcrumbItem, Button, Card, CardBody, CardHeader, Col, Container, Media, Row, Spinner
 } from "reactstrap";
-import geoJSON from "../../../api/mock/rooms-geojson.json";
-import CardRoom from "../../../components/CardRoom";
+import CardProduct from "./components/CardProduct";
 import Icon from "../../../components/Icon";
 import fetchAPIwithSSR from '../../../utils/fetchAPIwithSSR';
 import getToken from "../../../utils/getToken";
+import isEmpty from 'lodash/isEmpty'
+import createProduct from "../../../api/products/createProduct";
+import Router from "next/router";
 
-export default function UserProductss(pageProps) {
+export const accountProductsPath = "/products"
 
-    const { page } = pageProps;
+export default function AccountProducts(pageProps) {
+    const {page, products} = pageProps;
+    const [isLoading, setIsLoading] = useState(false);
 
-    const [user, setUser] = React.useState(pageProps.loggedUser)
-    const [company, setCompany] = React.useState(pageProps.companies[0])
+    const createAndEditProduct = async () => {
+        try {
+            const emptyProduct = await createProduct()
+            await Router.push(`/update-product/${emptyProduct.id}`)
+        } catch (error) {
+            toast.error(error.detail)
+        }
+    }
 
     return (
         <>
-            <ToastContainer />
+            <ToastContainer/>
             <section className="py-5">
                 <Container>
                     <Breadcrumb listClassName="pl-0  justify-content-start">
@@ -42,47 +52,62 @@ export default function UserProductss(pageProps) {
                     <p className="text-muted mb-5">{page.description && page.description}</p>
                     <Row>
                         <Col lg="7">
-                            {company &&
-                                <div className="text-block">
-                                    <Row className="mb-3">
-                                        <Col sm="9">
-                                            <h5>Dein Listing</h5>
-                                        </Col>
-                                        <Col sm="3" className="text-right">
-                                            <Link href="/account/add-product">
-                                                <Button
-                                                    color="link"
-                                                    className="pl-0 text-primary collapsed"
-                                                    onClick={() => console.log("Add Produkt")}
-                                                >
-                                                    Hinzufügen
-                                                </Button>
-                                            </Link>
-                                        </Col>
-                                    </Row>
-                                    <Media className="text-sm text-muted">
-                                        <i className="fa fa-address-book fa-fw mr-2" />
-                                        <Media body className="mt-n1">
-                                            {company.company_name}
-                                        </Media>
-                                    </Media>
-                                </div>
-                            }
-                            {user &&
-                                <div className="text-block">
-                                <Row>
-                                  {geoJSON.features.map((listing) => (
-                                    <Col
-                                      sm="6"
-                                      lg="4"
-                                      className="mb-30px hover-animate"
-                                      key={listing.properties.name}
-                                    >
-                                      <CardRoom data={listing.properties} />
+                            <div className="text-block">
+                                <Row className="mb-3">
+                                    <Col sm="9">
+                                        <h5>Deine Listing</h5>
                                     </Col>
-                                  ))}
+                                    <Col sm="3" className="text-right">
+                                        <Button
+                                            color="link"
+                                            className="pl-0 text-primary collapsed"
+                                            onClick={createAndEditProduct}
+                                        >
+                                            Hinzufügen
+                                        </Button>
+                                    </Col>
                                 </Row>
-                              </div>
+                            </div>
+                            {!isEmpty(products) ?
+                                <div className="text-block">
+                                    <Row>
+                                        {products.map((product) => (
+                                            <Col
+                                                sm="6"
+                                                lg="6"
+                                                className="mb-30px hover-animate"
+                                                key={product.id}
+                                            >
+                                                <CardProduct data={product}/>
+                                            </Col>
+                                        ))}
+                                    </Row>
+                                </div> :
+                                <div className="text-block">
+                                    <p className="mb-5 text-center">
+                                        <img
+                                            src="/assets/img/illustration/undraw_through_the_desert_fcin.svg"
+                                            width={200}
+                                            height={279}
+                                            // layout="intrinsic"
+                                            alt=""
+                                            className="img-fluid"
+                                            sizes="(max-width: 576px) 100vw, 530px"
+                                        />
+                                    </p>
+                                    <p className="text-muted text-center">Sorry, leider noch keine Produkte
+                                        vorhanden.</p>
+                                    <p className="text-muted text-center">
+                                        <Button
+                                            disabled={isLoading}
+                                            color="outline-primary"
+                                            className="mb-4"
+                                            onClick={createAndEditProduct}
+                                        >
+                                            {isLoading ? <Spinner size="sm"/> : "Produkt hinzufügen"}
+                                        </Button>
+                                    </p>
+                                </div>
                             }
                         </Col>
                         <Col md="6" lg="4" className="ml-lg-auto">
@@ -122,27 +147,36 @@ export default function UserProductss(pageProps) {
 }
 
 
-export const getServerSideProps: GetServerSideProps = async ({ req, res, }) => {
+export const getServerSideProps: GetServerSideProps = async ({req, res,}) => {
 
     const token = getToken(req);
-    const loggedUser = await fetchAPIwithSSR('/api/v1/accounts/auth/user/', { method: 'GET', req: req, token: token }) ?? {}
-    const companies = await fetchAPIwithSSR('/api/v1/profiles/usercompanies/', { method: 'GET', req: req, token: token }) ?? {}
+    const loggedUser = await fetchAPIwithSSR('/api/v1/accounts/auth/user/', {
+        method: 'GET',
+        req: req,
+        token: token
+    }) ?? {}
+    const products = await fetchAPIwithSSR('/api/v1/products/vendor', {
+        method: 'GET',
+        req: req,
+        token: token
+    }) ?? []
+
     if (loggedUser.email === undefined) {
         res.setHeader("location", "/login");
         res.statusCode = 302;
         res.end();
-        return { props: {} }
+        return {props: {}}
     }
 
-    const settings = (await fetchAPIwithSSR('/api/page/home', { method: 'GET', req: req })) ?? []
-    const pageData = await fetchAPIwithSSR('/api/v2/pages/?type=user_account.AccountProductsPage&fields=seo_title,search_description,heading,description', { method: 'GET' });
+    const settings = (await fetchAPIwithSSR('/api/page/home', {method: 'GET', req: req})) ?? []
+    const pageData = await fetchAPIwithSSR('/api/v2/pages/?type=user_account.AccountProductsPage&fields=seo_title,search_description,heading,description', {method: 'GET'});
     const page = pageData?.items[0] ?? null;
 
     return {
         props: {
             page,
             loggedUser,
-            companies,
+            products,
             themeSettings: settings.theme_settings,
             mainMenus: settings.main_menus,
             flatMenus: settings.flat_menus,

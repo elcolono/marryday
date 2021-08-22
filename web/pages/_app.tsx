@@ -1,5 +1,5 @@
 import React from "react";
-import Layout from "../components/Layout";
+import Layout from "../Layout";
 
 import "../scss/style.default.scss";
 import { library } from '@fortawesome/fontawesome-svg-core';

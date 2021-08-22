@@ -6,10 +6,15 @@ from django.conf import settings
 from rest_framework import generics, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.parsers import MultiPartParser
 
 from products.models import Product
+from products.permissions import IsProductOwner
 from products.serializers import (
-    ProductImageCreateSerializer, ProductListCreateSerializer, ProductRetrieveSerializer)
+    ProductImageCreateSerializer, ProductCreateSerializer, ProductListSerializer, ProductRetrieveSerializer,
+    ProductUpdateSerializer,
+    ProductDestroySerializer)
 
 from mailchimp_marketing.api_client import ApiClientError
 import mailchimp_marketing as MailchimpMarketing
@@ -17,17 +22,54 @@ import mailchimp_marketing as MailchimpMarketing
 
 class ProductImageCreateView(generics.CreateAPIView):
     serializer_class = ProductImageCreateSerializer
+    parser_classes = [MultiPartParser]
 
 
-class ProductListCreateView(generics.ListCreateAPIView):
-    queryset = Product.objects.filter(is_active=True)
-    serializer_class = ProductListCreateSerializer
+class ProductImageRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = ProductImageCreateSerializer
 
 
-class LocationRetrieveView(generics.RetrieveAPIView):
+class VendorProductListCreateView(generics.ListCreateAPIView):
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        return Product.objects.filter(user=user)
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+    def get_serializer_class(self):
+        if self.serializer_class:
+            return self.serializer_class
+
+        if self.request.method == 'POST':
+            self.serializer_class = ProductCreateSerializer
+
+        if self.request.method == 'GET':
+            self.serializer_class = ProductListSerializer
+
+        return self.serializer_class
+
+
+class VendorProductRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = [IsAuthenticated, IsProductOwner]
     queryset = Product.objects.all()
-    serializer_class = ProductRetrieveSerializer
-    lookup_field = 'slug'
+
+    def get_serializer_class(self):
+        if self.serializer_class:
+            return self.serializer_class
+
+        if self.request.method == 'GET':
+            self.serializer_class = ProductRetrieveSerializer
+
+        if self.request.method == 'PUT':
+            self.serializer_class = ProductUpdateSerializer
+
+        if self.request.method == 'DELETE':
+            self.serializer_class = ProductDestroySerializer
+
+        return self.serializer_class
 
 
 # Mailchimp Views

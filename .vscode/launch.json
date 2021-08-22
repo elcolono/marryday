@@ -20,6 +20,9 @@
             "type": "node",
             "request": "attach",
             "name": "Node: NextJS",
+            "resolveSourceMapLocations": [
+                "${workspaceRoot}/web/*",
+            ],
             "sourceMapPathOverrides": {
                 "webpack:///./*": "${workspaceRoot}/web/*",
             },

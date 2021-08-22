@@ -1,6 +1,6 @@
 import { Formik } from 'formik'
 import * as Yup from 'yup'
-import addSubscriber from '../api/addSubscriber';
+import addSubscriber from '../api/products/addSubscriber';
 import { toast } from 'react-toastify';
 import { Form, Input, Button, Spinner } from "reactstrap"
 

@@ -11,9 +11,9 @@ export default {
             label: 'Description*',
             requiredErrorMsg: 'Description is required'
         },
-        files: {
-            name: 'files',
-            label: 'Files',
+        images: {
+            name: 'images',
+            label: 'Images',
             requiredErrorMsg: 'Images are required'
         }
     }

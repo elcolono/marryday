@@ -4,12 +4,12 @@ const {
     formField: {
         title,
         description,
-        files,
+        images,
     }
 } = checkoutFormModel;
 
 export default {
     [title.name]: '',
     [description.name]: '',
-    [files.name]: [],
+    [images.name]: [],
 };
