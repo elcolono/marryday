@@ -1,7 +1,13 @@
 import setAuthHeader from './setAuthHeader';
 
-async function fetchAPI(url, {method = "GET", body = undefined, isForm = false, token = undefined} = {}) {
-    const headers = setAuthHeader(token);
+async function fetchAPI(url, {
+    method = "GET",
+    body = undefined,
+    isForm = false,
+    token = undefined,
+    mediaType = undefined
+} = {}) {
+    const headers = setAuthHeader(token, mediaType);
     const res = await fetch(process.env.CLIENT_API_URL + url, {
         method: method,
         headers: headers,

@@ -12,6 +12,11 @@ export default function addProductImage(title: string, file: File, product: stri
 
     return fetchAPI(
         '/api/v1/products/image/',
-        {method: 'POST', body: formData, isForm: true}
+        {
+            method: 'POST',
+            body: formData,
+            isForm: true,
+            mediaType: 'multipart/form-data; boundary=----WebKitFormBoundary'
+        }
     )
 }

@@ -7,7 +7,7 @@ import {Breadcrumb, BreadcrumbItem, Button, Col, Container, Row, Spinner} from "
 import fetchAPIWithSSR from '../../../utils/fetchAPIwithSSR';
 import getToken from "../../../utils/getToken";
 import AddProductBasicForm from "../../add-product/components/BasicForm";
-import {Form, Formik} from "formik";
+import {Form, Formik, useFormikContext} from "formik";
 
 import validationSchema from '../products/FormModel/validationSchema';
 import bookingFormModel from '../products/FormModel/productFormModel';
@@ -47,14 +47,19 @@ export default function AccountUpdateProduct(pageProps) {
         }
     }
 
-    async function uploadImages(images, productId: string) {
-        for await (const image of images) {
+    async function uploadImages(values, actions) {
+        const images = values['images']
+        const productId = values['id']
+        for await (let image of images) {
             if (!image.uuid) {
-                await addProductImage(
+                const productImage = await addProductImage(
                     "test_name",
                     image,
                     productId
-                )
+                );
+                const index = image.indexOf(image);
+                images[index] = productImage
+                actions.setFieldValue('images', images)
             }
         }
     }
@@ -63,7 +68,7 @@ export default function AccountUpdateProduct(pageProps) {
         try {
             console.log('submitForm')
             await updateProduct(values);
-            await uploadImages(values['images'], values['id']);
+            await uploadImages(values, actions);
             toast.success("Product was updated successful!");
             actions.setSubmitting(false);
         } catch (error) {

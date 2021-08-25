@@ -1,13 +1,13 @@
-function setAuthHeader(token) {
+function setAuthHeader(token, mediaType = 'application/json') {
     if (token) {
         return {
             'authorization': `Token ${token}`,
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
+            'Accept': mediaType,
+            'Content-Type': mediaType,
         };
     }
     return {
-        'Content-Type': 'application/json',
+        'Content-Type': mediaType,
     }
 }
 

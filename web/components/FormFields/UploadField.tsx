@@ -90,10 +90,15 @@ export default function UploadField() {
                     values["images"].map((file) => (
                         <div key={file.title} className="col-lg-4">
                             <div>
-                                <img
-                                    src={file.image}
-                                    className="img-fluid rounded shadow mb-4"
-                                />
+                                {file.image
+                                    ? <img
+                                        src={file.image}
+                                        className="img-fluid rounded shadow mb-4"
+                                    />
+                                    : <img
+                                        src={file.preview}
+                                        className="preview img-fluid rounded shadow mb-4"
+                                    />}
                             </div>
                         </div>
                     ))}
