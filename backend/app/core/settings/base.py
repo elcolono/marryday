@@ -80,12 +80,35 @@ INSTALLED_APPS = [
     # Auth
     'rest_framework',
     'rest_framework.authtoken',
-    'rest_auth',
+    'dj_rest_auth',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
-    'rest_auth.registration',
+    'allauth.socialaccount.providers.google',
+    'dj_rest_auth.registration'
 ]
+
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_USERNAME_REQUIRED = False
+
+# Social Login
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        }
+    }
+}
+# Disable email verification since this is just a test.
+# If you want to enable it, you'll need to configure django-allauth's email confirmation pages
+SOCIALACCOUNT_EMAIL_VERIFICATION = "none"
+SOCIALACCOUNT_EMAIL_REQUIRED = False
 
 MIDDLEWARE = [
     # Cors
@@ -144,7 +167,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
@@ -177,7 +199,6 @@ STATIC_URL = '/static/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
-
 # Wagtail settings
 
 WAGTAIL_SITE_NAME = "core"
@@ -188,7 +209,6 @@ BASE_URL = 'http://www.mowo.space'
 
 # Crispy Settings
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
-
 
 # Cors Configuration
 CORS_ORIGIN_ALLOW_ALL = True
@@ -209,7 +229,6 @@ MAILCHIMP_API_KEY = os.environ.get('MAILCHIMP_API_KEY')
 MAILCHIMP_DATA_CENTER = os.environ.get('MAILCHIMP_DATA_CENTER')
 MAILCHIMP_EMAIL_LIST_ID = os.environ.get('MAILCHIMP_EMAIL_LIST_ID')
 
-
 # Auth user
 AUTH_USER_MODEL = 'accounts.User'
 
@@ -226,7 +245,6 @@ REST_FRAMEWORK = {
     )
 }
 
-
 # Configure django-allauth
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 ACCOUNT_EMAIL_REQUIRED = True
@@ -240,7 +258,6 @@ ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = '/?verification=1'
 
 SITE_ID = 1
 ACCOUNT_ADAPTER = 'accounts.allauth.AccountAdapter'
-
 
 # EMAIL SETTINGS
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -276,7 +293,6 @@ AWS_S3_FILE_OVERWRITE = False
 # Setting AWS_QUERYSTRING_AUTH to False to remove query parameter authentication from generated URLs. This can be useful if your S3 buckets are public.
 # BUT WITH AUTH QUERYSTRING AND ERROR OCCURES - NOT DEBUGGED YET
 AWS_QUERYSTRING_AUTH = False
-
 
 # Stripe payment
 STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY')

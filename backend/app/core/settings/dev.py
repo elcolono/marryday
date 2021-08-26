@@ -46,7 +46,7 @@ PIPEDRIVE_URL = "https://mowospaces.pipedrive.com/api/v1/"
 
 
 # Client Domain
-CLIENT_DOMAIN = 'http://localhost:3001/'
+CLIENT_DOMAIN = 'http://localhost:3000/'
 
 try:
     from .local import *

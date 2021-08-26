@@ -55,19 +55,18 @@ const Layout = (pageProps) => {
             style={{paddingTop: pageProps.noPaddingTop ? "0" : "72px"}}
             className={pageProps.className}
         >
-            {/* Google Fonts - preload & async load to avoid render blocking */}
             <Head>
                 <title>{pageProps.title}</title>
                 <meta name="description" content={pageProps.searchDescription}></meta>
                 <link rel="icon" href="/favicon.png"/>
             </Head>
-            <Header {...headerProps} />
             <NextNProgress startPosition={0.3} stopDelayMs={200} height={3} color="#4E66F8"
                            options={{showSpinner: false}}/>
+            {!pageProps.hideHeader && <Header {...headerProps} />}
             <FormProvider>
                 <main>{pageProps.children}</main>
             </FormProvider>
-            <Footer {...footerProps} />
+            {!pageProps.hideFooter && <Footer {...footerProps} />}
             <SvgIcons/>
             {showCookieConsent && (
                 <CookieConsent acceptCookie={acceptCookies}>CookieConsent</CookieConsent>

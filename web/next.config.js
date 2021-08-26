@@ -40,7 +40,7 @@ module.exports = withPlugins(
         },
         env: {
             production_type: "server", // Change variable to "static" for STATIC EXPORT
-            CLIENT_API_URL: process.env.BASE_SERVER_URL || 'http://127.0.0.1:8000',
+            CLIENT_API_URL: process.env.BASE_SERVER_URL || 'http://localhost:8000',
             STRIPE_PUBLISHABLE_KEY: process.env.STRIPE_PUBLISHABLE_KEY
         },
         // trailingSlash: true // Uncomment this line for STATIC EXPORT

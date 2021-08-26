@@ -2,4 +2,4 @@ from django.apps import AppConfig
 
 
 class BlogConfig(AppConfig):
-    name = 'account'
+    name = 'cms.user_account'
