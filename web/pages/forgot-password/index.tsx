@@ -49,35 +49,6 @@ export const getStaticProps: GetStaticProps = async () => {
 export default function Index(pageProps) {
 
     const {page} = pageProps;
-    const router = useRouter();
-    const [isLoading, setIsLoading] = useState(false)
-    useEffect(() => {
-        const code = router.query["code"] as string
-        if (code) {
-            const data = {
-                access_token: "",
-                code: code,
-                id_token: ""
-            }
-            setIsLoading(true)
-            fetchAPI('/api/v1/accounts/auth/google/', {
-                method: 'POST',
-                body: data
-            }).then(response => {
-                Cookies.set('token', response.key);
-                localStorage.setItem('user', response.user);
-                Router.push('/account');
-                setIsLoading(false);
-            }).catch(error => {
-                for (var prop in error) {
-                    const errorMessage = error[prop][0];
-                    toast.error(errorMessage);
-                }
-                setIsLoading(false);
-            })
-        }
-
-    }, [router.query])
 
     return (
         <>
@@ -97,33 +68,30 @@ export default function Index(pageProps) {
                                         className="img-fluid mb-5"
                                     />
                                     <h2>{page.heading && page.heading}</h2>
+                                    <div className="text-muted" dangerouslySetInnerHTML={{__html: page.description}}>
+                                    </div>
                                 </div>
                                 <Formik
                                     initialValues={{
                                         email: '',
-                                        password: '',
                                     }}
                                     validationSchema={Yup.object({
                                         email: Yup.string()
                                             .email('Ungültige Email Adresse')
                                             .required('Erforderlich'),
-                                        password: Yup.string()
-                                            .required('Erforderlich')
-                                            .min(8, 'Password is too short - should be 8 chars minimum.')
                                     })}
                                     onSubmit={(values, {setSubmitting, setStatus}) => {
                                         const data = {
                                             "email": values.email,
-                                            "password": values.password,
                                         }
-                                        fetchAPI('/api/v1/accounts/auth/login/', {
+                                        fetchAPI('/api/v1/accounts/forgot-password/', {
                                             method: 'POST',
                                             body: data
                                         }).then(response => {
-                                            Cookies.set('token', response.key);
-                                            localStorage.setItem('user', response.user);
-                                            Router.push('/account');
-                                            toast.success("Hallo, Willkommen zurück");
+                                            for (var prop in response) {
+                                                const errorMessage = response[prop];
+                                                toast.success(errorMessage);
+                                            }
                                             setSubmitting(false);
                                         }).catch(error => {
                                             for (var prop in error) {
@@ -152,65 +120,25 @@ export default function Index(pageProps) {
                                                     required
                                                 />
                                             </FormGroup>
-                                            <FormGroup className="mb-4">
-                                                <Row>
-                                                    <Col>
-                                                        <Label for="loginPassword" className="form-label">
-                                                            Password
-                                                        </Label>
-                                                    </Col>
-                                                    <Col xs="auto">
-                                                        <Link href="/forgot-password">
-                                                            <a className="form-text small">
-                                                                Forgot password?
-                                                            </a>
-                                                        </Link>
-                                                    </Col>
-                                                </Row>
-                                                <InputField
-                                                    name="password"
-                                                    id="passworkd"
-                                                    type="password"
-                                                    placeholder="Password"
-                                                    required
-                                                />
-                                            </FormGroup>
                                             <Button
                                                 disabled={isSubmitting}
                                                 type="submit"
                                                 size="lg"
                                                 color="primary"
                                                 block>
-                                                {(isSubmitting || isLoading) ? <Spinner size="sm"/> : "Anmelden"}
+                                                {isSubmitting ? <Spinner size="sm"/> : "Reset password"}
                                             </Button>
                                         </Form>
                                     )}
 
                                 </Formik>
-                                <hr data-content="OR" className="my-3 hr-text letter-spacing-2"/>
-                                <Button color="outline-primary" block className="btn-social mb-3">
-                                    <i className="fa-2x fa-facebook-f fab btn-social-icon"/>
-                                    Connect <span className="d-none d-sm-inline">with Facebook</span>
-                                </Button>
 
-                                <Link href={`${process.env.CLIENT_API_URL}/api/v1/accounts/auth/google/url/`}>
-                                    <Button color="outline-muted" block
-                                            className="btn-social mb-3">
-                                        <i className="fa-2x fa-google fab btn-social-icon"/>
-                                        Connect <span className="d-none d-sm-inline">with Google</span>
-                                    </Button>
-                                </Link>
-
-                                <Button color="outline-primary" block className="btn-social mb-3">
-                                    <i className="fa-2x fa-twitter fab btn-social-icon"/>
-                                    Connect <span className="d-none d-sm-inline">with Twitter</span>
-                                </Button>
                                 <hr className="my-4"/>
                                 <p className="text-center">
                                     <small className="text-muted text-center">
                                         Don't have an account yet?&nbsp;
-                                        <Link href="/signup">
-                                            <a>Sign Up</a>
+                                        <Link href="/login">
+                                            <a>Login</a>
                                         </Link>
                                     </small>
                                 </p>

@@ -273,6 +273,7 @@ REST_AUTH_SERIALIZERS = {
     'USER_DETAILS_SERIALIZER': 'accounts.serializers.common.UserSerializer',
     'TOKEN_SERIALIZER': 'accounts.serializers.common.TokenSerializer',
     # 'LOGIN_SERIALIZER': 'accounts.serializers.common.LoginSerializer',
+    'PASSWORD_RESET_SERIALIZER': 'accounts.serializers.common.PasswordResetSerializer',
 }
 
 REST_AUTH_REGISTER_SERIALIZERS = {

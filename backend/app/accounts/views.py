@@ -6,16 +6,18 @@ from django.conf import settings
 from django.shortcuts import redirect
 from django.urls import reverse
 from rest_framework import generics
+from rest_framework.decorators import api_view
 from rest_framework.permissions import IsAuthenticated
 
 from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
 from allauth.socialaccount.providers.oauth2.client import OAuth2Client
 
 from dj_rest_auth.registration.views import SocialLoginView
+from rest_framework.response import Response
 
 from .models import User
 from .permissions import IsUpdateUser
-from .serializers.common import UserSerializer
+from .serializers.common import UserSerializer, SendInviteForm
 
 
 class UserView(generics.RetrieveUpdateAPIView):
@@ -39,3 +41,12 @@ class GoogleLogin(SocialLoginView):
 def google_callback(request):
     params = urllib.parse.urlencode(request.GET)
     return redirect(f'{settings.CLIENT_DOMAIN}login?{params}')
+
+
+@api_view(['POST'])
+def forgot_password(request):
+    email = request.data['email']
+    form = SendInviteForm(data={"email": email})
+    if form.is_valid():
+        form.save(None)
+    return Response({"details": "Password reset e-mail has been sent."})
