@@ -6,7 +6,7 @@ import {
     FormFeedback,
     FormGroup
 } from "reactstrap";
-import {InputField} from "../../../components/FormFields";
+import {InputField} from "../../../../components/FormFields";
 
 
 export default function AddProductDetailsForm(props) {
@@ -42,7 +42,6 @@ export default function AddProductDetailsForm(props) {
                     </small>
                 </FormGroup>
             </Col>
-
         </Row>
     );
 }

@@ -6,8 +6,8 @@ import {
     FormFeedback,
     FormGroup
 } from "reactstrap";
-import {InputField} from "../../../components/FormFields";
-import UploadField from "../../../components/FormFields/UploadField";
+import {InputField} from "../../../../components/FormFields";
+import UploadField from "../../../../components/FormFields/UploadField";
 
 
 export default function AddProductImageForm(props) {

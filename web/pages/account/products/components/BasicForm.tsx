@@ -5,7 +5,7 @@ import {
     Label,
     FormGroup
 } from "reactstrap";
-import {InputField} from "../../../components/FormFields";
+import {InputField} from "../../../../components/FormFields";
 
 
 export default function AddProductBasicForm(props) {

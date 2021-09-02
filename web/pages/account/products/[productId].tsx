@@ -6,13 +6,13 @@ import 'react-toastify/dist/ReactToastify.css';
 import {Breadcrumb, BreadcrumbItem, Button, Col, Container, Row, Spinner} from "reactstrap";
 import fetchAPIWithSSR from '../../../utils/fetchAPIwithSSR';
 import getToken from "../../../utils/getToken";
-import AddProductBasicForm from "../../add-product/components/BasicForm";
+import AddProductBasicForm from "./components/BasicForm";
 import {Form, Formik, useFormikContext} from "formik";
 
 import validationSchema from '../products/FormModel/validationSchema';
 import bookingFormModel from '../products/FormModel/productFormModel';
-import AddProductDetailsForm from "../../add-product/components/DetailsForm";
-import AddProductImageForm from "../../add-product/components/ImageForm";
+import AddProductDetailsForm from "./components/DetailsForm";
+import AddProductImageForm from "./components/ImageForm";
 import ProgressBar from "../../../components/ProgressBar";
 import addProductImage from "../../../api/products/addProductImage";
 import isEmpty from "lodash/isEmpty"
@@ -21,9 +21,12 @@ import updateProduct from "../../../api/products/updateProduct";
 import Router from "next/router";
 import {accountPath} from "../index";
 import {accountProductsPath} from "./index";
+import FormFieldsGenerator from "../../../components/FormFields/FormFieldsGenerator";
 
 const steps = ['basics', 'details', 'images'];
 const {formId} = bookingFormModel;
+
+import productDetailFields from '../../../api/mock/category-1-product-detail-fields.json'
 
 export default function AccountUpdateProduct(pageProps) {
 
@@ -34,12 +37,12 @@ export default function AccountUpdateProduct(pageProps) {
     const isLastStep = activeStep === steps.length - 1;
     const formInitialValues = product
 
-    function _renderStepContent(step) {
+    function _renderStepContent(step, values) {
         switch (step) {
             case 0:
                 return <AddProductBasicForm/>;
             case 1:
-                return <AddProductDetailsForm/>;
+                return <FormFieldsGenerator data={productDetailFields} values={values}/>;
             case 2:
                 return <AddProductImageForm/>
             default:
@@ -124,7 +127,7 @@ export default function AccountUpdateProduct(pageProps) {
                             >
                                 {({isSubmitting, values}) => (
                                     <Form id={formId}>
-                                        {_renderStepContent(activeStep)}
+                                        {_renderStepContent(activeStep, values)}
 
                                         <Row className="form-block flex-column flex-sm-row">
                                             <Col className="text-center text-sm-left">

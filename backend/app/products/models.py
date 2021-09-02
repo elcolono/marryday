@@ -32,6 +32,26 @@ class ProductImage(Image):
         'products.Product', related_name="images", on_delete=models.CASCADE)
 
 
+PRODUCT_DETAIL_TYPES = (
+    ('text', 'Text'),
+    ('checkbox', 'Checkbox'),
+    ('radio', 'Radio'),
+    ('select', 'Select'),
+    ('textarea', 'Textarea')
+)
+
+
+class ProductDetail(models.Model):
+    # Basics
+    is_active = models.BooleanField(default=False)
+
+    # Details
+    title = models.CharField(max_length=150, blank=False, null=False)
+    name = models.CharField(max_length=150, blank=False, null=False)
+    type = models.CharField(choices=PRODUCT_DETAIL_TYPES, max_length=150, blank=False, null=False)
+    options = models.JSONField(blank=True, null=True)
+
+
 class Product(models.Model):
     # General
     is_active = models.BooleanField(default=False)
