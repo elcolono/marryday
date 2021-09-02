@@ -49,7 +49,7 @@ export default function MenuDropdown(props) {
                 }
             >
                 {item.type === "avatar" ? (
-                    <div className="mr-2 avatar-border-white avatar avatar-sm overflow-hidden">
+                    <div className="mr-2 bg-gray-200 avatar-border-white avatar avatar-sm overflow-hidden">
                         {item.img ?
                             <Image
                                 src={`/content${item.img}`}
@@ -58,7 +58,7 @@ export default function MenuDropdown(props) {
                                 layout="fixed"
                                 alt={item.title}
                             /> :
-                            null
+                            <span className="initials">{item.title}</span>
                         }
                     </div>
                 ) : (

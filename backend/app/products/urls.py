@@ -1,22 +1,27 @@
 from django.urls import path
 from products.views import \
-    VendorProductListCreateView, \
+    ProductListCreateView, \
     ProductImageCreateView, \
     ProductImageRetrieveUpdateDestroy, \
-    VendorProductRetrieveUpdateDestroyView, \
+    ProductRetrieveUpdateDestroyView, \
     MailchimpAudienceAPIVIEWSet, \
-    PipeDriveAPIVIEWSet
+    PipeDriveAPIVIEWSet, \
+    ProductCategoryTestListView
 
 urlpatterns = [
-    path("<pk>/vendor/", VendorProductRetrieveUpdateDestroyView.as_view(),
-         name="vendor-product-retrieve-update-destroy"),
-    path("vendor", VendorProductListCreateView.as_view(), name="vendor-product-list-create"),
+    # ProductCategories
+    path("category/", ProductCategoryTestListView.as_view(), name="product-category-list"),
 
+    # ProductImages
     path("image/", ProductImageCreateView.as_view(), name="product-image-create"),
     path("image/<pk>", ProductImageRetrieveUpdateDestroy.as_view(), name="product-image-retrieve-update-destroy"),
 
-    path("mailchimp-audience", MailchimpAudienceAPIVIEWSet.as_view(),
-         name="mailchimp-add"),
-    path("pipedrive-deal", PipeDriveAPIVIEWSet.as_view(),
-         name="pipedrive-deal-add"),
+    # Products
+    path("<pk>/", ProductRetrieveUpdateDestroyView.as_view(), name="vendor-product-retrieve-update-destroy"),
+    path("", ProductListCreateView.as_view(), name="vendor-product-list-create"),
+
+    # Others
+    path("mailchimp-audience", MailchimpAudienceAPIVIEWSet.as_view(), name="mailchimp-add"),
+    path("pipedrive-deal", PipeDriveAPIVIEWSet.as_view(), name="pipedrive-deal-add"),
+
 ]

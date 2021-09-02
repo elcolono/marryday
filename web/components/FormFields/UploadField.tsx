@@ -1,7 +1,11 @@
-import React, {useCallback, useMemo} from 'react'
+import React, {useMemo} from 'react'
 import {useDropzone} from 'react-dropzone'
 import {useFormikContext} from "formik";
-import {FormGroup, Row} from "reactstrap";
+import {FormGroup, Row, Spinner} from "reactstrap";
+import Icon from "../Icon";
+import destroyProductImage from "../../api/products/destroyProductImage";
+import {toast} from "react-toastify";
+import CustomModal from "../CustomModal";
 
 const baseStyle = {
     flex: 1,
@@ -32,7 +36,8 @@ const rejectStyle = {
 };
 
 export default function UploadField() {
-    const {setFieldValue, values} = useFormikContext();
+    const {setFieldValue, setSubmitting, values} = useFormikContext();
+
 
     const onDrop = acceptedFiles => {
         const accumulatedFiles = [
@@ -69,6 +74,46 @@ export default function UploadField() {
         isDragAccept
     ]);
 
+    const removeImage = async (image) => {
+        setSubmitting(true)
+        try {
+            const destroyedProductImage = await destroyProductImage(image)
+            const updatedImages = values['images']?.filter(image => image.uuid !== destroyedProductImage.uuid)
+            await setFieldValue('images', updatedImages)
+            toast.success('Image was deleted.')
+            setSubmitting(false)
+        } catch (error) {
+            toast.error(error.detail ?? "Something went wrong.")
+            setSubmitting(false)
+        }
+    }
+
+    const ImagePreview = (
+        {
+            image,
+            isLoading = false,
+            classes = ""
+        }
+    ) => {
+        const isPreview = image.preview ? true : false
+        return (
+            <div className={`${classes}mb-4`}>
+                <img
+                    src={isPreview ? image.preview : image.image}
+                    className={`img-fluid rounded shadow`}
+                />
+                <CustomModal onAccept={() => removeImage(image)}/>
+                {isLoading && <Spinner size={'sm'}/>}
+                <div className="card-img-overlay-top text-right">
+                    <a onClick={() => removeImage(image)} className="card-fav-icon position-relative z-index-40"
+                       href="#">
+                        <Icon icon="close-1" className="text-white"/>
+                    </a>
+                </div>
+            </div>
+        );
+    }
+
     return (
         <FormGroup>
             <div className="container">
@@ -88,17 +133,11 @@ export default function UploadField() {
                 <Row className="mt-4">
                     {values["images"] &&
                     values["images"].map((file) => (
-                        <div key={file.title} className="col-lg-4">
+                        <div key={file.uuid} className="col-lg-4">
                             <div>
                                 {file.image
-                                    ? <img
-                                        src={file.image}
-                                        className="img-fluid rounded shadow mb-4"
-                                    />
-                                    : <img
-                                        src={file.preview}
-                                        className="preview img-fluid rounded shadow mb-4"
-                                    />}
+                                    ? <ImagePreview image={file}/>
+                                    : <ImagePreview image={file} isLoading={true} classes={'preview '}/>}
                             </div>
                         </div>
                     ))}

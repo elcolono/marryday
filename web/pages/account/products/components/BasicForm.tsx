@@ -6,10 +6,10 @@ import {
     FormGroup
 } from "reactstrap";
 import {InputField} from "../../../../components/FormFields";
+import SelectField from "../../../../components/FormFields/SelectField";
 
 
 export default function AddProductBasicForm(props) {
-
 
     return (
         <Row className="form-block">
@@ -22,6 +22,21 @@ export default function AddProductBasicForm(props) {
                 </p>
             </Col>
             <Col lg="7" className="ml-auto">
+                <FormGroup>
+                    <Label className="form-label" for="category">
+                        Category
+                    </Label>
+                    <SelectField
+                        id="category"
+                        name="category"
+                        autoFocus={true}
+                        getOptionLabel={option => option.title}
+                        getOptionValue={option => option.id}
+                        options={props.categories}
+                        className="selectpicker"
+                        classNamePrefix="selectpicker"
+                    />
+                </FormGroup>
                 <FormGroup>
                     <Label className="form-label" for="title">
                         Title

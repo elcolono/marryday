@@ -7,18 +7,17 @@ import {Breadcrumb, BreadcrumbItem, Button, Col, Container, Row, Spinner} from "
 import fetchAPIWithSSR from '../../../utils/fetchAPIwithSSR';
 import getToken from "../../../utils/getToken";
 import AddProductBasicForm from "./components/BasicForm";
-import {Form, Formik, useFormikContext} from "formik";
+import {Form, Formik} from "formik";
 
 import validationSchema from '../products/FormModel/validationSchema';
 import bookingFormModel from '../products/FormModel/productFormModel';
-import AddProductDetailsForm from "./components/DetailsForm";
 import AddProductImageForm from "./components/ImageForm";
 import ProgressBar from "../../../components/ProgressBar";
 import addProductImage from "../../../api/products/addProductImage";
 import isEmpty from "lodash/isEmpty"
 import AutoSave from "../../../components/FormFields/AutoSave";
 import updateProduct from "../../../api/products/updateProduct";
-import Router from "next/router";
+import Router, {useRouter} from "next/router";
 import {accountPath} from "../index";
 import {accountProductsPath} from "./index";
 import FormFieldsGenerator from "../../../components/FormFields/FormFieldsGenerator";
@@ -26,23 +25,71 @@ import FormFieldsGenerator from "../../../components/FormFields/FormFieldsGenera
 const steps = ['basics', 'details', 'images'];
 const {formId} = bookingFormModel;
 
-import productDetailFields from '../../../api/mock/category-1-product-detail-fields.json'
+import productDetailFields from '../../../config/product_detail_fields.json'
+
+export const getServerSideProps: GetServerSideProps = async (
+    {
+        params,
+        req,
+    }
+) => {
+    const token = getToken(req);
+    const loggedUser = await fetchAPIWithSSR('/api/v1/accounts/auth/user/', {
+        method: 'GET',
+        req: req,
+        token: token
+    }) ?? {}
+    const product = (await fetchAPIWithSSR(`/api/v1/products/${params.productId}/`, {
+        method: 'GET',
+        req: req,
+        token: token
+    })) ?? {}
+    const categories = (await fetchAPIWithSSR('/api/v1/products/category/', {
+        method: 'GET',
+        req: req,
+    }))
+
+    const settings = (await fetchAPIWithSSR('/api/page/home', {method: 'GET', req: req})) ?? []
+    const pageData = await fetchAPIWithSSR('/api/v2/pages/?type=user_account.AccountProductsPage&fields=seo_title,search_description,heading,description', {method: 'GET'});
+    const page = pageData?.items[0] ?? null;
+
+    return {
+        props: {
+            page,
+            product,
+            categories,
+            loggedUser,
+            themeSettings: settings.theme_settings,
+            mainMenus: settings.main_menus,
+            flatMenus: settings.flat_menus,
+            nav: {
+                light: true,
+                classes: "shadow",
+                color: "white",
+            },
+            title: page?.meta?.seo_title,
+        },
+    }
+}
 
 export default function AccountUpdateProduct(pageProps) {
+    const {page, product, categories} = pageProps;
 
-    const {page, product} = pageProps;
-    const [activeStep, setActiveStep] = useState(0);
-
-    const currentValidationSchema = validationSchema[activeStep];
+    const router = useRouter()
+    const activeStep = router.query['step']
+        ? parseInt(router.query['step'] as string)
+        : 0
     const isLastStep = activeStep === steps.length - 1;
+    const currentValidationSchema = validationSchema[activeStep];
     const formInitialValues = product
 
     function _renderStepContent(step, values) {
+        const selectedCategory = categories.find(category => category.id == values.category)
         switch (step) {
             case 0:
-                return <AddProductBasicForm/>;
+                return <AddProductBasicForm categories={categories}/>;
             case 1:
-                return <FormFieldsGenerator data={productDetailFields} values={values}/>;
+                return <FormFieldsGenerator data={productDetailFields[selectedCategory.slug]}/>;
             case 2:
                 return <AddProductImageForm/>
             default:
@@ -60,19 +107,19 @@ export default function AccountUpdateProduct(pageProps) {
                     image,
                     productId
                 );
-                const index = image.indexOf(image);
-                images[index] = productImage
-                actions.setFieldValue('images', images)
+                const index = images.indexOf(image);
+                const newImages = [...images]
+                newImages[index] = productImage
+                actions.setFieldValue('images', newImages)
             }
         }
     }
 
     async function _submitForm(values, actions) {
         try {
-            console.log('submitForm')
             await updateProduct(values);
             await uploadImages(values, actions);
-            toast.success("Product was updated successful!");
+            toast.success("Successfully saved!", {autoClose: 1500});
             actions.setSubmitting(false);
         } catch (error) {
             toast.error(error.detail)
@@ -81,14 +128,14 @@ export default function AccountUpdateProduct(pageProps) {
     }
 
     function _handleBack() {
-        setActiveStep(activeStep - 1);
+        Router.push(`${accountPath}${accountProductsPath}/${product.id}?step=${activeStep - 1}`)
     }
 
     function _handleFurther() {
         if (isLastStep) {
             Router.push(`${accountPath}${accountProductsPath}`)
         } else {
-            setActiveStep(activeStep + 1);
+            Router.push(`${accountPath}${accountProductsPath}/${product.id}?step=${activeStep + 1}`)
         }
     }
 
@@ -112,6 +159,11 @@ export default function AccountUpdateProduct(pageProps) {
                         <BreadcrumbItem>
                             <Link href="/account">
                                 <a>Account</a>
+                            </Link>
+                        </BreadcrumbItem>
+                        <BreadcrumbItem>
+                            <Link href="/account/products/">
+                                <a>Products</a>
                             </Link>
                         </BreadcrumbItem>
                         <BreadcrumbItem active>{page.title && page.title}</BreadcrumbItem>
@@ -164,42 +216,3 @@ export default function AccountUpdateProduct(pageProps) {
     )
 }
 
-
-export const getServerSideProps: GetServerSideProps = async ({
-                                                                 params,
-                                                                 req,
-                                                                 res,
-                                                             }) => {
-    const token = getToken(req);
-    const loggedUser = await fetchAPIWithSSR('/api/v1/accounts/auth/user/', {
-        method: 'GET',
-        req: req,
-        token: token
-    }) ?? {}
-    const product = (await fetchAPIWithSSR(`/api/v1/products/${params.productId}/vendor/`, {
-        method: 'GET',
-        req: req,
-        token: token
-    })) ?? {}
-
-    const settings = (await fetchAPIWithSSR('/api/page/home', {method: 'GET', req: req})) ?? []
-    const pageData = await fetchAPIWithSSR('/api/v2/pages/?type=user_account.AccountProductsPage&fields=seo_title,search_description,heading,description', {method: 'GET'});
-    const page = pageData?.items[0] ?? null;
-
-    return {
-        props: {
-            page,
-            product,
-            loggedUser,
-            themeSettings: settings.theme_settings,
-            mainMenus: settings.main_menus,
-            flatMenus: settings.flat_menus,
-            nav: {
-                light: true,
-                classes: "shadow",
-                color: "white",
-            },
-            title: page?.meta?.seo_title,
-        },
-    }
-}

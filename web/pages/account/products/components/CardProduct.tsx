@@ -18,11 +18,12 @@ import {accountProductsPath} from "../index";
 
 const CardProduct = (props) => {
     const data = props.data
+    const image = data.images.find(image => image.is_thumbnail) ?? data.images[0]
     return (
         <Card className="h-100 border-0 shadow">
             <div className="card-img-top overflow-hidden gradient-overlay">
                 <Image
-                    src="/assets/img/illustration/undraw_through_the_desert_fcin.svg"
+                    src={image?.image ?? "/assets/img/illustration/undraw_through_the_desert_fcin.svg"}
                     width={1350}
                     height={900}
                     alt={data.name}

@@ -59,9 +59,11 @@ class Product(models.Model):
         'accounts.User', related_name="products", on_delete=models.CASCADE, null=True, blank=True)
 
     # Basics
-    title = models.CharField(max_length=150, blank=True, default="", unique=True)
+    title = models.CharField(max_length=150, blank=True, default="")
     slug = models.CharField(max_length=150, blank=True, default="")
     description = HTMLField(max_length=1000, blank=True, default="")
+    category = models.ForeignKey('products.ProductCategory', related_name="categories",
+                                 on_delete=models.CASCADE, null=True, blank=True)
 
     # Details
     details = models.JSONField(blank=True, null=True)
@@ -112,6 +114,25 @@ class Product(models.Model):
 
         if self.slug is None:
             self.slug = slugify(self.title)
+        super().save(*args, **kwargs)  # Call the "real" save() method.
+
+    def __str__(self):
+        return self.title
+
+
+class ProductCategory(models.Model):
+    # General
+    is_active = models.BooleanField(default=False)
+
+    # Basics
+    title = models.CharField(max_length=150, unique=True)
+    slug = models.CharField(max_length=150, blank=True, null=True)
+
+    class Meta:
+        verbose_name_plural = "Product Categories"
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.title)
         super().save(*args, **kwargs)  # Call the "real" save() method.
 
     def __str__(self):

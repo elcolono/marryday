@@ -1,15 +1,15 @@
 from rest_framework import serializers
-from products.models import Product, ProductImage
+from products.models import Product, ProductImage, ProductCategory
 
 
 # ProductImage
 class ProductImageCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductImage
-        fields = ('title', 'image', 'product', 'is_thumbnail',)
+        fields = '__all__'
 
 
-class ProductImageRretrieveSerializer(serializers.ModelSerializer):
+class ProductImageRetrieveSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductImage
         fields = '__all__'
@@ -32,13 +32,15 @@ class ProductCreateSerializer(serializers.ModelSerializer):
 
 
 class ProductListSerializer(serializers.ModelSerializer):
+    images = ProductImageRetrieveSerializer(many=True)
+
     class Meta:
         model = Product
         fields = '__all__'
 
 
 class ProductRetrieveSerializer(serializers.ModelSerializer):
-    images = ProductImageRretrieveSerializer(many=True)
+    images = ProductImageRetrieveSerializer(many=True)
 
     class Meta:
         model = Product
@@ -56,3 +58,10 @@ class ProductDestroySerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = ['id', 'title']
+
+
+# ProductCategory
+class ProductCategoryListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProductCategory
+        fields = '__all__'

@@ -18,6 +18,7 @@ import * as Yup from 'yup'
 import fetchAPI from "../../utils/fetchAPI";
 import {toast, ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import getToken from "../../utils/getToken";
 
 export const getStaticProps: GetStaticProps = async () => {
     const settings = await fetchAPIwithSSR('/api/page/home', {method: 'GET'});
@@ -51,8 +52,23 @@ export default function Index(pageProps) {
     const {page} = pageProps;
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(false)
+
     useEffect(() => {
-        const code = router.query["code"] as string
+        const {code, logout} = router.query
+        const token = getToken()
+        if (logout) {
+            setIsLoading(true)
+            fetchAPI('/api/v1/accounts/auth/logout/', {
+                method: 'POST',
+                token: token
+            }).then(response => {
+                setIsLoading(false);
+                toast.success(response.detail);
+            }).catch(error => {
+                toast.error(error.detail);
+                setIsLoading(false);
+            })
+        }
         if (code) {
             const data = {
                 access_token: "",

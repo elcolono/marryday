@@ -6,30 +6,38 @@ from django.conf import settings
 from rest_framework import generics, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework.parsers import MultiPartParser
 
-from products.models import Product
-from products.permissions import IsProductOwner
+from products.models import Product, ProductImage, ProductCategory
+from products.permissions import IsProductOwner, IsProductImageOwner
 from products.serializers import (
-    ProductImageCreateSerializer, ProductCreateSerializer, ProductListSerializer, ProductRetrieveSerializer,
-    ProductUpdateSerializer,
-    ProductDestroySerializer)
+    ProductImageCreateSerializer, ProductImageRetrieveSerializer, ProductCreateSerializer, ProductListSerializer,
+    ProductRetrieveSerializer, ProductUpdateSerializer, ProductDestroySerializer, ProductCategoryListSerializer)
 
 from mailchimp_marketing.api_client import ApiClientError
 import mailchimp_marketing as MailchimpMarketing
 
 
+# Product Image
 class ProductImageCreateView(generics.CreateAPIView):
     serializer_class = ProductImageCreateSerializer
     parser_classes = [MultiPartParser]
 
 
 class ProductImageRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
-    serializer_class = ProductImageCreateSerializer
+    permission_classes = [IsAuthenticated, IsProductImageOwner]
+    queryset = ProductImage.objects.all()
+    serializer_class = ProductImageRetrieveSerializer
+
+    def destroy(self, request, *args, **kwargs):
+        serializer = self.get_serializer(self.get_object())
+        super().destroy(request, *args, **kwargs)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-class VendorProductListCreateView(generics.ListCreateAPIView):
+# Products
+class ProductListCreateView(generics.ListCreateAPIView):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
@@ -52,7 +60,7 @@ class VendorProductListCreateView(generics.ListCreateAPIView):
         return self.serializer_class
 
 
-class VendorProductRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+class ProductRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticated, IsProductOwner]
     queryset = Product.objects.all()
 
@@ -70,6 +78,12 @@ class VendorProductRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIVi
             self.serializer_class = ProductDestroySerializer
 
         return self.serializer_class
+
+
+# Product Category
+class ProductCategoryTestListView(generics.ListAPIView):
+    serializer_class = ProductCategoryListSerializer
+    queryset = ProductCategory.objects.filter(is_active=True)
 
 
 # Mailchimp Views

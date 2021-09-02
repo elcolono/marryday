@@ -17,6 +17,55 @@ import Router from "next/router";
 
 export const accountProductsPath = "/products"
 
+
+export const getServerSideProps: GetServerSideProps = async (
+    {
+        req,
+        res,
+    }
+) => {
+
+    const token = getToken(req);
+    const loggedUser = await fetchAPIwithSSR('/api/v1/accounts/auth/user/', {
+        method: 'GET',
+        req: req,
+        token: token
+    }) ?? {}
+    const products = await fetchAPIwithSSR('/api/v1/products/', {
+        method: 'GET',
+        req: req,
+        token: token
+    }) ?? []
+
+    if (loggedUser.email === undefined) {
+        res.setHeader("location", "/login");
+        res.statusCode = 302;
+        res.end();
+        return {props: {}}
+    }
+
+    const settings = (await fetchAPIwithSSR('/api/page/home', {method: 'GET', req: req})) ?? []
+    const pageData = await fetchAPIwithSSR('/api/v2/pages/?type=user_account.AccountProductsPage&fields=seo_title,search_description,heading,description', {method: 'GET'});
+    const page = pageData?.items[0] ?? null;
+
+    return {
+        props: {
+            page,
+            loggedUser,
+            products,
+            themeSettings: settings.theme_settings,
+            mainMenus: settings.main_menus,
+            flatMenus: settings.flat_menus,
+            nav: {
+                light: true,
+                classes: "shadow",
+                color: "white",
+            },
+            title: page?.meta?.seo_title,
+        },
+    }
+}
+
 export default function AccountProducts(pageProps) {
     const {page, products} = pageProps;
     const [isLoading, setIsLoading] = useState(false);
@@ -24,7 +73,7 @@ export default function AccountProducts(pageProps) {
     const createAndEditProduct = async () => {
         try {
             const emptyProduct = await createProduct()
-            await Router.push(`/update-product/${emptyProduct.id}`)
+            await Router.push(`/${emptyProduct.id}`)
         } catch (error) {
             toast.error(error.detail)
         }
@@ -146,46 +195,3 @@ export default function AccountProducts(pageProps) {
     )
 }
 
-
-export const getServerSideProps: GetServerSideProps = async ({req, res,}) => {
-
-    const token = getToken(req);
-    const loggedUser = await fetchAPIwithSSR('/api/v1/accounts/auth/user/', {
-        method: 'GET',
-        req: req,
-        token: token
-    }) ?? {}
-    const products = await fetchAPIwithSSR('/api/v1/products/vendor', {
-        method: 'GET',
-        req: req,
-        token: token
-    }) ?? []
-
-    if (loggedUser.email === undefined) {
-        res.setHeader("location", "/login");
-        res.statusCode = 302;
-        res.end();
-        return {props: {}}
-    }
-
-    const settings = (await fetchAPIwithSSR('/api/page/home', {method: 'GET', req: req})) ?? []
-    const pageData = await fetchAPIwithSSR('/api/v2/pages/?type=user_account.AccountProductsPage&fields=seo_title,search_description,heading,description', {method: 'GET'});
-    const page = pageData?.items[0] ?? null;
-
-    return {
-        props: {
-            page,
-            loggedUser,
-            products,
-            themeSettings: settings.theme_settings,
-            mainMenus: settings.main_menus,
-            flatMenus: settings.flat_menus,
-            nav: {
-                light: true,
-                classes: "shadow",
-                color: "white",
-            },
-            title: page?.meta?.seo_title,
-        },
-    }
-}

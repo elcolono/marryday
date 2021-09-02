@@ -1,13 +1,12 @@
 import fetchAPI from "../../utils/fetchAPI";
 import getToken from "../../utils/getToken";
 
-export default function updateProduct(product) {
+export default function retrieveProductImage(image) {
     const token = getToken()
     return fetchAPI(
-        `/api/v1/products/${product.id}/`,
+        `/api/v1/products/image/${image.uuid}`,
         {
-            method: 'PUT',
-            body: product,
+            method: 'GET',
             token: token
         }
     )

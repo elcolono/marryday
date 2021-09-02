@@ -134,14 +134,15 @@
 */
 
 .avatar {
-    display: inline-block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     position: relative;
     width: 3rem;
     height: 3rem;
     text-align: center;
     border: $border-color;
     border-radius: 50%;
-    background: $white;
     box-shadow: $box-shadow;
     line-height: 3rem;
 
@@ -430,12 +431,12 @@ img.bg-image {
     }
 
     .px-print-0 {
-        padding-left: 0 !important; 
-        padding-right: 0 !important; 
+        padding-left: 0 !important;
+        padding-right: 0 !important;
     }
 
     .p-print-0 {
-        padding: 0 !important; 
+        padding: 0 !important;
     }
 
 }

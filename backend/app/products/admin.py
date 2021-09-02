@@ -2,7 +2,7 @@
 Admin Settings
 """
 from django.contrib import admin
-from .models import Product, ProductImage, ForwardingContact
+from .models import Product, ProductImage, ProductCategory, ForwardingContact
 
 
 # Register your models here.
@@ -13,9 +13,9 @@ class LocationImageInline(admin.TabularInline):
     # min_num = 3
 
 
-class LocationImageAdmin(admin.ModelAdmin):
+class ProductImageAdmin(admin.ModelAdmin):
     search_fields = ('title', 'image')
-    list_display = ('title', 'image')
+    list_display = ('uuid', 'title', 'image')
     list_filter = ('title', 'image')
 
 
@@ -31,7 +31,7 @@ class ProductAdmin(admin.ModelAdmin):
     inlines = [LocationImageInline]
     fieldsets = fieldsets = (
         ('General', {
-            'fields': ('is_active', 'user', 'title', 'slug', 'description',)
+            'fields': ('is_active', 'user', 'category', 'title', 'slug', 'description', 'details',)
         }),
         ('Contact', {
             'fields': ('address', 'street_number', 'public_email', 'public_phone',)
@@ -51,6 +51,12 @@ class ProductAdmin(admin.ModelAdmin):
     )
 
 
+class ProductCategoryAdmin(admin.ModelAdmin):
+    search_fields = ('title', 'is_active')
+    list_display = ('title', 'is_active')
+    list_filter = ('title', 'is_active')
+
+
 class RentObjectAdmin(admin.ModelAdmin):
     search_fields = ('title', 'location')
     list_display = ('title', 'location')
@@ -65,4 +71,5 @@ class BookingAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Product, ProductAdmin)
-admin.site.register(ProductImage, LocationImageAdmin)
+admin.site.register(ProductImage, ProductImageAdmin)
+admin.site.register(ProductCategory, ProductCategoryAdmin)

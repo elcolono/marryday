@@ -6,7 +6,7 @@ import CustomInputField from "./CustomInputField";
 
 const FormFieldsGenerator = (props) => {
 
-    const {data, values} = props
+    const {data} = props
 
     return (
         <>
@@ -18,8 +18,7 @@ const FormFieldsGenerator = (props) => {
                     </Col>
                     <Col lg="7" className="ml-auto">
                         {block.inputs.map((input, index) => {
-                            const nameArray = input.name && input.name.split('.')
-                            const value = nameArray && values[nameArray[0]][nameArray[1]] || ""
+
                             return (
                                 <React.Fragment key={index}>
                                     {input.type === "text" && (
@@ -32,7 +31,6 @@ const FormFieldsGenerator = (props) => {
                                                 input={input.name}
                                                 name={input.name}
                                                 id={input.name}
-                                                value={value}
                                             />
                                         </FormGroup>
                                     )}
@@ -47,7 +45,6 @@ const FormFieldsGenerator = (props) => {
                                                 input={input.name}
                                                 name={input.name}
                                                 id={input.name}
-                                                value={value}
                                                 aria-describedby={input.helpId}
                                             />
                                             <small
@@ -69,7 +66,6 @@ const FormFieldsGenerator = (props) => {
                                                 options={input.options}
                                                 className="selectpicker"
                                                 classNamePrefix="selectpicker"
-                                                value={value}
                                             />
                                             {input.text && (
                                                 <small
@@ -86,12 +82,11 @@ const FormFieldsGenerator = (props) => {
                                             <Label className="form-label">{input.label}</Label>
                                             {input.radios.map((radio) => (
                                                 <CustomInputField
-                                                    key={radio.label}
+                                                    key={radio.value}
                                                     type="radio"
-                                                    id={radio.id}
-                                                    name={radio.name}
-                                                    value={radio.id}
-                                                    checked={value === radio.id}
+                                                    id={radio.value}
+                                                    name={input.name}
+                                                    value={radio.value}
                                                     label={radio.label}
                                                 />
                                             ))}
@@ -102,12 +97,12 @@ const FormFieldsGenerator = (props) => {
                                             <Label className="form-label">{input.label}</Label>
                                             <ul className="list-inline mb-0">
                                                 {input.checkboxes.map((checkbox) => (
-                                                    <li key={checkbox.id} className="list-inline-item">
+                                                    <li key={checkbox.value} className="list-inline-item">
                                                         <CustomInputField
                                                             type="checkbox"
-                                                            id={checkbox.id}
-                                                            name={checkbox.name}
-                                                            value={value}
+                                                            id={checkbox.value}
+                                                            name={input.name}
+                                                            value={checkbox.value || ""}
                                                             label={checkbox.label}
                                                             className="text-muted"
                                                         />
