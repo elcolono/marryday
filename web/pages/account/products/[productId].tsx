@@ -22,10 +22,11 @@ import {accountPath} from "../index";
 import {accountProductsPath} from "./index";
 import FormFieldsGenerator from "../../../components/FormFields/FormFieldsGenerator";
 
-const steps = ['basics', 'details', 'images'];
+const steps = ['basics', 'details', 'location', 'images',];
 const {formId} = bookingFormModel;
 
 import productDetailFields from '../../../config/product_detail_fields.json'
+import LocationForm from "./components/LocationForm";
 
 export const getServerSideProps: GetServerSideProps = async (
     {
@@ -68,6 +69,7 @@ export const getServerSideProps: GetServerSideProps = async (
                 color: "white",
             },
             title: page?.meta?.seo_title,
+            scripts: ["https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap&libraries=places&v=weekly"]
         },
     }
 }
@@ -91,6 +93,8 @@ export default function AccountUpdateProduct(pageProps) {
             case 1:
                 return <FormFieldsGenerator data={productDetailFields[selectedCategory.slug]}/>;
             case 2:
+                return <LocationForm />
+            case 3:
                 return <AddProductImageForm/>
             default:
                 return <div>Not Found</div>;
@@ -118,7 +122,6 @@ export default function AccountUpdateProduct(pageProps) {
     async function _submitForm(values, actions) {
         try {
             await updateProduct(values);
-            await uploadImages(values, actions);
             toast.success("Successfully saved!", {autoClose: 1500});
             actions.setSubmitting(false);
         } catch (error) {

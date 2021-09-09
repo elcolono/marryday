@@ -12,10 +12,30 @@ import CardLocation from "../../components/CardLocation"
 
 import { GetServerSideProps } from "next"
 import { fetchAPIwithSSR } from "../../lib/api"
+import CardProduct from "../account/products/components/CardProduct"
+
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+  const products = (await fetchAPIwithSSR('/api/v1/products/public/', { method: 'GET', req: req })) ?? []
+  const settings = (await fetchAPIwithSSR('/api/page/home', { method: 'GET', req: req })) ?? []
+  return {
+    props: {
+      products,
+      themeSettings: settings.theme_settings,
+      mainMenus: settings.main_menus,
+      flatMenus: settings.flat_menus,
+      nav: {
+        light: true,
+        classes: "shadow",
+        color: "white",
+      },
+      title: "Standorte",
+    },
+  }
+}
 
 const Category2Rooms = (props) => {
 
-  const { locations } = props
+  const { products } = props
 
   const [hoverCard, setHoverCard] = React.useState(null)
   const onCardEnter = (slug) => {
@@ -30,8 +50,8 @@ const Category2Rooms = (props) => {
         <Row>
           <Col lg="6" className="py-4 p-xl-5">
             <Row>
-              {locations &&
-                locations.map((location) => (
+              {products &&
+                products.map((location) => (
                   <Col
                     key={location.title}
                     sm="6"
@@ -39,7 +59,7 @@ const Category2Rooms = (props) => {
                     onMouseEnter={() => onCardEnter(location.slug)}
                     onMouseLeave={() => onCardLeave()}
                   >
-                    <CardLocation data={location} />
+                    <CardProduct data={location} />
                   </Col>
                 ))}
             </Row>
@@ -49,7 +69,7 @@ const Category2Rooms = (props) => {
               className="map-full shadow-left"
               center={[40.732346, -74.0014247]}
               zoom={14}
-              locations={locations}
+              locations={products}
               hoverCard={hoverCard}
             />
           </Col>
@@ -62,22 +82,4 @@ const Category2Rooms = (props) => {
 export default Category2Rooms
 
 
-export const getServerSideProps: GetServerSideProps = async ({ req }) => {
-  const locations = (await fetchAPIwithSSR('/api/v1/products/locations/', { method: 'GET', req: req })) ?? []
-  const settings = (await fetchAPIwithSSR('/api/page/home', { method: 'GET', req: req })) ?? []
-  return {
-    props: {
-      locations,
-      themeSettings: settings.theme_settings,
-      mainMenus: settings.main_menus,
-      flatMenus: settings.flat_menus,
-      nav: {
-        light: true,
-        classes: "shadow",
-        color: "white",
-      },
-      title: "Standorte",
-    },
-  }
-}
 

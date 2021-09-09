@@ -24,9 +24,9 @@ function SelectField(props) {
             <Select
                 {...field}
                 {...rest}
-                value={options.filter((option) => option.id === selectedValue)}
+                value={options.filter((option) => (option.id ?? option.value) === selectedValue)}
                 options={options}
-                onChange={(option: Option) => setValue(option.id)}
+                onChange={(option: Option) => setValue(option.id ?? option.value)}
                 instanceId={props.iid}
                 styles={customStyles}
             />

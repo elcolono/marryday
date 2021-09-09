@@ -18,6 +18,8 @@ from products.serializers import (
 from mailchimp_marketing.api_client import ApiClientError
 import mailchimp_marketing as MailchimpMarketing
 
+from locations.models import Country, State
+
 
 # Product Image
 class ProductImageCreateView(generics.CreateAPIView):
@@ -58,6 +60,11 @@ class ProductListCreateView(generics.ListCreateAPIView):
             self.serializer_class = ProductListSerializer
 
         return self.serializer_class
+
+
+class ProductPublicListView(generics.ListAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductListSerializer
 
 
 class ProductRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
@@ -128,9 +135,69 @@ class MailchimpAudienceAPIVIEWSet(APIView):
         return Response("Was successful")
 
 
-# Mailchimp Views
+# Google Places Views
+class GoogleAutocompleteAPIVIEWSet(APIView):
+    permission_classes = [IsAuthenticated]
+
+    @staticmethod
+    def get(request):
+        input_data = request.query_params['input']
+        response = requests.get(
+            f'https://maps.googleapis.com/maps/api/place/autocomplete/json?input={input_data}&types=address&key={settings.GOOGLE_PLACES_API_TOKEN}')
+        content = json.loads(response.content)
+        return Response(content)
 
 
+class GoogleGeocodeAPIVIEWSet(APIView):
+    permission_classes = [IsAuthenticated]
+
+    @staticmethod
+    def get_address_value_from_ype(address_components, address_type):
+        for component in address_components:
+            if component['types'][0] == address_type:
+                return component['short_name']
+            return ""
+
+    def get(self, request):
+        place_id = request.query_params['place_id']
+        response = requests.get(
+            f'https://maps.googleapis.com/maps/api/place/details/json?placeid={place_id}&types=address&key={settings.GOOGLE_PLACES_API_TOKEN}')
+        content = json.loads(response.content)
+        google_place = content['result']
+        address_components = content['result']['address_components']
+
+        if not google_place or not address_components:
+            return Response({"detail": "Could not fetch place detail data."})
+
+        country = self.get_address_value_from_ype(address_components, "country")
+        country_obj = Country.objects.get_or_create(title=country),
+
+        state = self.get_address_value_from_ype(address_components, "administrative_area_level_1"),
+        state_obj = State.objects.get_or_create(title=state, country=country_obj)
+
+        province = self.get_address_value_from_ype(address_components, "administrative_area_level_2"),
+        province_obj = State.objects.get_or_create(title=province, state=state_obj)
+
+        city = self.get_address_value_from_ype(address_components, "locality"),
+        district = self.get_address_value_from_ype(address_components, "sublocality_level_1"),
+        street = self.get_address_value_from_ype(address_components, "route"),
+        street_number = self.get_address_value_from_ype(address_components, "street_number"),
+        geometry = google_place['geometry']
+
+        location_object = {
+            "country": country_obj.id,
+            "state": state_obj.id,
+            "province": province_obj.id,
+            "city": self.get_address_value_from_ype(address_components, "locality"),
+            "district": self.get_address_value_from_ype(address_components, "sublocality_level_1"),
+            "street": self.get_address_value_from_ype(address_components, "route"),
+            "street_number": self.get_address_value_from_ype(address_components, "street_number"),
+            "geometry": google_place['geometry']
+        }
+        return Response(location_object)
+
+
+# Pipedrive
 class PipeDriveAPIVIEWSet(APIView):
     """ COMMENTS """
 

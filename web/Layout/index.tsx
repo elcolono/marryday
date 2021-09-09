@@ -7,9 +7,8 @@ import Footer from "./Footer";
 
 import SvgIcons from '../components/SvgIcons';
 import Cookies from 'js-cookie';
-import {ToastContainer} from 'react-toastify';
 import {FormProvider} from "../components/FormContext";
-// import 'react-toastify/dist/ReactToastify.css';
+import isEmpty from 'lodash/isEmpty'
 
 const NextNProgress = dynamic(() => import("../components/NextNProgress"));
 const CookieConsent = dynamic(() => import("../components/CookieConsent"));
@@ -17,6 +16,7 @@ const CookieConsent = dynamic(() => import("../components/CookieConsent"));
 const Layout = (pageProps) => {
 
     const [showCookieConsent, setShowCookieConsent] = React.useState(false)
+    const {title = "", searchDescription = "", scripts = []} = pageProps
 
     React.useEffect(() => {
         setTimeout(() => {
@@ -56,8 +56,8 @@ const Layout = (pageProps) => {
             className={pageProps.className}
         >
             <Head>
-                <title>{pageProps.title}</title>
-                <meta name="description" content={pageProps.searchDescription}></meta>
+                <title>{title}</title>
+                <meta name="description" content={searchDescription}></meta>
                 <link rel="icon" href="/favicon.png"/>
             </Head>
             <NextNProgress startPosition={0.3} stopDelayMs={200} height={3} color="#4E66F8"
@@ -71,6 +71,9 @@ const Layout = (pageProps) => {
             {showCookieConsent && (
                 <CookieConsent acceptCookie={acceptCookies}>CookieConsent</CookieConsent>
             )}
+            {!isEmpty(scripts) && pageProps.scripts.forEach(script => (
+                <script src={script} async></script>
+            ))}
         </div>
     )
 }

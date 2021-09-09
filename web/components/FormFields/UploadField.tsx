@@ -6,6 +6,7 @@ import Icon from "../Icon";
 import destroyProductImage from "../../api/products/destroyProductImage";
 import {toast} from "react-toastify";
 import CustomModal from "../CustomModal";
+import addProductImage from "../../api/products/addProductImage";
 
 const baseStyle = {
     flex: 1,
@@ -38,15 +39,32 @@ const rejectStyle = {
 export default function UploadField() {
     const {setFieldValue, setSubmitting, values} = useFormikContext();
 
+    async function uploadImages(uploadImages) {
+        const productId = values['id']
+        for (let image of uploadImages) {
+            values['images'].map(image => image)
+            const productImage = await addProductImage(
+                "test_name",
+                image,
+                productId
+            );
+            const index = uploadImages.indexOf(image);
+            const newImages = [...uploadImages]
+            newImages[index] = productImage
+            setFieldValue('images', newImages)
+        }
+    }
 
     const onDrop = acceptedFiles => {
+        const extendedFiles = acceptedFiles.map((file) =>
+            Object.assign(file, {
+                preview: URL.createObjectURL(file),
+                isLoading: false
+            })
+        )
         const accumulatedFiles = [
             ...values['images'],
-            ...acceptedFiles.map((file) =>
-                Object.assign(file, {
-                    preview: URL.createObjectURL(file),
-                })
-            )
+            ...extendedFiles
         ]
         setFieldValue("images", accumulatedFiles)
     }

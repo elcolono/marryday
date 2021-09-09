@@ -5,10 +5,13 @@ async function fetchAPI(url, {
     body = undefined,
     isForm = false,
     token = undefined,
-    mediaType = undefined
+    mediaType = undefined,
+    searchParams = []
 } = {}) {
     const headers = setAuthHeader(token, mediaType);
-    const res = await fetch(process.env.CLIENT_API_URL + url, {
+    const requestUrl = new URL(process.env.CLIENT_API_URL + url)
+    searchParams.forEach(param => requestUrl.searchParams.append(param.key, param.value))
+    const res = await fetch(requestUrl.href, {
         method: method,
         headers: headers,
         body: isForm ? body : JSON.stringify(body),
