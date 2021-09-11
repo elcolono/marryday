@@ -119,7 +119,7 @@ export default function AccountUpdateProduct(pageProps) {
         }
     }
 
-    async function _submitForm(values, actions) {
+    async function  _submitForm(values, actions) {
         try {
             await updateProduct(values);
             toast.success("Successfully saved!", {autoClose: 1500});

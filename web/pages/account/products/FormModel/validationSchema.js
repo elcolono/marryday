@@ -15,6 +15,7 @@ export default [
         [description.name]: Yup.string().required(`${description.requiredErrorMsg}`),
     }),
     Yup.object().shape({}),
+    Yup.object().shape({}),
     Yup.object().shape({
         [images.name]: Yup.array().required(`${images.requiredErrorMsg}`)
         // [firstName.name]: Yup.string().required(`${firstName.requiredErrorMsg}`),

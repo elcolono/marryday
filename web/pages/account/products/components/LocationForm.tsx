@@ -15,7 +15,7 @@ export default function LocationForm() {
         try {
             const token = getToken()
             const response = await fetchAPI(
-                '/api/v1/products/google-autocomplete',
+                '/api/v1/locations/google-autocomplete',
                 {
                     searchParams: [{key: "input", value: inputValue}],
                     token: token
@@ -31,12 +31,13 @@ export default function LocationForm() {
         try {
             const token = getToken()
             const response = await fetchAPI(
-                '/api/v1/products/google-geocode',
+                '/api/v1/locations/google-geocode',
                 {
                     searchParams: [{key: "place_id", value: prediction.place_id}],
                     token: token
                 }
             )
+            setFieldValue('location', response);
         } catch (error) {
             toast.error(error.detail ?? "Something went wrong.")
         }
@@ -63,6 +64,7 @@ export default function LocationForm() {
                     </Label>
                     <AsyncSelect
                         id="autocomplete"
+                        name="autocomplete"
                         autoFocus={true}
                         placeholder="Search..."
                         cacheOptions
@@ -75,12 +77,12 @@ export default function LocationForm() {
                 <Row>
                     <Col md="6">
                         <FormGroup>
-                            <Label className="form-label" for="address">
+                            <Label className="form-label" for="street">
                                 Address
                             </Label>
                             <InputField
-                                name="address"
-                                id="address"
+                                name="location.street"
+                                id="street"
                                 type="text"
                                 placeholder=""
                             />
@@ -92,7 +94,7 @@ export default function LocationForm() {
                                 Street number
                             </Label>
                             <InputField
-                                name="street_number"
+                                name="location.street_number"
                                 id="street_number"
                                 type="text"
                                 placeholder=""
@@ -105,7 +107,7 @@ export default function LocationForm() {
                         City
                     </Label>
                     <InputField
-                        name="city"
+                        name="location.city"
                         id="city"
                         type="text"
                         placeholder=""
@@ -117,7 +119,7 @@ export default function LocationForm() {
                         Country
                     </Label>
                     <InputField
-                        name="country"
+                        name="location.country"
                         id="country"
                         type="text"
                         placeholder=""
