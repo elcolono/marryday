@@ -7,9 +7,7 @@ from products.views import \
     ProductRetrieveUpdateDestroyView, \
     MailchimpAudienceAPIVIEWSet, \
     PipeDriveAPIVIEWSet, \
-    ProductCategoryTestListView, \
-    GoogleAutocompleteAPIVIEWSet, \
-    GoogleGeocodeAPIVIEWSet
+    ProductCategoryTestListView
 
 urlpatterns = [
     # ProductCategories
@@ -30,8 +28,6 @@ urlpatterns = [
          name="vendor-product-list-create"),
 
     # Others
-    path("google-autocomplete", GoogleAutocompleteAPIVIEWSet.as_view(), name="google-autocomplete"),
-    path("google-geocode", GoogleGeocodeAPIVIEWSet.as_view(), name="google-geocode"),
     path("mailchimp-audience", MailchimpAudienceAPIVIEWSet.as_view(),
          name="mailchimp-add"),
     path("pipedrive-deal", PipeDriveAPIVIEWSet.as_view(),

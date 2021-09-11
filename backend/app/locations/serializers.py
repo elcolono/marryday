@@ -1,7 +1,6 @@
 from rest_framework import serializers
 
-import locations.serializers
-from locations.models import CityImage, District, City
+from .models import CityImage, District, City
 
 
 class CityImageSerializer(serializers.ModelSerializer):
@@ -11,7 +10,7 @@ class CityImageSerializer(serializers.ModelSerializer):
 
 
 class CitySerializer(serializers.ModelSerializer):
-    preview_image = locations.serializers.CityImageSerializer()
+    preview_image = CityImageSerializer()
 
     class Meta:
         model = City

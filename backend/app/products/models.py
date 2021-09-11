@@ -57,6 +57,7 @@ class Product(models.Model):
     is_active = models.BooleanField(default=False)
     user = models.ForeignKey(
         'accounts.User', related_name="products", on_delete=models.CASCADE, null=True, blank=True)
+    utc_offset = models.IntegerField(null=True)
 
     # Basics
     title = models.CharField(max_length=150, blank=True, default="")
@@ -73,16 +74,9 @@ class Product(models.Model):
     public_phone = models.CharField(max_length=150, blank=True, default="")
 
     # Location
-    address = models.CharField(max_length=150, blank=True, default="")
-    street_number = models.CharField(max_length=150, blank=True, default="")
-    city = models.ForeignKey(
-        'locations.City', related_name="locations", on_delete=models.PROTECT, null=True, blank=True)
-    country = models.ForeignKey(
-        'locations.Country', related_name="country_locations", on_delete=models.PROTECT, null=True, blank=True)
+    location = models.JSONField(blank=True, null=True)
 
     # Geometry
-    geometry = models.JSONField(null=True, blank=True)
-    utc_offset = models.IntegerField(null=True)
 
     # Reviews
     reviews = models.JSONField(null=True, blank=True)

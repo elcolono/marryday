@@ -21,11 +21,11 @@ urlpatterns = [
     path('api/v1/profiles/', include("profiles.urls")),
 
     path('api/v1/products/', include("products.urls")),
+    path('api/v1/locations/', include("locations.urls")),
     path('api/v1/payments/', include('payments.urls')),
 
     url(r'^api/v1/accounts-rest/registration/account-confirm-email/(?P<key>.+)/$',
         confirm_email, name='account_confirm_email'),
-
 
     url(r'^documents/', include(wagtaildocs_urls)),
     url(r'^search/$', search_views.search, name='search'),

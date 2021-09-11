@@ -25,8 +25,6 @@ class State(models.Model):
     is_active = models.BooleanField(default=False)
     title = models.CharField(max_length=150, unique=True)
     slug = models.CharField(max_length=150, blank=True, null=True)
-    country = models.ForeignKey(
-        'locations.Country', related_name="country_states", on_delete=models.CASCADE, null=True)
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)
@@ -40,8 +38,6 @@ class Province(models.Model):
     is_active = models.BooleanField(default=False)
     title = models.CharField(max_length=150, unique=True)
     slug = models.CharField(max_length=150, blank=True, null=True)
-    state = models.ForeignKey(
-        'locations.State', related_name="state_provinces", on_delete=models.CASCADE, null=True)
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)
@@ -54,10 +50,7 @@ class Province(models.Model):
 class City(models.Model):
     is_active = models.BooleanField(default=False)
     title = models.CharField(max_length=150)
-    postcode = models.CharField(max_length=50, unique=True)
     slug = models.CharField(max_length=150, blank=True, null=True)
-    province = models.ForeignKey(
-        'locations.Province', related_name="province_localities", on_delete=models.CASCADE, null=True)
     preview_image = models.OneToOneField(
         'locations.CityImage', on_delete=models.CASCADE, related_name='city_preview_image', null=True, blank=True)
 
@@ -80,14 +73,26 @@ class City(models.Model):
 class District(models.Model):
     is_active = models.BooleanField(default=False)
     title = models.CharField(max_length=150)
-    # postcode = models.CharField(
-    #     max_length=50, unique=True, null=True, blank=True)
     slug = models.CharField(max_length=150, blank=True, null=True)
-    locality = models.ForeignKey(
-        'locations.City', related_name="locality_districts", on_delete=models.CASCADE, null=True)
 
     class Meta:
         verbose_name_plural = "Districts"
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.title)
+        super().save(*args, **kwargs)  # Call the "real" save() method.
+
+    def __str__(self):
+        return self.title
+
+
+class Postcode(models.Model):
+    is_active = models.BooleanField(default=False)
+    title = models.CharField(max_length=150)
+    slug = models.CharField(max_length=150, blank=True, null=True)
+
+    class Meta:
+        verbose_name_plural = "Postcodes"
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)
