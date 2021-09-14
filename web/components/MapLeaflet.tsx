@@ -1,12 +1,13 @@
 import React from "react"
 import Link from "next/link"
-import { Map, Marker, Popup, TileLayer, Tooltip, Circle } from "react-leaflet"
+import { MapContainer, Marker, Popup, TileLayer, Tooltip, Circle } from "react-leaflet"
 import "leaflet/dist/leaflet.css"
 import L from 'leaflet'
 
 import isEmpty from 'lodash/isEmpty'
 
 const MapLeaflet = (props) => {
+  console.log(props)
   const tileLayers = [
     {
       tiles: "https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoibW93by1vcHMiLCJhIjoiY2tpa3JqaGtrMGNxMDJ4cGswY3RuOW1kbCJ9.F2VRDymeDiTfpXOuH_ih5Q",
@@ -50,7 +51,7 @@ const MapLeaflet = (props) => {
     ])
 
   return (
-    <Map
+    <MapContainer
       center={props.center && props.center}
       zoom={props.zoom}
       scrollWheelZoom={focus}
@@ -147,7 +148,7 @@ const MapLeaflet = (props) => {
           />
         )
       }
-    </Map >
+    </MapContainer >
   )
 }
 

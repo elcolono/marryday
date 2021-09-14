@@ -26,18 +26,18 @@ class ForwardingContactsInline(admin.TabularInline):
 class ProductAdmin(admin.ModelAdmin):
     readonly_fields = ('preview_image',)
     search_fields = ('title', 'is_active',)
-    list_display = ('id', 'title', 'is_active',)
-    list_filter = ('title', 'is_active',)
+    list_display = ('id', 'title', 'is_active', 'user',)
+    list_filter = ('title', 'is_active', 'user',)
     inlines = [LocationImageInline]
     fieldsets = fieldsets = (
         ('General', {
-            'fields': ('is_active', 'user', 'category', 'title', 'slug', 'description', 'details',)
+            'fields': ('is_active', 'user', 'category', 'title', 'slug', 'description', 'details', 'utc_offset',)
         }),
         ('Contact', {
-            'fields': ('address', 'street_number', 'public_email', 'public_phone',)
+            'fields': ('public_email', 'public_phone',)
         }),
-        ('Geometry', {
-            'fields': ('geometry', 'utc_offset',)
+        ('location', {
+            'fields': ('location',)
         }),
         ('Reviews', {
             'fields': ('reviews', 'rating', 'user_ratings_total',)

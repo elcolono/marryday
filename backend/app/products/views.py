@@ -61,7 +61,7 @@ class ProductListCreateView(generics.ListCreateAPIView):
 
 
 class ProductPublicListView(generics.ListAPIView):
-    queryset = Product.objects.all()
+    queryset = Product.objects.filter(is_active=True)
     serializer_class = ProductListSerializer
 
 

@@ -41,21 +41,22 @@ export default function UploadField() {
 
     async function uploadImages(uploadImages) {
         const productId = values['id']
+        const allImages = values['images']
+
         for (let image of uploadImages) {
-            values['images'].map(image => image)
             const productImage = await addProductImage(
                 "test_name",
                 image,
                 productId
             );
-            const index = uploadImages.indexOf(image);
-            const newImages = [...uploadImages]
-            newImages[index] = productImage
-            setFieldValue('images', newImages)
+            const index = allImages.indexOf(image);
+            const newAllImages = [...allImages]
+            newAllImages[index] = productImage
+            setFieldValue('images', newAllImages)
         }
     }
 
-    const onDrop = acceptedFiles => {
+    const onDrop = async acceptedFiles => {
         const extendedFiles = acceptedFiles.map((file) =>
             Object.assign(file, {
                 preview: URL.createObjectURL(file),
@@ -67,6 +68,7 @@ export default function UploadField() {
             ...extendedFiles
         ]
         setFieldValue("images", accumulatedFiles)
+        await uploadImages(acceptedFiles)
     }
 
     const {
@@ -155,7 +157,7 @@ export default function UploadField() {
                             <div>
                                 {file.image
                                     ? <ImagePreview image={file}/>
-                                    : <ImagePreview image={file} isLoading={true} classes={'preview '}/>}
+                                    : <ImagePreview image={file} isLoading={true} classes={'preview'}/>}
                             </div>
                         </div>
                     ))}
