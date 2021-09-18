@@ -26,6 +26,8 @@ const steps = ['basics', 'details', 'location', 'images',];
 const {formId} = bookingFormModel;
 
 import productDetailFields from '../../../config/product_detail_fields.json'
+import productBasicFields from '../../../config/product_basic_fields.json'
+
 import LocationForm from "./components/LocationForm";
 
 export const getServerSideProps: GetServerSideProps = async (
@@ -86,14 +88,14 @@ export default function AccountUpdateProduct(pageProps) {
     const formInitialValues = product
 
     function _renderStepContent(step, values) {
-        const selectedCategory = categories.find(category => category.id == values.category)
+        const selectedCategory = categories.find(category => category.id == values.category) ?? 'default'
         switch (step) {
             case 0:
-                return <AddProductBasicForm categories={categories}/>;
+                return <FormFieldsGenerator data={productBasicFields["default"]}/>;
             case 1:
                 return <FormFieldsGenerator data={productDetailFields[selectedCategory.slug]}/>;
             case 2:
-                return <LocationForm />
+                return <LocationForm/>
             case 3:
                 return <AddProductImageForm/>
             default:
@@ -101,25 +103,8 @@ export default function AccountUpdateProduct(pageProps) {
         }
     }
 
-    async function uploadImages(values, actions) {
-        const images = values['images']
-        const productId = values['id']
-        for await (let image of images) {
-            if (!image.uuid) {
-                const productImage = await addProductImage(
-                    "test_name",
-                    image,
-                    productId
-                );
-                const index = images.indexOf(image);
-                const newImages = [...images]
-                newImages[index] = productImage
-                actions.setFieldValue('images', newImages)
-            }
-        }
-    }
 
-    async function  _submitForm(values, actions) {
+    async function _submitForm(values, actions) {
         try {
             await updateProduct(values);
             toast.success("Successfully saved!", {autoClose: 1500});
@@ -180,7 +165,7 @@ export default function AccountUpdateProduct(pageProps) {
                                 validationSchema={currentValidationSchema}
                                 onSubmit={_submitForm}
                             >
-                                {({isSubmitting, values}) => (
+                                {({isSubmitting, values, isValid}) => (
                                     <Form id={formId}>
                                         {_renderStepContent(activeStep, values)}
 
@@ -207,6 +192,7 @@ export default function AccountUpdateProduct(pageProps) {
                                             </Col>
                                         </Row>
                                         <AutoSave debounceMs={1000}/>
+                                        <pre>{JSON.stringify(isValid, null, 2)}</pre>
                                         <pre>{JSON.stringify(values, null, 2)}</pre>
                                     </Form>
                                 )}

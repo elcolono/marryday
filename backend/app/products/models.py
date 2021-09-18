@@ -60,6 +60,7 @@ class Product(models.Model):
     utc_offset = models.IntegerField(null=True)
 
     # Basics
+    basics = models.JSONField(blank=True, null=True)
     title = models.CharField(max_length=150, blank=True, default="")
     slug = models.CharField(max_length=150, blank=True, default="")
     description = HTMLField(max_length=1000, blank=True, default="")

@@ -76,6 +76,7 @@ INSTALLED_APPS = [
     'django.contrib.sitemaps',
     'corsheaders',
     'tinymce',
+    'django_filters',
 
     # Auth
     'rest_framework',
@@ -241,7 +242,8 @@ REST_FRAMEWORK = {
         # 'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.TokenAuthentication',
-    )
+    ),
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
 }
 
 # Configure django-allauth

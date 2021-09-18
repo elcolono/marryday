@@ -2,6 +2,7 @@
 import json
 import requests
 from django.conf import settings
+from django_filters.rest_framework import DjangoFilterBackend
 
 from rest_framework import generics, status
 from rest_framework.response import Response
@@ -63,6 +64,8 @@ class ProductListCreateView(generics.ListCreateAPIView):
 class ProductPublicListView(generics.ListAPIView):
     queryset = Product.objects.filter(is_active=True)
     serializer_class = ProductListSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['category']
 
 
 class ProductRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):

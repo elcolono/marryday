@@ -1,4 +1,5 @@
 from django.db import models
+from django import forms
 
 from wagtail.admin.edit_handlers import MultiFieldPanel, FieldPanel, FieldRowPanel
 from wagtail.contrib.settings.models import BaseSetting, register_setting
@@ -71,6 +72,11 @@ class ThemeSettings(BaseSetting):
         max_length=500,
         # verbose_name='About phone',
     )
+    custom_css = models.TextField(
+        null=True,
+        blank = True,
+        max_length=2000,
+    )
 
     # Social links
     facebook_link = models.URLField(
@@ -97,6 +103,7 @@ class ThemeSettings(BaseSetting):
     panels = [
         ImageChooserPanel('logo'),
         ImageChooserPanel('favicon'),
+        FieldPanel('custom_css', widget=forms.Textarea),
         MultiFieldPanel(children=(
             FieldPanel('header_cta_text'),
             FieldPanel('header_cta_icon'),

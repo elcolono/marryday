@@ -13,10 +13,10 @@ ALLOWED_HOSTS = ['*']
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
 # Set env variables
-POSTGRES_DB_NAME = 'mowo_db_dev_1'
-POSTGRES_DB_USER = 'postgres'
-POSTGRES_DB_PASSWORD = 'postgres'
-POSTGRES_DB_HOST = 'localhost'
+POSTGRES_DB_NAME = 'stage'
+POSTGRES_DB_USER = 'stage'
+POSTGRES_DB_PASSWORD = 'g2i2P9N7N2ZmdzRY5UHV0B'
+POSTGRES_DB_HOST = 'marryday-stage-postgres.ccnn20m42dof.us-east-1.rds.amazonaws.com'
 POSTGRES_DB_PORT = 5432
 DATABASES = {
     'default': {

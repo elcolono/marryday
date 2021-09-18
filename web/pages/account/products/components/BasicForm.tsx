@@ -28,13 +28,14 @@ export default function AddProductBasicForm(props) {
                     </Label>
                     <SelectField
                         id="category"
-                        name="category"
+                        name="basics.categories"
                         autoFocus={true}
                         getOptionLabel={option => option.title}
                         getOptionValue={option => option.id}
                         options={props.categories}
                         className="selectpicker"
                         classNamePrefix="selectpicker"
+                        isMulti
                     />
                 </FormGroup>
                 <FormGroup>
