@@ -4,23 +4,23 @@ import Link from "next/link";
 import {toast, ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {Breadcrumb, BreadcrumbItem, Button, Col, Container, Row, Spinner} from "reactstrap";
-import fetchAPIWithSSR from '../../../utils/fetchAPIwithSSR';
+import fetchAPIWithSSR from '../../../utils/fetchAPIWithSSR';
 import getToken from "../../../utils/getToken";
-import AddProductBasicForm from "./components/BasicForm";
+import AddProductBasicForm from "../../../components/account/BasicForm";
 import {Form, Formik} from "formik";
 
-import validationSchema from '../products/FormModel/validationSchema';
-import bookingFormModel from '../products/FormModel/productFormModel';
-import AddProductImageForm from "./components/ImageForm";
+import validationSchema from '../../../config/ProductFormModel/validationSchema';
+import bookingFormModel from '../../../config/ProductFormModel/productFormModel';
+import AddProductImageForm from "../../../components/account/ImageForm";
 import ProgressBar from "../../../components/ProgressBar";
 import addProductImage from "../../../api/products/addProductImage";
 import isEmpty from "lodash/isEmpty"
-import AutoSave from "../../../components/FormFields/AutoSave";
+import AutoSave from "../../../components/forms/AutoSave";
 import updateProduct from "../../../api/products/updateProduct";
 import Router, {useRouter} from "next/router";
 import {accountPath} from "../index";
 import {accountProductsPath} from "./index";
-import FormFieldsGenerator from "../../../components/FormFields/FormFieldsGenerator";
+import FormFieldsGenerator from "../../../components/forms/FormFieldsGenerator";
 
 const steps = ['basics', 'details', 'location', 'images',];
 const {formId} = bookingFormModel;
@@ -28,7 +28,7 @@ const {formId} = bookingFormModel;
 import productDetailFields from '../../../config/product_detail_fields.json'
 import productBasicFields from '../../../config/product_basic_fields.json'
 
-import LocationForm from "./components/LocationForm";
+import LocationForm from "../../../components/account/LocationForm";
 
 export const getServerSideProps: GetServerSideProps = async (
     {

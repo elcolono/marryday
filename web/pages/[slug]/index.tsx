@@ -1,8 +1,8 @@
 import React from 'react'
-import fetchAPIwithSSR from '../../utils/fetchAPIwithSSR';
+import fetchAPIWithSSR from '../../utils/fetchAPIWithSSR';
 
 import {GetStaticProps, GetStaticPaths} from 'next'
-import DynamicComponent from "./components/DynamicComponent";
+import DynamicComponent from "../../components/cms/DynamicComponent";
 
 export default function SubPage(pageProps) {
     const {page} = pageProps;
@@ -17,10 +17,10 @@ export default function SubPage(pageProps) {
 }
 
 export const getStaticProps: GetStaticProps = async ({params}) => {
-    const settings = await fetchAPIwithSSR('/api/page/home', {method: 'GET'});
-    const page = await fetchAPIwithSSR(`/api/v2/pages/find/?html_path=${params.slug}`, {method: 'GET'});
-    const cities = await fetchAPIwithSSR('/api/v1/products/cities/', {method: 'GET'});
-    const locations = await fetchAPIwithSSR('/api/v1/products/locations/', {method: 'GET'});
+    const settings = await fetchAPIWithSSR('/api/page/home', {method: 'GET'});
+    const page = await fetchAPIWithSSR(`/api/v2/pages/find/?html_path=${params.slug}`, {method: 'GET'});
+    const cities = await fetchAPIWithSSR('/api/v1/products/cities/', {method: 'GET'});
+    const locations = await fetchAPIWithSSR('/api/v1/products/locations/', {method: 'GET'});
 
     return {
         revalidate: 1,
@@ -43,7 +43,7 @@ export const getStaticProps: GetStaticProps = async ({params}) => {
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-    const pages = await fetchAPIwithSSR('/api/v2/pages', {method: 'GET'});
+    const pages = await fetchAPIWithSSR('/api/v2/pages/?type=home.SubPage', {method: 'GET'});
     return {
         paths: pages?.items.map(
             (item) => {
@@ -54,7 +54,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
                     },
                 } || [])
             }
-        ) ?? [{params: {slug: 'signin'}}],
+        ) ?? [],
         fallback: true,
     }
 }

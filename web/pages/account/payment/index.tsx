@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Link from "next/link"
 
-import fetchAPIwithSSR from '../../../utils/fetchAPIwithSSR';
+import fetchAPIWithSSR from '../../../utils/fetchAPIWithSSR';
 import { GetServerSideProps } from 'next';
 
 import {
@@ -22,7 +22,7 @@ import {
 } from "reactstrap"
 
 import Icon from "../../../components/Icon"
-import { InputField } from "../../../components/FormFields";
+import { InputField } from "../../../components/forms";
 import { Formik } from "formik";
 import * as Yup from 'yup'
 import { toast, ToastContainer } from 'react-toastify';
@@ -288,8 +288,8 @@ export default function UserPayment(pageProps) {
 export const getServerSideProps: GetServerSideProps = async ({ req, res, }) => {
 
     const token = getToken(req);
-    const loggedUser = await fetchAPIwithSSR('/api/v1/accounts/auth/user/', { method: 'GET', req: req, token: token }) ?? {}
-    const paymentAccounts = await fetchAPIwithSSR('/api/v1/payments/payment-accounts/', { method: 'GET', req: req, token: token }) ?? []
+    const loggedUser = await fetchAPIWithSSR('/api/v1/accounts/auth/user/', { method: 'GET', req: req, token: token }) ?? {}
+    const paymentAccounts = await fetchAPIWithSSR('/api/v1/payments/payment-accounts/', { method: 'GET', req: req, token: token }) ?? []
     if (loggedUser.email === undefined) {
         res.setHeader("location", "/login");
         res.statusCode = 302;
@@ -297,8 +297,8 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res, }) => {
         return { props: {} }
     }
 
-    const settings = (await fetchAPIwithSSR('/api/page/home', { method: 'GET', req: req })) ?? []
-    const pageData = await fetchAPIwithSSR('/api/v2/pages/?type=user_account.AccountPaymentPage&fields=seo_title,search_description,heading,description,stripe_account_description', { method: 'GET' });
+    const settings = (await fetchAPIWithSSR('/api/page/home', { method: 'GET', req: req })) ?? []
+    const pageData = await fetchAPIWithSSR('/api/v2/pages/?type=user_account.AccountPaymentPage&fields=seo_title,search_description,heading,description,stripe_account_description', { method: 'GET' });
     const page = pageData?.items[0] ?? null;
 
     return {

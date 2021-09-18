@@ -7,9 +7,9 @@ import {
     Breadcrumb,
     BreadcrumbItem, Button, Card, CardBody, CardHeader, Col, Container, Media, Row, Spinner
 } from "reactstrap";
-import CardProduct from "./components/CardProduct";
+import CardProduct from "../../../components/account/CardProduct";
 import Icon from "../../../components/Icon";
-import fetchAPIwithSSR from '../../../utils/fetchAPIwithSSR';
+import fetchAPIWithSSR from '../../../utils/fetchAPIWithSSR';
 import getToken from "../../../utils/getToken";
 import isEmpty from 'lodash/isEmpty'
 import createProduct from "../../../api/products/createProduct";
@@ -26,12 +26,12 @@ export const getServerSideProps: GetServerSideProps = async (
 ) => {
 
     const token = getToken(req);
-    const loggedUser = await fetchAPIwithSSR('/api/v1/accounts/auth/user/', {
+    const loggedUser = await fetchAPIWithSSR('/api/v1/accounts/auth/user/', {
         method: 'GET',
         req: req,
         token: token
     }) ?? {}
-    const products = await fetchAPIwithSSR('/api/v1/products/', {
+    const products = await fetchAPIWithSSR('/api/v1/products/', {
         method: 'GET',
         req: req,
         token: token
@@ -44,8 +44,8 @@ export const getServerSideProps: GetServerSideProps = async (
         return {props: {}}
     }
 
-    const settings = (await fetchAPIwithSSR('/api/page/home', {method: 'GET', req: req})) ?? []
-    const pageData = await fetchAPIwithSSR('/api/v2/pages/?type=user_account.AccountProductsPage&fields=seo_title,search_description,heading,description', {method: 'GET'});
+    const settings = (await fetchAPIWithSSR('/api/page/home', {method: 'GET', req: req})) ?? []
+    const pageData = await fetchAPIWithSSR('/api/v2/pages/?type=user_account.AccountProductsPage&fields=seo_title,search_description,heading,description', {method: 'GET'});
     const page = pageData?.items[0] ?? null;
 
     return {

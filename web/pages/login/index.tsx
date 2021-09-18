@@ -3,7 +3,7 @@ import Link from "next/link"
 import Router, {useRouter} from "next/router";
 import "@fortawesome/fontawesome-free/css/all.min.css"
 
-import fetchAPIwithSSR from '../../utils/fetchAPIwithSSR';
+import fetchAPIWithSSR from '../../utils/fetchAPIWithSSR';
 import {GetStaticProps} from 'next';
 import Cookies from 'js-cookie';
 
@@ -12,7 +12,7 @@ import Image from "../../components/CustomImage"
 import Icon from "../../components/Icon"
 
 import {Formik} from "formik";
-import {InputField} from '../../components/FormFields';
+import {InputField} from '../../components/forms';
 
 import * as Yup from 'yup'
 import fetchAPI from "../../utils/fetchAPI";
@@ -20,9 +20,9 @@ import {toast, ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import getToken from "../../utils/getToken";
 
-export const getStaticProps: GetStaticProps = async () => {
-    const settings = await fetchAPIwithSSR('/api/page/home', {method: 'GET'});
-    const pageData = await fetchAPIwithSSR('/api/v2/pages/?type=home.SigninPage&fields=seo_title,search_description,heading,description,image', {method: 'GET'});
+const getStaticProps: GetStaticProps = async () => {
+    const settings = await fetchAPIWithSSR('/api/page/home', {method: 'GET'});
+    const pageData = await fetchAPIWithSSR('/api/v2/pages/?type=home.SigninPage&fields=seo_title,search_description,heading,description,image', {method: 'GET'});
     const page = pageData?.items[0] ?? null;
 
     return {

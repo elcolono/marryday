@@ -1,7 +1,7 @@
 import React from "react"
 import Link from "next/link"
 
-import fetchAPIwithSSR from '../../utils/fetchAPIwithSSR';
+import fetchAPIWithSSR from '../../utils/fetchAPIWithSSR';
 import { GetStaticProps } from 'next';
 
 import {
@@ -50,8 +50,8 @@ export default function Page404(pageProps) {
 }
 
 export const getStaticProps: GetStaticProps = async () => {
-  const settings = await fetchAPIwithSSR('/api/page/home', { method: 'GET' });
-  const pageData = await fetchAPIwithSSR('/api/v2/pages/?type=home.Page404&fields=seo_title,search_description,heading,description,image,button_text', { method: 'GET' });
+  const settings = await fetchAPIWithSSR('/api/page/home', { method: 'GET' });
+  const pageData = await fetchAPIWithSSR('/api/v2/pages/?type=home.Page404&fields=seo_title,search_description,heading,description,image,button_text', { method: 'GET' });
   const page = pageData?.items[0] ?? null;
 
   return {

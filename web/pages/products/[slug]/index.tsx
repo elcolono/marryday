@@ -41,7 +41,7 @@ const LocationDetail = (props) => {
         setIsDesktop(window.innerWidth > 991)
     })
 
-    const BookingWithNoSSR = dynamic(() => import("./components"), {
+    const BookingWithNoSSR = dynamic(() => import("../../../components/products"), {
         ssr: false
     });
 

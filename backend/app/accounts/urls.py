@@ -11,7 +11,7 @@ urlpatterns = [
     path('auth/', include('dj_rest_auth.urls')),
 
     # Registration
-    path('auth/registration/', include('rest_auth.registration.urls')),
+    path('auth/registration/', include('dj_rest_auth.registration.urls')),
 
     # Password Reset
     # Custom 'send-custom-reset' endpoint because of 'invalid UID' ERROR from default route

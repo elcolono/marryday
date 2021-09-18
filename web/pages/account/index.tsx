@@ -1,7 +1,7 @@
 import React from "react"
 import Link from "next/link"
 
-import fetchAPIWithSSR from '../../utils/fetchAPIwithSSR';
+import fetchAPIWithSSR from '../../utils/fetchAPIWithSSR';
 import {GetServerSideProps} from 'next';
 
 import {

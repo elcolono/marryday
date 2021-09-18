@@ -37,7 +37,6 @@ const Swiper = (props) => {
     }
   }
   const params = {
-    containerClass: `swiper-container ${props.className}`,
     slidesPerView: props.perView,
     effect: props.effect,
     allowTouchMove: props.allowTouchMove === false ? false : true,
@@ -47,7 +46,6 @@ const Swiper = (props) => {
     loop: props.loop,
     speed: props.speed ? props.speed : 400,
     parallax: props.parallax,
-    breakpoints: breakpoints,
     autoplay: props.autoplay
       ? {
         delay: props.delay,

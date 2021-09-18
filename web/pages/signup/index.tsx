@@ -1,7 +1,7 @@
 import React from "react"
 import Link from "next/link"
 
-import fetchAPIwithSSR from '../../utils/fetchAPIwithSSR';
+import fetchAPIWithSSR from '../../utils/fetchAPIWithSSR';
 import { GetStaticProps } from 'next';
 
 import {
@@ -18,7 +18,7 @@ import Image from "../../components/CustomImage"
 import Icon from "../../components/Icon"
 
 import { Formik } from "formik";
-import { InputField } from '../../components/FormFields';
+import { InputField } from '../../components/forms';
 
 import * as Yup from 'yup'
 import fetchAPI from "../../utils/fetchAPI";
@@ -205,8 +205,8 @@ export default function Signup(pageProps) {
 }
 
 export const getStaticProps: GetStaticProps = async () => {
-  const settings = await fetchAPIwithSSR('/api/page/home', { method: 'GET' });
-  const pageData = await fetchAPIwithSSR('/api/v2/pages/?type=home.SignupPage&fields=seo_title,search_description,heading,description,image', { method: 'GET' });
+  const settings = await fetchAPIWithSSR('/api/page/home', { method: 'GET' });
+  const pageData = await fetchAPIWithSSR('/api/v2/pages/?type=home.SignupPage&fields=seo_title,search_description,heading,description,image', { method: 'GET' });
   const page = pageData?.items[0] ?? null;
 
   return {

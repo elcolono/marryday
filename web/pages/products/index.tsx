@@ -12,7 +12,7 @@ import {
 import "react-dates/initialize"
 import Map from "../../components/Map"
 import {DateRangePicker} from "react-dates"
-import CardProduct from "../account/products/components/CardProduct"
+import CardProduct from "../../components/account/CardProduct"
 
 import {GetServerSideProps} from "next"
 import {fetchAPIwithSSR} from "../../lib/api"
@@ -44,7 +44,7 @@ const Products = (props) => {
         {startDate: new Date()},
         {endDate: ""},
     ])
-    const [dateFocused, setDateFocused] = React.useState(range.startDate)
+    const [dateFocused, setDateFocused] = React.useState(range[0].startDate)
 
     const onCardEnter = (slug) => {
         setHoverCard(slug)
@@ -68,13 +68,13 @@ const Products = (props) => {
                                         </Label>
                                         <br/>
                                         <DateRangePicker
-                                            startDate={range.startDate}
+                                            startDate={range[0].startDate}
                                             startDateId="fromDate"
-                                            endDate={range.endDate}
+                                            endDate={range[1].endDate}
                                             endDateId="toDate"
                                             block={true}
                                             onDatesChange={({startDate, endDate}) =>
-                                                setRange({startDate, endDate})
+                                                setRange([startDate, endDate])
                                             }
                                             focusedInput={dateFocused}
                                             onFocusChange={(dateFocused) => setDateFocused(dateFocused)}

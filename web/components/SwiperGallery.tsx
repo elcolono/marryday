@@ -50,7 +50,6 @@ const SwiperGallery = (props) => {
     loop: true,
     roundLengths: true,
     centeredSlides: true,
-
     pagination: {
       el: `.swiper-pagination.swiper-pagination-white`,
       clickable: true,
