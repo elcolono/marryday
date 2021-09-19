@@ -13,10 +13,10 @@ ALLOWED_HOSTS = ['*']
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
 # Set env variables
-POSTGRES_DB_NAME = 'mowo_db_dev_1'
+POSTGRES_DB_NAME = 'marryday_db_1'
 POSTGRES_DB_USER = 'postgres'
-POSTGRES_DB_PASSWORD = 'postgres'
-POSTGRES_DB_HOST = 'localhost'
+POSTGRES_DB_PASSWORD = os.environ.get('POSTGRES_DB_PASSWORD')
+POSTGRES_DB_HOST = '23.88.62.81'
 POSTGRES_DB_PORT = 5432
 DATABASES = {
     'default': {
@@ -31,8 +31,8 @@ DATABASES = {
 }
 
 # S3 Bucket Connection
-AWS_ACCESS_KEY_ID = 'AKIA4NGTH73S3GKH6Y4R'
-AWS_STORAGE_BUCKET_NAME = 'mowo-location-images'
+AWS_ACCESS_KEY_ID = 'AKIATQLVM6PJXGPRWVPN'
+AWS_STORAGE_BUCKET_NAME = 'marryday-testing'
 
 
 # Mailchimp DEV Config

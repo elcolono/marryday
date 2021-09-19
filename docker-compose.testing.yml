@@ -7,7 +7,7 @@ services:
     environment:
       POSTGRES_DB_PASSWORD: "${POSTGRES_DB_PASSWORD}"
       MAILCHIMP_API_KEY: "${MAILCHIMP_API_KEY}"
-      AWS_STORAGE_BUCKET_NAME: "mowo-testing"
+      AWS_STORAGE_BUCKET_NAME: "marryday-testing"
       CLIENT_DOMAIN: "https://testing.mowo.space/"
       PIPEDRIVE_URL: "https://mowospaces.pipedrive.com/api/v1/"
 
@@ -21,7 +21,7 @@ services:
       context: ./web
       dockerfile: Dockerfile
       args:
-        BASE_URL: http://backend:8000
+        BASE_URL: "http://backend:8000"
         BASE_SERVER_URL: "https://testing.mowo.space"
         STRIPE_PUBLISHABLE_KEY: "pk_test_51I47k4IpxsSLqlNa6T7HoFrFVoxyEalH5VROqKLV1DvZTBMV2WWWS4anN5fdWwqtdPIXaJU3VKR3bwmYhQliv3Or00c3rJIp2Q"
 
