@@ -5,6 +5,8 @@ This repository provides an application for deploying a Django backend served by
 
 ### Local (For Development)
 
+* Run eslint with yarn lint
+* Run build with yarn build
 * Wagail Site settings: 
     * hostname: localhost
     * port: 8000

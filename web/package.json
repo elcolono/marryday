@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "NODE_OPTIONS='--inspect' next dev",
+    "lint": "next lint",
     "build": "next build",
     "start": "next start",
     "test": "jest",
@@ -61,6 +62,8 @@
     "cross-env": "^7.0.3",
     "enzyme": "^3.11.0",
     "enzyme-to-json": "^3.6.2",
+    "eslint": "^7.32.0",
+    "eslint-config-next": "^11.1.2",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^27.0.6",
     "jest-dom": "^4.0.0",
