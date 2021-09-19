@@ -185,7 +185,7 @@ export default function Signup(pageProps) {
                 </Formik>
                 <hr className="my-4" />
                 <p className="text-sm text-muted">
-                  By signing up you agree to Directory's{" "}
+                  By signing up you agree to Directory&apos;s{" "}
                   <a href="#">Terms and Conditions</a> and{" "}
                   <a href="#">Privacy Policy</a>.
             </p>

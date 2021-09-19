@@ -1,4 +1,4 @@
-export default function CounterSection({ data }) {
+export default function Counter({ data }) {
     return (
         <section className="section">
             <div className="container">

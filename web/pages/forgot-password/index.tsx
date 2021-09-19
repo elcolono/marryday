@@ -1,11 +1,9 @@
-import React, {useEffect, useState} from "react"
+import React from "react"
 import Link from "next/link"
-import Router, {useRouter} from "next/router";
 import "@fortawesome/fontawesome-free/css/all.min.css"
 
 import fetchAPIWithSSR from '../../utils/fetchAPIWithSSR';
 import {GetStaticProps} from 'next';
-import Cookies from 'js-cookie';
 
 import {Button, Col, Container, Form, FormGroup, Label, Row, Spinner,} from "reactstrap"
 import Image from "../../components/CustomImage"
@@ -136,7 +134,7 @@ export default function Index(pageProps) {
                                 <hr className="my-4"/>
                                 <p className="text-center">
                                     <small className="text-muted text-center">
-                                        Don't have an account yet?&nbsp;
+                                        Don&apos;apos;t have an account yet?&nbsp;
                                         <Link href="/login">
                                             <a>Login</a>
                                         </Link>

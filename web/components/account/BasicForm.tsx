@@ -17,7 +17,7 @@ export default function AddProductBasicForm(props) {
                 <h4>Basics</h4>
                 <p className="text-muted text-sm">
                     Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
-                    industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type
+                    industry&apos;s standard dummy text ever since the 1500s, when an unknown printer took a galley of type
                     and scrambled it to make a type specimen book.
                 </p>
             </Col>
@@ -65,7 +65,7 @@ export default function AddProductBasicForm(props) {
                     >
                         The bedding was hardly able to cover it and seemed ready to slide off any moment. His many legs,
                         pitifully thin compared with the size of the rest of him, waved about helplessly as he looked.
-                        'What's happened to me?' he thought. It wasn't a dream.
+                        &apos;What&apos;s happened to me?&apos; he thought. It wasn&apos;t a dream.
                     </small>
                 </FormGroup>
             </Col>

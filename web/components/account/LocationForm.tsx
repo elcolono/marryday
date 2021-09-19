@@ -48,11 +48,11 @@ export default function LocationForm() {
             <Col lg="4">
                 <h4>Location</h4>
                 <div>Map</div>
-                <Alert className="mt-3" color="secondary">We won't publish your <b>street and number</b> to users
+                <Alert className="mt-3" color="secondary">We won&apos;t publish your <b>street and number</b> to users
                     without your permission!</Alert>
                 <p className="text-muted text-sm">
                     Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
-                    industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type
+                    industry&apos;s standard dummy text ever since the 1500s, when an unknown printer took a galley of type
                     and scrambled it to make a type specimen book.
                 </p>
 

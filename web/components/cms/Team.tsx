@@ -1,4 +1,4 @@
-export default function TeamSection({ data }) {
+export default function Team({ data }) {
     return (
         <section className="section">
             <div className="container">
@@ -8,8 +8,8 @@ export default function TeamSection({ data }) {
                     </div>
                 </div>
                 <div className="row list-bunch">
-                    {data.members && data.members.map((member) => (
-                        <div className="col-lg-3 col-sm-6 list-bunch-item">
+                    {data.members && data.members.map((member, index) => (
+                        <div key={index} className="col-lg-3 col-sm-6 list-bunch-item">
                             <img src={process.env.CLIENT_API_URL + member.image.url} alt="" />
                             <h4 className="mb-1 mt-3">{member.name}</h4>
                             <p>{member.position}</p>

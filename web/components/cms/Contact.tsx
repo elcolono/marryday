@@ -154,7 +154,11 @@ const ContactSection = ({ data, title }) => {
                                         <ul className="list-inline">
                                             {data.social.map((icon) => (
                                                 <li key={icon.icon} className="list-inline-item">
-                                                    <a href={icon.link} target="_blank">
+                                                    <a
+                                                        href={icon.link}
+                                                        target="_blank"
+                                                        rel="noreferrer"
+                                                    >
                                                         <i className={`fab fa-${icon.icon}`} />
                                                     </a>
                                                 </li>

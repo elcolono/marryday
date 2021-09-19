@@ -224,7 +224,7 @@ export default function Index(pageProps) {
                                 <hr className="my-4"/>
                                 <p className="text-center">
                                     <small className="text-muted text-center">
-                                        Don't have an account yet?&nbsp;
+                                        Don&apos;t have an account yet?&nbsp;
                                         <Link href="/signup">
                                             <a>Sign Up</a>
                                         </Link>
