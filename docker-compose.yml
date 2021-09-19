@@ -61,7 +61,6 @@ services:
 
   nginx:
     image: nginx:latest
-    container_name: ng01
     ports:
       - "80:80"
     volumes:

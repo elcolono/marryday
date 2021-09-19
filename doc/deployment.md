@@ -14,6 +14,12 @@ This repository provides an application for deploying a Django backend served by
 
 
 #### Testing
+* Create Postres DB
+    * DB name
+    * DB password
+    * if you cannot connect to db make sure db is created with correct credentials
+        * e.g.: remove db volumes with docker volume rm <volume>     
+
 * Spin up App
     1. git pull (testing branch)
     2. docker-compose -f docker-compose.yml -f docker-compose.testing.yml up --build --force-recreate

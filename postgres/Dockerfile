@@ -1,2 +1,0 @@
-FROM library/postgres
-ENV POSTGRES_USER
