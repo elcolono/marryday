@@ -10,11 +10,12 @@ import {
 
 import Image from "../CustomImage"
 
-const HeroSection = ({ data }) => {
+const HeroSection = (props) => {
+    const {heading, subheading, description, image, button_link, button_text} = props
     return (
         <section className="position-relative py-6">
             <Image
-                src={data.image.url}
+                src={image.url}
                 alt="test"
                 className="bg-image"
                 loading="lazy"
@@ -25,17 +26,17 @@ const HeroSection = ({ data }) => {
                     <Col lg="6">
                         <div className="bg-white rounded-lg shadow p-5">
                             {/* {JSON.stringify(data)} */}
-                            {data.subheading &&
+                            {subheading &&
                                 <strong className="text-uppercase text-secondary d-inline-block mb-2 text-sm">
-                                    {data.subheading}
+                                    {subheading}
                                 </strong>
                             }
-                            <h2 className="mb-3">{data.heading}</h2>
-                            <p className="text-muted">{data.description}</p>
-                            {data.button_link &&
-                                <Link href={`/${data.button_link.slug}`}>
+                            <h2 className="mb-3">{heading}</h2>
+                            <p className="text-muted">{description}</p>
+                            {button_link &&
+                                <Link href={`/${button_link.slug}`}>
                                     <a className="p-0 btn btn-link">
-                                        {data.button_text}{" "}
+                                        {button_text}{" "}
                                         <i className="fa fa-long-arrow-alt-right" />
                                     </a>
                                 </Link>}

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from products.models import Product, ProductImage, ProductCategory
+from products.models import Product, ProductImage, ProductCategory, ProductCategoryImage
 
 
 # ProductImage
@@ -71,8 +71,17 @@ class ProductDestroySerializer(serializers.ModelSerializer):
         fields = ['id', 'title']
 
 
+# ProductCategoryImage
+class ProductCategoryImageRetrieveSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProductCategoryImage
+        fields = '__all__'
+
+
 # ProductCategory
 class ProductCategoryListSerializer(serializers.ModelSerializer):
+    images = ProductCategoryImageRetrieveSerializer(many=True)
+
     class Meta:
         model = ProductCategory
         fields = '__all__'

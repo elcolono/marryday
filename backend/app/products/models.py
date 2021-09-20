@@ -115,20 +115,37 @@ class Product(models.Model):
         return self.title
 
 
+# ProductCategory
 class ProductCategory(models.Model):
-    # General
     is_active = models.BooleanField(default=False)
-
-    # Basics
     title = models.CharField(max_length=150, unique=True)
     slug = models.CharField(max_length=150, blank=True, null=True)
+    short_description = models.CharField(max_length=500, blank=True)
+    long_description = models.TextField(max_length=2000, blank=True)
 
     class Meta:
         verbose_name_plural = "Product Categories"
 
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.title)
+        if self.slug is None:
+            self.slug = slugify(self.title)
         super().save(*args, **kwargs)  # Call the "real" save() method.
 
     def __str__(self):
         return self.title
+
+
+class ProductCategoryImage(Image):
+    def validate_image(fieldfile_obj):
+        filesize = fieldfile_obj.file.size
+        megabyte_limit = 5.0
+        if filesize > megabyte_limit * 1024 * 1024:
+            raise ValidationError("Max file size is %sMB" %
+                                  str(megabyte_limit))
+
+    def update_filename(instance, filename):
+        ext = filename.split('.')[-1]
+        return f"categories/{instance.category_id}/{instance.title}.{ext}"
+
+    image = models.FileField(upload_to=update_filename)
+    category = models.ForeignKey('products.ProductCategory', related_name="images", on_delete=models.PROTECT)

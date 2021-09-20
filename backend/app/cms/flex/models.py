@@ -5,10 +5,14 @@ from wagtail.core.models import Page
 from wagtail.core.fields import StreamField, RichTextField
 from wagtail.api import APIField
 
-from .blocks import (PageHeadingSectionBlock, MapSectionBlock, HeroSectionBlock, HeroLocationSearchSectionBlock, LogoCloudBlock, ServiceSectionBlock,
-                     FeatureSectionBlock, CounterSectionBlock, TeamSectionBlock, CTASection, PricingSectionBlock, ContactSectionBlock, TextWithImageSectionBlock,
-                     ContentSectionBlock, TestimonialSectionBlock, HTMLSectionBlock, PortfolioSectionBlock, ComingSoonSectionBlock,
-                     FAQSectionBlock, LoginSectionBlock, BookingSectionBlock, LocationSliderBlock, CityGalleryBlock, CitySliderBlock)
+from .blocks import (PageHeadingSectionBlock, MapSectionBlock, HeroSectionBlock, HeroWithSearchBarBlock,
+                     LogoCloudBlock, ServiceSectionBlock,
+                     FeatureSectionBlock, CounterSectionBlock, TeamSectionBlock, CTASection, PricingSectionBlock,
+                     ContactSectionBlock, TextWithImageSectionBlock,
+                     ContentSectionBlock, TestimonialSectionBlock, HTMLSectionBlock, PortfolioSectionBlock,
+                     ComingSoonSectionBlock,
+                     FAQSectionBlock, LoginSectionBlock, BookingSectionBlock, ProductSliderBlock, CityGalleryBlock,
+                     TopicSliderBlock)
 
 
 # Create your models here.
@@ -19,19 +23,19 @@ class FlexPage(Page):
     Abstract Page Extension
     Define abstract to dont create own database table for this model - fields are created in the child class
     """
-    seo_text = RichTextField(blank=True, null=True, verbose_name="SEO Text",)
+    seo_text = RichTextField(blank=True, null=True, verbose_name="SEO Text", )
     content = StreamField(
         [
+            ('hero_with_search_bar', HeroWithSearchBarBlock()),
+            ('service_section_block', ServiceSectionBlock()),
+            ('topic_slider', TopicSliderBlock()),
+            ('product_slider', ProductSliderBlock()),
+
             ('page_heading_section_block', PageHeadingSectionBlock()),
             ('map_section_block', MapSectionBlock()),
-            ('hero_location_search_section_block',
-             HeroLocationSearchSectionBlock()),
             ('hero_section_block', HeroSectionBlock()),
-            ('location_slider_section_block', LocationSliderBlock()),
             ('city_gallery_section_block', CityGalleryBlock()),
-            ('city_slider_section_block', CitySliderBlock()),
             ('logo_cloud_block', LogoCloudBlock()),
-            ('service_section_block', ServiceSectionBlock()),
             ('feature_section_block', FeatureSectionBlock()),
             ('counter_section_block', CounterSectionBlock()),
             ('team_section_block', TeamSectionBlock()),

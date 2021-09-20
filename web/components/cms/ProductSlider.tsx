@@ -4,14 +4,16 @@ import { Container, Row, Col } from "reactstrap";
 import Swiper from "../Swiper";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-const CitySlider = (props) => {
-    const { data, cities } = props;
+const ProductSlider = (props) => {
+
+    const { data, locations } = props;
+
     return (
         <section className={`py-6 ${data.grey_background ? "bg-gray-100" : ""}`}>
             <Container>
                 <Row className="mb-5">
                     <Col md="8">
-                        {data.subheading && <p className="subtitle text-primary">{data.subheading}</p>}
+                        {data.subheading && <p className="subtitle text-secondary">{data.subheading}</p>}
                         {data.heading && <h2>{data.heading}</h2>}
                     </Col>
                     <Col
@@ -26,23 +28,28 @@ const CitySlider = (props) => {
                         </Link>
                     </Col>
                 </Row>
-                {cities && (
-                    <Swiper
-                        className="guides-slider mx-n2 pt-3 pb-5"
-                        perView={1}
-                        spaceBetween={20}
-                        imgCards
-                        loop={data.loop_slides}
-                        roundLengths
-                        md={2}
-                        lg={4}
-                        xl={5}
-                        data={cities}
-                    />
-                )}
+            </Container>
+            <Container>
+                {locations && <Swiper
+                    className="swiper-container-mx-negative pt-3 pb-5"
+                    perView={1}
+                    spaceBetween={20}
+                    roundLengths
+                    md={2}
+                    lg={3}
+                    xl={4}
+                    data={locations}
+                    cards
+                    loop={data.loop_slides}
+                />}
+                {/* <div className="text-center mt-5">
+                    <Link href="/coworking">
+                        <a className="btn btn-outline-primary">Alle Standorte</a>
+                    </Link>
+                </div> */}
             </Container>
         </section>
     )
 }
 
-export default CitySlider;
+export default ProductSlider

@@ -13,7 +13,7 @@ const CardPoster = (props) => {
             </Link> */}
             {/* Loading eager set for IE compatibility */}
             <Image
-                src={data.preview_image.image}
+                src={data.images.find(image => image.is_thumbnail).image}
                 layout="fill"
                 className="bg-image"
                 alt={data.title}
@@ -23,7 +23,7 @@ const CardPoster = (props) => {
                 <CardTitle tag="h6" className="card-title text-shadow text-uppercase">
                     {data.title}
                 </CardTitle>
-                <CardText className="card-text text-sm">{data.subtitle}</CardText>
+                <CardText className="card-text text-sm">{data.short_description}</CardText>
             </CardBody>
         </Card>
     )

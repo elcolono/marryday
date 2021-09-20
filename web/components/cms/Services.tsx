@@ -8,33 +8,34 @@ import {
 import Icon from "../Icon"
 import Image from "../CustomImage"
 
-export default function ServiceSection({ data }) {
+export default function ServiceSection(props) {
+    const {heading, subheading, services, layout, grey_background} = props;
     return (
 
-        <section className={`py-6 ${data.grey_background ? "bg-gray-100" : ""}`}>
+        <section className={`py-6 ${grey_background ? "bg-gray-100" : ""}`}>
             <Container>
                 <div className="text-center pb-lg-4">
-                    {data.subheading && <p className="subtitle text-secondary">
-                        {data.subheading}
+                    {subheading && <p className="subtitle text-secondary">
+                        {subheading}
                     </p>}
-                    <h2 className="mb-5">{data.heading}</h2>
+                    <h2 className="mb-5">{heading}</h2>
                 </div>
                 <Row>
-                    {data.services && data.services.map((service, i) => (
+                    {services && services.map((service, index) => (
                         <Col
-                            key={service.heading}
+                            key={index}
                             md="4"
                             className="mb-3 mb-lg-0 text-center"
                         >
                             <div className="px-0 px-lg-3">
-                                {data.layout == "service_with_icon" && (
+                                {layout == "service_with_icon" && (
                                     <div className="icon-rounded bg-primary-light mb-3">
                                         <Icon
                                             icon={service.icon}
                                             className="text-primary w-2rem h-2rem"
-                                        />                                    </div>
+                                        /></div>
                                 )}
-                                {data.layout == "service_with_image" && (
+                                {layout == "service_with_image" && (
                                     <div className="icon-image-rounded mb-4 bg-primary-light position-relative">
                                         <Image
                                             src={service.image.url}
@@ -56,6 +57,6 @@ export default function ServiceSection({ data }) {
                     ))}
                 </Row>
             </Container>
-        </section >
+        </section>
     )
 }

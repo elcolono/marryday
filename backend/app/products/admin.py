@@ -2,7 +2,7 @@
 Admin Settings
 """
 from django.contrib import admin
-from .models import Product, ProductImage, ProductCategory, ForwardingContact
+from .models import Product, ProductImage, ProductCategory, ForwardingContact, ProductCategoryImage
 
 
 # Register your models here.
@@ -51,10 +51,15 @@ class ProductAdmin(admin.ModelAdmin):
     )
 
 
+class ProductCategoryImageInline(admin.TabularInline):
+    model = ProductCategoryImage
+
+
 class ProductCategoryAdmin(admin.ModelAdmin):
     search_fields = ('title', 'is_active')
     list_display = ('title', 'is_active')
     list_filter = ('title', 'is_active')
+    inlines = [ProductCategoryImageInline]
 
 
 class RentObjectAdmin(admin.ModelAdmin):

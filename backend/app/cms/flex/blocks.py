@@ -31,12 +31,6 @@ class WagtailImageSerializer(serializers.ModelSerializer):
 
 
 class APIImageChooserBlock(ImageChooserBlock):
-    required = False
-
-    def __init__(self, required=False, *args, **kwargs):
-        # self.width = width
-        self.required = required
-        super().__init__()
 
     def get_api_representation(self, value, context=None):
         if value:
@@ -78,7 +72,7 @@ class CityGalleryBlock(blocks.StructBlock):
 
 
 # Product Slider Block
-class CitySliderBlock(blocks.StructBlock):
+class TopicSliderBlock(blocks.StructBlock):
     """ Service Section Block """
     grey_background = blocks.BooleanBlock(
         default=True,
@@ -110,12 +104,13 @@ class CitySliderBlock(blocks.StructBlock):
 
     class Meta:
         """ meta data """
-        label = 'City Slider'
+        label = 'Topic Slider'
+
 
 # Product Slider Block
 
 
-class LocationSliderBlock(blocks.StructBlock):
+class ProductSliderBlock(blocks.StructBlock):
     """ Service Section Block """
     grey_background = blocks.BooleanBlock(
         default=True,
@@ -329,7 +324,7 @@ class TextWithImageSectionBlock(blocks.StructBlock):
 
 
 # Hero Section Block
-class HeroLocationSearchSectionBlock(blocks.StructBlock):
+class HeroWithSearchBarBlock(blocks.StructBlock):
     """ Section Base Block - Ued by each section """
     heading = blocks.CharBlock(
         required=False,
@@ -350,10 +345,22 @@ class HeroLocationSearchSectionBlock(blocks.StructBlock):
     image = APIImageChooserBlock(
         required=True,
     )
+    use_search = blocks.BooleanBlock(
+        default=True,
+        required=False
+    )
+    use_location_filter = blocks.BooleanBlock(
+        default=True,
+        required=False
+    )
+    use_product_category_filter = blocks.BooleanBlock(
+        default=True,
+        required=False
+    )
 
     class Meta:
         """ Meta data """
-        label = 'Hero Product Search Section'
+        label = 'Hero Product Search'
 
 
 # Hero Section Block
@@ -544,6 +551,7 @@ class ComingSoonSectionBlock(blocks.StructBlock):
         """ meta data """
         label = 'Coming Soon Section'
 
+
 # Login Section Block
 
 
@@ -565,6 +573,7 @@ class LoginSectionBlock(blocks.StructBlock):
         """ meta data """
         label = 'Login Section'
 
+
 # Booking Section Block
 
 
@@ -581,6 +590,7 @@ class BookingSectionBlock(blocks.StructBlock):
     class Meta:
         """ meta data """
         label = 'Booking Section'
+
 
 # Counter Section Block
 
@@ -614,7 +624,6 @@ class CTASection(blocks.StructBlock):
         choices=(
             ('video-1', 'Video CTA'),
         ),
-        required=True,
         default='video-1',
     )
     image = APIImageChooserBlock(
