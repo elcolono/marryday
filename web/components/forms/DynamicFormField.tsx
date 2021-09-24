@@ -4,6 +4,7 @@ import InputField from "./InputField";
 import SelectField from "./SelectField";
 import CustomInputField from "./CustomInputField";
 import CompoundField from "./CompoundField";
+import UploadField from "./UploadField";
 
 const DynamicFormField = ({input}) => {
     return (
@@ -70,6 +71,7 @@ const DynamicFormField = ({input}) => {
                         {input.label}
                     </Label>
                     <SelectField
+                        {...input}
                         id={input.name}
                         name={input.name}
                         options={input.options}
@@ -129,6 +131,13 @@ const DynamicFormField = ({input}) => {
                         name={input.name}
                         inputs={input.inputs}
                     />
+                </FormGroup>
+            )}
+            {input.type === "upload" && (
+                <FormGroup>
+                    {input.label && <Label className="form-label text-lg">{input.label}</Label>}
+                    {input.content && <p className="text-muted text-sm">{input.content}</p>}
+                    <UploadField/>
                 </FormGroup>
             )}
 

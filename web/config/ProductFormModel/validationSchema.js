@@ -10,10 +10,7 @@ const {
 } = checkoutFormModel;
 
 export default [
-    Yup.object().shape({
-        [title.name]: Yup.string().required(`${title.requiredErrorMsg}`),
-        [description.name]: Yup.string().required(`${description.requiredErrorMsg}`),
-    }),
+    Yup.object().shape({}),
     Yup.object().shape({}),
     Yup.object().shape({}),
     Yup.object().shape({

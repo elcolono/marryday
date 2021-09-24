@@ -1,16 +1,16 @@
 import React from "react"
 import Link from "next/link"
 
-import { Card, CardBody, CardTitle, CardText } from "reactstrap"
+import {Card, CardBody, CardTitle, CardText} from "reactstrap"
 import Image from "./CustomImage"
 
 const CardPoster = (props) => {
     const data = props.data
     return (
         <Card className="card-poster gradient-overlay hover-animate mb-4 mb-lg-0">
-            {/* <Link href={data.button_link.slug}>
-                <a className="tile-link" />
-            </Link> */}
+            <Link href={`/categories/${data.id}/${data.slug}`}>
+                <a className="tile-link"/>
+            </Link>
             {/* Loading eager set for IE compatibility */}
             <Image
                 src={data.images.find(image => image.is_thumbnail).image}

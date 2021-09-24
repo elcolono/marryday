@@ -1,18 +1,14 @@
 from django.urls import path
-from products.views import \
-    ProductPublicListView, \
-    ProductListCreateView, \
-    ProductImageCreateView, \
-    ProductImageRetrieveUpdateDestroy, \
-    ProductRetrieveUpdateDestroyView, \
-    MailchimpAudienceAPIVIEWSet, \
-    PipeDriveAPIVIEWSet, \
-    ProductCategoryTestListView
+from products.views import ProductPublicListView, ProductListCreateView, ProductImageCreateView, \
+    ProductImageRetrieveUpdateDestroy, ProductRetrieveUpdateDestroyView, MailchimpAudienceAPIVIEWSet, \
+    PipeDriveAPIVIEWSet, ProductCategoryTestListView, ProductCategoryRetrieveView
 
 urlpatterns = [
     # ProductCategories
     path("category/", ProductCategoryTestListView.as_view(),
          name="product-category-list"),
+    path("category/<pk>", ProductCategoryRetrieveView.as_view(),
+         name="product-category-retrieve"),
 
     # ProductImages
     path("image/", ProductImageCreateView.as_view(), name="product-image-create"),

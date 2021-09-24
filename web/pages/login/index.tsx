@@ -20,32 +20,6 @@ import {toast, ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import getToken from "../../utils/getToken";
 
-const getStaticProps: GetStaticProps = async () => {
-    const settings = await fetchAPIWithSSR('/api/page/home', {method: 'GET'});
-    const pageData = await fetchAPIWithSSR('/api/v2/pages/?type=home.SigninPage&fields=seo_title,search_description,heading,description,image', {method: 'GET'});
-    const page = pageData?.items[0] ?? null;
-
-    return {
-        revalidate: 1,
-        props: {
-            page: page,
-            themeSettings: settings?.theme_settings ?? null,
-            mainMenus: settings?.main_menus ?? null,
-            flatMenus: settings?.flat_menus ?? null,
-            nav: {
-                light: true,
-                classes: "shadow",
-                color: "white",
-            },
-            title: page?.meta.seo_title ?? null,
-            hideFooter: true,
-            hideHeader: true,
-            noPaddingTop: true,
-            searchDescription: page?.meta.search_description ?? null,
-        },
-    }
-}
-
 
 export default function Index(pageProps) {
 
@@ -101,6 +75,20 @@ export default function Index(pageProps) {
             {page ?
                 <Container fluid className="px-3">
                     <Row className="min-vh-100">
+                        <Col md="4" lg="6" xl="7" className="d-none d-md-block">
+                            <div className="bg-cover h-100 mr-n3">
+                                {page.image &&
+                                <Image
+                                    src={page.image.meta.download_url}
+                                    alt={page.image.title}
+                                    className="bg-image"
+                                    loading="eager"
+                                    layout="fill"
+                                    priority={true}
+                                />
+                                }
+                            </div>
+                        </Col>
                         <Col md="8" lg="6" xl="5" className="d-flex align-items-center">
                             <div className="w-100 py-5 px-md-5 px-xl-6 position-relative">
                                 <div className="mb-5">
@@ -237,20 +225,6 @@ export default function Index(pageProps) {
                                 </Link>
                             </div>
                         </Col>
-                        <Col md="4" lg="6" xl="7" className="d-none d-md-block">
-                            <div className="bg-cover h-100 mr-n3">
-                                {page.image &&
-                                <Image
-                                    src={page.image.meta.download_url}
-                                    alt={page.image.title}
-                                    className="bg-image"
-                                    loading="eager"
-                                    layout="fill"
-                                    priority={true}
-                                />
-                                }
-                            </div>
-                        </Col>
                     </Row>
 
                 </Container> :
@@ -260,4 +234,29 @@ export default function Index(pageProps) {
     )
 }
 
+export const getStaticProps: GetStaticProps = async () => {
+    const settings = await fetchAPIWithSSR('/api/page/home', {method: 'GET'});
+    const pageData = await fetchAPIWithSSR('/api/v2/pages/?type=home.SigninPage&fields=seo_title,search_description,heading,description,image', {method: 'GET'});
+    const page = pageData?.items[0] ?? null;
+
+    return {
+        revalidate: 1,
+        props: {
+            page: page,
+            themeSettings: settings?.theme_settings ?? null,
+            mainMenus: settings?.main_menus ?? null,
+            flatMenus: settings?.flat_menus ?? null,
+            nav: {
+                light: true,
+                classes: "shadow",
+                color: "white",
+            },
+            title: page?.meta.seo_title ?? null,
+            hideFooter: true,
+            hideHeader: true,
+            noPaddingTop: true,
+            searchDescription: page?.meta.search_description ?? null,
+        },
+    }
+}
 

@@ -8,7 +8,7 @@ export default function CompoundField(props) {
     const {name, inputs, ...rest} = props;
 
     const [meta] = useField(props);
-    const {value: values} = meta;
+    const {value: values = [{}]} = meta;
 
 
     return <FieldArray name={name}>

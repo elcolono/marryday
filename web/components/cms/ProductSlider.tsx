@@ -42,11 +42,6 @@ const ProductSlider = (props) => {
                     cards
                     loop={data.loop_slides}
                 />}
-                {/* <div className="text-center mt-5">
-                    <Link href="/coworking">
-                        <a className="btn btn-outline-primary">Alle Standorte</a>
-                    </Link>
-                </div> */}
             </Container>
         </section>
     )

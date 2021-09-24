@@ -55,17 +55,11 @@ class ProductDetail(models.Model):
 class Product(models.Model):
     # General
     is_active = models.BooleanField(default=False)
-    user = models.ForeignKey(
-        'accounts.User', related_name="products", on_delete=models.CASCADE, null=True, blank=True)
-    utc_offset = models.IntegerField(null=True)
-
-    # Basics
-    basics = models.JSONField(blank=True, null=True)
+    user = models.ForeignKey('accounts.User', related_name="products", on_delete=models.CASCADE, null=True, blank=True)
     title = models.CharField(max_length=150, blank=True, default="")
     slug = models.CharField(max_length=150, blank=True, default="")
     description = HTMLField(max_length=1000, blank=True, default="")
-    category = models.ForeignKey('products.ProductCategory', related_name="categories",
-                                 on_delete=models.CASCADE, null=True, blank=True)
+    category = models.ManyToManyField('products.ProductCategory', related_name="products", blank=True)
 
     # Details
     details = models.JSONField(blank=True, null=True)
@@ -76,25 +70,6 @@ class Product(models.Model):
 
     # Location
     location = models.JSONField(blank=True, null=True)
-
-    # Geometry
-
-    # Reviews
-    reviews = models.JSONField(null=True, blank=True)
-    rating = models.FloatField(null=True, blank=True)
-    user_ratings_total = models.IntegerField(null=True, blank=True)
-
-    # Booking
-    day_price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
-
-    # Images
-    preview_image = models.OneToOneField(
-        'products.ProductImage',
-        on_delete=models.CASCADE,
-        related_name='location_preview_image',
-        null=True,
-        blank=True
-    )
 
     def clean(self):
         if self.is_active is True and self.images.count() < 3:

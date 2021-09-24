@@ -12,20 +12,20 @@ import {
     CardFooter,
 } from "reactstrap"
 
-import SwiperGallery from "../../../components/SwiperGallery"
-import Gallery from "../../../components/Gallery"
-import Map from "../../../components/Map"
-import Icon from '../../../components/Icon';
-import BottomNav from '../../../Layout/BottomNav'
+import SwiperGallery from "../../components/SwiperGallery"
+import Gallery from "../../components/Gallery"
+import Map from "../../components/Map"
+import Icon from '../../components/Icon';
+import BottomNav from '../../Layout/BottomNav'
 
 import { GetServerSideProps } from "next";
-import { fetchAPIwithSSR } from "../../../lib/api";
+import { fetchAPIwithSSR } from "../../lib/api";
 
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from "@stripe/stripe-js/pure";
 import Cookies from 'js-cookie';
 
-import OpeningHoursTable from "../../../components/OpeningHoursTable"
+import OpeningHoursTable from "../../components/OpeningHoursTable"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const LocationDetail = (props) => {
@@ -41,7 +41,7 @@ const LocationDetail = (props) => {
         setIsDesktop(window.innerWidth > 991)
     })
 
-    const BookingWithNoSSR = dynamic(() => import("../../../components/products"), {
+    const BookingWithNoSSR = dynamic(() => import("../../components/products"), {
         ssr: false
     });
 

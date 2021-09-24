@@ -1,27 +1,41 @@
 import
-    React from 'react';
+    React, {useState} from 'react';
 import {useField} from 'formik';
 import Select, {Option} from "react-select";
+import AsyncSelect from 'react-select/async';
 import isEmpty from "lodash/isEmpty"
+import getToken from "../../utils/getToken";
+import fetchAPI from "../../utils/fetchAPI";
+import {toast} from "react-toastify";
 
 export default function SelectField(props) {
-    const {label, options, isMulti, ...rest} = props;
-
+    const {label, options, isMulti = false, asyncUrl, ...rest} = props;
     const [field, meta, helpers] = useField(props);
     const {setValue} = helpers;
-
     const {value: selectedValue} = field;
-    console.log(selectedValue)
 
-    const customStyles = {
-        // control: (base, state) => ({
-        //   ...base,
-        //   borderColor: state.isSelected ? 'orange' : '',
-        // }),
+    const [values, setValues] = useState([])
+
+
+    const fetchOptions = async () => {
+        try {
+            const token = getToken()
+            const response = await fetchAPI(
+                asyncUrl,
+                {
+                    token: token
+                }
+            )
+            setValues(response)
+            return response
+        } catch (error) {
+            toast.error(error.detail ?? "Something went wrong.")
+        }
     }
+
     return (
         <>
-            {!isMulti ?
+            {!asyncUrl ?
                 <Select
                     {...field}
                     {...rest}
@@ -29,17 +43,17 @@ export default function SelectField(props) {
                     options={options}
                     onChange={(option: Option) => setValue(option.id ?? option.value ?? null)}
                     instanceId={props.iid}
-                    styles={customStyles}
                 /> :
-                <Select
-                    {...field}
-                    {...rest}
-                    value={options.filter(option1 => !isEmpty(selectedValue) ? selectedValue?.some(value => value === option1.value) : false)}
-                    options={options}
-                    onChange={(option: Option) => setValue(option.map(({value}) => value) ?? null)}
+                <AsyncSelect
+                    value={values.filter(option1 => !isEmpty(selectedValue) ? selectedValue?.some(value => value === option1.id) : false)}
                     instanceId={props.iid}
-                    styles={customStyles}
-                    isMulti
+                    defaultOptions
+                    cacheOptions
+                    loadOptions={fetchOptions}
+                    getOptionLabel={option => option.title}
+                    getOptionValue={option => option.id}
+                    onChange={(option: Option) => setValue(option.map(({id}) => id) ?? null)}
+                    isMulti={isMulti}
                 />}
 
         </>

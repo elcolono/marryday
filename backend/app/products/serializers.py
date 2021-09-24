@@ -85,3 +85,12 @@ class ProductCategoryListSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductCategory
         fields = '__all__'
+
+
+class ProductCategoryRetrieveSerializer(serializers.ModelSerializer):
+    images = ProductCategoryImageRetrieveSerializer(many=True)
+    products = ProductListSerializer(many=True)
+
+    class Meta:
+        model = ProductCategory
+        fields = '__all__'

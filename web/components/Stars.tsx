@@ -1,7 +1,7 @@
 import React from "react"
 
 const Stars = (props) => {
-  const starsArray = []
+  const starsArray = [<></>]
   for (let i = 1; i <= 5; i++) {
     i <= props.stars
       ? starsArray.push(
@@ -21,7 +21,7 @@ const Stars = (props) => {
           />
         )
   }
-  return starsArray
+  return <>{starsArray}</>
 }
 
 export default Stars

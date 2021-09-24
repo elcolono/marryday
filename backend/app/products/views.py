@@ -14,10 +14,22 @@ from products.models import Product, ProductImage, ProductCategory
 from products.permissions import IsProductOwner, IsProductImageOwner
 from products.serializers import (
     ProductImageCreateSerializer, ProductImageRetrieveSerializer, ProductCreateSerializer, ProductListSerializer,
-    ProductRetrieveSerializer, ProductUpdateSerializer, ProductDestroySerializer, ProductCategoryListSerializer)
+    ProductRetrieveSerializer, ProductUpdateSerializer, ProductDestroySerializer, ProductCategoryListSerializer,
+    ProductCategoryRetrieveSerializer)
 
 from mailchimp_marketing.api_client import ApiClientError
 import mailchimp_marketing as MailchimpMarketing
+
+
+# ProductCategories
+class ProductCategoryTestListView(generics.ListAPIView):
+    serializer_class = ProductCategoryListSerializer
+    queryset = ProductCategory.objects.filter(is_active=True)
+
+
+class ProductCategoryRetrieveView(generics.RetrieveAPIView):
+    serializer_class = ProductCategoryRetrieveSerializer
+    queryset = ProductCategory.objects.filter(is_active=True)
 
 
 # Product Image
@@ -37,7 +49,7 @@ class ProductImageRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-# Products
+# Product Vendor
 class ProductListCreateView(generics.ListCreateAPIView):
     permission_classes = [IsAuthenticated]
 
@@ -61,13 +73,6 @@ class ProductListCreateView(generics.ListCreateAPIView):
         return self.serializer_class
 
 
-class ProductPublicListView(generics.ListAPIView):
-    queryset = Product.objects.filter(is_active=True)
-    serializer_class = ProductListSerializer
-    filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['category']
-
-
 class ProductRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticated, IsProductOwner]
     queryset = Product.objects.all()
@@ -88,10 +93,18 @@ class ProductRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
         return self.serializer_class
 
 
-# Product Category
-class ProductCategoryTestListView(generics.ListAPIView):
-    serializer_class = ProductCategoryListSerializer
-    queryset = ProductCategory.objects.filter(is_active=True)
+# Product Public
+class ProductPublicListView(generics.ListAPIView):
+    serializer_class = ProductListSerializer
+
+    def get_queryset(self):
+        queryset = Product.objects.filter(is_active=True)
+        filters_dict = {}
+        for key, value in self.request.query_params.items():
+            filters_dict[key] = value
+
+        queryset = queryset.filter(**filters_dict)
+        return queryset
 
 
 # Mailchimp Views

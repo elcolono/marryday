@@ -23,32 +23,12 @@ class ForwardingContactsInline(admin.TabularInline):
     model = ForwardingContact
 
 
+# Product Admin
 class ProductAdmin(admin.ModelAdmin):
-    readonly_fields = ('preview_image',)
     search_fields = ('title', 'is_active',)
     list_display = ('id', 'title', 'is_active', 'user',)
     list_filter = ('title', 'is_active', 'user',)
     inlines = [LocationImageInline]
-    fieldsets = fieldsets = (
-        ('General', {
-            'fields': ('is_active', 'user', 'category', 'title', 'slug', 'description', 'details', 'utc_offset',)
-        }),
-        ('Contact', {
-            'fields': ('public_email', 'public_phone',)
-        }),
-        ('location', {
-            'fields': ('location',)
-        }),
-        ('Reviews', {
-            'fields': ('reviews', 'rating', 'user_ratings_total',)
-        }),
-        ('Booking', {
-            'fields': ('day_price',)
-        }),
-        ('Images', {
-            'fields': ('preview_image',)
-        }),
-    )
 
 
 class ProductCategoryImageInline(admin.TabularInline):
@@ -71,8 +51,7 @@ class RentObjectAdmin(admin.ModelAdmin):
 class BookingAdmin(admin.ModelAdmin):
     search_fields = ('rent_object', 'start', 'end',)
     list_display = ('location', 'rent_object', 'start', 'end',)
-    list_filter = search_fields = (
-        'rent_object', 'start', 'end',)
+    list_filter = search_fields = ('rent_object', 'start', 'end',)
 
 
 admin.site.register(Product, ProductAdmin)
