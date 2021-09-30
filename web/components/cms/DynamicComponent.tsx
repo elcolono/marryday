@@ -1,36 +1,27 @@
 import React from 'react'
+import dynamic from "next/dynamic";
 
-import HeadingSection from './Heading';
-import ContentSection from './Content';
-import PricingSection from './Pricing';
-import ContactSection from './Contact';
-import ServiceSection from './Services';
-import CTASection from './Cta';
-import TextWithImage from './TextWithImage';
-import HeroWithSearchBarSection from "./HeroWithSearchBar";
-import TopicSlider from "./TopicSlider";
-import ProductSlider from "./ProductSlider";
-import TestimonialSlider from "./TestimonialSlider";
-
-
-const Components = {
-    'hero_with_search_bar': HeroWithSearchBarSection,
-    'service_section_block': ServiceSection,
-    'topic_slider': TopicSlider,
-    'product_slider': ProductSlider,
-    'testimonial_slider': TestimonialSlider,
-    'page_heading_section_block': HeadingSection,
-    'content_section_block': ContentSection,
-    'pricing_section_block': PricingSection,
-    'contact_section_block': ContactSection,
-    'cta_section_block': CTASection,
-    'text_with_image_section_block': TextWithImage,
+const ComponentsMap = {
+    'page_heading_section_block': 'Heading',
+    'content_section_block': 'Content',
+    'pricing_section_block': 'Pricing',
+    'contact_section_block': 'Contact',
+    'service_section_block': 'Services',
+    'cta_section_block': 'Cta',
+    'text_with_image_section_block': 'TextWithImage',
+    'hero_with_search_bar': 'HeroWithSearchBar',
+    'topic_slider': 'TopicSlider',
+    'product_slider': 'ProductSlider',
+    'testimonial_slider': 'TestimonialSlider',
 }
 
 const DynamicComponent = (props) => {
     const {section, ...rest} = props;
-    if (typeof Components[section.type] !== 'undefined') {
-        const Component = Components[section.type]
+    if (typeof ComponentsMap[section.type] !== 'undefined') {
+        const Component = dynamic(
+            () => import(`./${ComponentsMap[section.type]}`),
+            {ssr: true}
+        )
         return (
             <Component
                 {...section.value}
