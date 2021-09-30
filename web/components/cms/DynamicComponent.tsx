@@ -10,6 +10,7 @@ import TextWithImage from './TextWithImage';
 import HeroWithSearchBarSection from "./HeroWithSearchBar";
 import TopicSlider from "./TopicSlider";
 import ProductSlider from "./ProductSlider";
+import TestimonialSlider from "./TestimonialSlider";
 
 
 const Components = {
@@ -17,6 +18,7 @@ const Components = {
     'service_section_block': ServiceSection,
     'topic_slider': TopicSlider,
     'product_slider': ProductSlider,
+    'testimonial_slider': TestimonialSlider,
     'page_heading_section_block': HeadingSection,
     'content_section_block': ContentSection,
     'pricing_section_block': PricingSection,
@@ -26,11 +28,15 @@ const Components = {
 }
 
 const DynamicComponent = (props) => {
-    const {section, productCategories} = props;
-    // check if component is defined above
+    const {section, ...rest} = props;
     if (typeof Components[section.type] !== 'undefined') {
         const Component = Components[section.type]
-        return (<Component {...section.value} productCategories={productCategories}/>)
+        return (
+            <Component
+                {...section.value}
+                {...rest}
+            />
+        )
     }
 
     // fallback if the component doesn't exist

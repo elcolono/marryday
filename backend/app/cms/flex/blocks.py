@@ -404,7 +404,7 @@ class HeroSectionBlock(blocks.StructBlock):
 
 
 # Testimonial Section Block
-class TestimonialSectionBlock(blocks.StructBlock):
+class TestimonialSliderBlock(blocks.StructBlock):
     """ Testimonial Section Block  """
     heading = blocks.CharBlock(
         required=False,
@@ -426,16 +426,15 @@ class TestimonialSectionBlock(blocks.StructBlock):
     )
     testimonials = blocks.ListBlock(
         blocks.StructBlock([
-            ("image", ImageChooserBlock(required=False, label="Image")),
+            ("image", APIImageChooserBlock(required=False, label="Image")),
             ("name", blocks.CharBlock(required=False, max_length=100)),
-            ("category", blocks.CharBlock(required=False, max_length=100)),
             ("content", blocks.TextBlock(required=True, max_length=300)),
         ])
     )
 
     class Meta:
         """ Meta data """
-        label = 'Testimonial Section'
+        label = 'Testimonial Slider'
 
 
 # Logo Cloud Blocks

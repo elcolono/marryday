@@ -14,7 +14,7 @@ import Stars from "./Stars"
 import Image from "./CustomImage"
 import Icon from "./Icon"
 
-const ProductCard = (props) => {
+const CardProduct = (props) => {
     const data = props.data
     const thumbnailImage = data.images.find(image => image.is_thumbnail) ?? data.images[0]
     return (
@@ -80,4 +80,4 @@ const ProductCard = (props) => {
     )
 }
 
-export default ProductCard
+export default CardProduct

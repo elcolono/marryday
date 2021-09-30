@@ -30,10 +30,8 @@ export default function ServiceSection(props) {
                             <div className="px-0 px-lg-3">
                                 {layout == "service_with_icon" && (
                                     <div className="icon-rounded bg-primary-light mb-3">
-                                        <Icon
-                                            icon={service.icon}
-                                            className="text-primary w-2rem h-2rem"
-                                        /></div>
+                                        <Icon icon={service.icon} className="text-primary w-2rem h-2rem"/>
+                                    </div>
                                 )}
                                 {layout == "service_with_image" && (
                                     <div className="icon-image-rounded mb-4 bg-primary-light position-relative">

@@ -17,10 +17,12 @@ import {
     faCalendar,
     faChevronLeft,
     faChevronRight,
-    faCrosshairs
+    faCrosshairs,
+    faQuoteRight
 } from '@fortawesome/free-solid-svg-icons';
 
-library.add(faCoffee, faBars, faSearch, faTimes, faWifi, faPrint, faFan, faLock, faShower, faAngleDoubleRight, faCalendar, faChevronLeft, faChevronRight, faCrosshairs);
+library.add(faCoffee, faBars, faSearch, faTimes, faWifi, faPrint, faFan, faLock, faShower, faAngleDoubleRight,
+    faCalendar, faChevronLeft, faChevronRight, faCrosshairs, faQuoteRight);
 
 const App = ({Component, pageProps}) => {
     return (
@@ -30,5 +32,4 @@ const App = ({Component, pageProps}) => {
     )
 }
 
-// This default export is required in a new `pages/_app.js` file.
 export default App;

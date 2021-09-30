@@ -3,6 +3,7 @@ import Link from "next/link";
 import {Container, Row, Col} from "reactstrap";
 import Swiper from "../Swiper";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import CardPoster from "../CardPoster";
 
 const TopicSlider = (props) => {
     const {
@@ -44,8 +45,13 @@ const TopicSlider = (props) => {
                         md={2}
                         lg={4}
                         xl={5}
-                        data={productCategories}
-                    />
+                    >
+                        {productCategories.map((element, index) =>
+                            <div key={element.id} className="h-auto px-2">
+                                <CardPoster data={element}/>
+                            </div>
+                        )}
+                    </Swiper>
                 )}
             </Container>
         </section>

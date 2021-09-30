@@ -7,11 +7,12 @@ import {Col, Container, Row} from "reactstrap";
 import Pagination from "../../components/Pagination";
 import ResultsTopBar from "../../components/ResultsTopBar";
 import Router from 'next/router'
-import ProductCard from "../../components/ProductCard";
-
+import CardProduct from "../../components/CardProduct";
+import isEmpty from "lodash/isEmpty"
 
 export default function Categories(pageProps) {
-    const {page, params, category} = pageProps;
+    const {params, category} = pageProps;
+    console.log(category)
 
     useEffect(() => {
         if (params && params.path[1] !== category.slug) {
@@ -45,6 +46,7 @@ export default function Categories(pageProps) {
 
         }
     ]
+
     return (
         <React.Fragment>
             <Container fluid className="pt-5 pb-3 border-bottom px-lg-5">
@@ -59,20 +61,16 @@ export default function Categories(pageProps) {
                 <Row>
                     <Col lg="12">
                         <ResultsTopBar sortBy={sortBy}/>
-                        <Row>
-                            {category.products &&
+                        {!isEmpty(category?.products) ?
                             category.products.map((product) => (
-                                <Col
-                                    key={product.id}
-                                    sm="6"
-                                    xl="4"
-                                    className="mb-5 hover-animate"
-                                >
-                                    <ProductCard data={product}/>
-                                </Col>
-                            ))}
-                        </Row>
-                        <pre>{JSON.stringify(category, null, 2)}</pre>
+                                <Row key={product.id}>
+                                    <Col sm="6" xl="4" className="mb-5 hover-animate">
+                                        <CardProduct data={product}/>
+                                    </Col>
+                                </Row>
+                            )) :
+                            null
+                        }
                         <Pagination/>
                     </Col>
                 </Row>
@@ -85,6 +83,7 @@ export default function Categories(pageProps) {
 export const getStaticProps: GetStaticProps = async ({params}) => {
     const settings = await fetchAPIWithSSR('/api/page/home', {method: 'GET'});
     const category = await fetchAPIwithSSR(`/api/v1/products/category/${params.path[0]}`)
+    console.log(category)
 
     return {
         revalidate: 1,

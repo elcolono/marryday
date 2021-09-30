@@ -1,8 +1,5 @@
 import React from "react"
-
-import CardLocation from "./CardLocation"
 import ReactIdSwiper from "react-id-swiper"
-import CardPoster from "./CardPoster"
 
 const Swiper = (props) => {
     const breakpoints = {}
@@ -38,7 +35,6 @@ const Swiper = (props) => {
     }
     const params = {
         containerClass: `swiper-container ${props.className}`,
-
         slidesPerView: props.perView,
         effect: props.effect,
         allowTouchMove: props.allowTouchMove === false ? false : true,
@@ -70,15 +66,10 @@ const Swiper = (props) => {
             props.wrapperClass ? props.wrapperClass : ""
         }`,
     }
-    return props.data ? (
+    return (
         <ReactIdSwiper {...params}>
-            {props.data.map((element, index) =>
-                <div key={element.id} className="h-auto px-2">
-                    {props.imgCards && <CardPoster data={element}/>}
-                </div>)}
+            {props.children}
         </ReactIdSwiper>
-    ) : (
-        <div>loading</div>
     )
 }
 
