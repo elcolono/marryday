@@ -2,7 +2,7 @@ import React from "react"
 import Link from "next/link"
 
 import fetchAPIWithSSR from '../../../utils/fetchAPIWithSSR';
-import { GetServerSideProps } from 'next';
+import {GetServerSideProps} from 'next';
 
 import {
     Container,
@@ -22,29 +22,32 @@ import {
 } from "reactstrap"
 
 import Icon from "../../../components/Icon"
-import { InputField } from "../../../components/forms";
-import { Formik } from "formik";
+import {InputField} from "../../../components/forms";
+import {Formik} from "formik";
 
 import * as Yup from 'yup'
 import fetchAPI from "../../../utils/fetchAPI";
-import { toast, ToastContainer } from 'react-toastify';
+import {toast, ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import getToken from "../../../utils/getToken";
+import ImageCropper from "../../../components/forms/ImageCropper";
+import UserFormFields from "../../../config/user_form_fields.json";
+import FormFieldsGenerator from "../../../components/forms/FormFieldsGenerator";
 
 
 export default function UserPersonal(pageProps) {
 
-    const { page } = pageProps;
+    const {page} = pageProps;
 
-    const [profileCollapse, setProfileCollapse] = React.useState(false)
     const [accountCollapse, setAccountCollapse] = React.useState(false)
+    const [profileCollapse, setProfileCollapse] = React.useState(false)
 
     const [user, setUser] = React.useState(pageProps.loggedUser)
     const [company, setCompany] = React.useState(pageProps.companies[0])
 
     return (
         <>
-            <ToastContainer />
+            <ToastContainer/>
             <section className="py-5">
                 <Container>
                     <Breadcrumb listClassName="pl-0  justify-content-start">
@@ -64,197 +67,191 @@ export default function UserPersonal(pageProps) {
                     <p className="text-muted mb-5">{page.description && page.description}</p>
                     <Row>
                         <Col lg="7">
-                            {company &&
-                                <div className="text-block">
-                                    <Row className="mb-3">
-                                        <Col sm="9">
-                                            <h5>Dein Profil</h5>
-                                        </Col>
-                                        <Col sm="3" className="text-right">
-                                            <Button
-                                                color="link"
-                                                className="pl-0 text-primary collapsed"
-                                                onClick={() => setProfileCollapse(!profileCollapse)}
-                                            >
-                                                Bearbeiten
-                                            </Button>
-                                        </Col>
-                                    </Row>
-                                    <Media className="text-sm text-muted">
-                                        <i className="fa fa-address-book fa-fw mr-2" />
-                                        <Media body className="mt-n1">
-                                            {company.company_name}
-                                        </Media>
+                            {user &&
+                            <div className="text-block">
+                                <Row className="mb-3">
+                                    <Col sm="9">
+                                        <h5>Dein Konto</h5>
+                                    </Col>
+                                    <Col sm="3" className="text-right">
+                                        <Button
+                                            color="link"
+                                            className="pl-0 text-primary collapsed"
+                                            onClick={() => setAccountCollapse(!accountCollapse)}
+                                        >
+                                            Bearbeiten
+                                        </Button>
+                                    </Col>
+                                </Row>
+                                <Media className="text-sm text-muted">
+                                    <i className="fa fa-address-book fa-fw mr-2"/>
+                                    <Media body className="mt-n1">
+                                        {user.first_name} {user.last_name}
+                                        <br/>
+                                        {user.email}
                                     </Media>
-                                    <Collapse isOpen={profileCollapse}>
-                                        <Formik
-                                            enableReinitialize={true}
-                                            initialValues={company}
-                                            validationSchema={Yup.object({
-                                                company_name: Yup.string()
-                                                    .required('Erforderlich')
-                                                    .min(2, 'Company name is too short - should be 2 chars minimum.'),
-                                            })}
-                                            onSubmit={(values, { setSubmitting }) => {
-                                                const token = getToken();
-                                                fetchAPI(`/api/v1/profiles/company/${company.id}/`, { method: 'PUT', body: values, token: token }).then(response => {
-                                                    toast.success("Erfolgreich gespeichert");
-                                                    setCompany(response);
-                                                    setSubmitting(false);
-                                                }).catch(error => {
-                                                    for (var prop in error) {
-                                                        const errorMessage = error[prop][0];
-                                                        toast.error(errorMessage);
-                                                    }
-                                                    setSubmitting(false);
-                                                })
-                                            }}>
-                                            {({
-                                                handleSubmit,
-                                                isSubmitting,
-                                            }) => (
-                                                <Form onSubmit={handleSubmit}>
-                                                    <Row className="pt-4">
-
-                                                        <Col md="6" className="form-group">
-                                                            <Label for="first_name" className="form-label">
-                                                                Firmenname
-                                                        </Label>
-                                                            <InputField
-                                                                name="company_name"
-                                                                id="company_name"
-                                                                type="text"
-                                                                placeholder="Google"
-                                                                autoComplete="off"
-                                                                required
-                                                            />
-                                                        </Col>
-                                                    </Row>
-                                                    <Button
-                                                        disabled={isSubmitting}
-                                                        type="submit"
-                                                        color="outline-primary"
-                                                        className="mb-4">
-                                                        {isSubmitting ? <Spinner size="sm" /> : "Speichern"}
-                                                    </Button>
-                                                </Form>
-                                            )}
-                                        </Formik>
-                                    </Collapse>
-                                </div>
+                                </Media>
+                                <Collapse isOpen={accountCollapse}>
+                                    <Formik
+                                        enableReinitialize={true}
+                                        initialValues={user}
+                                        validationSchema={Yup.object({
+                                            email: Yup.string()
+                                                .email('Ungültige Email Adresse')
+                                                .required('Erforderlich'),
+                                            first_name: Yup.string()
+                                                .required('Erforderlich')
+                                                .min(2, 'Firstname is too short - should be 2 chars minimum.'),
+                                            last_name: Yup.string()
+                                                .required('Erforderlich')
+                                                .min(2, 'Lastname is too short - should be 2 chars minimum.')
+                                        })}
+                                        onSubmit={(values, {setSubmitting}) => {
+                                            const token = getToken();
+                                            fetchAPI(`/api/v1/accounts/user/${user.id}/`, {
+                                                method: 'PUT',
+                                                body: values,
+                                                token: token
+                                            }).then(response => {
+                                                toast.success("Erfolgreich gespeichert");
+                                                setUser(response);
+                                                setSubmitting(false);
+                                            }).catch(error => {
+                                                for (var prop in error) {
+                                                    const errorMessage = error[prop][0];
+                                                    toast.error(errorMessage);
+                                                }
+                                                setSubmitting(false);
+                                            })
+                                        }}>
+                                        {({
+                                              handleSubmit,
+                                              isSubmitting,
+                                          }) => (
+                                            <Form onSubmit={handleSubmit}>
+                                                <FormFieldsGenerator data={UserFormFields['default']}/>
+                                                <Button
+                                                    disabled={isSubmitting}
+                                                    type="submit"
+                                                    color="outline-primary"
+                                                    className=" mb-4">
+                                                    {isSubmitting ? <Spinner size="sm"/> : "Speichern"}
+                                                </Button>
+                                            </Form>
+                                        )}
+                                    </Formik>
+                                </Collapse>
+                            </div>
                             }
                             {user &&
-                                <div className="text-block">
-                                    <Row className="mb-3">
-                                        <Col sm="9">
-                                            <h5>Dein Konto</h5>
-                                        </Col>
-                                        <Col sm="3" className="text-right">
-                                            <Button
-                                                color="link"
-                                                className="pl-0 text-primary collapsed"
-                                                onClick={() => setAccountCollapse(!accountCollapse)}
-                                            >
-                                                Bearbeiten
-                                            </Button>
-                                        </Col>
-                                    </Row>
-                                    <Media className="text-sm text-muted">
-                                        <i className="fa fa-address-book fa-fw mr-2" />
-                                        <Media body className="mt-n1">
-                                            {user.first_name} {user.last_name}
-                                            <br />
-                                            {user.email}
-                                        </Media>
+                            <div className="text-block">
+                                <Row className="mb-3">
+                                    <Col sm="9">
+                                        <h5>Dein Profil</h5>
+                                    </Col>
+                                    <Col sm="3" className="text-right">
+                                        <Button
+                                            color="link"
+                                            className="pl-0 text-primary collapsed"
+                                            onClick={() => setProfileCollapse(!profileCollapse)}
+                                        >
+                                            Bearbeiten
+                                        </Button>
+                                    </Col>
+                                </Row>
+                                <Media className="text-sm text-muted">
+                                    <i className="fa fa-address-book fa-fw mr-2"/>
+                                    <Media body className="mt-n1">
+                                        {user.first_name} {user.last_name}
+                                        <br/>
+                                        {user.email}
                                     </Media>
-                                    <Collapse isOpen={accountCollapse}>
-                                        <Formik
-                                            enableReinitialize={true}
-                                            initialValues={user}
-                                            validationSchema={Yup.object({
-                                                email: Yup.string()
-                                                    .email('Ungültige Email Adresse')
-                                                    .required('Erforderlich'),
-                                                first_name: Yup.string()
-                                                    .required('Erforderlich')
-                                                    .min(2, 'Firstname is too short - should be 2 chars minimum.'),
-                                                last_name: Yup.string()
-                                                    .required('Erforderlich')
-                                                    .min(2, 'Lastname is too short - should be 2 chars minimum.')
-                                            })}
-                                            onSubmit={(values, { setSubmitting }) => {
-                                                const token = getToken();
-                                                fetchAPI(`/api/v1/accounts/user/${user.id}/`, { method: 'PUT', body: values, token: token }).then(response => {
-                                                    toast.success("Erfolgreich gespeichert");
-                                                    setUser(response);
-                                                    setSubmitting(false);
-                                                }).catch(error => {
-                                                    for (var prop in error) {
-                                                        const errorMessage = error[prop][0];
-                                                        toast.error(errorMessage);
-                                                    }
-                                                    setSubmitting(false);
-                                                })
-                                            }}>
-                                            {({
-                                                handleSubmit,
-                                                isSubmitting,
-                                            }) => (
-                                                <Form onSubmit={handleSubmit}>
-                                                    <Row className="pt-4">
+                                </Media>
+                                <Collapse isOpen={profileCollapse}>
+                                    <Formik
+                                        enableReinitialize={true}
+                                        initialValues={user}
+                                        validationSchema={Yup.object({
+                                            email: Yup.string()
+                                                .email('Ungültige Email Adresse')
+                                                .required('Erforderlich'),
+                                            first_name: Yup.string()
+                                                .required('Erforderlich')
+                                                .min(2, 'Firstname is too short - should be 2 chars minimum.'),
+                                            last_name: Yup.string()
+                                                .required('Erforderlich')
+                                                .min(2, 'Lastname is too short - should be 2 chars minimum.')
+                                        })}
+                                        onSubmit={(values, {setSubmitting}) => {
+                                            const token = getToken();
+                                            fetchAPI(`/api/v1/accounts/user/${user.id}/`, {
+                                                method: 'PUT',
+                                                body: values,
+                                                token: token
+                                            }).then(response => {
+                                                toast.success("Erfolgreich gespeichert");
+                                                setUser(response);
+                                                setSubmitting(false);
+                                            }).catch(error => {
+                                                for (var prop in error) {
+                                                    const errorMessage = error[prop][0];
+                                                    toast.error(errorMessage);
+                                                }
+                                                setSubmitting(false);
+                                            })
+                                        }}>
+                                        {({
+                                              handleSubmit,
+                                              isSubmitting,
+                                          }) => (
+                                            <Form onSubmit={handleSubmit}>
+                                                <Row className="pt-4">
 
-                                                        <Col md="6" className="form-group">
-                                                            <Label for="first_name" className="form-label">
-                                                                Vorname
-                                                            </Label>
-                                                            <InputField
-                                                                name="first_name"
-                                                                id="first_name"
-                                                                type="text"
-                                                                placeholder="Max"
-                                                                autoComplete="off"
-                                                                required
-                                                            />
-                                                        </Col>
-                                                        <Col md="6" className="form-group">
-                                                            <Label for="last_name" className="form-label">
-                                                                Nachname
-                                                            </Label>
-                                                            <InputField
-                                                                name="last_name"
-                                                                id="last_name"
-                                                                type="text"
-                                                                placeholder="Mustermann"
-                                                                autoComplete="off"
-                                                                required
-                                                            />
-                                                        </Col>
-                                                        <Col md="6" className="form-group">
-                                                            <Label for="email" className="form-label">
-                                                                Email Adresse
-                                                            </Label>
-                                                            <InputField
-                                                                name="email"
-                                                                id="email"
-                                                                type="email"
-                                                                placeholder="name@address.com"
-                                                                autoComplete="off"
-                                                                required
-                                                            />
-                                                        </Col>
-                                                    </Row>
-                                                    <Button
-                                                        disabled={isSubmitting}
-                                                        type="submit"
-                                                        color="outline-primary"
-                                                        className=" mb-4">
-                                                        {isSubmitting ? <Spinner size="sm" /> : "Speichern"}
-                                                    </Button>
-                                                </Form>
-                                            )}
-                                        </Formik>
-                                    </Collapse>
-                                </div>
+                                                    <Col md="6" className="form-group">
+                                                        <Label for="first_name" className="form-label">
+                                                            Vorname
+                                                        </Label>
+                                                        <InputField
+                                                            name="first_name"
+                                                            id="first_name"
+                                                            type="text"
+                                                            placeholder="Max"
+                                                            autoComplete="off"
+                                                            required
+                                                        />
+                                                    </Col>
+                                                    <Col md="6" className="form-group">
+                                                        <Label for="last_name" className="form-label">
+                                                            Nachname
+                                                        </Label>
+                                                        <InputField
+                                                            name="last_name"
+                                                            id="last_name"
+                                                            type="text"
+                                                            placeholder="Mustermann"
+                                                            autoComplete="off"
+                                                            required
+                                                        />
+                                                    </Col>
+                                                    <Col md="6" className="form-group">
+                                                        <Label for="email" className="form-label">
+                                                            Email Adresse
+                                                        </Label>
+                                                        <ImageCropper/>
+                                                    </Col>
+                                                </Row>
+                                                <Button
+                                                    disabled={isSubmitting}
+                                                    type="submit"
+                                                    color="outline-primary"
+                                                    className=" mb-4">
+                                                    {isSubmitting ? <Spinner size="sm"/> : "Speichern"}
+                                                </Button>
+                                            </Form>
+                                        )}
+                                    </Formik>
+                                </Collapse>
+                            </div>
                             }
                         </Col>
                         <Col md="6" lg="4" className="ml-lg-auto">
@@ -294,20 +291,28 @@ export default function UserPersonal(pageProps) {
 }
 
 
-export const getServerSideProps: GetServerSideProps = async ({ req, res, }) => {
+export const getServerSideProps: GetServerSideProps = async ({req, res,}) => {
 
     const token = getToken(req);
-    const loggedUser = await fetchAPIWithSSR('/api/v1/accounts/auth/user/', { method: 'GET', req: req, token: token }) ?? {}
-    const companies = await fetchAPIWithSSR('/api/v1/profiles/usercompanies/', { method: 'GET', req: req, token: token }) ?? {}
+    const loggedUser = await fetchAPIWithSSR('/api/v1/accounts/auth/user/', {
+        method: 'GET',
+        req: req,
+        token: token
+    }) ?? {}
+    const companies = await fetchAPIWithSSR('/api/v1/profiles/usercompanies/', {
+        method: 'GET',
+        req: req,
+        token: token
+    }) ?? {}
     if (loggedUser.email === undefined) {
         res.setHeader("location", "/login");
         res.statusCode = 302;
         res.end();
-        return { props: {} }
+        return {props: {}}
     }
 
-    const settings = (await fetchAPIWithSSR('/api/page/home', { method: 'GET', req: req })) ?? []
-    const pageData = await fetchAPIWithSSR('/api/v2/pages/?type=user_account.AccountProfilePage&fields=seo_title,search_description,heading,description', { method: 'GET' });
+    const settings = (await fetchAPIWithSSR('/api/page/home', {method: 'GET', req: req})) ?? []
+    const pageData = await fetchAPIWithSSR('/api/v2/pages/?type=user_account.AccountProfilePage&fields=seo_title,search_description,heading,description', {method: 'GET'});
     const page = pageData?.items[0] ?? null;
 
     return {

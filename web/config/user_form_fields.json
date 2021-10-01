@@ -1,0 +1,54 @@
+{
+  "default": {
+    "title": "",
+    "subtitle": "",
+    "formBlocks": [
+      {
+        "title": "",
+        "content": "",
+        "classNames": ["pt-4"],
+        "contentWidth": {
+          "lg": "0"
+        },
+        "inputsWidth": {
+          "lg": "12"
+        },
+        "inputs": [
+          {
+            "label": "Vorname",
+            "name": "first_name",
+            "type": "text",
+            "placeholder": "Max",
+            "autoComplete": "off",
+            "required": true,
+            "width": {
+              "md": "6"
+            }
+          },
+          {
+            "label": "Nachname",
+            "name": "last_name",
+            "type": "text",
+            "placeholder": "Mustermann",
+            "autoComplete": "off",
+            "required": true,
+            "width": {
+              "md": "6"
+            }
+          },
+          {
+            "label": "Email Adresse",
+            "name": "email",
+            "type": "email",
+            "placeholder": "name@address.com",
+            "autoComplete": "off",
+            "required": true,
+            "width": {
+              "md": "6"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

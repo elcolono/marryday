@@ -1,5 +1,5 @@
 import React from "react";
-import {FormGroup, Label} from "reactstrap";
+import {Col, Label} from "reactstrap";
 import InputField from "./InputField";
 import SelectField from "./SelectField";
 import CustomInputField from "./CustomInputField";
@@ -7,23 +7,23 @@ import CompoundField from "./CompoundField";
 import UploadField from "./UploadField";
 
 const DynamicFormField = ({input}) => {
+    const {width = {lg: "12"}} = input;
+
     return (
         <>
-            {input.type === "text" && (
-                <FormGroup>
+            {(input.type === "text" || input.type === "email") && (
+                <Col {...width} className="form-group" >
                     <Label className="form-label" for={input.name}>
                         {input.label}
                     </Label>
                     <InputField
-                        type={input.type}
-                        input={input.name}
-                        name={input.name}
                         id={input.name}
+                        {...input}
                     />
-                </FormGroup>
+                </Col>
             )}
             {input.type === "textarea" && (
-                <FormGroup>
+                <Col {...width} className="form-group" >
                     <Label className="form-label" for={input.name}>
                         {input.label}
                     </Label>
@@ -41,10 +41,10 @@ const DynamicFormField = ({input}) => {
                     >
                         {input.help}
                     </small>
-                </FormGroup>
+                </Col>
             )}
             {input.type === "select" && (
-                <FormGroup>
+                <Col {...width} className="form-group" >
                     <Label className="form-label" for={input.name}>
                         {input.label}
                     </Label>
@@ -63,10 +63,10 @@ const DynamicFormField = ({input}) => {
                             {input.text}
                         </small>
                     )}
-                </FormGroup>
+                </Col>
             )}
             {input.type === "multiselect" && (
-                <FormGroup>
+                <Col {...width} className="form-group" >
                     <Label className="form-label" for={input.name}>
                         {input.label}
                     </Label>
@@ -87,10 +87,10 @@ const DynamicFormField = ({input}) => {
                             {input.text}
                         </small>
                     )}
-                </FormGroup>
+                </Col>
             )}
             {input.type === "radios" && (
-                <FormGroup>
+                <Col {...width} className="form-group" >
                     <Label className="form-label">{input.label}</Label>
                     {input.radios.map((radio) => (
                         <CustomInputField
@@ -102,10 +102,10 @@ const DynamicFormField = ({input}) => {
                             label={radio.label}
                         />
                     ))}
-                </FormGroup>
+                </Col>
             )}
             {input.type === "checkboxes" && (
-                <FormGroup>
+                <Col {...width} className="form-group" >
                     <Label className="form-label">{input.label}</Label>
                     <ul className="list-inline mb-0">
                         {input.checkboxes.map((checkbox) => (
@@ -121,24 +121,24 @@ const DynamicFormField = ({input}) => {
                             </li>
                         ))}
                     </ul>
-                </FormGroup>
+                </Col>
             )}
             {input.type === "compound" && (
-                <FormGroup>
+                <Col {...width} className="form-group" >
                     {input.label && <Label className="form-label text-lg">{input.label}</Label>}
                     {input.content && <p className="text-muted text-sm">{input.content}</p>}
                     <CompoundField
                         name={input.name}
                         inputs={input.inputs}
                     />
-                </FormGroup>
+                </Col>
             )}
             {input.type === "upload" && (
-                <FormGroup>
+                <Col {...width} className="form-group" >
                     {input.label && <Label className="form-label text-lg">{input.label}</Label>}
                     {input.content && <p className="text-muted text-sm">{input.content}</p>}
                     <UploadField/>
-                </FormGroup>
+                </Col>
             )}
 
         </>

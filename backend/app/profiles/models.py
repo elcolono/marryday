@@ -1,5 +1,5 @@
+from django.core.exceptions import ValidationError
 from django.db import models
-from django.utils.text import slugify
 
 
 # Visitor
@@ -16,35 +16,23 @@ class Visitor(models.Model):
 
 # Vendor
 class Vendor(models.Model):
-    # General
+    def validate_image(self):
+        filesize = self.file.size
+        megabyte_limit = 5.0
+        if filesize > megabyte_limit * 1024 * 1024:
+            raise ValidationError("Max file size is %sMB" % str(megabyte_limit))
+
+    def update_filename(self, filename):
+        ext = filename.split('.')[-1]
+        return f"profiles/{self.id}/{self.user.first_name}-{self.user.last_name}.{ext}"
+
     user = models.ForeignKey(
         'accounts.User', related_name="vendors", on_delete=models.CASCADE)
+    image = models.ImageField(null=True, upload_to=update_filename)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
-    # Basic
-    vendor_name = models.CharField(max_length=100)
-    slug = models.SlugField(max_length=100, blank=True)
-
-
-    # Geometry
-    geometry = models.JSONField(null=True, blank=True)
-    utc_offset = models.IntegerField(null=True)
-
     created_by = models.ForeignKey(
         'accounts.User', on_delete=models.CASCADE, editable=False)
 
-    def save(self, *args, **kwargs):
-        self.slug = slugify(self.vendor_name)
-        super().save(*args, **kwargs)  # Call the "real" save() method.
-
     def __str__(self):
         return f"{self.user.email}"
-
-
-# Locations
-class Location(models.Model):
-    vendor = models.ForeignKey('profiles.Vendor', on_delete=models.CASCADE)
-    title = models.CharField(max_length=100)
-    longitude = models.CharField(max_length=300)
-    latitude = models.CharField(max_length=300)

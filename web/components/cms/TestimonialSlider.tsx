@@ -35,7 +35,7 @@ export default function TestimonialSlider(props) {
                         xl={2}
                     >
                         {testimonials.map((element, index) =>
-                            <div key={element.id} className="h-auto px-2">
+                            <div key={index} className="h-auto px-2">
                                 <CardTestimonial data={element}/>
                             </div>
                         )}

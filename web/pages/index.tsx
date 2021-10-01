@@ -23,9 +23,9 @@ export default function Index(pageProps) {
 export const getStaticProps: GetStaticProps = async () => {
     const settings = await fetchAPIWithSSR('/api/page/home', {method: 'GET'});
     const pageData = await fetchAPIWithSSR('/api/v2/pages/?type=home.HomePage&fields=seo_text,content,seo_title,search_description', {method: 'GET'});
+    const page = pageData?.items[0] ?? null;
     const productCategories = await fetchAPIWithSSR('/api/v1/products/category/', {method: 'GET'});
     const products = await fetchAPIWithSSR('/api/v1/products/public', {method: 'GET'});
-    const page = pageData?.items[0] ?? null;
 
     return {
         revalidate: 1,

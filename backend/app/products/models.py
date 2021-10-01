@@ -110,6 +110,7 @@ class ProductCategory(models.Model):
         return self.title
 
 
+# ProductCategoryImage
 class ProductCategoryImage(Image):
     def validate_image(fieldfile_obj):
         filesize = fieldfile_obj.file.size

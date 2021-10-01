@@ -16,8 +16,9 @@ const CardPoster = (props) => {
                 src={data.images.find(image => image.is_thumbnail).image}
                 layout="fill"
                 className="bg-image"
-                alt={data.title}
-                priority
+                alt="Card image"
+                loading="eager"
+                sizes="(max-width: 576px) 100vw, 530px"
             />
             <CardBody className="card-body overlay-content">
                 <CardTitle tag="h6" className="card-title text-shadow text-uppercase">
