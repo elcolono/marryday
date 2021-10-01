@@ -2,11 +2,15 @@
   "default": {
     "title": "",
     "subtitle": "",
+    "GET": "/api/v1/accounts/auth/user/",
+    "PUT": "/api/v1/accounts/user/",
     "formBlocks": [
       {
         "title": "",
         "content": "",
-        "classNames": ["pt-4"],
+        "classNames": [
+          "pt-4"
+        ],
         "contentWidth": {
           "lg": "0"
         },
@@ -16,6 +20,7 @@
         "inputs": [
           {
             "label": "Vorname",
+            "id": "first_name",
             "name": "first_name",
             "type": "text",
             "placeholder": "Max",
@@ -23,10 +28,34 @@
             "required": true,
             "width": {
               "md": "6"
-            }
+            },
+            "validationType": "string",
+            "validations": [
+              {
+                "type": "required",
+                "params": [
+                  "Erforderlich"
+                ]
+              },
+              {
+                "type": "min",
+                "params": [
+                  3,
+                  "Mindestens 3 Zeichen notwendig"
+                ]
+              },
+              {
+                "type": "max",
+                "params": [
+                  50,
+                  "Maximal 50 Zeichen erlaubt"
+                ]
+              }
+            ]
           },
           {
             "label": "Nachname",
+            "id": "last_name",
             "name": "last_name",
             "type": "text",
             "placeholder": "Mustermann",
@@ -34,10 +63,34 @@
             "required": true,
             "width": {
               "md": "6"
-            }
+            },
+            "validationType": "string",
+            "validations": [
+              {
+                "type": "required",
+                "params": [
+                  "Erforderlich"
+                ]
+              },
+              {
+                "type": "min",
+                "params": [
+                  3,
+                  "Mindestens 3 Zeichen notwendig"
+                ]
+              },
+              {
+                "type": "max",
+                "params": [
+                  50,
+                  "Maximal 50 Zeichen erlaubt"
+                ]
+              }
+            ]
           },
           {
             "label": "Email Adresse",
+            "id": "email",
             "name": "email",
             "type": "email",
             "placeholder": "name@address.com",
@@ -45,7 +98,36 @@
             "required": true,
             "width": {
               "md": "6"
-            }
+            },
+            "validationType": "string",
+            "validations": [
+              {
+                "type": "email",
+                "params": [
+                  "Ungültige Email Adresse"
+                ]
+              },
+              {
+                "type": "required",
+                "params": [
+                  "Erforderlich"
+                ]
+              },
+              {
+                "type": "min",
+                "params": [
+                  6,
+                  "Mindestens 6 Zeichen notwendig"
+                ]
+              },
+              {
+                "type": "max",
+                "params": [
+                  50,
+                  "Maximal 50 Zeichen erlaubt"
+                ]
+              }
+            ]
           }
         ]
       }

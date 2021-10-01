@@ -6,13 +6,13 @@ import CustomInputField from "./CustomInputField";
 import CompoundField from "./CompoundField";
 import UploadField from "./UploadField";
 
-const DynamicFormField = ({input}) => {
+export default function DynamicFormField({input}) {
     const {width = {lg: "12"}} = input;
 
     return (
         <>
             {(input.type === "text" || input.type === "email") && (
-                <Col {...width} className="form-group" >
+                <Col {...width} className="form-group">
                     <Label className="form-label" for={input.name}>
                         {input.label}
                     </Label>
@@ -23,7 +23,7 @@ const DynamicFormField = ({input}) => {
                 </Col>
             )}
             {input.type === "textarea" && (
-                <Col {...width} className="form-group" >
+                <Col {...width} className="form-group">
                     <Label className="form-label" for={input.name}>
                         {input.label}
                     </Label>
@@ -44,7 +44,7 @@ const DynamicFormField = ({input}) => {
                 </Col>
             )}
             {input.type === "select" && (
-                <Col {...width} className="form-group" >
+                <Col {...width} className="form-group">
                     <Label className="form-label" for={input.name}>
                         {input.label}
                     </Label>
@@ -66,7 +66,7 @@ const DynamicFormField = ({input}) => {
                 </Col>
             )}
             {input.type === "multiselect" && (
-                <Col {...width} className="form-group" >
+                <Col {...width} className="form-group">
                     <Label className="form-label" for={input.name}>
                         {input.label}
                     </Label>
@@ -90,7 +90,7 @@ const DynamicFormField = ({input}) => {
                 </Col>
             )}
             {input.type === "radios" && (
-                <Col {...width} className="form-group" >
+                <Col {...width} className="form-group">
                     <Label className="form-label">{input.label}</Label>
                     {input.radios.map((radio) => (
                         <CustomInputField
@@ -105,7 +105,7 @@ const DynamicFormField = ({input}) => {
                 </Col>
             )}
             {input.type === "checkboxes" && (
-                <Col {...width} className="form-group" >
+                <Col {...width} className="form-group">
                     <Label className="form-label">{input.label}</Label>
                     <ul className="list-inline mb-0">
                         {input.checkboxes.map((checkbox) => (
@@ -124,7 +124,7 @@ const DynamicFormField = ({input}) => {
                 </Col>
             )}
             {input.type === "compound" && (
-                <Col {...width} className="form-group" >
+                <Col {...width} className="form-group">
                     {input.label && <Label className="form-label text-lg">{input.label}</Label>}
                     {input.content && <p className="text-muted text-sm">{input.content}</p>}
                     <CompoundField
@@ -134,7 +134,7 @@ const DynamicFormField = ({input}) => {
                 </Col>
             )}
             {input.type === "upload" && (
-                <Col {...width} className="form-group" >
+                <Col {...width} className="form-group">
                     {input.label && <Label className="form-label text-lg">{input.label}</Label>}
                     {input.content && <p className="text-muted text-sm">{input.content}</p>}
                     <UploadField/>
@@ -144,5 +144,3 @@ const DynamicFormField = ({input}) => {
         </>
     )
 }
-
-export default DynamicFormField

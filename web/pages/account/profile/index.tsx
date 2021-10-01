@@ -33,6 +33,7 @@ import getToken from "../../../utils/getToken";
 import ImageCropper from "../../../components/forms/ImageCropper";
 import UserFormFields from "../../../config/user_form_fields.json";
 import FormFieldsGenerator from "../../../components/forms/FormFieldsGenerator";
+import FormGenerator from "../../../components/forms/FormGenerator";
 
 
 export default function UserPersonal(pageProps) {
@@ -43,7 +44,6 @@ export default function UserPersonal(pageProps) {
     const [profileCollapse, setProfileCollapse] = React.useState(false)
 
     const [user, setUser] = React.useState(pageProps.loggedUser)
-    const [company, setCompany] = React.useState(pageProps.companies[0])
 
     return (
         <>
@@ -92,54 +92,7 @@ export default function UserPersonal(pageProps) {
                                     </Media>
                                 </Media>
                                 <Collapse isOpen={accountCollapse}>
-                                    <Formik
-                                        enableReinitialize={true}
-                                        initialValues={user}
-                                        validationSchema={Yup.object({
-                                            email: Yup.string()
-                                                .email('Ungültige Email Adresse')
-                                                .required('Erforderlich'),
-                                            first_name: Yup.string()
-                                                .required('Erforderlich')
-                                                .min(2, 'Firstname is too short - should be 2 chars minimum.'),
-                                            last_name: Yup.string()
-                                                .required('Erforderlich')
-                                                .min(2, 'Lastname is too short - should be 2 chars minimum.')
-                                        })}
-                                        onSubmit={(values, {setSubmitting}) => {
-                                            const token = getToken();
-                                            fetchAPI(`/api/v1/accounts/user/${user.id}/`, {
-                                                method: 'PUT',
-                                                body: values,
-                                                token: token
-                                            }).then(response => {
-                                                toast.success("Erfolgreich gespeichert");
-                                                setUser(response);
-                                                setSubmitting(false);
-                                            }).catch(error => {
-                                                for (var prop in error) {
-                                                    const errorMessage = error[prop][0];
-                                                    toast.error(errorMessage);
-                                                }
-                                                setSubmitting(false);
-                                            })
-                                        }}>
-                                        {({
-                                              handleSubmit,
-                                              isSubmitting,
-                                          }) => (
-                                            <Form onSubmit={handleSubmit}>
-                                                <FormFieldsGenerator data={UserFormFields['default']}/>
-                                                <Button
-                                                    disabled={isSubmitting}
-                                                    type="submit"
-                                                    color="outline-primary"
-                                                    className=" mb-4">
-                                                    {isSubmitting ? <Spinner size="sm"/> : "Speichern"}
-                                                </Button>
-                                            </Form>
-                                        )}
-                                    </Formik>
+                                    <FormGenerator formData={UserFormFields['default']}/>
                                 </Collapse>
                             </div>
                             }

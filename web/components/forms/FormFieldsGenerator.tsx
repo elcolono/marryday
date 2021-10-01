@@ -2,8 +2,7 @@ import React from 'react'
 import {Col, Row} from "reactstrap";
 import DynamicFormField from "./DynamicFormField";
 
-const FormFieldsGenerator = (props) => {
-
+export default function FormFieldsGenerator(props) {
     const {data} = props
 
     return (
@@ -36,4 +35,3 @@ const FormFieldsGenerator = (props) => {
     )
 }
 
-export default FormFieldsGenerator
