@@ -44,7 +44,7 @@ export default function FormGenerator(props) {
         fetchValues(formData['GET']).catch(error => {
             toast.error(error.detail ?? "Something went wrong.")
         })
-    })
+    }, [])
 
     reducedInputs.forEach(item => {
         setValues[item.id] = item.value || "";
@@ -52,6 +52,7 @@ export default function FormGenerator(props) {
 
     const yepSchema = reducedInputs.reduce(createYupSchema, {});
     const validateSchema = yup.object().shape(yepSchema);
+    console.log(validateSchema)
 
     return (
         <Formik
@@ -88,6 +89,7 @@ export default function FormGenerator(props) {
                         className=" mb-4">
                         {isSubmitting ? <Spinner size="sm"/> : "Speichern"}
                     </Button>
+                    <pre>{JSON.stringify(reducedInputs, null, 2)}</pre>
                 </Form>
             )}
         </Formik>

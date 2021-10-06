@@ -42,6 +42,7 @@ export default function UploadField() {
     async function uploadImages(uploadImages) {
         const productId = values['id']
         const allImages = values['images']
+        const copyAllImages = [...allImages]
 
         for (let image of uploadImages) {
             const productImage = await addProductImage(
@@ -49,10 +50,11 @@ export default function UploadField() {
                 image,
                 productId
             );
-            const index = allImages.indexOf(image);
-            const newAllImages = [...allImages]
-            newAllImages[index] = productImage
-            setFieldValue('images', newAllImages)
+
+            const index = copyAllImages.indexOf(image);
+            copyAllImages[index] = productImage
+
+            setFieldValue('images', copyAllImages)
         }
     }
 
