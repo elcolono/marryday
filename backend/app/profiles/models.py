@@ -28,7 +28,7 @@ class Vendor(models.Model):
 
     user = models.ForeignKey(
         'accounts.User', related_name="vendors", on_delete=models.CASCADE)
-    image = models.ImageField(null=True, upload_to=update_filename)
+    image = models.FileField(null=True, upload_to=update_filename)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     created_by = models.ForeignKey(

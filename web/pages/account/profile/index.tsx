@@ -32,7 +32,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import getToken from "../../../utils/getToken";
 import ImageCropper from "../../../components/forms/ImageCropper";
 import UserFormFields from "../../../config/user_form_fields.json";
-import FormFieldsGenerator from "../../../components/forms/FormFieldsGenerator";
+import ProfileFormFields from "../../../config/profile_form_fields.json";
 import FormGenerator from "../../../components/forms/FormGenerator";
 
 
@@ -121,88 +121,7 @@ export default function UserPersonal(pageProps) {
                                     </Media>
                                 </Media>
                                 <Collapse isOpen={profileCollapse}>
-                                    <Formik
-                                        enableReinitialize={true}
-                                        initialValues={user}
-                                        validationSchema={Yup.object({
-                                            email: Yup.string()
-                                                .email('Ungültige Email Adresse')
-                                                .required('Erforderlich'),
-                                            first_name: Yup.string()
-                                                .required('Erforderlich')
-                                                .min(2, 'Firstname is too short - should be 2 chars minimum.'),
-                                            last_name: Yup.string()
-                                                .required('Erforderlich')
-                                                .min(2, 'Lastname is too short - should be 2 chars minimum.')
-                                        })}
-                                        onSubmit={(values, {setSubmitting}) => {
-                                            const token = getToken();
-                                            fetchAPI(`/api/v1/accounts/user/${user.id}/`, {
-                                                method: 'PUT',
-                                                body: values,
-                                                token: token
-                                            }).then(response => {
-                                                toast.success("Erfolgreich gespeichert");
-                                                setUser(response);
-                                                setSubmitting(false);
-                                            }).catch(error => {
-                                                for (var prop in error) {
-                                                    const errorMessage = error[prop][0];
-                                                    toast.error(errorMessage);
-                                                }
-                                                setSubmitting(false);
-                                            })
-                                        }}>
-                                        {({
-                                              handleSubmit,
-                                              isSubmitting,
-                                          }) => (
-                                            <Form onSubmit={handleSubmit}>
-                                                <Row className="pt-4">
-
-                                                    <Col md="6" className="form-group">
-                                                        <Label for="first_name" className="form-label">
-                                                            Vorname
-                                                        </Label>
-                                                        <InputField
-                                                            name="first_name"
-                                                            id="first_name"
-                                                            type="text"
-                                                            placeholder="Max"
-                                                            autoComplete="off"
-                                                            required
-                                                        />
-                                                    </Col>
-                                                    <Col md="6" className="form-group">
-                                                        <Label for="last_name" className="form-label">
-                                                            Nachname
-                                                        </Label>
-                                                        <InputField
-                                                            name="last_name"
-                                                            id="last_name"
-                                                            type="text"
-                                                            placeholder="Mustermann"
-                                                            autoComplete="off"
-                                                            required
-                                                        />
-                                                    </Col>
-                                                    <Col md="6" className="form-group">
-                                                        <Label for="email" className="form-label">
-                                                            Email Adresse
-                                                        </Label>
-                                                        <ImageCropper/>
-                                                    </Col>
-                                                </Row>
-                                                <Button
-                                                    disabled={isSubmitting}
-                                                    type="submit"
-                                                    color="outline-primary"
-                                                    className=" mb-4">
-                                                    {isSubmitting ? <Spinner size="sm"/> : "Speichern"}
-                                                </Button>
-                                            </Form>
-                                        )}
-                                    </Formik>
+                                    <FormGenerator formData={ProfileFormFields['default']}/>
                                 </Collapse>
                             </div>
                             }

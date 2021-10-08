@@ -1,16 +1,17 @@
 import React, {useState, useCallback, useRef, useEffect} from 'react';
 import ReactCrop from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
+import {Blob} from "buffer";
+import {useField} from "formik";
 
 function getCroppedImg(canvas, crop) {
     if (!crop || !canvas) {
         return;
     }
     // As a blob
-    return new Promise((resolve, reject) => {
+    return new Promise<Blob>((resolve, reject) => {
         canvas.toBlob(
-            (blob) => {
-                blob.name = "newFileName";
+            (blob: Blob) => {
                 resolve(blob);
             },
             "image/jpeg",
@@ -20,12 +21,14 @@ function getCroppedImg(canvas, crop) {
 }
 
 
-export default function ImageCropper() {
-    const [upImg, setUpImg] = useState();
+export default function ImageCropper(props) {
+    const [upImg, setUpImg] = useState(undefined);
     const imgRef = useRef(null);
     const previewCanvasRef = useRef(null);
-    const [crop, setCrop] = useState({unit: '%', width: 100, aspect: 1 / 1});
+    const [crop, setCrop] = useState<{}>({unit: '%', width: 100, aspect: 1 / 1});
     const [completedCrop, setCompletedCrop] = useState(null);
+    const [field, meta, helpers] = useField(props.name);
+    const {setValue} = helpers;
 
     const onSelectFile = (e) => {
         if (e.target.files && e.target.files.length > 0) {
@@ -70,6 +73,11 @@ export default function ImageCropper() {
             crop.width * scaleX,
             crop.height * scaleY
         );
+
+        getCroppedImg(previewCanvasRef.current, completedCrop).then((blob) => {
+            setValue(blob)
+        })
+
     }, [completedCrop]);
 
     return (
@@ -94,19 +102,6 @@ export default function ImageCropper() {
                     }}
                 />
             </div>
-            <p>
-                Note that the download below won't work in this sandbox due to the
-                iframe missing 'allow-downloads'. It's just for your reference.
-            </p>
-            <button
-                type="button"
-                disabled={!completedCrop?.width || !completedCrop?.height}
-                onClick={async () => {
-                    const croppedImage = await getCroppedImg(previewCanvasRef.current, completedCrop)
-                }}
-            >
-                Download cropped image
-            </button>
         </div>
     );
 }

@@ -52,7 +52,6 @@ export default function FormGenerator(props) {
 
     const yepSchema = reducedInputs.reduce(createYupSchema, {});
     const validateSchema = yup.object().shape(yepSchema);
-    console.log(validateSchema)
 
     return (
         <Formik
@@ -61,10 +60,20 @@ export default function FormGenerator(props) {
             validationSchema={validateSchema}
             onSubmit={(values, {setSubmitting}) => {
                 const token = getToken();
+
+                const formValues = new FormData();
+                if (formData.isForm) {
+                    const image = values['image']
+                    console.log(values['image'])
+                    formValues.append("image", image, 'Das ist ein Filetitle')
+                }
+
                 fetchAPI(`${formData['PUT']}${values['id']}/`, {
                     method: 'PUT',
-                    body: values,
-                    token: token
+                    token: token,
+                    isForm: formData.isForm,
+                    mediaType: formData.isForm && 'multipart/form-data; boundary=----WebKitFormBoundary',
+                    body: formData.isForm ? formValues : values,
                 }).then(response => {
                     toast.success("Erfolgreich gespeichert");
                     setSubmitting(false);
@@ -79,6 +88,7 @@ export default function FormGenerator(props) {
             {({
                   handleSubmit,
                   isSubmitting,
+                  values
               }) => (
                 <Form onSubmit={handleSubmit}>
                     <FormFieldsGenerator data={formData}/>
@@ -89,7 +99,7 @@ export default function FormGenerator(props) {
                         className=" mb-4">
                         {isSubmitting ? <Spinner size="sm"/> : "Speichern"}
                     </Button>
-                    <pre>{JSON.stringify(reducedInputs, null, 2)}</pre>
+                    <pre>{JSON.stringify(values, null, 2)}</pre>
                 </Form>
             )}
         </Formik>

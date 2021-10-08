@@ -2,19 +2,22 @@ from rest_framework import serializers
 from profiles.models import Vendor, Visitor
 
 
-# Company
-class CompanySerializer(serializers.ModelSerializer):
+# Vendor
+class VendorListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Vendor
-        fields = ("id", "user", "vendor_name", "slug")
+        fields = "__all__"
 
-    # def to_representation(self, instance):
-    #     self.fields['user'] =  UserSerializer(read_only=True)
-    #     return super(CompanySerializer, self).to_representation(instance)
+
+class VendorRetrieveUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Vendor
+        fields = "__all__"
+        read_only_fields = ["id", "user", "created_at", "created_by"]
 
 
 # Visitor
 class VisitorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Visitor
-        fields = ("id", "user",)
+        fields = "__all__"

@@ -1,0 +1,38 @@
+{
+  "default": {
+    "title": "Profile",
+    "subtitle": "",
+    "GET": "/api/v1/profiles/vendors/user/",
+    "PUT": "/api/v1/profiles/vendors/",
+    "isForm": true,
+    "formBlocks": [
+      {
+        "title": "",
+        "content": "",
+        "classNames": [
+          "pt-4"
+        ],
+        "contentWidth": {
+          "lg": "0"
+        },
+        "inputsWidth": {
+          "lg": "12"
+        },
+        "inputs": [
+          {
+            "label": "Profile image",
+            "id": "image",
+            "name": "image",
+            "type": "image-cropper",
+            "placeholder": "",
+            "autoComplete": "",
+            "required": true,
+            "width": {
+              "md": "6"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

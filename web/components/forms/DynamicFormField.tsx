@@ -5,6 +5,7 @@ import SelectField from "./SelectField";
 import CustomInputField from "./CustomInputField";
 import CompoundField from "./CompoundField";
 import UploadField from "./UploadField";
+import ImageCropper from "./ImageCropper";
 
 export default function DynamicFormField({input}) {
     const {width = {lg: "12"}} = input;
@@ -140,7 +141,16 @@ export default function DynamicFormField({input}) {
                     <UploadField/>
                 </Col>
             )}
-
+            {input.type === "image-cropper" && (
+                <Col {...width} className="form-group">
+                    {input.label && <Label className="form-label text-lg">{input.label}</Label>}
+                    {input.content && <p className="text-muted text-sm">{input.content}</p>}
+                    <ImageCropper
+                        id={input.name}
+                        name={input.name}
+                    />
+                </Col>
+            )}
         </>
     )
 }
