@@ -37,7 +37,7 @@ const CardProduct = (props) => {
                     <Media className="text-white text-sm align-items-center">
                         <div className="avatar avatar-border-white mr-2 overflow-hidden">
                             <Image
-                                src={`/content/${data.avatar}`}
+                                src={data.user.vendors[0]?.image ?? "/assets/img/illustration/undraw_through_the_desert_fcin.svg"}
                                 alt={data.person}
                                 layout="fixed"
                                 width={44}
@@ -46,7 +46,7 @@ const CardProduct = (props) => {
                                 className="img-fluid"
                             />
                         </div>
-                        <Media body>{data.person}</Media>
+                        <Media body>{data.user.first_name} {data.user.last_name}</Media>
                     </Media>
                 </div>
                 <div className="card-img-overlay-top text-right">

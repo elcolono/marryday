@@ -99,7 +99,6 @@ export default function FormGenerator(props) {
                         className=" mb-4">
                         {isSubmitting ? <Spinner size="sm"/> : "Speichern"}
                     </Button>
-                    <pre>{JSON.stringify(values, null, 2)}</pre>
                 </Form>
             )}
         </Formik>
