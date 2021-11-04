@@ -4,7 +4,7 @@ import Link from "next/link"
 import {Card, CardBody, CardTitle, CardText} from "reactstrap"
 import Image from "./CustomImage"
 
-const CardPoster = (props) => {
+const CardCategory = (props) => {
     const data = props.data
     return (
         <Card className="card-poster gradient-overlay hover-animate mb-4 mb-lg-0">
@@ -30,4 +30,4 @@ const CardPoster = (props) => {
     )
 }
 
-export default CardPoster
+export default CardCategory

@@ -107,6 +107,10 @@ class ProductPublicListView(generics.ListAPIView):
         return queryset
 
 
+class ProductPublicRetrieveView(generics.RetrieveAPIView):
+    serializer_class = ProductListSerializer
+
+
 # Mailchimp Views
 class MailchimpAudienceAPIVIEWSet(APIView):
     """ COMMENTS """

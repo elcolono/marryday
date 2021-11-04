@@ -9,7 +9,6 @@ export default function SubPage(pageProps) {
     return (
         <React.Fragment>
             {page?.content.map((section, i) => {
-                console.log(section);
                 return <DynamicComponent section={section} key={i}/>
             }) ?? null}
         </React.Fragment>
@@ -18,7 +17,8 @@ export default function SubPage(pageProps) {
 
 export const getStaticProps: GetStaticProps = async ({params}) => {
     const settings = await fetchAPIWithSSR('/api/page/home', {method: 'GET'});
-    const page = await fetchAPIWithSSR(`/api/v2/pages/find/?html_path=${params.slug}`, {method: 'GET'});
+    const pageData = await fetchAPIWithSSR(`/api/v2/pages/?type=home.SubPage&fields=*&slug=${params.slug}`, {method: 'GET'});
+    const page = pageData?.items[0] ?? 0;
     const cities = await fetchAPIWithSSR('/api/v1/products/cities/', {method: 'GET'});
     const locations = await fetchAPIWithSSR('/api/v1/products/locations/', {method: 'GET'});
 

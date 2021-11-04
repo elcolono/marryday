@@ -9,10 +9,10 @@ import ResultsTopBar from "../../components/ResultsTopBar";
 import Router from 'next/router'
 import CardProduct from "../../components/CardProduct";
 import isEmpty from "lodash/isEmpty"
+import {paths} from "../../config/paths";
 
 export default function Categories(pageProps) {
     const {params, category} = pageProps;
-    console.log(category)
 
     useEffect(() => {
         if (params && params.path[1] !== category.slug) {
@@ -83,7 +83,6 @@ export default function Categories(pageProps) {
 export const getStaticProps: GetStaticProps = async ({params}) => {
     const settings = await fetchAPIWithSSR('/api/page/home', {method: 'GET'});
     const category = await fetchAPIwithSSR(`/api/v1/products/category/${params.path[0]}`)
-    console.log(category)
 
     return {
         revalidate: 1,
@@ -105,7 +104,7 @@ export const getStaticProps: GetStaticProps = async ({params}) => {
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-    const categories = await fetchAPIWithSSR('/api/v1/products/category/', {method: 'GET'});
+    const categories = await fetchAPIWithSSR(`/api/v1/${paths.category}`, {method: 'GET'});
     return {
         paths: categories?.map(
             (category) => {
