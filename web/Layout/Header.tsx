@@ -13,16 +13,17 @@ import {
     Input,
     Button,
 } from "reactstrap";
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import ActiveLink from "../components/ActiveLink";
 import MenuDropdown from "../components/MenuDropdown";
+import isEmpty from "lodash/isEmpty";
 
 const Header = (props) => {
     const [collapsed, setCollapsed] = React.useState(false)
     const [searchFocus, setSearchFocus] = React.useState(false)
 
     const onFocus = () => setSearchFocus(!searchFocus)
-    const {mainMenus, loggedUser} = props
+    const { mainMenus, loggedUser } = props
 
 
     const onLinkClick = (parent) => {
@@ -61,10 +62,10 @@ const Header = (props) => {
                         <Form id="search" className="form-inline d-none d-sm-flex">
                             <div
                                 className={`input-label-absolute input-label-absolute-left input-reset input-expand ml-lg-2 ml-xl-3 ${searchFocus ? "focus" : ""
-                                }`}
+                                    }`}
                             >
                                 <Label for="search_search" className="label-absolute">
-                                    <FontAwesomeIcon width={13} icon="search"/>
+                                    <FontAwesomeIcon width={13} icon="search" />
                                     <span className="sr-only">What are you looking for?</span>
                                 </Label>
                                 <Input
@@ -77,7 +78,7 @@ const Header = (props) => {
                                     onBlur={() => setTimeout(() => onFocus(), 333)}
                                 />
                                 <button type="reset" className="btn btn-sm btn-reset">
-                                    <FontAwesomeIcon width={13} icon="times"/>
+                                    <FontAwesomeIcon width={13} icon="times" />
                                 </button>
                             </div>
                         </Form>
@@ -88,7 +89,7 @@ const Header = (props) => {
                         onClick={() => setCollapsed(!collapsed)}
                         className="navbar-toggler-right"
                     >
-                        <FontAwesomeIcon width={18} icon="bars"/>
+                        <FontAwesomeIcon width={18} icon="bars" />
                     </NavbarToggler>
                     <Collapse isOpen={collapsed} navbar>
                         {/* mobile search form */}
@@ -98,10 +99,10 @@ const Header = (props) => {
                         >
                             <div
                                 className={`input-label-absolute input-label-absolute-left input-reset w-100 ${searchFocus ? "focus" : ""
-                                }`}
+                                    }`}
                             >
                                 <Label for="searchcollapsed_search" className="label-absolute">
-                                    <FontAwesomeIcon width={15} icon="search"/>
+                                    <FontAwesomeIcon width={15} icon="search" />
                                     <span className="sr-only">What are you looking for?</span>
                                 </Label>
                                 <Input
@@ -119,45 +120,45 @@ const Header = (props) => {
                                     color="deoco"
                                     className="btn-reset"
                                 >
-                                    <FontAwesomeIcon width={15} icon="times"/>
+                                    <FontAwesomeIcon width={15} icon="times" />
                                 </Button>
                             </div>
                         </Form>
 
                         {/*  MAIN Navigation */}
                         <Nav navbar className="ml-auto">
-                            {mainMenus && mainMenus[0].menu_items &&
-                            mainMenus[0].menu_items.map((item) => <NavItem
-                                key={item.link_text}
-                                className={
-                                    item.button
-                                        ? "mt-3 mt-lg-0 ml-lg-3 d-lg-none d-xl-inline-block"
-                                        : ""
-                                }
-                            >
-                                {item.button ? (
-                                    item.showToLoggedUser !== false && (
-                                        <ActiveLink activeClassName="active" href={item.link}>
-                                            <a
-                                                className="btn btn-primary"
-                                                onClick={() => onLinkClick(item.title)}
-                                            >
-                                                {item.title}
-                                            </a>
+                            {!isEmpty(mainMenus) && mainMenus[0].menu_items &&
+                                mainMenus[0].menu_items.map((item) => <NavItem
+                                    key={item.link_text}
+                                    className={
+                                        item.button
+                                            ? "mt-3 mt-lg-0 ml-lg-3 d-lg-none d-xl-inline-block"
+                                            : ""
+                                    }
+                                >
+                                    {item.button ? (
+                                        item.showToLoggedUser !== false && (
+                                            <ActiveLink activeClassName="active" href={item.link}>
+                                                <a
+                                                    className="btn btn-primary"
+                                                    onClick={() => onLinkClick(item.title)}
+                                                >
+                                                    {item.title}
+                                                </a>
+                                            </ActiveLink>
+                                        )
+                                    ) : (
+                                        <ActiveLink
+                                            activeClassName="active"
+                                            href={`/${item.link_page.slug}`}
+                                            passHref
+                                        >
+                                            <NavLink onClick={() => onLinkClick(item.title)}>
+                                                {item.link_text}
+                                            </NavLink>
                                         </ActiveLink>
-                                    )
-                                ) : (
-                                    <ActiveLink
-                                        activeClassName="active"
-                                        href={`/${item.link_page.slug}`}
-                                        passHref
-                                    >
-                                        <NavLink onClick={() => onLinkClick(item.title)}>
-                                            {item.link_text}
-                                        </NavLink>
-                                    </ActiveLink>
-                                )}
-                            </NavItem>)}
+                                    )}
+                                </NavItem>)}
                             {props.loggedUser ?
                                 <MenuDropdown item={{
                                     "img": loggedUser.img,
@@ -175,7 +176,7 @@ const Header = (props) => {
                                         }
                                     ]
 
-                                }}/> :
+                                }} /> :
                                 <NavItem className="mt-3 mt-lg-0 ml-lg-3 d-lg-none d-xl-inline-block">
                                     <ActiveLink
                                         activeClassName="active"

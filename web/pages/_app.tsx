@@ -1,8 +1,7 @@
 import React from "react";
 import Layout from "../Layout";
-
 import "../scss/style.default.scss";
-import {library} from '@fortawesome/fontawesome-svg-core';
+import { library } from '@fortawesome/fontawesome-svg-core';
 import {
     faCoffee,
     faWifi,
@@ -24,7 +23,7 @@ import {
 library.add(faCoffee, faBars, faSearch, faTimes, faWifi, faPrint, faFan, faLock, faShower, faAngleDoubleRight,
     faCalendar, faChevronLeft, faChevronRight, faCrosshairs, faQuoteRight);
 
-const App = ({Component, pageProps}) => {
+const App = ({ Component, pageProps }) => {
     return (
         <Layout {...pageProps}>
             <Component {...pageProps} />
