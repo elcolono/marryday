@@ -13,10 +13,10 @@ ALLOWED_HOSTS = ['*']
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
 # Set env variables
-POSTGRES_DB_NAME = 'marryday_db_1'
+POSTGRES_DB_NAME = 'postgres'
 POSTGRES_DB_USER = 'postgres'
 POSTGRES_DB_PASSWORD = os.environ.get('POSTGRES_DB_PASSWORD')
-POSTGRES_DB_HOST = '23.88.62.81'
+POSTGRES_DB_HOST = '0.0.0.0'
 POSTGRES_DB_PORT = 5432
 DATABASES = {
     'default': {
