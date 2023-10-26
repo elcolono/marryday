@@ -1,5 +1,5 @@
 from django.urls import path
-from products.views import BookingCreateView, BookingRetrieveView, send_test_mail
+from .views import BookingCreateView, BookingRetrieveView, send_test_mail
 
 urlpatterns = [
     path("mail/", send_test_mail, name="test-mail"),

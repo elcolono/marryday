@@ -8,7 +8,7 @@ from rest_framework.response import Response
 
 from .models import Booking
 from .serializers import BookingCreateSerializer, BookingRetrieveSerializer
-from products.models import Product
+from ..products.models import Product
 
 from dateutil.parser import parse
 from datetime import timedelta
@@ -17,8 +17,8 @@ from django.db.models import Q
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 
-from payments.models import Payment
-from payments.serializers import PaymentSerializer
+from ..payments.models import Payment
+from ..payments.serializers import PaymentSerializer
 
 from django.http import JsonResponse
 

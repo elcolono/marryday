@@ -4,7 +4,9 @@ Admin Settings
 from django.contrib import admin
 from .models import Booking
 
-
+"""
+Booking Admin
+"""
 class BookingAdmin(admin.ModelAdmin):
     search_fields = ('product', 'start', 'end',)
     list_display = ('product', 'start', 'end',)

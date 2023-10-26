@@ -9,12 +9,11 @@ from modelcluster.contrib.taggit import ClusterTaggableManager
 from taggit.models import TaggedItemBase
 
 from wagtail.api import APIField
-from wagtail.core import blocks
-from wagtail.core.models import Page, Orderable
-from wagtail.core.fields import RichTextField, StreamField
-from wagtail.admin.edit_handlers import FieldPanel, InlinePanel, MultiFieldPanel, StreamFieldPanel
+from wagtail import blocks
+from wagtail.models import Page, Orderable
+from wagtail.fields import RichTextField, StreamField
+from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
 from wagtail.images.blocks import ImageChooserBlock
-from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtail.search import index
 
 from wagtail.snippets.models import register_snippet
@@ -82,8 +81,8 @@ class BlogPage(MetadataPageMixin, Page):
 
     content_panels = Page.content_panels + [
         FieldPanel('intro'),
-        ImageChooserPanel('image'),
-        StreamFieldPanel('content'),
+        FieldPanel('image'),
+        FieldPanel('content'),
         MultiFieldPanel([
             FieldPanel('date'),
             FieldPanel('tags'),

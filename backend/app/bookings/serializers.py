@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from products.serializers import ProductRetrieveSerializer
+from ..products.serializers import ProductRetrieveSerializer
 from .models import Booking
 
 
