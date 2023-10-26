@@ -1,8 +1,8 @@
 """ Flex Page """
 
-from wagtail.admin.edit_handlers import StreamFieldPanel, RichTextFieldPanel
-from wagtail.core.models import Page
-from wagtail.core.fields import StreamField, RichTextField
+from wagtail.admin.panels import FieldPanel
+from wagtail.models import Page
+from wagtail.fields import StreamField, RichTextField
 from wagtail.api import APIField
 
 from .blocks import (PageHeadingSectionBlock, MapSectionBlock, HeroSectionBlock, HeroWithSearchBarBlock,
@@ -57,8 +57,8 @@ class FlexPage(Page):
     )
 
     content_panels = Page.content_panels + [
-        RichTextFieldPanel("seo_text"),
-        StreamFieldPanel("content"),
+        FieldPanel("seo_text"),
+        FieldPanel("content"),
     ]
 
     # under content_panels:

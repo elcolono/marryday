@@ -1,11 +1,10 @@
 """ All blocks """
-from wagtail.core import blocks
-from wagtail.core.models import Page
+
+from wagtail import blocks
 from wagtail.images.blocks import ImageChooserBlock
 
 from wagtail.images.models import Image as WagtailImage
 from rest_framework import serializers
-
 
 class RichTextBlock(blocks.RichTextBlock):
     def get_api_representation(self, value, context=None):
