@@ -3,7 +3,6 @@ from rest_framework import serializers
 from accounts.serializers.nested import UserSerializer
 from products.models import Product, ProductImage, ProductCategory, ProductCategoryImage
 
-
 # ProductImage
 class ProductImageCreateSerializer(serializers.ModelSerializer):
     class Meta:
